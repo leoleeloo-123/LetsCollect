@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mythic Imperial Green Jelly Jade Bear</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #13211d;
+      --muted: #5c7069;
+      --green: #0fb66f;
+      --deep: #044d34;
+      --glass: rgba(255, 255, 255, 0.62);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+    }
+
+    body {
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 22% 14%, rgba(82, 255, 181, 0.28), transparent 27%),
+        radial-gradient(circle at 78% 18%, rgba(178, 225, 255, 0.34), transparent 28%),
+        radial-gradient(circle at 50% 92%, rgba(30, 186, 118, 0.22), transparent 32%),
+        linear-gradient(135deg, #f7fbf7 0%, #eaf7f2 48%, #f5f8ff 100%);
+      overflow-x: hidden;
+    }
+
+    .page {
+      width: min(1240px, calc(100% - 28px));
+      min-height: 100vh;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 350px;
+      gap: 20px;
+      align-items: center;
+      padding: 28px 0;
+    }
+
+    .stage-shell,
+    .meta-panel {
+      border: 1px solid rgba(255, 255, 255, 0.78);
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.74), rgba(255, 255, 255, 0.34)),
+        radial-gradient(circle at 24% 0%, rgba(78, 255, 179, 0.18), transparent 40%);
+      box-shadow: 0 30px 100px rgba(22, 65, 51, 0.18);
+      backdrop-filter: blur(24px);
+    }
+
+    .stage-shell {
+      position: relative;
+      height: min(760px, calc(100vh - 56px));
+      min-height: 560px;
+      border-radius: 32px;
+      overflow: hidden;
+    }
+
+    .stage-shell::before {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      z-index: 0;
+      border: 1px solid rgba(255, 255, 255, 0.62);
+      border-radius: 26px;
+      background:
+        radial-gradient(circle at var(--light-x, 38%) var(--light-y, 28%), rgba(255, 255, 255, 0.74), transparent 20%),
+        radial-gradient(ellipse at 50% 80%, rgba(13, 180, 102, 0.18), transparent 34%),
+        linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.04));
+      pointer-events: none;
+    }
+
+    #heroCanvas {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      display: block;
+      cursor: grab;
+      touch-action: none;
+    }
+
+    .loader {
+      position: absolute;
+      left: 50%;
+      top: 55%;
+      z-index: 3;
+      display: grid;
+      place-items: center;
+      gap: 10px;
+      color: rgba(19, 33, 29, 0.72);
+      font-size: 13px;
+      font-weight: 850;
+      transform: translate(-50%, -50%);
+      transition: opacity 220ms ease, visibility 220ms ease;
+      pointer-events: none;
+    }
+
+    .loader::before {
+      content: "";
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      border: 3px solid rgba(24, 174, 107, 0.18);
+      border-top-color: rgba(24, 174, 107, 0.74);
+      animation: spin 850ms linear infinite;
+    }
+
+    .loader.is-hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    #heroCanvas:active {
+      cursor: grabbing;
+    }
+
+    .title-block {
+      position: absolute;
+      top: 24px;
+      left: 28px;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      color: #006944;
+      background: rgba(230, 255, 245, 0.72);
+      border: 1px solid rgba(84, 255, 178, 0.34);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+      font-size: 12px;
+      font-weight: 850;
+      letter-spacing: 0;
+    }
+
+    h1 {
+      max-width: 430px;
+      margin: 14px 0 0;
+      font-size: clamp(28px, 3.6vw, 46px);
+      line-height: 0.98;
+      letter-spacing: 0;
+    }
+
+    .hint {
+      position: absolute;
+      left: 34px;
+      bottom: 28px;
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 14px;
+      border-radius: 999px;
+      color: rgba(19, 33, 29, 0.82);
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(255, 255, 255, 0.88);
+      box-shadow: 0 16px 38px rgba(23, 55, 47, 0.12);
+      font-size: 13px;
+      font-weight: 850;
+      pointer-events: none;
+    }
+
+    .hint-icon {
+      width: 16px;
+      height: 22px;
+      border: 2px solid currentColor;
+      border-radius: 999px;
+      position: relative;
+    }
+
+    .hint-icon::before {
+      content: "";
+      position: absolute;
+      top: 4px;
+      left: 50%;
+      width: 2px;
+      height: 5px;
+      border-radius: 99px;
+      background: currentColor;
+      transform: translateX(-50%);
+    }
+
+    .meta-panel {
+      position: relative;
+      border-radius: 28px;
+      padding: 22px;
+      overflow: hidden;
+    }
+
+    .meta-panel::before {
+      content: "";
+      position: absolute;
+      inset: -50%;
+      background: conic-gradient(from 160deg, transparent, rgba(95, 255, 182, 0.24), rgba(255,255,255,0.35), rgba(159, 225, 255, 0.28), transparent);
+      animation: mythicAura 7s linear infinite;
+      pointer-events: none;
+    }
+
+    .meta-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .badge {
+      display: inline-flex;
+      padding: 8px 12px;
+      border-radius: 999px;
+      color: #005a3b;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.58), rgba(255,255,255,0.12)),
+        rgba(214, 255, 239, 0.78);
+      border: 1px solid rgba(74, 255, 174, 0.44);
+      box-shadow: 0 0 24px rgba(45, 236, 142, 0.18), inset 0 1px 0 rgba(255,255,255,0.8);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .meta-panel h2 {
+      margin: 18px 0 8px;
+      font-size: 34px;
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .meta-panel p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .variant-selector {
+      display: grid;
+      gap: 8px;
+      margin: 0 0 18px;
+    }
+
+    .variant-button {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 12px minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+      padding: 11px 12px;
+      color: var(--ink);
+      text-align: left;
+      font: inherit;
+      background: rgba(255, 255, 255, 0.46);
+      border: 1px solid rgba(45, 107, 82, 0.12);
+      border-radius: 14px;
+      cursor: pointer;
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+    }
+
+    .variant-button:hover {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .variant-button[aria-pressed="true"] {
+      border-color: rgba(14, 169, 101, 0.46);
+      background: rgba(235, 255, 247, 0.82);
+      box-shadow: 0 8px 24px rgba(12, 127, 78, 0.12), inset 0 1px 0 white;
+    }
+
+    .variant-swatch {
+      width: 12px;
+      height: 28px;
+      border-radius: 4px;
+      background: var(--swatch);
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.72), 0 0 12px color-mix(in srgb, var(--swatch) 50%, transparent);
+    }
+
+    .variant-name {
+      min-width: 0;
+      font-size: 13px;
+      font-weight: 850;
+      line-height: 1.25;
+    }
+
+    .variant-tier {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 850;
+      white-space: nowrap;
+    }
+
+    .specs {
+      display: grid;
+      gap: 10px;
+    }
+
+    .spec {
+      min-height: 66px;
+      padding: 12px 13px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.62);
+      border: 1px solid rgba(91, 125, 111, 0.12);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.65);
+    }
+
+    .label {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .value {
+      display: block;
+      margin-top: 6px;
+      font-size: 16px;
+      font-weight: 850;
+    }
+
+    @keyframes mythicAura {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @media (max-width: 980px) {
+      .page {
+        grid-template-columns: 1fr;
+      }
+
+      .stage-shell {
+        height: 68vh;
+        min-height: 500px;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .page {
+        width: min(100% - 18px, 1240px);
+        padding: 10px 0 20px;
+      }
+
+      .stage-shell {
+        min-height: 460px;
+        border-radius: 22px;
+      }
+
+      .title-block {
+        top: 20px;
+        left: 20px;
+      }
+
+      .hint {
+        left: 20px;
+        bottom: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="stage-shell" id="stageShell" aria-label="3D inspection stage">
+      <div class="title-block">
+        <span class="eyebrow">MYTHIC HERO MODEL</span>
+        <h1 id="stageTitle">High-Ice Imperial Green Jelly Jade Bear</h1>
+      </div>
+      <canvas id="heroCanvas"></canvas>
+      <div class="loader" id="loader">Preparing jade model</div>
+      <div class="hint"><span class="hint-icon"></span>Drag to inspect</div>
+    </section>
+
+    <aside class="meta-panel">
+      <div class="meta-inner">
+        <span class="badge">Mythic Collectible</span>
+        <h2 id="variantTitle">High-Ice Imperial Green</h2>
+        <p>Same collectible form, different jade-quality parameters. Compare clarity, cotton, color, and glow.</p>
+        <div class="variant-selector" aria-label="Jade quality variants">
+          <button class="variant-button" type="button" data-variant="high-ice-green" aria-pressed="true">
+            <span class="variant-swatch" style="--swatch:#12b76a"></span>
+            <span class="variant-name">High-Ice Imperial Green</span>
+            <span class="variant-tier">Highest</span>
+          </button>
+          <button class="variant-button" type="button" data-variant="icy-green-cotton" aria-pressed="false">
+            <span class="variant-swatch" style="--swatch:#49c987"></span>
+            <span class="variant-name">Icy Green with Cotton</span>
+            <span class="variant-tier">Medium</span>
+          </button>
+          <button class="variant-button" type="button" data-variant="bean-jade" aria-pressed="false">
+            <span class="variant-swatch" style="--swatch:#8fc59a"></span>
+            <span class="variant-name">Bean Jade</span>
+            <span class="variant-tier">Lower</span>
+          </button>
+        </div>
+        <div class="specs">
+          <div class="spec"><span class="label">Name</span><span class="value" data-meta="name"></span></div>
+          <div class="spec"><span class="label">Jade Grade</span><span class="value" data-meta="jadeGrade"></span></div>
+          <div class="spec"><span class="label">Value Tier</span><span class="value" data-meta="valueTier"></span></div>
+          <div class="spec"><span class="label">Transparency</span><span class="value" data-meta="transparency"></span></div>
+          <div class="spec"><span class="label">Cloudiness</span><span class="value" data-meta="cloudiness"></span></div>
+          <div class="spec"><span class="label">Color Coverage</span><span class="value" data-meta="colorCoverage"></span></div>
+          <div class="spec"><span class="label">Glow Intensity</span><span class="value" data-meta="glowLabel"></span></div>
+          <div class="spec"><span class="label">Pattern Seed</span><span class="value" data-meta="patternSeed"></span></div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"
+      }
+    }
+  </script>
+  <script type="module">
+    import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js";
+    import { MarchingCubes } from "three/addons/objects/MarchingCubes.js";
+    import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+
+    const timings = { scriptStart: performance.now() };
+    console.info("[hero-jade] script start", Math.round(timings.scriptStart));
+
+    const canvas = document.querySelector("#heroCanvas");
+    const stageShell = document.querySelector("#stageShell");
+    const loader = document.querySelector("#loader");
+    const params = new URLSearchParams(window.location.search);
+    const quality = params.get("quality") || "medium";
+    const qualitySettings = {
+      high: { pixelRatio: 1.5, marchingResolution: 62, maxPoly: 56000, environment: true, transmission: 0.72, cloudCount: 3, idleFps: 30 },
+      medium: { pixelRatio: 1.25, marchingResolution: 52, maxPoly: 38000, environment: true, transmission: 0.62, cloudCount: 3, idleFps: 24 },
+      low: { pixelRatio: 1, marchingResolution: 44, maxPoly: 26000, environment: false, transmission: 0.32, cloudCount: 2, idleFps: 24 }
+    };
+    const settings = qualitySettings[quality] || qualitySettings.medium;
+    const FACE_CONFIG = {
+      width: 1.34,
+      height: 1,
+      position: [0, 0.48, 1.22],
+      rotationX: -0.04,
+      baseOpacity: 0.72
+    };
+
+    // Three hard-coded jade grades share one MarchingCubes bear. Switching a
+    // grade only retunes material, inclusions, lighting, and metadata.
+    const JADE_VARIANTS = [
+      {
+        id: "high-ice-green",
+        name: "High-Ice Imperial Green",
+        jadeGrade: "High-Ice / Glass Jade",
+        valueTier: "Highest",
+        color: "#079a58",
+        attenuationColor: "#003c29",
+        emissive: "#03583a",
+        transmission: 0.85,
+        opacity: 0.68,
+        roughness: 0.07,
+        clearcoat: 1,
+        clearcoatRoughness: 0.025,
+        thickness: 4.8,
+        attenuationDistance: 3.4,
+        envMapIntensity: 1.75,
+        specularIntensity: 1,
+        transparency: 0.96,
+        cloudiness: 0.06,
+        cloudCount: 0,
+        cloudOpacity: 0.025,
+        colorCoverage: 0.92,
+        glow: 1.15,
+        glowLabel: "High",
+        patternSeed: 893721
+      },
+      {
+        id: "icy-green-cotton",
+        name: "Icy Green with Cotton",
+        jadeGrade: "Icy Jade with Cotton",
+        valueTier: "Medium",
+        color: "#49c987",
+        attenuationColor: "#2a7d59",
+        emissive: "#1b6042",
+        transmission: 0.42,
+        opacity: 0.86,
+        roughness: 0.3,
+        clearcoat: 0.68,
+        clearcoatRoughness: 0.16,
+        thickness: 3,
+        attenuationDistance: 1.45,
+        envMapIntensity: 0.88,
+        specularIntensity: 0.72,
+        transparency: 0.72,
+        cloudiness: 0.42,
+        cloudCount: 6,
+        cloudOpacity: 0.11,
+        colorCoverage: 0.78,
+        glow: 0.42,
+        glowLabel: "Medium",
+        patternSeed: 421759
+      },
+      {
+        id: "bean-jade",
+        name: "Bean Jade",
+        jadeGrade: "Bean Jade / Dou Zhong",
+        valueTier: "Lower",
+        color: "#77ad82",
+        attenuationColor: "#487451",
+        emissive: "#355f40",
+        transmission: 0.015,
+        opacity: 1,
+        roughness: 0.58,
+        clearcoat: 0.18,
+        clearcoatRoughness: 0.38,
+        thickness: 1.4,
+        attenuationDistance: 0.62,
+        envMapIntensity: 0.32,
+        specularIntensity: 0.34,
+        transparency: 0.28,
+        cloudiness: 0.72,
+        cloudCount: 9,
+        cloudOpacity: 0.17,
+        colorCoverage: 0.64,
+        glow: 0.06,
+        glowLabel: "Low",
+        patternSeed: 276413
+      }
+    ];
+    let activeVariant = JADE_VARIANTS.find((variant) => variant.id === params.get("variant")) || JADE_VARIANTS[0];
+
+    const renderer = new THREE.WebGLRenderer({
+      canvas,
+      antialias: true,
+      alpha: true,
+      stencil: true,
+      powerPreference: "high-performance"
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, settings.pixelRatio));
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.16;
+    timings.rendererReady = performance.now();
+    console.info("[hero-jade] renderer ready", Math.round(timings.rendererReady - timings.scriptStart), "ms", { quality });
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
+    camera.position.set(0, 0.88, 8.15);
+    camera.lookAt(0, 0.12, 0);
+
+    if (settings.environment) {
+      const pmrem = new THREE.PMREMGenerator(renderer);
+      scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.025).texture;
+    } else {
+      scene.environment = null;
+    }
+
+    const toyGroup = new THREE.Group();
+    toyGroup.position.set(0, -0.04, 0);
+    toyGroup.scale.setScalar(0.62);
+    scene.add(toyGroup);
+
+    const jadeColor = new THREE.Color(activeVariant.color);
+    const deepJade = new THREE.Color(activeVariant.attenuationColor);
+
+    // Jelly jade material setup:
+    // The hero surface is a single MarchingCubes metaball mesh, so the jade
+    // material reads as one thick translucent object instead of overlapping
+    // transparent spheres. Transmission, thickness, attenuation, clearcoat,
+    // and ACES tone mapping create a soft glass-jade response.
+    const jadeMaterial = new THREE.MeshPhysicalMaterial({
+      color: jadeColor,
+      roughness: activeVariant.roughness,
+      metalness: 0,
+      transmission: Math.min(activeVariant.transmission, settings.transmission + 0.25),
+      thickness: activeVariant.thickness,
+      ior: 1.49,
+      transparent: true,
+      opacity: activeVariant.opacity,
+      clearcoat: activeVariant.clearcoat,
+      clearcoatRoughness: activeVariant.clearcoatRoughness,
+      attenuationColor: deepJade,
+      attenuationDistance: activeVariant.attenuationDistance,
+      emissive: new THREE.Color(activeVariant.emissive),
+      emissiveIntensity: 0.075,
+      specularIntensity: activeVariant.specularIntensity,
+      envMapIntensity: activeVariant.envMapIntensity
+    });
+
+    const cheekMaterial = new THREE.MeshBasicMaterial({
+      color: "#d5fff0",
+      transparent: true,
+      opacity: 0.22,
+      depthWrite: false
+    });
+
+    const cloudMaterial = new THREE.MeshBasicMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.09,
+      depthWrite: false,
+      blending: THREE.NormalBlending
+    });
+
+    const mistGreenMaterial = new THREE.MeshBasicMaterial({
+      color: "#85ffc8",
+      transparent: true,
+      opacity: 0.085,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending
+    });
+
+    const glowMaterial = new THREE.MeshBasicMaterial({
+      color: "#4dffad",
+      transparent: true,
+      opacity: 0.11,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending
+    });
+
+    const highlightMaterial = new THREE.MeshBasicMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.42,
+      depthWrite: false
+    });
+
+    // Toy geometry construction:
+    // MarchingCubes fuses conceptual blobs for the chibi bear into one organic
+    // continuous surface. Body, head, ears, arms, feet, and snout are still
+    // designed from simple blob volumes, but the rendered shell is seamless.
+    const bearSurface = new MarchingCubes(settings.marchingResolution, jadeMaterial, false, false, settings.maxPoly);
+    bearSurface.isolation = 58;
+    bearSurface.position.set(0, -0.04, 0);
+    bearSurface.scale.set(3.05, 3.34, 2.78);
+    bearSurface.enableUvs = false;
+    bearSurface.enableColors = false;
+    toyGroup.add(bearSurface);
+
+    function buildBearField() {
+      bearSurface.reset();
+
+      const subtract = 8;
+      const balls = [
+        // one-piece large head + smaller body silhouette
+        [0.50, 0.64, 0.50, 1.1, subtract],
+        [0.50, 0.40, 0.50, 0.88, subtract],
+        [0.50, 0.52, 0.50, 0.72, subtract],
+
+        // smaller ears, pulled close to the head for a blind-box bear look
+        [0.385, 0.75, 0.50, 0.31, subtract],
+        [0.615, 0.75, 0.50, 0.31, subtract],
+        [0.42, 0.695, 0.50, 0.14, subtract],
+        [0.58, 0.695, 0.50, 0.14, subtract],
+
+        // short arms attached close to the body
+        [0.36, 0.42, 0.54, 0.36, subtract],
+        [0.64, 0.42, 0.54, 0.36, subtract],
+        [0.40, 0.43, 0.52, 0.18, subtract],
+        [0.60, 0.43, 0.52, 0.18, subtract],
+
+        // small flattened feet
+        [0.41, 0.25, 0.57, 0.34, subtract],
+        [0.59, 0.25, 0.57, 0.34, subtract],
+        [0.45, 0.31, 0.54, 0.16, subtract],
+        [0.55, 0.31, 0.54, 0.16, subtract],
+
+        // The front remains calm and continuous; expression comes from the
+        // embedded decal, avoiding a protruding face bubble at side angles.
+      ];
+
+      balls.forEach(([x, y, z, strength, sub]) => {
+        bearSurface.addBall(x, y, z, strength, sub);
+      });
+      bearSurface.update();
+    }
+
+    buildBearField();
+    bearSurface.renderOrder = 3;
+
+    // Invisible stencil pass: the face can only draw inside the projected bear
+    // silhouette. The same MarchingCubes geometry is reused, so this adds one
+    // cheap draw call without rebuilding the metaball surface.
+    const faceStencilMask = new THREE.Mesh(
+      bearSurface.geometry,
+      new THREE.MeshBasicMaterial({
+        colorWrite: false,
+        depthWrite: false,
+        depthTest: false,
+        side: THREE.DoubleSide,
+        stencilWrite: true,
+        stencilRef: 1,
+        stencilFunc: THREE.AlwaysStencilFunc,
+        stencilFail: THREE.KeepStencilOp,
+        stencilZFail: THREE.KeepStencilOp,
+        stencilZPass: THREE.ReplaceStencilOp
+      })
+    );
+    faceStencilMask.position.copy(bearSurface.position);
+    faceStencilMask.scale.copy(bearSurface.scale);
+    faceStencilMask.renderOrder = 0;
+    toyGroup.add(faceStencilMask);
+    timings.modelBuilt = performance.now();
+    console.info("[hero-jade] model built", Math.round(timings.modelBuilt - timings.scriptStart), "ms");
+
+    function addMesh(geometry, material, position, scale, rotation = [0, 0, 0], parent = toyGroup) {
+      const mesh = new THREE.Mesh(geometry, material);
+      mesh.position.set(...position);
+      mesh.scale.set(...scale);
+      mesh.rotation.set(...rotation);
+      parent.add(mesh);
+      return mesh;
+    }
+
+    // Internal jade inclusion simulation:
+    // Mythic jade should stay clean, so these are subtle, soft translucent mist
+    // blobs inside the volume. There are no hard graphic bands or painted
+    // stripes; the clouds drift slightly during idle/inspection.
+    const inclusions = new THREE.Group();
+    toyGroup.add(inclusions);
+
+    const cloudGeometry = new THREE.SphereGeometry(1, 16, 8);
+    const cloudMeshes = Array.from({ length: 9 }, (_, index) => {
+      const material = (index % 3 === 1 ? mistGreenMaterial : cloudMaterial).clone();
+      material.blending = THREE.NormalBlending;
+      material.depthTest = false;
+      material.stencilWrite = true;
+      material.stencilRef = 1;
+      material.stencilFunc = THREE.EqualStencilFunc;
+      material.stencilFail = THREE.KeepStencilOp;
+      material.stencilZFail = THREE.KeepStencilOp;
+      material.stencilZPass = THREE.KeepStencilOp;
+      const cloud = new THREE.Mesh(cloudGeometry, material);
+      cloud.visible = false;
+      cloud.renderOrder = 4;
+      inclusions.add(cloud);
+      return cloud;
+    });
+
+    function seededRandom(seed) {
+      let state = seed >>> 0;
+      return () => {
+        state = (state * 1664525 + 1013904223) >>> 0;
+        return state / 4294967296;
+      };
+    }
+
+    const cottonSlots = [
+      [-0.34, 0.25, 0.12, 0.24, 0.065, 0.12, -0.42],
+      [0.34, 0.19, 0.1, 0.2, 0.055, 0.1, 0.5],
+      [-0.28, 0.02, 0.15, 0.19, 0.05, 0.1, 0.18],
+      [0.29, -0.08, 0.14, 0.23, 0.06, 0.11, -0.58],
+      [-0.36, -0.22, 0.08, 0.21, 0.055, 0.1, 0.62],
+      [0.2, -0.29, 0.16, 0.19, 0.05, 0.09, -0.2],
+      [-0.12, -0.38, 0.12, 0.18, 0.045, 0.09, 0.35],
+      [0.4, -0.34, 0.08, 0.16, 0.045, 0.08, -0.48],
+      [-0.43, 0.06, 0.06, 0.15, 0.04, 0.08, 0.74]
+    ];
+
+    function updateClouds(variant) {
+      const random = seededRandom(variant.patternSeed);
+      cloudMeshes.forEach((cloud, index) => {
+        cloud.visible = index < variant.cloudCount && index < Math.max(1, settings.cloudCount * 3);
+        if (!cloud.visible) return;
+        if (variant.id === "high-ice-green") {
+          cloud.position.set(-0.24, 0.08, -0.28);
+          cloud.scale.set(0.3, 0.035, 0.14);
+          cloud.rotation.set(0.18, 0.7, -0.28);
+          cloud.material.opacity = variant.cloudOpacity;
+          cloud.material.color.set("#f0fff7");
+          return;
+        }
+        const [x, y, z, sx, sy, sz, rz] = cottonSlots[index];
+        const sizeJitter = 0.92 + random() * 0.18;
+        cloud.position.set(x + (random() - 0.5) * 0.04, y + (random() - 0.5) * 0.04, z);
+        cloud.scale.set(sx * sizeJitter, sy * sizeJitter, sz * sizeJitter);
+        cloud.rotation.set(random() * 0.3, random() * 0.7, rz + (random() - 0.5) * 0.24);
+        cloud.material.opacity = variant.cloudOpacity * (0.78 + random() * 0.42);
+        cloud.material.color.set(index % 3 === 1 ? "#a8e8c7" : "#dff5e8");
+      });
+    }
+
+    const glowShell = addMesh(new THREE.SphereGeometry(1, 32, 18), glowMaterial, [0, 0.08, -0.03], [1.72, 2.06, 1.36]);
+    glowShell.renderOrder = -2;
+
+    // Face decal system:
+    // The face is no longer built from protruding eye/nose/mouth geometry.
+    // A transparent CanvasTexture draws a low-contrast jade-grey expression on
+    // a very shallow plane just under the front surface, then fades by view
+    // angle so it does not float through the model when inspected from the side.
+    function createFaceTexture() {
+      const faceCanvas = document.createElement("canvas");
+      faceCanvas.width = 512;
+      faceCanvas.height = 512;
+      const ctx = faceCanvas.getContext("2d");
+      ctx.clearRect(0, 0, 512, 512);
+
+      ctx.fillStyle = "rgba(24, 76, 64, 0.60)";
+      ctx.beginPath();
+      ctx.ellipse(198, 202, 40, 50, -0.05, 0, Math.PI * 2);
+      ctx.ellipse(314, 202, 40, 50, 0.05, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = "rgba(216, 255, 238, 0.42)";
+      ctx.beginPath();
+      ctx.ellipse(187, 184, 9, 13, -0.4, 0, Math.PI * 2);
+      ctx.ellipse(303, 184, 9, 13, -0.4, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = "rgba(28, 82, 69, 0.56)";
+      ctx.beginPath();
+      ctx.ellipse(256, 260, 11, 7, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.strokeStyle = "rgba(28, 82, 69, 0.54)";
+      ctx.lineWidth = 7;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      ctx.beginPath();
+      ctx.moveTo(230, 294);
+      ctx.quadraticCurveTo(246, 312, 256, 294);
+      ctx.quadraticCurveTo(266, 312, 282, 294);
+      ctx.stroke();
+
+      ctx.fillStyle = "rgba(213, 255, 240, 0.24)";
+      ctx.beginPath();
+      ctx.ellipse(142, 274, 34, 13, -0.08, 0, Math.PI * 2);
+      ctx.ellipse(370, 274, 34, 13, 0.08, 0, Math.PI * 2);
+      ctx.fill();
+
+      const texture = new THREE.CanvasTexture(faceCanvas);
+      texture.colorSpace = THREE.SRGBColorSpace;
+      texture.needsUpdate = true;
+      return texture;
+    }
+
+    const faceMaterial = new THREE.MeshBasicMaterial({
+      map: createFaceTexture(),
+      transparent: true,
+      opacity: FACE_CONFIG.baseOpacity,
+      depthWrite: false,
+      depthTest: false,
+      stencilWrite: true,
+      stencilRef: 1,
+      stencilFunc: THREE.EqualStencilFunc,
+      stencilFail: THREE.KeepStencilOp,
+      stencilZFail: THREE.KeepStencilOp,
+      stencilZPass: THREE.KeepStencilOp
+    });
+
+    const faceDecal = new THREE.Mesh(new THREE.PlaneGeometry(FACE_CONFIG.width, FACE_CONFIG.height, 1, 1), faceMaterial);
+    faceDecal.position.set(...FACE_CONFIG.position);
+    faceDecal.rotation.x = FACE_CONFIG.rotationX;
+    faceDecal.renderOrder = 2;
+    toyGroup.add(faceDecal);
+
+    // Glossy white highlights are fake reflection shapes that float just above
+    // the surface. They move with drag angle to make inspection feel reactive.
+    const highlightGeometry = new THREE.SphereGeometry(0.18, 20, 10);
+    const highlight1 = addMesh(highlightGeometry, highlightMaterial, [-0.42, 1.02, 0.96], [0.42, 0.12, 0.04], [0.14, 0, -0.55]);
+    const highlight2 = addMesh(highlightGeometry, highlightMaterial, [0.38, 1.28, 0.78], [0.28, 0.08, 0.03], [0.2, 0, 0.5]);
+    highlight1.renderOrder = 5;
+    highlight2.renderOrder = 5;
+
+    // Lighting setup:
+    // RoomEnvironment provides soft PMREM reflections, while the key, rim, and
+    // underglow lights give the premium product-photography read.
+    scene.add(new THREE.AmbientLight(0xe6fff2, 1.25));
+
+    const keyLight = new THREE.DirectionalLight(0xffffff, 3.35);
+    keyLight.position.set(-3.7, 5.2, 4.2);
+    scene.add(keyLight);
+
+    const rimLight = new THREE.DirectionalLight(0x9cffcd, 2.9);
+    rimLight.position.set(4.2, 2.4, -3.4);
+    scene.add(rimLight);
+
+    const softFill = new THREE.PointLight(0xffffff, 1.2, 8);
+    softFill.position.set(0, 2.0, 3.4);
+    scene.add(softFill);
+
+    const underGlow = new THREE.PointLight(0x21ff91, 3.9, 5.3);
+    underGlow.position.set(0, -1.65, 0.34);
+    scene.add(underGlow);
+
+    const stageGroup = new THREE.Group();
+    scene.add(stageGroup);
+
+    const floor = new THREE.Mesh(
+      new THREE.CylinderGeometry(1.62, 1.85, 0.08, 128),
+      new THREE.MeshPhysicalMaterial({
+        color: "#e4fbf0",
+        roughness: 0.28,
+        clearcoat: 0.7,
+        transparent: true,
+        opacity: 0.58
+      })
+    );
+    floor.position.set(0, -1.84, 0);
+    floor.scale.set(1.18, 1, 0.66);
+    stageGroup.add(floor);
+
+    const shadow = new THREE.Mesh(
+      new THREE.CircleGeometry(2.05, 128),
+      new THREE.MeshBasicMaterial({
+        color: "#063823",
+        transparent: true,
+        opacity: 0.15,
+        depthWrite: false
+      })
+    );
+    shadow.rotation.x = -Math.PI / 2;
+    shadow.position.set(0, -1.89, 0.15);
+    shadow.scale.set(1.2, 0.58, 1);
+    stageGroup.add(shadow);
+
+    const ring = new THREE.Mesh(
+      new THREE.TorusGeometry(1.45, 0.014, 12, 128),
+      new THREE.MeshBasicMaterial({
+        color: "#78ffc8",
+        transparent: true,
+        opacity: 0.32,
+        blending: THREE.AdditiveBlending
+      })
+    );
+    ring.position.set(0, -1.78, 0);
+    ring.rotation.x = Math.PI / 2;
+    stageGroup.add(ring);
+
+    const variantTitle = document.querySelector("#variantTitle");
+    const stageTitle = document.querySelector("#stageTitle");
+    const variantButtons = [...document.querySelectorAll("[data-variant]")];
+    const metadata = Object.fromEntries(
+      [...document.querySelectorAll("[data-meta]")].map((element) => [element.dataset.meta, element])
+    );
+    const materialTargets = {
+      color: new THREE.Color(activeVariant.color),
+      attenuationColor: new THREE.Color(activeVariant.attenuationColor),
+      emissive: new THREE.Color(activeVariant.emissive),
+      transmission: jadeMaterial.transmission,
+      opacity: activeVariant.opacity,
+      roughness: activeVariant.roughness,
+      clearcoat: activeVariant.clearcoat,
+      clearcoatRoughness: activeVariant.clearcoatRoughness,
+      thickness: activeVariant.thickness,
+      attenuationDistance: activeVariant.attenuationDistance,
+      envMapIntensity: activeVariant.envMapIntensity,
+      specularIntensity: activeVariant.specularIntensity
+    };
+    let variantTransitionUntil = 0;
+
+    function updateMetadata(variant) {
+      variantTitle.textContent = variant.name;
+      stageTitle.textContent = `${variant.name} Jelly Jade Bear`;
+      metadata.name.textContent = `${variant.name} Jelly Jade Bear`;
+      metadata.jadeGrade.textContent = variant.jadeGrade;
+      metadata.valueTier.textContent = variant.valueTier;
+      metadata.transparency.textContent = `${Math.round(variant.transparency * 100)}%`;
+      metadata.cloudiness.textContent = `${Math.round(variant.cloudiness * 100)}%`;
+      metadata.colorCoverage.textContent = `${Math.round(variant.colorCoverage * 100)}%`;
+      metadata.glowLabel.textContent = variant.glowLabel;
+      metadata.patternSeed.textContent = String(variant.patternSeed);
+    }
+
+    function applyVariant(variantId, animate = true) {
+      const nextVariant = JADE_VARIANTS.find((variant) => variant.id === variantId) || JADE_VARIANTS[0];
+      activeVariant = nextVariant;
+      materialTargets.color.set(nextVariant.color);
+      materialTargets.attenuationColor.set(nextVariant.attenuationColor);
+      materialTargets.emissive.set(nextVariant.emissive);
+      materialTargets.transmission = Math.min(nextVariant.transmission, settings.transmission + 0.25);
+      materialTargets.opacity = nextVariant.opacity;
+      materialTargets.roughness = nextVariant.roughness;
+      materialTargets.clearcoat = nextVariant.clearcoat;
+      materialTargets.clearcoatRoughness = nextVariant.clearcoatRoughness;
+      materialTargets.thickness = nextVariant.thickness;
+      materialTargets.attenuationDistance = nextVariant.attenuationDistance;
+      materialTargets.envMapIntensity = nextVariant.envMapIntensity;
+      materialTargets.specularIntensity = nextVariant.specularIntensity;
+      updateClouds(nextVariant);
+      updateMetadata(nextVariant);
+      variantButtons.forEach((button) => {
+        button.setAttribute("aria-pressed", String(button.dataset.variant === nextVariant.id));
+      });
+      variantTransitionUntil = animate ? performance.now() + 620 : 0;
+      if (!animate) updateMaterialTransition(1);
+    }
+
+    function updateMaterialTransition(amount = 0.12) {
+      jadeMaterial.color.lerp(materialTargets.color, amount);
+      jadeMaterial.attenuationColor.lerp(materialTargets.attenuationColor, amount);
+      jadeMaterial.emissive.lerp(materialTargets.emissive, amount);
+      jadeMaterial.transmission = THREE.MathUtils.lerp(jadeMaterial.transmission, materialTargets.transmission, amount);
+      jadeMaterial.opacity = THREE.MathUtils.lerp(jadeMaterial.opacity, materialTargets.opacity, amount);
+      jadeMaterial.roughness = THREE.MathUtils.lerp(jadeMaterial.roughness, materialTargets.roughness, amount);
+      jadeMaterial.clearcoat = THREE.MathUtils.lerp(jadeMaterial.clearcoat, materialTargets.clearcoat, amount);
+      jadeMaterial.clearcoatRoughness = THREE.MathUtils.lerp(jadeMaterial.clearcoatRoughness, materialTargets.clearcoatRoughness, amount);
+      jadeMaterial.thickness = THREE.MathUtils.lerp(jadeMaterial.thickness, materialTargets.thickness, amount);
+      jadeMaterial.attenuationDistance = THREE.MathUtils.lerp(jadeMaterial.attenuationDistance, materialTargets.attenuationDistance, amount);
+      jadeMaterial.envMapIntensity = THREE.MathUtils.lerp(jadeMaterial.envMapIntensity, materialTargets.envMapIntensity, amount);
+      jadeMaterial.specularIntensity = THREE.MathUtils.lerp(jadeMaterial.specularIntensity, materialTargets.specularIntensity, amount);
+    }
+
+    variantButtons.forEach((button) => {
+      button.addEventListener("click", () => applyVariant(button.dataset.variant));
+    });
+    applyVariant(activeVariant.id, false);
+
+    // Drag-to-inspect logic:
+    // Horizontal drag rotates around Y, vertical drag tilts around X. The same
+    // values move highlights and internal mist, and intensify glow/rim lighting
+    // so the fused jade material responds like a collectible object.
+    const drag = {
+      active: false,
+      startX: 0,
+      startY: 0,
+      baseY: 0,
+      baseX: 0,
+      targetY: 0,
+      targetX: 0,
+      idle: true
+    };
+    const revealDurationMs = 1400;
+    let lastIdleRender = 0;
+    let lastCssLightX = null;
+    let lastCssLightY = null;
+
+    function setReactiveLighting() {
+      const angle = toyGroup.rotation.y;
+      const tilt = drag.targetX;
+      const shimmer = Math.min(1, Math.abs(Math.sin(angle)) * 0.72 + Math.abs(tilt) * 0.95);
+
+      glowMaterial.opacity = (0.035 + shimmer * 0.09) * activeVariant.glow;
+      highlightMaterial.opacity = 0.2 + activeVariant.clearcoat * 0.24 + shimmer * (0.12 + activeVariant.glow * 0.2);
+      const faceFacing = Math.max(0, Math.cos(angle));
+      faceMaterial.opacity = FACE_CONFIG.baseOpacity * THREE.MathUtils.smoothstep(faceFacing, 0.42, 0.86);
+      jadeMaterial.emissiveIntensity = (0.025 + shimmer * 0.075) * activeVariant.glow;
+      underGlow.intensity = 0.9 + activeVariant.glow * (2.5 + shimmer * 2.2);
+      rimLight.intensity = 1.25 + activeVariant.glow * (1.3 + shimmer * 1.25);
+      ring.material.opacity = (0.1 + shimmer * 0.12) * activeVariant.glow;
+
+      inclusions.position.x = Math.sin(angle) * 0.05;
+      inclusions.position.y = Math.sin(tilt * 2.2) * 0.038;
+      highlight1.position.x = -0.42 + Math.sin(angle) * 0.18;
+      highlight2.position.x = 0.38 + Math.sin(angle) * 0.14;
+      const nextLightX = Math.round((38 + Math.sin(angle) * 18) * 10) / 10;
+      const nextLightY = Math.round((28 + Math.sin(tilt) * 10) * 10) / 10;
+      if (nextLightX !== lastCssLightX) {
+        lastCssLightX = nextLightX;
+        stageShell.style.setProperty("--light-x", `${nextLightX}%`);
+      }
+      if (nextLightY !== lastCssLightY) {
+        lastCssLightY = nextLightY;
+        stageShell.style.setProperty("--light-y", `${nextLightY}%`);
+      }
+    }
+
+    function onPointerDown(event) {
+      drag.active = true;
+      drag.idle = false;
+      drag.startX = event.clientX;
+      drag.startY = event.clientY;
+      drag.baseY = drag.targetY;
+      drag.baseX = drag.targetX;
+      canvas.setPointerCapture(event.pointerId);
+    }
+
+    function onPointerMove(event) {
+      if (!drag.active) return;
+      const dx = event.clientX - drag.startX;
+      const dy = event.clientY - drag.startY;
+      drag.targetY = drag.baseY + dx * 0.009;
+      drag.targetX = Math.max(-0.32, Math.min(0.32, drag.baseX + dy * 0.006));
+      setReactiveLighting();
+    }
+
+    function onPointerUp(event) {
+      drag.active = false;
+      drag.idle = true;
+      canvas.releasePointerCapture(event.pointerId);
+    }
+
+    canvas.addEventListener("pointerdown", onPointerDown);
+    canvas.addEventListener("pointermove", onPointerMove);
+    canvas.addEventListener("pointerup", onPointerUp);
+    canvas.addEventListener("pointercancel", onPointerUp);
+
+    function resize() {
+      const rect = canvas.getBoundingClientRect();
+      renderer.setSize(rect.width, rect.height, false);
+      camera.aspect = rect.width / rect.height;
+      camera.updateProjectionMatrix();
+    }
+
+    window.addEventListener("resize", resize);
+    resize();
+
+    const clock = new THREE.Clock();
+    let hasRendered = false;
+
+    function animate(now = 0) {
+      const elapsed = clock.getElapsedTime();
+      const inReveal = !hasRendered || now < revealDurationMs || now < variantTransitionUntil;
+      const idleFrameMs = 1000 / settings.idleFps;
+
+      if (!drag.active && !inReveal && now - lastIdleRender < idleFrameMs) {
+        requestAnimationFrame(animate);
+        return;
+      }
+      lastIdleRender = now;
+
+      if (drag.idle && !drag.active) {
+        drag.targetY += 0.0008;
+        drag.targetX *= 0.96;
+      }
+
+      toyGroup.rotation.y += (drag.targetY - toyGroup.rotation.y) * 0.085;
+      toyGroup.rotation.x += (drag.targetX - toyGroup.rotation.x) * 0.085;
+      toyGroup.position.y = 0.12 + Math.sin(elapsed * 1.35) * 0.028;
+
+      updateMaterialTransition(now < variantTransitionUntil ? 0.14 : 0.035);
+      glowShell.scale.setScalar(1 + Math.sin(elapsed * 1.7) * 0.012 * activeVariant.glow);
+      inclusions.rotation.y = Math.sin(elapsed * 0.42) * 0.1;
+      inclusions.rotation.x = Math.sin(elapsed * 0.36) * 0.03;
+
+      setReactiveLighting();
+      renderer.render(scene, camera);
+      if (!hasRendered) {
+        hasRendered = true;
+        timings.firstRender = performance.now();
+        console.info("[hero-jade] first render", Math.round(timings.firstRender - timings.scriptStart), "ms");
+        loader?.classList.add("is-hidden");
+        timings.loaderHidden = performance.now();
+        console.info("[hero-jade] loader hidden", Math.round(timings.loaderHidden - timings.scriptStart), "ms");
+      }
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  </script>
+</body>
+</html>
