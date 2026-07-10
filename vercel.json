@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/hero-jelly-jade-toy.html"
+    }
+  ]
+}
