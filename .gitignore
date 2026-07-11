@@ -1,0 +1,10 @@
+# WorkBuddy workspace data
+.workbuddy/
+
+# Screenshot / verification artifacts
+*.png
+screenshot.py
+
+# OS files
+Thumbs.db
+.DS_Store
