@@ -5,6 +5,14 @@
 *.png
 screenshot.py
 
+# Compression scripts and temp files
+compress-glb.js
+compress-glb.mjs
+temp-optimized.glb
+
+# Original uncompressed GLB (kept locally, not pushed)
+*-original.glb
+
 # OS files
 Thumbs.db
 .DS_Store
