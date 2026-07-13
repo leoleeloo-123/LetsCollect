@@ -2,7 +2,7 @@ import { ArrowRight, Sparkles, Ticket } from "lucide-react";
 import { routes } from "../../app/routes";
 import { useMvpState } from "../../app/MvpState";
 import { ButtonLink } from "../../components/ui/ButtonLink";
-import { ToyVisual } from "../../components/toys/ToyVisual";
+import { ToyViewer } from "../../three/ToyViewer";
 import { ActivityCard } from "../../features/feed/ActivityCard";
 import { mockActivities } from "../../data/mock/social";
 import { featuredToy } from "../../data/mock/toys";
@@ -25,7 +25,7 @@ export function HomePage() {
           </ButtonLink>
         </div>
         <div className="feature-spotlight__stage">
-          <ToyVisual toy={featuredToy} size="large" />
+          <ToyViewer toy={featuredToy} variant="hero" />
           <span className="feature-spotlight__rarity">神话</span>
         </div>
       </section>

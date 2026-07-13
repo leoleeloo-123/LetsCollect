@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { routes } from "../../app/routes";
 import type { Toy } from "../../types/toy";
-import { ToyVisual } from "../../components/toys/ToyVisual";
+import { ToyViewer } from "../../three/ToyViewer";
 
 type DrawRevealProps = {
   toy: Toy;
@@ -38,7 +38,7 @@ export function DrawReveal({ toy, onClose }: DrawRevealProps) {
         </button>
         <p className="eyebrow">新的相遇</p>
         <div className="reveal-sheet__stage">
-          <ToyVisual toy={toy} size="large" />
+          <ToyViewer toy={toy} variant="inspect" />
         </div>
         <div className="reveal-sheet__copy">
           <span className={`rarity-badge rarity-badge--${toy.rarity}`}>{toy.seriesName}</span>

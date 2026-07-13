@@ -5,6 +5,7 @@ import { routes } from "../../app/routes";
 import { ButtonLink } from "../../components/ui/ButtonLink";
 import { PageHeader } from "../../components/ui/PageHeader";
 import { ToyVisual } from "../../components/toys/ToyVisual";
+import { ToyViewer } from "../../three/ToyViewer";
 import { DrawReveal } from "../../features/draw/DrawReveal";
 import { TicketBalance } from "../../features/tickets/TicketBalance";
 import { featuredToy, toyById } from "../../data/mock/toys";
@@ -50,7 +51,7 @@ export function DrawPage() {
         </div>
         <div className="draw-stage__visual">
           <span className="draw-stage__halo" aria-hidden="true" />
-          <ToyVisual toy={featuredToy} size="large" />
+          <ToyViewer toy={featuredToy} active={!result} />
         </div>
         <div className="draw-stage__copy">
           <p className="eyebrow">本期核心藏品</p>

@@ -14,10 +14,10 @@ Vercel deploys from GitHub `main`.
 
 ## Current Routing
 
-`vercel.json` rewrites:
+`vercel.json` serves the Vite build and applies the SPA fallback:
 
 ```text
-/ -> /hero-jelly-jade-toy.html
+/(.*) -> /index.html
 ```
 
 ## Static Assets
@@ -32,15 +32,14 @@ Because GLB files are immutable cached, prefer changing filenames when replacing
 
 ## Local Preview
 
-From the project root, any static server can be used. Example:
+From the project root:
 
 ```powershell
-python -m http.server 5185
+pnpm dev
 ```
 
 Then open:
 
 ```text
-http://127.0.0.1:5185/hero-jelly-jade-toy.html
+http://127.0.0.1:5173/
 ```
-

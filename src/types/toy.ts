@@ -1,6 +1,6 @@
 export type RarityCode = "common" | "rare" | "epic" | "legendary" | "mythic";
 
-export type ToyBaseType = "bear" | "bunny" | "cat" | "blob";
+export type ToyBaseType = "bear" | "bunny" | "cat" | "blob" | "unicorn";
 
 export type ToyAssets = {
   thumbnailUrl?: string;

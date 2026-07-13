@@ -1,7 +1,7 @@
-import { Box, X } from "lucide-react";
+import { X } from "lucide-react";
 import { useEffect } from "react";
 import type { Toy } from "../../types/toy";
-import { ToyViewerPlaceholder } from "../../components/three-viewer/ToyViewerPlaceholder";
+import { ToyViewerPanel } from "../../components/three-viewer/ToyViewerPanel";
 
 type ToyDetailSheetProps = {
   toy: Toy;
@@ -50,7 +50,7 @@ export function ToyDetailSheet({ toy, count, onClose }: ToyDetailSheetProps) {
           </button>
         </header>
         <div className="detail-sheet__content">
-          <ToyViewerPlaceholder toy={toy} title="3D 检查即将开放" />
+          <ToyViewerPanel toy={toy} title="近距离检查" />
           <div className="detail-sheet__metadata">
             <dl className="metadata-list">
               <div><dt>系列</dt><dd>{toy.seriesName}</dd></div>
@@ -59,10 +59,6 @@ export function ToyDetailSheet({ toy, count, onClose }: ToyDetailSheetProps) {
               <div><dt>色泽</dt><dd>{toy.colorName}</dd></div>
               <div><dt>拥有数量</dt><dd>{count}</dd></div>
             </dl>
-            <div className="implementation-note">
-              <Box size={18} />
-              <p>{toy.assets.modelUrl ? "这只藏品的 3D 版本正在准备中。" : "当前先展示藏品外观，3D 版本会在后续开放。"}</p>
-            </div>
           </div>
         </div>
       </section>

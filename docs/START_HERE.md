@@ -37,11 +37,11 @@ GitHub：
 
 `vercel.json` 将 `/` 重写到：
 
-`/hero-jelly-jade-toy.html`
+`/`
 
 Hero 页面加载：
 
-`/public/models/toys/imperial-pink-jelly-bear/model-desktop-v001.glb`
+`/models/toys/jelly-jade-unicorn/model-web-v001.glb`
 
 ## 当前本地 React MVP
 

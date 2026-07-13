@@ -4,12 +4,12 @@
 
 Current deployed GLB:
 
-`public/models/toys/imperial-pink-jelly-bear/model-desktop-v001.glb`
+`public/models/toys/jelly-jade-unicorn/model-web-v001.glb`
 
 Current load path in page:
 
 ```js
-gltfLoader.load("public/models/toys/imperial-pink-jelly-bear/model-desktop-v001.glb", ...)
+gltfLoader.load("/models/toys/jelly-jade-unicorn/model-web-v001.glb", ...)
 ```
 
 Current size:
@@ -39,7 +39,7 @@ public/models/toys/{toy-slug}/model-preview-v001.glb
 Example:
 
 ```text
-public/models/toys/imperial-pink-jelly-bear/model-desktop-v001.glb
+public/models/toys/jelly-jade-unicorn/model-web-v001.glb
 ```
 
 ## Asset Rules

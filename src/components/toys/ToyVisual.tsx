@@ -14,6 +14,8 @@ export function ToyVisual({ toy, size = "medium", locked = false }: ToyVisualPro
       aria-label={locked ? `尚未获得的${toy.name}` : toy.name}
     >
       <div className="toy-visual__figure" aria-hidden="true">
+        <span className="toy-visual__horn" />
+        <span className="toy-visual__mane" />
         <span className="toy-visual__ear toy-visual__ear--left" />
         <span className="toy-visual__ear toy-visual__ear--right" />
         <span className="toy-visual__body" />
