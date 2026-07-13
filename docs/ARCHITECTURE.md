@@ -10,15 +10,15 @@ Browser -> Vercel static hosting -> hero-jelly-jade-toy.html -> GLB asset
 
 No backend code runs today.
 
-## Near-Term Architecture
+## Product Shell Architecture
 
-Stay with vanilla HTML/CSS/JavaScript while extracting modules:
+The new product shell uses React + Vite + TypeScript:
 
 ```text
-pages -> components -> services/data/config -> three viewer -> public assets
+src/app -> pages -> features/components -> data/services/config -> three -> public assets
 ```
 
-This avoids a framework migration before the product boundaries are clear.
+The current production legacy page remains in place until a separate deployment switch.
 
 ## Frontend Boundaries
 
@@ -54,5 +54,4 @@ Future backend responsibilities:
 
 Vercel deploys from GitHub `main`.
 
-Current static routing is handled by `vercel.json`.
-
+Current production routing is still handled by `vercel.json`, which rewrites `/` to the legacy hero HTML. The React shell is local/branch work until a deliberate deployment switch changes that routing.

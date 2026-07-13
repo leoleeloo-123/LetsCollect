@@ -16,3 +16,13 @@ temp-optimized.glb
 # OS files
 Thumbs.db
 .DS_Store
+
+# Frontend dependencies and build output
+node_modules/
+dist/
+.vite/
+*.tsbuildinfo
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*

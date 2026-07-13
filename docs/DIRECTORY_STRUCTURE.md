@@ -7,7 +7,11 @@ This project is small today, so the target structure should be created gradually
 ```text
 C:\Users\licunhongyu\Desktop\LetsCollect
 ├── hero-jelly-jade-toy.html
+├── index.html
+├── package.json
 ├── public/models/toys/imperial-pink-jelly-bear/model-desktop-v001.glb
+├── legacy/hero-prototype/
+├── src/
 ├── vercel.json
 ├── README.md
 ├── AGENTS.md
@@ -22,6 +26,30 @@ GitHub:
 Production:
 
 `https://lets-collect.vercel.app/`
+
+## Current React Shell Structure
+
+```text
+src/
+├── app/
+├── components/
+│   ├── cards/
+│   ├── feedback/
+│   ├── layout/
+│   ├── three-viewer/
+│   └── ui/
+├── data/mock/
+├── pages/
+│   ├── auth/
+│   ├── collection/
+│   ├── draw/
+│   ├── explore/
+│   ├── home/
+│   ├── not-found/
+│   └── profile/
+├── styles/
+└── types/
+```
 
 ## Target Near-Term Structure
 
@@ -50,7 +78,8 @@ LetsCollect/
 
 ## Migration Map
 
-- `hero-jelly-jade-toy.html` stays in place until the new home entry is proven.
+- `hero-jelly-jade-toy.html` stays in place as the production legacy entry until the React shell is explicitly promoted.
+- `legacy/hero-prototype/` preserves the current working prototype as a reference.
 - `public/models/toys/imperial-pink-jelly-bear/model-desktop-v001.glb` is the current deployed model asset.
 - In-page design tokens should later move to `src/styles/tokens.css`.
 - In-page variant data should later move to `src/data/toys.js` or `src/data/mock/toys.js`.

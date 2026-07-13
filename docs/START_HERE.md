@@ -6,7 +6,7 @@ Let's Collect is a 3D collectible toy platform concept. The product direction is
 
 ## Current State
 
-The current deployable product is still a static prototype. It has one working hero page that loads a compressed GLB model through Three.js and lets users inspect a pink jelly bear.
+The current production entry is still the static legacy hero prototype. A new React + Vite + TypeScript product shell now exists locally on the `feature/react-product-shell` branch, but it has not replaced production routing.
 
 Local project path:
 
@@ -32,17 +32,20 @@ The hero page loads:
 
 ## Current Technology
 
-- Static HTML, CSS, and vanilla JavaScript.
-- Three.js from CDN import maps.
-- `GLTFLoader`, `DRACOLoader`, and `RoomEnvironment`.
+- Production legacy page: static HTML, CSS, vanilla JavaScript, and Three.js from CDN import maps.
+- New product shell: React, Vite, TypeScript, and React Router.
 - Vercel static hosting.
-- No build tool yet.
+- The React shell has a Vite build, but production is not switched to it yet.
 - No backend yet.
 - No Supabase runtime code yet.
 
 ## Important Files
 
 - `hero-jelly-jade-toy.html`: current working 3D hero prototype.
+- `legacy/hero-prototype/`: copied legacy prototype and GLB reference.
+- `src/`: React product shell source.
+- `index.html`: Vite development entry for the React shell.
+- `package.json`: React/Vite scripts and dependencies.
 - `public/models/toys/imperial-pink-jelly-bear/model-desktop-v001.glb`: optimized GLB model used by the hero page.
 - `vercel.json`: root rewrite and GLB cache headers.
 - `.gitignore`: local artifacts and uncompressed model exclusions.
@@ -55,11 +58,11 @@ The earlier local `index.html` gallery prototype was deleted on 2026-07-13 after
 
 ## Current Priorities
 
-1. Keep the deployed hero page stable.
-2. Document current architecture and product direction.
-3. Move toward a modular vanilla JS structure.
-4. Extract a reusable ThreeViewer without changing the existing visual result.
-5. Add product data, routes, and mock pages only after the viewer boundary is clear.
+1. Keep the deployed hero page stable until an explicit Vercel switch.
+2. Validate the React product shell locally.
+3. Build mobile-first page and component boundaries.
+4. Extract a reusable ToyViewer in Phase 2.
+5. Move verified 3D capability from legacy into ToyViewer after the shell is stable.
 
 ## Already Working
 
@@ -68,6 +71,9 @@ The earlier local `index.html` gallery prototype was deleted on 2026-07-13 after
 - Hero model loads with Draco support.
 - Drag-to-inspect interaction works in the current page.
 - Material variants are controlled through in-page configuration.
+- React shell routes exist for Home, Explore, Draw, Collection, Profile, Login, and Register.
+- React shell has mobile bottom navigation and desktop top navigation.
+- React shell uses mock toy data and a 3D viewer placeholder.
 
 ## Mock Or Not Implemented
 

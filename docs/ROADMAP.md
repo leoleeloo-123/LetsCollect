@@ -8,6 +8,10 @@
 
 ## Phase 1: Stable Home And ThreeViewer Boundary
 
+- Create React + Vite + TypeScript shell.
+- Add React Router and mobile-first navigation.
+- Add skeleton pages for Home, Explore, Draw, Collection, Profile, Login, and Register.
+- Add mock toy data and basic state components.
 - Extract ThreeViewer into reusable modules.
 - Move model metadata into data/config.
 - Keep visual output equivalent to the current hero page.
@@ -54,4 +58,3 @@
 - Add mobile performance checks.
 - Add WebGL fallback.
 - Add deployment verification.
-
