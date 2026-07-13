@@ -1,19 +1,19 @@
 import { NavLink } from "react-router-dom";
 import { routes } from "../../app/routes";
-import { ButtonLink } from "../ui/ButtonLink";
+import { TicketBalance } from "../../features/tickets/TicketBalance";
 
 const navItems = [
-  { to: routes.explore, label: "Explore" },
-  { to: routes.draw, label: "Draw" },
-  { to: routes.collection, label: "Collection" },
-  { to: routes.profile, label: "Profile" }
+  { to: routes.home, label: "首页" },
+  { to: routes.draw, label: "抽取" },
+  { to: routes.collection, label: "收藏" },
+  { to: routes.friends, label: "好友" }
 ];
 
 export function DesktopNav() {
   return (
     <header className="desktop-nav">
       <NavLink to={routes.home} className="brand-mark">
-        <span className="brand-mark__gem" />
+        <span className="brand-mark__gem">L</span>
         <span>Let's Collect</span>
       </NavLink>
       <nav className="desktop-nav__links" aria-label="Primary desktop navigation">
@@ -23,9 +23,7 @@ export function DesktopNav() {
           </NavLink>
         ))}
       </nav>
-      <ButtonLink to={routes.login} variant="secondary">
-        Sign in
-      </ButtonLink>
+      <TicketBalance />
     </header>
   );
 }

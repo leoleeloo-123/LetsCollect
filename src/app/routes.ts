@@ -1,9 +1,8 @@
 export const routes = {
   home: "/",
-  explore: "/explore",
   draw: "/draw",
   collection: "/collection",
-  profile: "/profile",
+  friends: "/friends",
   login: "/login",
   register: "/register"
 } as const;

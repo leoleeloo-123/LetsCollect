@@ -6,27 +6,25 @@ export function RegisterPage() {
   return (
     <div className="auth-page">
       <PageHeader
-        eyebrow="Register"
-        title="Start collecting"
-        description="Registration is mocked in Phase 1. The form shape is here so auth can be connected cleanly later."
+        eyebrow="创建账户"
+        title="开始你的收藏"
+        description="当前为界面演示，后续会通过认证服务边界接入 Supabase。"
       />
       <form className="auth-card">
         <label>
-          Display name
-          <input type="text" placeholder="Jelly Collector" />
+          昵称
+          <input type="text" placeholder="果冻收藏家" />
         </label>
         <label>
-          Email
+          邮箱
           <input type="email" placeholder="collector@example.com" />
         </label>
         <label>
-          Password
-          <input type="password" placeholder="••••••••" />
+          密码
+          <input type="password" placeholder="设置密码" />
         </label>
-        <button type="button">Create account</button>
-        <ButtonLink to={routes.login} variant="secondary">
-          I already have an account
-        </ButtonLink>
+        <button type="button">创建演示账户</button>
+        <ButtonLink to={routes.login} variant="secondary">已有账户，去登录</ButtonLink>
       </form>
     </div>
   );

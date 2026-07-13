@@ -1,30 +1,54 @@
-# Product Overview
+# 产品概览
 
-Let's Collect is a digital collectible toy platform centered on original 3D toys, toy series, collection progress, and future interactive draw or blind-box mechanics.
+## 产品是什么
 
-## Target Experience
+Let's Collect 是一个以 3D 数字收藏玩具为核心、优先服务手机端的收藏产品。
 
-Users should eventually be able to:
+用户通过好友互动获得抽取券，使用抽取券遇见新的玩具，并逐步完成自己的系列收藏。产品的核心循环是：
 
-- Browse toy series and individual collectible toys.
-- Inspect selected toys in 3D.
-- Unlock or draw toys through controlled product flows.
-- Save obtained toys into a personal collection.
-- Track rarity, obtain date, collection progress, and duplicate ownership.
-- Manage a user profile.
+```text
+互动 -> 获得抽取券 -> 抽取 -> 收藏 -> 分享 -> 再次互动
+```
 
-## Current Product Slice
+完整的产品原则与边界见 `docs/PRODUCT_CONSTITUTION.md`。
 
-The current product slice is a single hero inspection page for a pink jelly bear GLB model. It proves that the deployed site can load and render a 3D asset.
+## 四个一级模块
 
-## Planned Pages
+- 首页：本期系列、好友动态和互动获券任务；
+- 抽取：抽取券余额、当前抽取池、抽取操作和结果揭晓；
+- 收藏：拥有与未解锁玩具、系列进度和单只玩具检查；
+- 好友：好友、申请、推荐和收藏关系概览。
 
-- Home: brand entry with featured 3D toy.
-- Explore: toy catalog with filters and lightweight thumbnails.
-- Toy Detail: individual 3D viewer and metadata.
-- Draw: mock, then backend-driven draw flow.
-- Collection: user-owned toys and collection progress.
-- Auth: login, registration, password recovery.
-- Profile: user info and activity.
-- Admin: future management surface for toys, series, assets, pools, probabilities, and events.
+`Explore` 的发现能力分散在首页、系列和收藏中，不作为一级入口。`Profile` 通过头像进入，不占用底部导航。
 
+## 当前开发状态
+
+线上入口仍然是静态 Legacy Hero 页面，它证明了 GLB 路径、Three.js 加载、材质和拖动检查可以在 Vercel 上运行。
+
+`feature/react-product-shell` 分支上已有一版可操作的 React MVP，目前只在本地运行，尚未替换线上入口。它已经可以验证：
+
+- 好友动态互动后获得抽取券；
+- 消耗抽取券进行 Mock 抽取；
+- 展示抽取揭晓结果；
+- 将结果加入本地收藏；
+- 筛选收藏并打开详情；
+- 搜索、添加和接受好友；
+- 将演示状态保存在浏览器本地。
+
+## 当前不是正式能力
+
+- 用户账户与 Supabase Auth；
+- 真实好友关系；
+- 服务端抽取概率和结果；
+- 权威的抽取券流水；
+- 云端收藏数据；
+- React 版 3D `ToyViewer`；
+- 支付、交易或真钱抽取。
+
+## 近期目标
+
+1. 根据真实手机体验持续调整四模块的信息架构；
+2. 收敛视觉语言与交互反馈；
+3. 建立独立、可复用的 `ToyViewer`；
+4. 从 Legacy Hero 逐项迁移已经验证的 3D 能力；
+5. 在前端流程稳定后再接入 Supabase。

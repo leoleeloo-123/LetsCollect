@@ -6,23 +6,21 @@ export function LoginPage() {
   return (
     <div className="auth-page">
       <PageHeader
-        eyebrow="Login"
-        title="Welcome back"
-        description="This is a non-functional auth shell. Supabase Auth can attach here later through an auth service boundary."
+        eyebrow="演示账户"
+        title="欢迎回来"
+        description="当前仅保留认证界面边界，尚未接入 Supabase Auth。"
       />
       <form className="auth-card">
         <label>
-          Email
+          邮箱
           <input type="email" placeholder="collector@example.com" />
         </label>
         <label>
-          Password
-          <input type="password" placeholder="••••••••" />
+          密码
+          <input type="password" placeholder="请输入密码" />
         </label>
-        <button type="button">Sign in</button>
-        <ButtonLink to={routes.register} variant="secondary">
-          Create account
-        </ButtonLink>
+        <button type="button">登录演示</button>
+        <ButtonLink to={routes.register} variant="secondary">创建账户</ButtonLink>
       </form>
     </div>
   );

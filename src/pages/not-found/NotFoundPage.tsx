@@ -7,10 +7,10 @@ export function NotFoundPage() {
     <div className="page-stack">
       <StateBlock
         tone="error"
-        title="Page not found"
-        description="This route does not exist in the product shell yet."
+        title="这里还没有藏品"
+        description="这个页面不存在，回到首页继续探索吧。"
       />
-      <ButtonLink to={routes.home}>Back home</ButtonLink>
+      <ButtonLink to={routes.home}>返回首页</ButtonLink>
     </div>
   );
 }

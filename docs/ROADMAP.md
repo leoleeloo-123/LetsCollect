@@ -1,60 +1,80 @@
-# Roadmap
+# 产品与技术路线图
 
-## Phase 0: Audit And Project Baseline
+## 阶段 0：项目基线（已完成）
 
-- Document current files, entry points, deployment, and risks.
-- Add handoff docs and `.env.example`.
-- Keep hero page behavior unchanged.
+- 盘点现有文件、线上入口和部署关系；
+- 整理 Legacy Hero 与 GLB 资产目录；
+- 建立架构、数据、3D、部署和安全文档；
+- 保持线上 Hero 页面不变。
 
-## Phase 1: Stable Home And ThreeViewer Boundary
+## 阶段 1：产品宪法与 React MVP（当前）
 
-- Create React + Vite + TypeScript shell.
-- Add React Router and mobile-first navigation.
-- Add skeleton pages for Home, Explore, Draw, Collection, Profile, Login, and Register.
-- Add mock toy data and basic state components.
-- Extract ThreeViewer into reusable modules.
-- Move model metadata into data/config.
-- Keep visual output equivalent to the current hero page.
-- Add basic smoke verification.
+- 确认“互动 -> 获券 -> 抽取 -> 收藏 -> 分享”的核心循环；
+- 固定首页、抽取、收藏、好友四个一级模块；
+- 建立 React + Vite + TypeScript 骨架；
+- 使用 React Router 和手机端底部导航；
+- 使用共享 Mock 状态贯通互动、抽取和收藏；
+- 增加本地持久化、Loading、Empty 和 Error 边界；
+- 3D 仍保留为明确的查看器占位，不在列表加载 GLB。
 
-## Phase 2: Toy Data And Explore/Detail Pages
+验收问题：手机用户能否不看说明就完成“互动 -> 获券 -> 抽取 -> 收藏”？
 
-- Add mock toy, series, and rarity data.
-- Build explore page with thumbnails only.
-- Build toy detail page with reusable ThreeViewer.
+## 阶段 2：MVP 体验收敛
 
-## Phase 3: Auth Boundary
+- 根据实际体验调整首页动态密度和票券反馈；
+- 优化抽取仪式、结果揭晓和重复藏品表现；
+- 优化收藏筛选、系列进度和详情浮层；
+- 优化好友申请、推荐与收藏概览；
+- 完善触控、键盘、空状态和错误状态；
+- 冻结首期路由、组件边界和 Mock 数据合同。
 
-- Add auth service interface.
-- Add mock auth first.
-- Prepare Supabase Auth integration.
+验收问题：四个模块是否都服务同一个循环，并且没有多余入口？
 
-## Phase 4: Collection System
+## 阶段 3：可复用 ToyViewer
 
-- Add collection data model.
-- Add collection page and empty states.
-- Use mock persistence before database integration.
+- 建立独立 `ToyViewer` 模块；
+- 迁移 GLB 路径、Draco、相机、缩放和居中；
+- 迁移灯光、环境、材质、自动旋转和拖动检查；
+- 增加 Loading、Error、WebGL Fallback 和资源清理；
+- 验证首页主视觉、收藏详情和抽取结果三种使用方式；
+- 只为当前激活的玩具加载 GLB。
 
-## Phase 5: Mock Draw System
+验收问题：同一个查看器能否在手机端稳定服务三个场景？
 
-- Separate draw probabilities from animation.
-- Add mock draw service.
-- Add draw result UI and history placeholder.
+## 阶段 4：Supabase 认证与基础数据
 
-## Phase 6: Backend Draw And Account Assets
+- 接入 Supabase Auth；
+- 建立用户、玩具、系列、收藏和好友关系；
+- 为用户数据建立 Row Level Security；
+- 用服务层替换 Mock 数据，不改写页面结构；
+- 增加云端 Loading、Empty 和 Error 状态。
 
-- Move draw result generation to backend.
-- Add atomic currency and collection writes.
-- Add security and RLS policies.
+验收问题：用户只能读取和修改自己有权访问的数据吗？
 
-## Phase 7: Admin Foundation
+## 阶段 5：权威抽取与票券流水
 
-- Reserve admin routes and data permissions.
-- Add toy, series, asset, and draw pool management later.
+- 建立抽取池、概率版本和活动时间；
+- 将抽取结果生成移到服务端；
+- 原子写入抽取券流水、结果和收藏；
+- 处理重试、重复提交和失败回滚；
+- 增加抽取历史和规则披露。
 
-## Phase 8: Performance, Tests, And Production Hardening
+验收问题：客户端是否无法伪造抽取券或抽取结果？
 
-- Add model loading tests.
-- Add mobile performance checks.
-- Add WebGL fallback.
-- Add deployment verification.
+## 阶段 6：发布切换与生产加固
+
+- 为 React 版建立独立 Preview 部署；
+- 完成手机性能、模型加载和关键流程测试；
+- 检查缓存、环境变量、日志和 WebGL Fallback；
+- 经过明确确认后再修改 Vercel 根入口；
+- 保留可回滚的 Legacy Hero 版本。
+
+验收问题：React 版本是否经过远程验证，并且可以安全回滚？
+
+## 更晚再考虑
+
+- 管理后台；
+- 复杂聊天与公共社交网络；
+- 市场、交易和支付；
+- 多次抽取与大型活动系统；
+- 任何真钱概率机制。
