@@ -6,8 +6,12 @@ This project is small today, so the target structure should be created gradually
 
 ```text
 C:\Users\licunhongyu\Desktop\LetsCollect
-├── hero-jelly-jade-toy.html
-├── public/models/toys/imperial-pink-jelly-bear/model-desktop-v001.glb
+├── index.html
+├── package.json
+├── public/draco/
+├── public/models/toys/jelly-jade-unicorn/model-web-v001.glb
+├── legacy/hero-prototype/
+├── src/
 ├── vercel.json
 ├── README.md
 ├── AGENTS.md
@@ -22,6 +26,32 @@ GitHub:
 Production:
 
 `https://lets-collect.vercel.app/`
+
+## Current React Structure
+
+```text
+src/
+├── app/
+├── components/
+│   ├── cards/
+│   ├── feedback/
+│   ├── layout/
+│   ├── three-viewer/
+│   └── ui/
+├── data/mock/
+├── pages/
+│   ├── auth/
+│   ├── collection/
+│   ├── draw/
+│   ├── friends/
+│   ├── home/
+│   ├── not-found/
+│   └── auth/
+├── features/
+├── styles/
+├── three/ToyViewer/
+└── types/
+```
 
 ## Target Near-Term Structure
 
@@ -50,12 +80,10 @@ LetsCollect/
 
 ## Migration Map
 
-- `hero-jelly-jade-toy.html` stays in place until the new home entry is proven.
-- `public/models/toys/imperial-pink-jelly-bear/model-desktop-v001.glb` is the current deployed model asset.
-- In-page design tokens should later move to `src/styles/tokens.css`.
-- In-page variant data should later move to `src/data/toys.js` or `src/data/mock/toys.js`.
-- In-page Three.js setup should later move to `src/three/` and `src/components/three-viewer/`.
-- `vercel.json` should be updated only after route migration is verified.
+- `legacy/hero-prototype/` preserves the current working prototype as a reference.
+- `public/models/toys/jelly-jade-unicorn/model-web-v001.glb` is the current production model asset.
+- `src/three/ToyViewer/` owns Three.js rendering, loading, interaction, and disposal.
+- `src/data/mock/toys.ts` owns the model URL and visual variants.
 
 ## Directory Responsibilities
 

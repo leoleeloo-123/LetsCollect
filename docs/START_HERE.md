@@ -1,90 +1,108 @@
-# Start Here
+# 从这里开始
 
-## What This Project Is
+## 项目定位
 
-Let's Collect is a 3D collectible toy platform concept. The product direction is digital collectible toys, toy series, 3D inspection, collection progress, and future draw or blind-box flows.
+Let's Collect 是一个以 3D 数字收藏玩具为核心、优先服务手机端的收藏产品。
 
-## Current State
+开发前先阅读：
 
-The current deployable product is still a static prototype. It has one working hero page that loads a compressed GLB model through Three.js and lets users inspect a pink jelly bear.
+- `docs/PRODUCT_CONSTITUTION.md`：产品方向和不可随意改变的边界；
+- `docs/PRODUCT_OVERVIEW.md`：当前产品状态；
+- `docs/ROADMAP.md`：实施顺序和验收闸门；
+- `docs/ARCHITECTURE.md`：前后端与 3D 模块边界；
+- `docs/THREE_MODEL_GUIDE.md`：GLB 与 Three.js 资产规则。
 
-Local project path:
+## 本地与远程位置
+
+本地项目：
 
 `C:\Users\licunhongyu\Desktop\LetsCollect`
 
-GitHub repository:
+GitHub：
 
 `https://github.com/leoleeloo-123/LetsCollect`
 
-Production site:
+线上 Vercel：
 
 `https://lets-collect.vercel.app/`
 
-## Current Entry
+## Git 状态
 
-Vercel serves `/` through `vercel.json`, which rewrites to:
+- `main` 和本地 `publish/hero-jade`：当前线上 Legacy Hero；
+- `feature/react-product-shell`：本地 React MVP 分支；
+- React MVP 尚未推送到 `main`，也没有替换线上入口；
+- 推送 `main` 会触发 Vercel Production，未经明确确认不要操作。
 
-`/hero-jelly-jade-toy.html`
+## 当前线上入口
 
-The hero page loads:
+`vercel.json` 将 `/` 重写到：
 
-`/public/models/toys/imperial-pink-jelly-bear/model-desktop-v001.glb`
+`/`
 
-## Current Technology
+Hero 页面加载：
 
-- Static HTML, CSS, and vanilla JavaScript.
-- Three.js from CDN import maps.
-- `GLTFLoader`, `DRACOLoader`, and `RoomEnvironment`.
-- Vercel static hosting.
-- No build tool yet.
-- No backend yet.
-- No Supabase runtime code yet.
+`/models/toys/jelly-jade-unicorn/model-web-v001.glb`
 
-## Important Files
+## 当前本地 React MVP
 
-- `hero-jelly-jade-toy.html`: current working 3D hero prototype.
-- `public/models/toys/imperial-pink-jelly-bear/model-desktop-v001.glb`: optimized GLB model used by the hero page.
-- `vercel.json`: root rewrite and GLB cache headers.
-- `.gitignore`: local artifacts and uncompressed model exclusions.
-- `docs/`: project management, architecture, and migration documentation.
-- `AGENTS.md`: instructions for future Codex/agent work.
+技术栈：
 
-## Legacy File Cleanup
+- React 18；
+- Vite；
+- TypeScript；
+- React Router；
+- Lucide React；
+- 浏览器本地 Mock 状态。
 
-The earlier local `index.html` gallery prototype was deleted on 2026-07-13 after the user confirmed it was no longer needed.
+一级路由：
 
-## Current Priorities
+- `/`：首页与好友动态；
+- `/draw`：Mock 抽取；
+- `/collection`：收藏；
+- `/friends`：好友；
+- `/login`、`/register`：认证边界占位。
 
-1. Keep the deployed hero page stable.
-2. Document current architecture and product direction.
-3. Move toward a modular vanilla JS structure.
-4. Extract a reusable ThreeViewer without changing the existing visual result.
-5. Add product data, routes, and mock pages only after the viewer boundary is clear.
+旧 `/explore` 会回到首页，旧 `/profile` 会转到好友页。
 
-## Already Working
+## 已经可以验证的流程
 
-- Vercel root URL loads successfully.
-- GLB path is deployed and cacheable.
-- Hero model loads with Draco support.
-- Drag-to-inspect interaction works in the current page.
-- Material variants are controlled through in-page configuration.
+```text
+好友动态互动 -> 抽取券增加 -> 抽取 -> 揭晓 -> 收藏更新
+```
 
-## Mock Or Not Implemented
+还可以验证：
 
-- User accounts.
-- Collections.
-- Draw/gacha.
-- Toy database.
-- Admin tooling.
-- Supabase integration.
-- Router and multi-page app shell.
+- 收藏筛选与详情浮层；
+- 好友搜索、添加与接受申请；
+- 手机端底部导航；
+- 桌面端顶部导航；
+- 本地状态刷新后保留；
+- 好友页重置演示数据。
 
-## Read Before Editing
+## 尚未接入
 
-Read these before significant work:
+- Supabase Auth；
+- 云端数据库；
+- 真实好友关系；
+- 服务端抽取；
+- 权威抽取券流水；
+- React 版 3D `ToyViewer`；
+- 线上 React 入口。
 
-- `docs/PROJECT_AUDIT.md`
-- `docs/ARCHITECTURE.md`
-- `docs/DIRECTORY_STRUCTURE.md`
-- `docs/THREE_MODEL_GUIDE.md`
-- `docs/ROADMAP.md`
+## 常用命令
+
+```powershell
+pnpm install
+pnpm run dev
+pnpm run typecheck
+pnpm run build
+```
+
+## 修改规则
+
+1. 修改一级导航、核心循环、3D 加载策略或首期非目标前，先更新产品宪法；
+2. 列表使用缩略图，不为每个卡片加载 GLB；
+3. 页面不直接创建自己的 GLTFLoader；
+4. 真实抽取和票券写入必须由服务端负责；
+5. Legacy Hero 在 React 版本完成远程验证前继续保留；
+6. 未经用户明确确认，不修改线上根入口或推送到 `main`。

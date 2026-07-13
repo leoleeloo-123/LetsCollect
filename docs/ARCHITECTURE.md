@@ -2,23 +2,21 @@
 
 ## Current Architecture
 
-The current deployed app is static:
+The production application is a Vite single-page app with an on-demand Three.js viewer:
 
 ```text
-Browser -> Vercel static hosting -> hero-jelly-jade-toy.html -> GLB asset
+Browser -> Vercel -> React routes -> ToyViewer -> GLB + local Draco decoder
 ```
 
 No backend code runs today.
 
-## Near-Term Architecture
-
-Stay with vanilla HTML/CSS/JavaScript while extracting modules:
+The product shell uses React + Vite + TypeScript:
 
 ```text
-pages -> components -> services/data/config -> three viewer -> public assets
+src/app -> pages -> features/components -> data/services/config -> three -> public assets
 ```
 
-This avoids a framework migration before the product boundaries are clear.
+The old single-file prototype is retained only under `legacy/hero-prototype/`.
 
 ## Frontend Boundaries
 
@@ -54,5 +52,4 @@ Future backend responsibilities:
 
 Vercel deploys from GitHub `main`.
 
-Current static routing is handled by `vercel.json`.
-
+`vercel.json` builds `dist/` and rewrites application routes to `index.html`. Static GLB and Draco assets are served from `public/`.
