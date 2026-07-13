@@ -28,7 +28,7 @@ Vercel serves `/` through `vercel.json`, which rewrites to:
 
 The hero page loads:
 
-`/Hitem3d-1783778104845.glb`
+`/public/models/toys/imperial-pink-jelly-bear/model-desktop-v001.glb`
 
 ## Current Technology
 
@@ -43,15 +43,15 @@ The hero page loads:
 ## Important Files
 
 - `hero-jelly-jade-toy.html`: current working 3D hero prototype.
-- `Hitem3d-1783778104845.glb`: optimized GLB model used by the hero page.
+- `public/models/toys/imperial-pink-jelly-bear/model-desktop-v001.glb`: optimized GLB model used by the hero page.
 - `vercel.json`: root rewrite and GLB cache headers.
 - `.gitignore`: local artifacts and uncompressed model exclusions.
 - `docs/`: project management, architecture, and migration documentation.
 - `AGENTS.md`: instructions for future Codex/agent work.
 
-## Local Legacy File
+## Legacy File Cleanup
 
-There is an untracked local `index.html` in the project folder from an earlier gallery prototype. It is not part of GitHub `main` and should not be committed unless the user explicitly asks.
+The earlier local `index.html` gallery prototype was deleted on 2026-07-13 after the user confirmed it was no longer needed.
 
 ## Current Priorities
 
@@ -88,4 +88,3 @@ Read these before significant work:
 - `docs/DIRECTORY_STRUCTURE.md`
 - `docs/THREE_MODEL_GUIDE.md`
 - `docs/ROADMAP.md`
-

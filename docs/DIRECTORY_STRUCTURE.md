@@ -7,7 +7,7 @@ This project is small today, so the target structure should be created gradually
 ```text
 C:\Users\licunhongyu\Desktop\LetsCollect
 ├── hero-jelly-jade-toy.html
-├── Hitem3d-1783778104845.glb
+├── public/models/toys/imperial-pink-jelly-bear/model-desktop-v001.glb
 ├── vercel.json
 ├── README.md
 ├── AGENTS.md
@@ -51,7 +51,7 @@ LetsCollect/
 ## Migration Map
 
 - `hero-jelly-jade-toy.html` stays in place until the new home entry is proven.
-- `Hitem3d-1783778104845.glb` should later move to `public/models/toys/` with a descriptive name and version.
+- `public/models/toys/imperial-pink-jelly-bear/model-desktop-v001.glb` is the current deployed model asset.
 - In-page design tokens should later move to `src/styles/tokens.css`.
 - In-page variant data should later move to `src/data/toys.js` or `src/data/mock/toys.js`.
 - In-page Three.js setup should later move to `src/three/` and `src/components/three-viewer/`.
@@ -69,4 +69,3 @@ LetsCollect/
 - `src/config/`: centralized paths and feature flags.
 - `scripts/`: asset optimization and validation tooling.
 - `tests/`: future smoke, integration, and model loading tests.
-

@@ -2,7 +2,9 @@
 
 Future deployable static assets live here.
 
-Current GLB is still at the repository root to preserve the working deployed path. It should move here in a later migration after the path is centralized and tested.
+The current hero GLB lives at:
+
+`public/models/toys/imperial-pink-jelly-bear/model-desktop-v001.glb`
 
 Planned:
 
@@ -13,4 +15,3 @@ public/images/series/
 public/icons/
 public/favicon/
 ```
-

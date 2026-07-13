@@ -4,12 +4,12 @@
 
 Current deployed GLB:
 
-`Hitem3d-1783778104845.glb`
+`public/models/toys/imperial-pink-jelly-bear/model-desktop-v001.glb`
 
 Current load path in page:
 
 ```js
-gltfLoader.load("Hitem3d-1783778104845.glb", ...)
+gltfLoader.load("public/models/toys/imperial-pink-jelly-bear/model-desktop-v001.glb", ...)
 ```
 
 Current size:
@@ -83,4 +83,3 @@ When replacing a model, update:
 3. Model version.
 4. Vercel cache strategy if filename is reused.
 5. Smoke test on desktop and mobile.
-

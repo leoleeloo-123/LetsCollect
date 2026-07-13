@@ -10,21 +10,15 @@ Tracked in GitHub `main`:
 LetsCollect/
 ├── .gitignore
 ├── AGENTS.md
-├── Hitem3d-1783778104845.glb
 ├── README.md
 ├── docs/
 ├── hero-jelly-jade-toy.html
+├── public/models/toys/imperial-pink-jelly-bear/model-desktop-v001.glb
 ├── vercel.json
 └── .env.example
 ```
 
-Local only:
-
-```text
-index.html
-```
-
-`index.html` is an older local visual prototype and is currently untracked.
+The earlier local-only `index.html` gallery prototype has been removed.
 
 ## Current Page Entry
 
@@ -50,12 +44,12 @@ The direct page URL is:
 Model load path:
 
 ```js
-gltfLoader.load("Hitem3d-1783778104845.glb", ...)
+gltfLoader.load("public/models/toys/imperial-pink-jelly-bear/model-desktop-v001.glb", ...)
 ```
 
 Current GLB file:
 
-`Hitem3d-1783778104845.glb`
+`public/models/toys/imperial-pink-jelly-bear/model-desktop-v001.glb`
 
 Current size:
 
@@ -98,7 +92,7 @@ These are embedded directly in the page and should later move into modules:
 - Animation loop continues for the page lifetime.
 - No page visibility pause.
 - Model filename is not descriptive or versioned.
-- Local legacy `index.html` can confuse future commits.
+- Asset paths are still referenced directly by the page until config extraction.
 
 ## Current Performance Issues
 
@@ -130,7 +124,7 @@ These are embedded directly in the page and should later move into modules:
 ## Refactor Later
 
 - Extract ThreeViewer.
-- Move model assets under `public/models/toys/`.
+- Centralize model asset paths in `src/config/` or `src/data/`.
 - Move CSS tokens into `src/styles/`.
 - Move variant and toy metadata into `src/data/`.
 - Add app shell and route registry.
@@ -144,5 +138,4 @@ These are embedded directly in the page and should later move into modules:
 - Collection persistence.
 - Draw mechanics.
 - Admin pages.
-- Legacy local `index.html`.
-
+- Framework migration.

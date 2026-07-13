@@ -2,14 +2,16 @@
 
 ## 2026-07-13
 
+- Removed the obsolete local legacy `index.html`.
+- Moved the hero GLB into `public/models/toys/imperial-pink-jelly-bear/model-desktop-v001.glb`.
+- Updated the hero page and docs to use the organized model path.
 - Added project handoff and architecture documentation.
 - Added `.env.example`.
 - Documented current static deployment, GLB loading, risks, and migration plan.
-- No runtime behavior changes.
+- The route and visual behavior are intended to stay the same; only the GLB asset path changed.
 
 ## Earlier
 
 - Added root Vercel rewrite from `/` to `/hero-jelly-jade-toy.html`.
 - Replaced earlier metaball bear prototype with GLB-based pink jelly bear.
 - Optimized GLB for mobile and added long-lived GLB cache headers.
-
