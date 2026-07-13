@@ -1044,6 +1044,25 @@
   backdrop-filter: blur(5px);
 }
 
+.toy-viewer__status > :not(.toy-viewer__poster) {
+  position: relative;
+  z-index: 1;
+}
+
+.toy-viewer__poster {
+  position: absolute;
+  inset: 8% 0 3%;
+  display: grid;
+  place-items: center;
+  opacity: 0.42;
+  filter: saturate(0.82) blur(0.2px);
+  animation: viewer-poster-breathe 1.8s ease-in-out infinite alternate;
+}
+
+.toy-viewer__poster .toy-visual {
+  transform: scale(0.82);
+}
+
 .toy-viewer__status strong { font-size: 12px; }
 
 .toy-viewer__status > span:last-child {
@@ -1091,6 +1110,11 @@
 
 @keyframes viewer-spin {
   to { transform: rotate(360deg); }
+}
+
+@keyframes viewer-poster-breathe {
+  from { transform: translateY(2px) scale(0.98); opacity: 0.34; }
+  to { transform: translateY(-2px) scale(1); opacity: 0.48; }
 }
 
 .implementation-note {

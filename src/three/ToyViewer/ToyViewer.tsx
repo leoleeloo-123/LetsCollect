@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Rotate3D } from "lucide-react";
+import { ToyVisual } from "../../components/toys/ToyVisual";
 import type { Toy } from "../../types/toy";
+import { loadRoomEnvironment, loadToyViewerRuntime } from "./runtime";
 
 type ToyViewerProps = {
   toy: Toy;
@@ -57,11 +59,11 @@ export function ToyViewer({
     setProgress(0);
 
     async function setupViewer() {
-      const THREE = await import("three");
-      const [{ GLTFLoader }, { DRACOLoader }, { RoomEnvironment }] = await Promise.all([
-        import("three/examples/jsm/loaders/GLTFLoader.js"),
-        import("three/examples/jsm/loaders/DRACOLoader.js"),
-        import("three/examples/jsm/environments/RoomEnvironment.js")
+      const isCompactDevice = window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 760;
+      const useLightweightStage = isCompactDevice && variant !== "inspect";
+      const [{ THREE, GLTFLoader, DRACOLoader }, RoomEnvironment] = await Promise.all([
+        loadToyViewerRuntime(),
+        useLightweightStage ? Promise.resolve(null) : loadRoomEnvironment()
       ]);
 
       if (cancelled || !canvasHostRef.current) return;
@@ -70,10 +72,12 @@ export function ToyViewer({
       const materialPalette = getMaterialPalette(toy.palette);
       const renderer = new THREE.WebGLRenderer({
         alpha: true,
-        antialias: true,
+        antialias: !useLightweightStage,
         powerPreference: "high-performance"
       });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, window.innerWidth < 760 ? 1.25 : 1.5));
+      renderer.setPixelRatio(
+        Math.min(window.devicePixelRatio, useLightweightStage ? 1 : isCompactDevice ? 1.15 : 1.5)
+      );
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
       renderer.toneMappingExposure = 1.12;
@@ -86,12 +90,15 @@ export function ToyViewer({
       camera.position.set(0, 0.72, variant === "inspect" ? 7.35 : 8.05);
       camera.lookAt(0, 0.08, 0);
 
-      const pmrem = new THREE.PMREMGenerator(renderer);
-      const roomEnvironment = new RoomEnvironment();
-      const environmentTexture = pmrem.fromScene(roomEnvironment, 0.025).texture;
-      scene.environment = environmentTexture;
-      roomEnvironment.dispose();
-      pmrem.dispose();
+      let environmentTexture: import("three").Texture | null = null;
+      if (RoomEnvironment) {
+        const pmrem = new THREE.PMREMGenerator(renderer);
+        const roomEnvironment = new RoomEnvironment();
+        environmentTexture = pmrem.fromScene(roomEnvironment, 0.025).texture;
+        scene.environment = environmentTexture;
+        roomEnvironment.dispose();
+        pmrem.dispose();
+      }
 
       const toyGroup = new THREE.Group();
       toyGroup.position.y = 0.08;
@@ -99,13 +106,13 @@ export function ToyViewer({
 
       const jadeMaterial = new THREE.MeshPhysicalMaterial({
         color: new THREE.Color(materialPalette.color),
-        roughness: 0.1,
+        roughness: useLightweightStage ? 0.14 : 0.1,
         metalness: 0,
-        transmission: 0.7,
-        thickness: 4.3,
+        transmission: useLightweightStage ? 0.5 : 0.7,
+        thickness: useLightweightStage ? 3.4 : 4.3,
         ior: 1.49,
         transparent: true,
-        opacity: 0.76,
+        opacity: useLightweightStage ? 0.82 : 0.76,
         clearcoat: 1,
         clearcoatRoughness: 0.035,
         attenuationColor: new THREE.Color(materialPalette.attenuation),
@@ -113,7 +120,7 @@ export function ToyViewer({
         emissive: new THREE.Color(materialPalette.emissive),
         emissiveIntensity: 0.055,
         specularIntensity: 1,
-        envMapIntensity: 1.45
+        envMapIntensity: useLightweightStage ? 0.7 : 1.45
       });
 
       scene.add(new THREE.HemisphereLight(0xffffff, materialPalette.attenuation, 2.1));
@@ -126,16 +133,18 @@ export function ToyViewer({
       rimLight.position.set(4.1, 2.5, -3.2);
       scene.add(rimLight);
 
-      const fillLight = new THREE.PointLight(0xffffff, 1.05, 9);
-      fillLight.position.set(0, 2.1, 3.5);
-      scene.add(fillLight);
+      if (!useLightweightStage) {
+        const fillLight = new THREE.PointLight(0xffffff, 1.05, 9);
+        fillLight.position.set(0, 2.1, 3.5);
+        scene.add(fillLight);
+      }
 
       const underGlow = new THREE.PointLight(materialPalette.glow, 3.2, 5.2);
       underGlow.position.set(0, -1.7, 0.25);
       scene.add(underGlow);
 
       const pedestal = new THREE.Mesh(
-        new THREE.CylinderGeometry(1.55, 1.78, 0.07, 72),
+        new THREE.CylinderGeometry(1.55, 1.78, 0.07, useLightweightStage ? 36 : 72),
         new THREE.MeshPhysicalMaterial({
           color: 0xf4eee9,
           roughness: 0.35,
@@ -149,7 +158,7 @@ export function ToyViewer({
       scene.add(pedestal);
 
       const contactShadow = new THREE.Mesh(
-        new THREE.CircleGeometry(1.9, 72),
+        new THREE.CircleGeometry(1.9, useLightweightStage ? 36 : 72),
         new THREE.MeshBasicMaterial({
           color: 0x17352c,
           transparent: true,
@@ -163,7 +172,7 @@ export function ToyViewer({
       scene.add(contactShadow);
 
       const glowRing = new THREE.Mesh(
-        new THREE.TorusGeometry(1.42, 0.012, 10, 96),
+        new THREE.TorusGeometry(1.42, 0.012, 8, useLightweightStage ? 48 : 96),
         new THREE.MeshBasicMaterial({
           color: materialPalette.glow,
           transparent: true,
@@ -204,7 +213,7 @@ export function ToyViewer({
         staticResourcesDisposed = true;
         dracoLoader.dispose();
         jadeMaterial.dispose();
-        environmentTexture.dispose();
+        environmentTexture?.dispose();
         pedestal.geometry.dispose();
         (pedestal.material as import("three").Material).dispose();
         contactShadow.geometry.dispose();
@@ -392,6 +401,9 @@ export function ToyViewer({
       <div className="toy-viewer__canvas-host" ref={canvasHostRef} />
       {status === "loading" ? (
         <div className="toy-viewer__status" role="status">
+          <div className="toy-viewer__poster" aria-hidden="true">
+            <ToyVisual toy={toy} size="large" />
+          </div>
           <span className="toy-viewer__spinner" aria-hidden="true" />
           <strong>正在唤醒独角兽</strong>
           <span>{progress > 0 ? `${progress}%` : "准备 3D 场景"}</span>

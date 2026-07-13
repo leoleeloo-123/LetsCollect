@@ -3,6 +3,8 @@ export const routes = {
   draw: "/draw",
   collection: "/collection",
   friends: "/friends",
+  profile: "/profile",
+  onboarding: "/onboarding",
   login: "/login",
   register: "/register"
 } as const;

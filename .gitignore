@@ -21,6 +21,9 @@ Thumbs.db
 node_modules/
 dist/
 .vite/
+.env
+.env.local
+.env.*.local
 *.tsbuildinfo
 npm-debug.log*
 pnpm-debug.log*

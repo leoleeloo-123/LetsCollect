@@ -12,7 +12,7 @@ export function MobileHeader() {
       </Link>
       <div className="mobile-header__actions">
         <TicketBalance compact />
-        <Link className="icon-button" to={routes.login} aria-label="打开演示账户">
+        <Link className="icon-button" to={routes.profile} aria-label="打开收藏身份">
           <UserRound size={19} strokeWidth={2.2} />
         </Link>
       </div>
