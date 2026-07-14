@@ -32,7 +32,7 @@ Never derive rarity or ownership from a thumbnail URL.
 3. On a cache miss, one global render queue loads the Mobile GLB.
 4. The shared jade material maps the same five-dimensional vector used by
    `ToyViewer`.
-5. A `384 x 384` WebP is rendered and saved to IndexedDB.
+5. A transparent `384 x 384` WebP is rendered and saved to IndexedDB.
 6. The offscreen WebGL context is released after the queue becomes idle.
 7. Later renders and page refreshes read the image without decoding the GLB.
 
@@ -55,6 +55,8 @@ src/three/material/createJadeMaterial.ts
 - Release the offscreen renderer after a short idle window.
 - Keep thumbnail dimensions at `384 x 384` unless visual QA proves that a
   different budget is necessary.
+- Keep the rendered canvas transparent so collection layouts can present the
+  toy without a baked card or poster background.
 - A thumbnail failure must leave a stable placeholder and must not block the
   collection page.
 
@@ -108,6 +110,7 @@ back to IndexedDB generation for local-only MVP collectibles.
 ## QA Checklist
 
 - The toy silhouette matches the source GLB at card size.
+- The exported WebP has no baked background color or card frame.
 - Horns, ears, wings, tails, and face details are not cropped.
 - Color and material respond to the collectible parameters.
 - Six initial toys do not create six live canvases.

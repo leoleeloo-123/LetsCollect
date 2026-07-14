@@ -977,6 +977,98 @@
   box-shadow: 0 4px 10px rgba(22,50,41,0.08);
 }
 
+.collection-page {
+  gap: 18px;
+}
+
+.collection-page > .segmented-control {
+  width: min(820px, 100%);
+  margin-inline: auto;
+}
+
+.collection-figures {
+  display: grid;
+  width: min(820px, 100%);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px 8px;
+  margin-inline: auto;
+  padding: 4px 0 14px;
+}
+
+.collection-figure {
+  display: grid;
+  min-width: 0;
+  gap: 7px;
+  padding: 0;
+  border: 0;
+  color: var(--color-ink);
+  background: transparent;
+  text-align: center;
+}
+
+.collection-figure__visual {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+}
+
+.collection-figure__thumbnail {
+  border-radius: 0;
+  background: transparent;
+  transition: transform 180ms ease, filter 180ms ease;
+}
+
+.collection-figure__thumbnail .toy-thumbnail__placeholder {
+  background: transparent;
+  animation: none;
+}
+
+.collection-figure:hover .collection-figure__thumbnail,
+.collection-figure:focus-visible .collection-figure__thumbnail {
+  transform: translateY(-4px) scale(1.025);
+  filter: saturate(1.04) brightness(1.02);
+}
+
+.collection-figure__caption {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+  justify-items: center;
+}
+
+.collection-figure__caption strong {
+  display: -webkit-box;
+  overflow: hidden;
+  max-width: 100%;
+  font-size: 11px;
+  line-height: 1.35;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.collection-figure__caption small {
+  display: inline-flex;
+  max-width: 100%;
+  align-items: center;
+  gap: 4px;
+  color: var(--color-muted);
+  font-size: 9px;
+  white-space: nowrap;
+}
+
+.collection-figure__rarity {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-common);
+}
+
+.collection-figure__rarity--rare { background: var(--color-rare); }
+.collection-figure__rarity--epic { background: var(--color-epic); }
+.collection-figure__rarity--legendary { background: var(--color-legendary); }
+.collection-figure__rarity--mythic { background: var(--color-mythic); }
+
 .modal-backdrop {
   position: fixed;
   inset: 0;
@@ -1546,6 +1638,19 @@
   .toy-viewer--hero { min-height: 440px; }
   .toy-viewer--stage { min-height: 370px; }
   .toy-viewer--inspect { min-height: 430px; }
+
+  .collection-figures {
+    gap: 34px 24px;
+    padding-top: 10px;
+  }
+
+  .collection-figure__caption strong {
+    font-size: 13px;
+  }
+
+  .collection-figure__caption small {
+    font-size: 10px;
+  }
 
   .friend-row {
     grid-template-columns: auto minmax(0, 1fr) auto auto;

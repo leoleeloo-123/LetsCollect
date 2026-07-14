@@ -6,7 +6,7 @@ import { loadRoomEnvironment, loadToyModel, loadToyViewerRuntime } from "../ToyV
 import { readThumbnailBlob, writeThumbnailBlob } from "./storage";
 
 const THUMBNAIL_SIZE = 384;
-const THUMBNAIL_RENDER_VERSION = 1;
+const THUMBNAIL_RENDER_VERSION = 2;
 const WEBP_QUALITY = 0.84;
 
 type ThumbnailContext = {
@@ -36,13 +36,14 @@ async function createContext(): Promise<ThumbnailContext> {
     loadRoomEnvironment()
   ]);
   const renderer = new THREE.WebGLRenderer({
-    alpha: false,
+    alpha: true,
     antialias: true,
     powerPreference: "high-performance",
     preserveDrawingBuffer: true
   });
   renderer.setPixelRatio(1);
   renderer.setSize(THUMBNAIL_SIZE, THUMBNAIL_SIZE, false);
+  renderer.setClearColor(0x000000, 0);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.12;
@@ -102,9 +103,6 @@ async function renderThumbnail(toy: Collectible) {
     modelDefinition.assets.mobileModelUrl ?? modelDefinition.assets.modelUrl
   );
   const scene = new THREE.Scene();
-  const background = new THREE.Color(palette.color);
-  background.offsetHSL(0, -0.52, 0.38);
-  scene.background = background;
   scene.environment = environmentTexture;
 
   const camera = new THREE.PerspectiveCamera(31, 1, 0.1, 100);
