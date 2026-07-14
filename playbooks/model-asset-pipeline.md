@@ -20,10 +20,10 @@ public/models/toys/{toy-slug}/
   model-preview-v001.glb         # optional very small catalog preview
 ```
 
-Current source model:
+Current source model area:
 
 ```text
-assets/models/source/jelly-jade-kitty/model-source-v001.glb
+assets/models/source/jelly-jade-*/model-source-v001.glb
 ```
 
 Current production model:
@@ -143,6 +143,23 @@ npx @gltf-transform/cli@latest optimize \
   --simplify
 ```
 
+For dense, texture-free toy meshes like the current unicorn, use an explicit
+ratio and inspect the result rather than accepting the default simplifier:
+
+```bash
+npx @gltf-transform/cli@latest optimize \
+  public/models/toys/{toy-slug}/model-web-v001.glb \
+  public/models/toys/{toy-slug}/model-mobile-v001.glb \
+  --compress draco \
+  --simplify true \
+  --simplify-ratio 0.05 \
+  --simplify-error 0.003 \
+  --texture-compress false
+```
+
+The ratio is a starting point, not a universal preset. Reject the export if
+the silhouette, eyes, horn, ears, or other identity-defining features collapse.
+
 5. Inspect the optimized files:
 
 ```bash
@@ -226,4 +243,3 @@ Minimum acceptance:
 - Do not commit Blender autosaves, unpacked texture folders, or unused exports.
 - If a runtime file exceeds 5 MB, treat that as a model optimization issue
   before shipping it.
-

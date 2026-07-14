@@ -5,13 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script>
       if (window.location.pathname === "/draw") {
-        const modelPreload = document.createElement("link");
-        modelPreload.rel = "preload";
-        modelPreload.href = "/models/toys/jelly-jade-unicorn/model-web-v001.glb";
-        modelPreload.as = "fetch";
-        modelPreload.type = "model/gltf-binary";
-        modelPreload.crossOrigin = "anonymous";
-        document.head.appendChild(modelPreload);
+        const isCompactDevice = window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 760;
+        const preloadAssets = [
+          [
+            isCompactDevice
+              ? "/models/toys/jelly-jade-unicorn/model-mobile-v001.glb"
+              : "/models/toys/jelly-jade-unicorn/model-web-v001.glb",
+            "model/gltf-binary"
+          ],
+          ["/draco/draco_wasm_wrapper.js", "application/javascript"],
+          ["/draco/draco_decoder.wasm", "application/wasm"]
+        ];
+
+        preloadAssets.forEach(([href, type]) => {
+          const preload = document.createElement("link");
+          preload.rel = "preload";
+          preload.href = href;
+          preload.as = "fetch";
+          preload.type = type;
+          preload.crossOrigin = "anonymous";
+          document.head.appendChild(preload);
+        });
       }
     </script>
     <title>Let's Collect</title>

@@ -6,9 +6,13 @@ Current deployed GLB:
 
 `public/models/toys/jelly-jade-unicorn/model-web-v001.glb`
 
-Current source-only model waiting for optimization:
+Current mobile GLB:
 
-`assets/models/source/jelly-jade-kitty/model-source-v001.glb`
+`public/models/toys/jelly-jade-unicorn/model-mobile-v001.glb`
+
+Source-only models waiting for optimization live under:
+
+`assets/models/source/jelly-jade-*/model-source-v001.glb`
 
 Current load path in page:
 
@@ -18,7 +22,9 @@ gltfLoader.load("/models/toys/jelly-jade-unicorn/model-web-v001.glb", ...)
 
 Current size:
 
-About 2.35 MB.
+Web: about 2.35 MB and 999,936 triangles.
+
+Mobile: about 165 KB and 49,996 triangles.
 
 ## Current Loader
 

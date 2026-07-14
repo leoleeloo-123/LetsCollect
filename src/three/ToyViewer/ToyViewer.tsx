@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Rotate3D } from "lucide-react";
 import { ToyVisual } from "../../components/toys/ToyVisual";
 import type { Toy } from "../../types/toy";
-import { loadRoomEnvironment, loadToyViewerRuntime } from "./runtime";
+import { loadRoomEnvironment, loadToyModel, loadToyViewerRuntime } from "./runtime";
 
 type ToyViewerProps = {
   toy: Toy;
@@ -39,7 +39,7 @@ export function ToyViewer({
   const [status, setStatus] = useState<ViewerStatus>("loading");
   const [progress, setProgress] = useState(0);
   const [retryKey, setRetryKey] = useState(0);
-  const modelUrl = toy.assets.mobileModelUrl ?? toy.assets.modelUrl;
+  const fallbackModelUrl = toy.assets.modelUrl ?? toy.assets.mobileModelUrl;
 
   useEffect(() => {
     activeRef.current = active;
@@ -47,11 +47,11 @@ export function ToyViewer({
 
   useEffect(() => {
     const host = canvasHostRef.current;
-    if (!host || !modelUrl) {
+    if (!host || !fallbackModelUrl) {
       setStatus("error");
       return;
     }
-    const resolvedModelUrl = modelUrl;
+    const availableModelUrl = fallbackModelUrl;
 
     let cancelled = false;
     let disposeViewer = () => {};
@@ -59,12 +59,23 @@ export function ToyViewer({
     setProgress(0);
 
     async function setupViewer() {
+      const timingEnabled = import.meta.env.DEV || new URLSearchParams(window.location.search).has("debug3d");
+      const timingStart = performance.now();
+      const timings: Record<string, number> = {};
+      const recordTiming = (name: string) => {
+        if (timingEnabled) timings[name] = Math.round((performance.now() - timingStart) * 10) / 10;
+      };
+
       const isCompactDevice = window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 760;
       const useLightweightStage = isCompactDevice && variant !== "inspect";
-      const [{ THREE, GLTFLoader, DRACOLoader }, RoomEnvironment] = await Promise.all([
+      const resolvedModelUrl = isCompactDevice
+        ? toy.assets.mobileModelUrl ?? availableModelUrl
+        : toy.assets.modelUrl ?? availableModelUrl;
+      const [{ THREE }, RoomEnvironment] = await Promise.all([
         loadToyViewerRuntime(),
         useLightweightStage ? Promise.resolve(null) : loadRoomEnvironment()
       ]);
+      recordTiming("modules-ready");
 
       if (cancelled || !canvasHostRef.current) return;
 
@@ -72,17 +83,18 @@ export function ToyViewer({
       const materialPalette = getMaterialPalette(toy.palette);
       const renderer = new THREE.WebGLRenderer({
         alpha: true,
-        antialias: !useLightweightStage,
+        antialias: true,
         powerPreference: "high-performance"
       });
-      renderer.setPixelRatio(
-        Math.min(window.devicePixelRatio, useLightweightStage ? 1 : isCompactDevice ? 1.15 : 1.5)
-      );
+      const initialPixelRatioCap = useLightweightStage ? 1.15 : isCompactDevice ? 1.25 : 1.5;
+      const settledPixelRatioCap = useLightweightStage ? 1.5 : isCompactDevice ? 1.6 : 1.75;
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, initialPixelRatioCap));
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
       renderer.toneMappingExposure = 1.12;
       renderer.domElement.className = "toy-viewer__canvas";
       renderer.domElement.setAttribute("aria-hidden", "true");
+      renderer.domElement.dataset.modelUrl = resolvedModelUrl;
       currentHost.replaceChildren(renderer.domElement);
 
       const scene = new THREE.Scene();
@@ -108,11 +120,11 @@ export function ToyViewer({
         color: new THREE.Color(materialPalette.color),
         roughness: useLightweightStage ? 0.14 : 0.1,
         metalness: 0,
-        transmission: useLightweightStage ? 0.5 : 0.7,
+        transmission: useLightweightStage ? 0.58 : 0.68,
         thickness: useLightweightStage ? 3.4 : 4.3,
         ior: 1.49,
-        transparent: true,
-        opacity: useLightweightStage ? 0.82 : 0.76,
+        transparent: false,
+        opacity: 1,
         clearcoat: 1,
         clearcoatRoughness: 0.035,
         attenuationColor: new THREE.Color(materialPalette.attenuation),
@@ -183,35 +195,22 @@ export function ToyViewer({
       glowRing.position.set(0, -1.77, 0);
       glowRing.rotation.x = Math.PI / 2;
       scene.add(glowRing);
-
-      const dracoLoader = new DRACOLoader();
-      dracoLoader.setDecoderPath("/draco/");
-      const gltfLoader = new GLTFLoader();
-      gltfLoader.setDRACOLoader(dracoLoader);
+      recordTiming("scene-ready");
 
       let mixer: import("three").AnimationMixer | null = null;
       const clock = new THREE.Clock();
-      const originalMaterials = new Set<import("three").Material>();
       let staticResourcesDisposed = false;
 
       function disposeObject(root: import("three").Object3D) {
         root.traverse((child) => {
           if (!(child instanceof THREE.Mesh)) return;
           child.geometry.dispose();
-          const materials = Array.isArray(child.material) ? child.material : [child.material];
-          materials.forEach((material) => {
-            Object.values(material).forEach((value) => {
-              if (value instanceof THREE.Texture) value.dispose();
-            });
-            material.dispose();
-          });
         });
       }
 
       function disposeStaticResources() {
         if (staticResourcesDisposed) return;
         staticResourcesDisposed = true;
-        dracoLoader.dispose();
         jadeMaterial.dispose();
         environmentTexture?.dispose();
         pedestal.geometry.dispose();
@@ -226,11 +225,12 @@ export function ToyViewer({
 
       disposeViewer = disposeStaticResources;
 
-      const gltf = await gltfLoader.loadAsync(resolvedModelUrl, (event) => {
-        if (!cancelled && event.total > 0) {
-          setProgress(Math.min(100, Math.round((event.loaded / event.total) * 100)));
+      const gltf = await loadToyModel(resolvedModelUrl, (loaded, total) => {
+        if (!cancelled && total > 0) {
+          setProgress(Math.min(100, Math.round((loaded / total) * 100)));
         }
       });
+      recordTiming("model-ready");
 
       if (cancelled) {
         disposeObject(gltf.scene);
@@ -241,8 +241,6 @@ export function ToyViewer({
       const model = gltf.scene;
       model.traverse((child) => {
         if (!(child instanceof THREE.Mesh)) return;
-        const materials = Array.isArray(child.material) ? child.material : [child.material];
-        materials.forEach((material) => originalMaterials.add(material));
         child.material = jadeMaterial;
         child.castShadow = false;
         child.receiveShadow = false;
@@ -262,19 +260,14 @@ export function ToyViewer({
         gltf.animations.forEach((clip) => mixer?.clipAction(clip).play());
       }
 
-      originalMaterials.forEach((material) => {
-        Object.values(material).forEach((value) => {
-          if (value instanceof THREE.Texture) value.dispose();
-        });
-        material.dispose();
-      });
-      dracoLoader.dispose();
       if (!cancelled) {
         setProgress(100);
         setStatus("ready");
       }
 
       let frameId = 0;
+      let clarityUpgradeTimer = 0;
+      let firstFrameRendered = false;
       let dragging = false;
       let pointerId = -1;
       let previousX = 0;
@@ -360,12 +353,33 @@ export function ToyViewer({
         mixer?.update(delta);
         renderer.render(scene, camera);
         needsRender = false;
+
+        if (!firstFrameRendered) {
+          firstFrameRendered = true;
+          recordTiming("first-frame");
+          if (timingEnabled) {
+            console.table({
+              modules: timings["modules-ready"],
+              scene: timings["scene-ready"] - timings["modules-ready"],
+              model: timings["model-ready"] - timings["scene-ready"],
+              firstFrame: timings["first-frame"] - timings["model-ready"],
+              total: timings["first-frame"]
+            });
+          }
+
+          // Paint quickly at a conservative DPR, then sharpen the settled frame.
+          clarityUpgradeTimer = window.setTimeout(() => {
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, settledPixelRatioCap));
+            resize();
+          }, 120);
+        }
       }
 
       frameId = window.requestAnimationFrame(render);
 
       disposeViewer = () => {
         window.cancelAnimationFrame(frameId);
+        window.clearTimeout(clarityUpgradeTimer);
         resizeObserver.disconnect();
         renderer.domElement.removeEventListener("pointerdown", handlePointerDown);
         renderer.domElement.removeEventListener("pointermove", handlePointerMove);
@@ -389,7 +403,7 @@ export function ToyViewer({
       cancelled = true;
       disposeViewer();
     };
-  }, [interactive, modelUrl, retryKey, toy.palette, variant]);
+  }, [fallbackModelUrl, interactive, retryKey, toy.assets.mobileModelUrl, toy.assets.modelUrl, toy.palette, variant]);
 
   return (
     <div

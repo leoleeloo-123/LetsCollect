@@ -2,7 +2,7 @@ import type { Toy } from "../../types/toy";
 
 const unicornAssets: Toy["assets"] = {
   modelUrl: "/models/toys/jelly-jade-unicorn/model-web-v001.glb",
-  mobileModelUrl: "/models/toys/jelly-jade-unicorn/model-web-v001.glb"
+  mobileModelUrl: "/models/toys/jelly-jade-unicorn/model-mobile-v001.glb"
 };
 
 export const mockToys: Toy[] = [

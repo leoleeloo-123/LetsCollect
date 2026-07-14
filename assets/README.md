@@ -9,6 +9,14 @@ frontend loads must be exported into `public/`.
 
 ```text
 assets/models/source/
+  jelly-jade-bird/
+    model-source-v001.glb
+  jelly-jade-bunny/
+    model-source-v001.glb
+  jelly-jade-doggy/
+    model-source-v001.glb
+  jelly-jade-karpy/
+    model-source-v001.glb
   jelly-jade-kitty/
     model-source-v001.glb
 ```
@@ -20,4 +28,3 @@ assets/models/source/
 - Export optimized runtime models to `public/models/toys/{toy-slug}/`.
 - Keep each source toy in its own slug folder.
 - Preserve versioned filenames so old deployments and QA notes stay traceable.
-
