@@ -1,44 +1,31 @@
 # Three Model Guide
 
-## Current Model
+## Current Model Pool
 
-Current deployed GLB:
+The runtime pool contains Unicorn, Kitty, Bunny, Bird, Doggy, and Karpy. Every
+model has a Web and Mobile GLB under `public/models/toys/{toy-slug}/`.
 
-`public/models/toys/jelly-jade-unicorn/model-web-v001.glb`
+All active Web models use about 100k triangles / 266-307 KB, and all Mobile
+models use about 50k triangles / 142-165 KB. The original 2.35 MB unicorn Web
+file remains available as the superseded V1 asset; the registry uses V2.
 
-Current mobile GLB:
+All runtime paths and per-model framing overrides are registered in:
 
-`public/models/toys/jelly-jade-unicorn/model-mobile-v001.glb`
-
-Source-only models waiting for optimization live under:
-
-`assets/models/source/jelly-jade-*/model-source-v001.glb`
-
-Current load path in page:
-
-```js
-gltfLoader.load("/models/toys/jelly-jade-unicorn/model-web-v001.glb", ...)
-```
-
-Current size:
-
-Web: about 2.35 MB and 999,936 triangles.
-
-Mobile: about 165 KB and 49,996 triangles.
+`src/features/toys/catalog.ts`
 
 ## Current Loader
 
-The hero page uses:
+The shared `ToyViewer` uses:
 
 - Three.js `0.165.0`
 - `GLTFLoader`
 - `DRACOLoader`
-- Draco decoder from jsDelivr
-- `MeshPhysicalMaterial` retuned by variant
+- locally deployed Draco decoder files
+- `MeshPhysicalMaterial` driven by the collectible five-dimensional vector
 
 ## Naming Direction
 
-Future GLB names should be descriptive and versioned:
+GLB names must be descriptive and versioned:
 
 ```text
 public/models/toys/{toy-slug}/model-desktop-v001.glb
@@ -69,7 +56,7 @@ The standardized model workflow lives in:
 
 ## Viewer Extraction Requirements
 
-The future ThreeViewer should support:
+The shared ThreeViewer supports or should continue to support:
 
 - Model URL input.
 - Loading progress.
@@ -86,6 +73,7 @@ The future ThreeViewer should support:
 - WebGL unavailable fallback.
 - Model switching.
 - Resource disposal for geometry, material, texture, renderer, and event listeners.
+- Five-dimensional material mapping without creating model variants.
 
 ## Deployment Notes
 

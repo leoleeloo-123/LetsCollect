@@ -28,9 +28,8 @@ GitHub：
 
 ## Git 状态
 
-- `main` 和本地 `publish/hero-jade`：当前线上 Legacy Hero；
-- `feature/react-product-shell`：本地 React MVP 分支；
-- React MVP 尚未推送到 `main`，也没有替换线上入口；
+- `main` 是当前 React MVP 和 Vercel Production 的发布分支；
+- `legacy/hero-prototype/` 继续保留旧 HTML Hero 作为视觉参考；
 - 推送 `main` 会触发 Vercel Production，未经明确确认不要操作。
 
 ## 当前线上入口
@@ -39,11 +38,11 @@ GitHub：
 
 `/`
 
-Hero 页面加载：
+当前默认 Hero 页面加载：
 
-`/models/toys/jelly-jade-unicorn/model-web-v001.glb`
+`/models/toys/jelly-jade-unicorn/model-web-v002.glb`
 
-## 当前本地 React MVP
+## 当前 React MVP
 
 技术栈：
 
@@ -52,7 +51,8 @@ Hero 页面加载：
 - TypeScript；
 - React Router；
 - Lucide React；
-- 浏览器本地 Mock 状态。
+- Supabase 匿名 Auth 与 Profile；
+- 浏览器本地藏品、票券和社交 Mock 状态。
 
 一级路由：
 
@@ -67,12 +67,13 @@ Hero 页面加载：
 ## 已经可以验证的流程
 
 ```text
-好友动态互动 -> 抽取券增加 -> 抽取 -> 揭晓 -> 收藏更新
+好友动态互动 -> 抽取券增加 -> 生成独立五维藏品 -> 揭晓 -> 收藏更新
 ```
 
 还可以验证：
 
-- 收藏筛选与详情浮层；
+- 六种 Web/Mobile GLB 的动态切换；
+- 收藏筛选、五维品质与 3D 详情浮层；
 - 好友搜索、添加与接受申请；
 - 手机端底部导航；
 - 桌面端顶部导航；
@@ -81,13 +82,12 @@ Hero 页面加载：
 
 ## 尚未接入
 
-- Supabase Auth；
-- 云端数据库；
+- 云端藏品、抽奖和票券表；
 - 真实好友关系；
 - 服务端抽取；
 - 权威抽取券流水；
-- React 版 3D `ToyViewer`；
-- 线上 React 入口。
+- 纯净度和棉絮材质模块；
+- 抽奖记录点赞与真实动态流。
 
 ## 常用命令
 
@@ -106,3 +106,7 @@ pnpm run build
 4. 真实抽取和票券写入必须由服务端负责；
 5. Legacy Hero 在 React 版本完成远程验证前继续保留；
 6. 未经用户明确确认，不修改线上根入口或推送到 `main`。
+
+藏品生成规则与未来数据边界见：
+
+`playbooks/collectible-generation-architecture.md`

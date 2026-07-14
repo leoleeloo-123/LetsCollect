@@ -4,36 +4,37 @@ import { useMvpState } from "../../app/MvpState";
 import { ToyCard } from "../../components/cards/ToyCard";
 import { PageHeader } from "../../components/ui/PageHeader";
 import { ToyDetailSheet } from "../../features/collection/ToyDetailSheet";
-import { mockToys } from "../../data/mock/toys";
-import type { Toy } from "../../types/toy";
+import { toyModels } from "../../features/toys/catalog";
+import type { Collectible } from "../../types/toy";
 
-type CollectionFilter = "all" | "owned" | "locked";
+type CollectionFilter = "all" | "high" | "mythic";
 
 export function CollectionPage() {
-  const { collectionCounts } = useMvpState();
+  const { collection } = useMvpState();
   const [filter, setFilter] = useState<CollectionFilter>("all");
-  const [selectedToy, setSelectedToy] = useState<Toy | null>(null);
-  const ownedCount = mockToys.filter((toy) => (collectionCounts[toy.id] ?? 0) > 0).length;
-  const filteredToys = mockToys.filter((toy) => {
-    const owned = (collectionCounts[toy.id] ?? 0) > 0;
-    return filter === "all" || (filter === "owned" ? owned : !owned);
+  const [selectedToy, setSelectedToy] = useState<Collectible | null>(null);
+  const modelCount = new Set(collection.map((toy) => toy.modelId)).size;
+  const filteredToys = collection.filter((toy) => {
+    if (filter === "mythic") return toy.rarity === "mythic";
+    if (filter === "high") return ["epic", "legendary", "mythic"].includes(toy.rarity);
+    return true;
   });
 
   return (
     <div className="page-stack collection-page">
-      <PageHeader eyebrow="收藏" title="我的玉玩具柜" description="每一次相遇都会留在这里，慢慢组成属于你的系列。" />
+      <PageHeader eyebrow="收藏" title="我的独立藏品" description="每只玩偶都有自己的编号、五维品质与可复现外观。" />
 
       <section className="collection-summary">
         <div><Boxes size={23} /><span>玉梦初遇</span></div>
-        <strong>{ownedCount}<small> / {mockToys.length}</small></strong>
-        <div className="collection-summary__bar" aria-label={`已收藏 ${ownedCount} 件，共 ${mockToys.length} 件`}>
-          <span style={{ width: `${(ownedCount / mockToys.length) * 100}%` }} />
+        <strong>{collection.length}<small> 件</small></strong>
+        <div className="collection-summary__bar" aria-label={`已遇见 ${modelCount} 种造型，共 ${toyModels.length} 种`}>
+          <span style={{ width: `${(modelCount / toyModels.length) * 100}%` }} />
         </div>
-        <p><CheckCircle2 size={16} /> 已收集 {Math.round((ownedCount / mockToys.length) * 100)}%</p>
+        <p><CheckCircle2 size={16} /> 已遇见 {modelCount} / {toyModels.length} 种造型</p>
       </section>
 
       <div className="segmented-control" aria-label="收藏筛选">
-        {(["all", "owned", "locked"] as CollectionFilter[]).map((value) => (
+        {(["all", "high", "mythic"] as CollectionFilter[]).map((value) => (
           <button
             key={value}
             type="button"
@@ -41,33 +42,22 @@ export function CollectionPage() {
             aria-pressed={filter === value}
             onClick={() => setFilter(value)}
           >
-            {value === "all" ? "全部" : value === "owned" ? "已拥有" : "未解锁"}
+            {value === "all" ? "全部" : value === "high" ? "史诗以上" : "神话"}
           </button>
         ))}
       </div>
 
-      <div className="toy-grid toy-grid--collection">
-        {filteredToys.map((toy) => {
-          const count = collectionCounts[toy.id] ?? 0;
-          return (
-            <ToyCard
-              key={toy.id}
-              toy={toy}
-              count={count}
-              locked={count === 0}
-              onSelect={count > 0 ? setSelectedToy : undefined}
-            />
-          );
-        })}
-      </div>
+      {filteredToys.length > 0 ? (
+        <div className="toy-grid toy-grid--collection">
+          {filteredToys.map((toy) => (
+            <ToyCard key={toy.id} toy={toy} onSelect={setSelectedToy} />
+          ))}
+        </div>
+      ) : (
+        <p className="collection-empty">这一档还没有藏品，下一次相遇也许就是它。</p>
+      )}
 
-      {selectedToy ? (
-        <ToyDetailSheet
-          toy={selectedToy}
-          count={collectionCounts[selectedToy.id] ?? 0}
-          onClose={() => setSelectedToy(null)}
-        />
-      ) : null}
+      {selectedToy ? <ToyDetailSheet toy={selectedToy} onClose={() => setSelectedToy(null)} /> : null}
     </div>
   );
 }

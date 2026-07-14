@@ -6,6 +6,7 @@ import { ToyViewer } from "../../three/ToyViewer";
 import { ActivityCard } from "../../features/feed/ActivityCard";
 import { mockActivities } from "../../data/mock/social";
 import { featuredToy } from "../../data/mock/toys";
+import { rarityLabels } from "../../features/toys/catalog";
 
 export function HomePage() {
   const { interactedActivityIds } = useMvpState();
@@ -26,7 +27,7 @@ export function HomePage() {
         </div>
         <div className="feature-spotlight__stage">
           <ToyViewer toy={featuredToy} variant="hero" />
-          <span className="feature-spotlight__rarity">神话</span>
+          <span className="feature-spotlight__rarity">{rarityLabels[featuredToy.rarity]}</span>
         </div>
       </section>
 

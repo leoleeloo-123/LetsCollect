@@ -1,9 +1,9 @@
-import type { Toy } from "../../types/toy";
+import type { Collectible } from "../../types/toy";
 import { ToyViewer } from "../../three/ToyViewer";
 
 type ToyViewerPanelProps = {
   title?: string;
-  toy: Toy;
+  toy: Collectible;
 };
 
 export function ToyViewerPanel({ toy, title = "近距离检查" }: ToyViewerPanelProps) {

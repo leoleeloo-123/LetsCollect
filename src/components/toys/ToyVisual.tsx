@@ -1,17 +1,32 @@
-import type { Toy } from "../../types/toy";
+import type { CSSProperties } from "react";
+import { getToyModel } from "../../features/toys/catalog";
+import type { Collectible } from "../../types/toy";
 
 type ToyVisualProps = {
-  toy: Toy;
+  toy: Collectible;
   size?: "small" | "medium" | "large";
-  locked?: boolean;
 };
 
-export function ToyVisual({ toy, size = "medium", locked = false }: ToyVisualProps) {
+type ToyVisualStyle = CSSProperties & {
+  "--toy-saturation": number;
+  "--toy-brightness": number;
+  "--toy-body-opacity": number;
+};
+
+export function ToyVisual({ toy, size = "medium" }: ToyVisualProps) {
+  const model = getToyModel(toy.modelId);
+  const style: ToyVisualStyle = {
+    "--toy-saturation": 0.78 + toy.appearance.colorDepth * 0.006,
+    "--toy-brightness": 1.1 - toy.appearance.colorDepth * 0.002,
+    "--toy-body-opacity": 0.72 + toy.appearance.transparency * 0.0025
+  };
+
   return (
     <div
-      className={`toy-visual toy-visual--${size} toy-visual--${toy.baseType} toy-visual--${toy.palette}${locked ? " toy-visual--locked" : ""}`}
+      className={`toy-visual toy-visual--${size} toy-visual--${model.fallbackShape} toy-visual--${toy.paletteId}`}
       role="img"
-      aria-label={locked ? `尚未获得的${toy.name}` : toy.name}
+      aria-label={toy.name}
+      style={style}
     >
       <div className="toy-visual__figure" aria-hidden="true">
         <span className="toy-visual__horn" />

@@ -26,10 +26,11 @@ Current source model area:
 assets/models/source/jelly-jade-*/model-source-v001.glb
 ```
 
-Current production model:
+Current production model pool:
 
 ```text
-public/models/toys/jelly-jade-unicorn/model-web-v001.glb
+public/models/toys/jelly-jade-*/model-web-v001.glb
+public/models/toys/jelly-jade-*/model-mobile-v001.glb
 ```
 
 Only files under `public/` are served to the browser. Source files under
@@ -42,6 +43,8 @@ Only files under `public/` are served to the browser. Source files under
 - Runtime file: `model-web-v001.glb`.
 - Mobile-specific file: `model-mobile-v001.glb`.
 - Do not overwrite a shipped runtime model without increasing the version.
+- Superseded runtime files may remain for cache-safe rollbacks, but the catalog
+  must reference only the active version.
 
 ## Visual Consistency Checklist
 
@@ -71,8 +74,8 @@ Geometry guidance:
 
 ```text
 Preview: <= 10k triangles
-Mobile:  <= 25k-40k triangles
-Web:     <= 40k-70k triangles
+Mobile:  <= 50k triangles
+Web:     <= 100k triangles
 Inspect: <= 100k triangles only for hero-quality models
 ```
 
@@ -143,8 +146,9 @@ npx @gltf-transform/cli@latest optimize \
   --simplify
 ```
 
-For dense, texture-free toy meshes like the current unicorn, use an explicit
-ratio and inspect the result rather than accepting the default simplifier:
+For the current dense, texture-free source toys (about two million triangles),
+use explicit V1 ratios and inspect the result rather than accepting the default
+simplifier:
 
 ```bash
 npx @gltf-transform/cli@latest optimize \
@@ -157,7 +161,8 @@ npx @gltf-transform/cli@latest optimize \
   --texture-compress false
 ```
 
-The ratio is a starting point, not a universal preset. Reject the export if
+Use ratio `0.05` for the 100k Web target and `0.025` for the 50k Mobile target.
+These ratios are starting points, not universal presets. Reject the export if
 the silhouette, eyes, horn, ears, or other identity-defining features collapse.
 
 5. Inspect the optimized files:
@@ -169,10 +174,10 @@ npx @gltf-transform/cli@latest inspect public/models/toys/{toy-slug}/model-mobil
 
 6. Wire the model through data/config, not directly inside page components.
 
-For the current app, model URLs live in:
+For the current app, model URLs and framing overrides live in:
 
 ```text
-src/data/mock/toys.ts
+src/features/toys/catalog.ts
 ```
 
 7. Run local verification:

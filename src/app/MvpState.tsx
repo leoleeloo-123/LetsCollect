@@ -9,56 +9,60 @@ import {
 } from "react";
 import { initialFriendIds, initialPendingFriendIds } from "../data/mock/social";
 import { mockToys } from "../data/mock/toys";
-import type { Toy } from "../types/toy";
+import { generateCollectible } from "../features/toys/generator";
+import type { Collectible, DrawRecord } from "../types/toy";
 
-const STORAGE_KEY = "lets-collect-mvp-state-v1";
+const STORAGE_KEY = "lets-collect-mvp-state-v3";
 export const DRAW_COST = 3;
 
 type MvpSnapshot = {
   tickets: number;
   interactedActivityIds: string[];
-  collectionCounts: Record<string, number>;
+  collection: Collectible[];
   friendIds: string[];
   pendingFriendIds: string[];
-  recentDrawIds: string[];
+  recentDraws: DrawRecord[];
 };
 
 type MvpStateValue = MvpSnapshot & {
   interactAndEarn: (activityId: string, reward: number) => void;
-  drawToy: () => Toy | null;
+  drawCollectible: () => Collectible | null;
   addFriend: (friendId: string) => void;
   acceptFriend: (friendId: string) => void;
   resetDemo: () => void;
 };
 
 const initialSnapshot: MvpSnapshot = {
-  tickets: 4,
+  tickets: 100,
   interactedActivityIds: [],
-  collectionCounts: { toy_001: 1 },
+  collection: [...mockToys],
   friendIds: initialFriendIds,
   pendingFriendIds: initialPendingFriendIds,
-  recentDrawIds: []
+  recentDraws: []
 };
 
 function loadSnapshot(): MvpSnapshot {
   try {
     const stored = window.localStorage.getItem(STORAGE_KEY);
-    return stored ? { ...initialSnapshot, ...JSON.parse(stored) } : initialSnapshot;
+    if (!stored) return initialSnapshot;
+    const parsed = JSON.parse(stored) as Partial<MvpSnapshot>;
+    return {
+      ...initialSnapshot,
+      ...parsed,
+      collection: Array.isArray(parsed.collection) ? parsed.collection : initialSnapshot.collection,
+      recentDraws: Array.isArray(parsed.recentDraws) ? parsed.recentDraws : []
+    };
   } catch {
     return initialSnapshot;
   }
 }
 
-function chooseWeightedToy(): Toy {
-  const totalWeight = mockToys.reduce((sum, toy) => sum + toy.drawWeight, 0);
-  let cursor = Math.random() * totalWeight;
-
-  for (const toy of mockToys) {
-    cursor -= toy.drawWeight;
-    if (cursor <= 0) return toy;
-  }
-
-  return mockToys[mockToys.length - 1];
+function createDrawRecord(collectible: Collectible): DrawRecord {
+  return {
+    id: globalThis.crypto.randomUUID(),
+    collectibleId: collectible.id,
+    createdAt: collectible.createdAt
+  };
 }
 
 const MvpStateContext = createContext<MvpStateValue | null>(null);
@@ -70,6 +74,8 @@ type MvpStateProviderProps = {
 export function MvpStateProvider({ children }: MvpStateProviderProps) {
   const [snapshot, setSnapshot] = useState<MvpSnapshot>(loadSnapshot);
 
+  // This provider is the current local repository adapter. Page components only
+  // consume domain objects, so a Supabase-backed adapter can replace it later.
   useEffect(() => {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
   }, [snapshot]);
@@ -85,23 +91,27 @@ export function MvpStateProvider({ children }: MvpStateProviderProps) {
     });
   }, []);
 
-  const drawToy = useCallback(() => {
+  const drawCollectible = useCallback(() => {
     if (snapshot.tickets < DRAW_COST) return null;
-    const result = chooseWeightedToy();
+
+    const usedSeeds = new Set(snapshot.collection.map((item) => item.appearanceSeed));
+    let result = generateCollectible();
+    for (let attempt = 0; attempt < 4 && usedSeeds.has(result.appearanceSeed); attempt += 1) {
+      result = generateCollectible();
+    }
+    const draw = createDrawRecord(result);
+
     setSnapshot((current) => {
       if (current.tickets < DRAW_COST) return current;
       return {
         ...current,
         tickets: current.tickets - DRAW_COST,
-        collectionCounts: {
-          ...current.collectionCounts,
-          [result.id]: (current.collectionCounts[result.id] ?? 0) + 1
-        },
-        recentDrawIds: [result.id, ...current.recentDrawIds].slice(0, 3)
+        collection: [result, ...current.collection],
+        recentDraws: [draw, ...current.recentDraws].slice(0, 3)
       };
     });
     return result;
-  }, [snapshot.tickets]);
+  }, [snapshot.collection, snapshot.tickets]);
 
   const addFriend = useCallback((friendId: string) => {
     setSnapshot((current) =>
@@ -127,12 +137,12 @@ export function MvpStateProvider({ children }: MvpStateProviderProps) {
     () => ({
       ...snapshot,
       interactAndEarn,
-      drawToy,
+      drawCollectible,
       addFriend,
       acceptFriend,
       resetDemo
     }),
-    [snapshot, interactAndEarn, drawToy, addFriend, acceptFriend, resetDemo]
+    [snapshot, interactAndEarn, drawCollectible, addFriend, acceptFriend, resetDemo]
   );
 
   return <MvpStateContext.Provider value={value}>{children}</MvpStateContext.Provider>;

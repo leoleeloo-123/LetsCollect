@@ -21,6 +21,10 @@ assets/models/source/
     model-source-v001.glb
 ```
 
+The matching optimized Web/Mobile exports for all five source models now live
+under `public/models/toys/`. The unicorn runtime assets remain the reference
+pair for the original hero model.
+
 ## Rules
 
 - Keep large source `.glb` files in Git LFS.

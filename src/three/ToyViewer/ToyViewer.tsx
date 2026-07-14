@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { Rotate3D } from "lucide-react";
 import { ToyVisual } from "../../components/toys/ToyVisual";
-import type { Toy } from "../../types/toy";
+import { getToyModel, getToyPalette } from "../../features/toys/catalog";
+import { getAppearanceVariation } from "../../features/toys/generator";
+import type { Collectible } from "../../types/toy";
 import { loadRoomEnvironment, loadToyModel, loadToyViewerRuntime } from "./runtime";
 
 type ToyViewerProps = {
-  toy: Toy;
+  toy: Collectible;
   variant?: "hero" | "stage" | "inspect";
   interactive?: boolean;
   active?: boolean;
@@ -13,19 +15,6 @@ type ToyViewerProps = {
 };
 
 type ViewerStatus = "loading" | "ready" | "error";
-
-const paletteMaterials = {
-  rose: { color: "#ff789e", attenuation: "#8f2346", emissive: "#c83464", glow: "#ff7da5" },
-  mint: { color: "#78d9b7", attenuation: "#145f4b", emissive: "#29936f", glow: "#78e6bf" },
-  honey: { color: "#efbd5f", attenuation: "#85500d", emissive: "#b67a1f", glow: "#ffd279" },
-  ice: { color: "#83d5e8", attenuation: "#2c6b86", emissive: "#3b94b0", glow: "#92e5f5" },
-  emerald: { color: "#24966f", attenuation: "#063e2d", emissive: "#0e6d4d", glow: "#45d89a" },
-  lavender: { color: "#b69add", attenuation: "#58447c", emissive: "#8063aa", glow: "#cbb0f0" }
-} as const;
-
-function getMaterialPalette(palette: string) {
-  return paletteMaterials[palette as keyof typeof paletteMaterials] ?? paletteMaterials.rose;
-}
 
 export function ToyViewer({
   toy,
@@ -39,7 +28,9 @@ export function ToyViewer({
   const [status, setStatus] = useState<ViewerStatus>("loading");
   const [progress, setProgress] = useState(0);
   const [retryKey, setRetryKey] = useState(0);
-  const fallbackModelUrl = toy.assets.modelUrl ?? toy.assets.mobileModelUrl;
+  const modelDefinition = getToyModel(toy.modelId);
+  const palette = getToyPalette(toy.paletteId);
+  const fallbackModelUrl = modelDefinition.assets.modelUrl ?? modelDefinition.assets.mobileModelUrl;
 
   useEffect(() => {
     activeRef.current = active;
@@ -69,8 +60,8 @@ export function ToyViewer({
       const isCompactDevice = window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 760;
       const useLightweightStage = isCompactDevice && variant !== "inspect";
       const resolvedModelUrl = isCompactDevice
-        ? toy.assets.mobileModelUrl ?? availableModelUrl
-        : toy.assets.modelUrl ?? availableModelUrl;
+        ? modelDefinition.assets.mobileModelUrl ?? availableModelUrl
+        : modelDefinition.assets.modelUrl ?? availableModelUrl;
       const [{ THREE }, RoomEnvironment] = await Promise.all([
         loadToyViewerRuntime(),
         useLightweightStage ? Promise.resolve(null) : loadRoomEnvironment()
@@ -80,7 +71,16 @@ export function ToyViewer({
       if (cancelled || !canvasHostRef.current) return;
 
       const currentHost = canvasHostRef.current;
-      const materialPalette = getMaterialPalette(toy.palette);
+      const variation = getAppearanceVariation(toy.appearanceSeed);
+      const transparency = toy.appearance.transparency / 100;
+      const colorDepth = toy.appearance.colorDepth / 100;
+      const hydration = toy.appearance.hydration / 100;
+      const luster = toy.appearance.luster / 100;
+      const glow = toy.appearance.glow / 100;
+      const bodyColor = new THREE.Color(palette.color);
+      bodyColor.offsetHSL(variation.hueShift, -0.12 + colorDepth * 0.15, 0.16 - colorDepth * 0.2);
+      const attenuationColor = new THREE.Color(palette.attenuation);
+      attenuationColor.offsetHSL(variation.hueShift * 0.6, -0.04 + colorDepth * 0.06, 0.08 - colorDepth * 0.1);
       const renderer = new THREE.WebGLRenderer({
         alpha: true,
         antialias: true,
@@ -113,35 +113,37 @@ export function ToyViewer({
       }
 
       const toyGroup = new THREE.Group();
-      toyGroup.position.y = 0.08;
+      toyGroup.position.y = 0.08 + modelDefinition.viewer.yOffset;
       scene.add(toyGroup);
 
+      // V1 maps the fixed five-dimensional value vector to one shared physical
+      // material. Seeded micro-variation changes uniforms only and adds no asset.
       const jadeMaterial = new THREE.MeshPhysicalMaterial({
-        color: new THREE.Color(materialPalette.color),
-        roughness: useLightweightStage ? 0.14 : 0.1,
+        color: bodyColor,
+        roughness: THREE.MathUtils.clamp((useLightweightStage ? 0.22 : 0.18) - hydration * 0.08 - luster * 0.05, 0.045, 0.2),
         metalness: 0,
-        transmission: useLightweightStage ? 0.58 : 0.68,
-        thickness: useLightweightStage ? 3.4 : 4.3,
-        ior: 1.49,
+        transmission: (useLightweightStage ? 0.38 : 0.46) + transparency * (useLightweightStage ? 0.32 : 0.4),
+        thickness: 2.6 + hydration * 2.3,
+        ior: 1.43 + transparency * 0.08,
         transparent: false,
         opacity: 1,
-        clearcoat: 1,
-        clearcoatRoughness: 0.035,
-        attenuationColor: new THREE.Color(materialPalette.attenuation),
-        attenuationDistance: 2.8,
-        emissive: new THREE.Color(materialPalette.emissive),
-        emissiveIntensity: 0.055,
-        specularIntensity: 1,
-        envMapIntensity: useLightweightStage ? 0.7 : 1.45
+        clearcoat: 0.72 + luster * 0.28,
+        clearcoatRoughness: 0.1 - luster * 0.075,
+        attenuationColor,
+        attenuationDistance: (1.1 + transparency * 2.6 + hydration * 0.8) * variation.attenuationScale,
+        emissive: new THREE.Color(palette.emissive),
+        emissiveIntensity: 0.012 + glow * 0.075,
+        specularIntensity: (0.72 + luster * 0.28) * variation.glossScale,
+        envMapIntensity: (useLightweightStage ? 0.5 : 0.95) + luster * 0.5
       });
 
-      scene.add(new THREE.HemisphereLight(0xffffff, materialPalette.attenuation, 2.1));
+      scene.add(new THREE.HemisphereLight(0xffffff, palette.attenuation, 1.9 + hydration * 0.4));
 
-      const keyLight = new THREE.DirectionalLight(0xffffff, 3.1);
+      const keyLight = new THREE.DirectionalLight(0xffffff, 2.6 + luster * 0.9);
       keyLight.position.set(-3.8, 5.1, 4.5);
       scene.add(keyLight);
 
-      const rimLight = new THREE.DirectionalLight(materialPalette.glow, 2.7);
+      const rimLight = new THREE.DirectionalLight(palette.glow, 1.7 + glow * 1.8);
       rimLight.position.set(4.1, 2.5, -3.2);
       scene.add(rimLight);
 
@@ -151,7 +153,9 @@ export function ToyViewer({
         scene.add(fillLight);
       }
 
-      const underGlow = new THREE.PointLight(materialPalette.glow, 3.2, 5.2);
+      const baseUnderGlow = 1.8 + glow * 2.6;
+      const baseEmissive = 0.012 + glow * 0.075;
+      const underGlow = new THREE.PointLight(palette.glow, baseUnderGlow, 5.2);
       underGlow.position.set(0, -1.7, 0.25);
       scene.add(underGlow);
 
@@ -186,9 +190,9 @@ export function ToyViewer({
       const glowRing = new THREE.Mesh(
         new THREE.TorusGeometry(1.42, 0.012, 8, useLightweightStage ? 48 : 96),
         new THREE.MeshBasicMaterial({
-          color: materialPalette.glow,
+          color: palette.glow,
           transparent: true,
-          opacity: 0.38,
+          opacity: 0.16 + glow * 0.34,
           blending: THREE.AdditiveBlending
         })
       );
@@ -239,6 +243,7 @@ export function ToyViewer({
       }
 
       const model = gltf.scene;
+      model.rotation.y = modelDefinition.viewer.rotationY;
       model.traverse((child) => {
         if (!(child instanceof THREE.Mesh)) return;
         child.material = jadeMaterial;
@@ -250,7 +255,7 @@ export function ToyViewer({
       const center = box.getCenter(new THREE.Vector3());
       const size = box.getSize(new THREE.Vector3());
       const targetHeight = variant === "inspect" ? 3.55 : 3.34;
-      const scaleFactor = targetHeight / Math.max(size.y, 0.001);
+      const scaleFactor = (targetHeight * modelDefinition.viewer.scaleMultiplier) / Math.max(size.y, 0.001);
       model.scale.setScalar(scaleFactor);
       model.position.set(-center.x * scaleFactor, -center.y * scaleFactor, -center.z * scaleFactor);
       toyGroup.add(model);
@@ -348,8 +353,8 @@ export function ToyViewer({
         toyGroup.rotation.x = currentRotationX;
         toyGroup.rotation.y = currentRotationY;
         glowRing.rotation.z += delta * 0.16;
-        underGlow.intensity = 3.05 + Math.abs(Math.sin(currentRotationY)) * 0.75;
-        jadeMaterial.emissiveIntensity = 0.05 + Math.abs(Math.sin(currentRotationY)) * 0.035;
+        underGlow.intensity = baseUnderGlow + Math.abs(Math.sin(currentRotationY)) * (0.22 + glow * 0.62);
+        jadeMaterial.emissiveIntensity = baseEmissive + Math.abs(Math.sin(currentRotationY)) * (0.008 + glow * 0.026);
         mixer?.update(delta);
         renderer.render(scene, camera);
         needsRender = false;
@@ -403,7 +408,20 @@ export function ToyViewer({
       cancelled = true;
       disposeViewer();
     };
-  }, [fallbackModelUrl, interactive, retryKey, toy.assets.mobileModelUrl, toy.assets.modelUrl, toy.palette, variant]);
+  }, [
+    fallbackModelUrl,
+    interactive,
+    modelDefinition,
+    palette,
+    retryKey,
+    toy.appearance.colorDepth,
+    toy.appearance.glow,
+    toy.appearance.hydration,
+    toy.appearance.luster,
+    toy.appearance.transparency,
+    toy.appearanceSeed,
+    variant
+  ]);
 
   return (
     <div
@@ -419,7 +437,7 @@ export function ToyViewer({
             <ToyVisual toy={toy} size="large" />
           </div>
           <span className="toy-viewer__spinner" aria-hidden="true" />
-          <strong>正在唤醒独角兽</strong>
+          <strong>正在唤醒{modelDefinition.name}</strong>
           <span>{progress > 0 ? `${progress}%` : "准备 3D 场景"}</span>
         </div>
       ) : null}

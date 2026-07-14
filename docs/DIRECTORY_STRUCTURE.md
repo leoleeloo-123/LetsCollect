@@ -19,11 +19,12 @@ C:\Users\licunhongyu\Desktop\LetsCollect
 |-- docs/
 |-- legacy/hero-prototype/
 |-- playbooks/
-|   `-- model-asset-pipeline.md
+|   |-- model-asset-pipeline.md
+|   `-- collectible-generation-architecture.md
 |-- public/
 |   |-- draco/
 |   `-- models/toys/
-|       `-- jelly-jade-unicorn/model-web-v001.glb
+|       `-- jelly-jade-*/model-{web,mobile}-v*.glb
 |-- scripts/
 |-- src/
 |-- supabase/
@@ -46,12 +47,14 @@ src/
 |-- app/
 |-- components/
 |   |-- cards/
+|   |-- collectibles/
 |   |-- feedback/
 |   |-- layout/
 |   |-- three-viewer/
 |   `-- ui/
 |-- data/mock/
 |-- features/
+|   `-- toys/
 |-- pages/
 |   |-- auth/
 |   |-- collection/
@@ -75,10 +78,11 @@ src/
 ## Migration Map
 
 - `legacy/hero-prototype/` preserves the old HTML prototype as reference only.
-- `public/models/toys/jelly-jade-unicorn/model-web-v001.glb` is the current production runtime model.
-- `assets/models/source/jelly-jade-kitty/model-source-v001.glb` is a new source model waiting for optimization.
+- `public/models/toys/jelly-jade-*/` contains the six active runtime model pairs.
+- `assets/models/source/jelly-jade-*/model-source-v001.glb` contains the source assets tracked by Git LFS.
 - `src/three/ToyViewer/` owns Three.js rendering, loading, interaction, and disposal.
-- `src/data/mock/toys.ts` owns current model URLs and toy variants.
+- `src/features/toys/catalog.ts` owns model URLs, palettes, and transparency grades.
+- `src/features/toys/generator.ts` owns deterministic V1 collectible generation.
 
 ## Directory Responsibilities
 

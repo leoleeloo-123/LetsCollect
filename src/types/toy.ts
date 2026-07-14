@@ -1,28 +1,66 @@
 export type RarityCode = "common" | "rare" | "epic" | "legendary" | "mythic";
 
-export type ToyBaseType = "bear" | "bunny" | "cat" | "blob" | "unicorn";
+export type ToyModelId = "unicorn" | "kitty" | "bunny" | "bird" | "doggy" | "karpy";
+export type ToyFallbackShape = "unicorn" | "cat" | "bunny" | "bird" | "dog" | "blob";
+export type ToyPaletteId = "rose" | "mint" | "honey" | "ice" | "emerald" | "lavender" | "moon" | "ink";
 
-export type ToyAssets = {
-  thumbnailUrl?: string;
-  posterUrl?: string;
-  modelUrl?: string;
-  mobileModelUrl?: string;
+export type ToyModelDefinition = {
+  id: ToyModelId;
+  slug: string;
+  name: string;
+  fallbackShape: ToyFallbackShape;
+  assets: {
+    modelUrl: string;
+    mobileModelUrl: string;
+  };
+  viewer: {
+    scaleMultiplier: number;
+    yOffset: number;
+    rotationY: number;
+  };
 };
 
-export type Toy = {
+export type ToyPaletteDefinition = {
+  id: ToyPaletteId;
+  name: string;
+  color: string;
+  attenuation: string;
+  emissive: string;
+  glow: string;
+};
+
+export type AppearanceVector = {
+  transparency: number;
+  colorDepth: number;
+  hydration: number;
+  luster: number;
+  glow: number;
+};
+
+export type Collectible = {
   id: string;
-  slug: string;
+  publicCode: string;
+  modelId: ToyModelId;
+  paletteId: ToyPaletteId;
   name: string;
   seriesId: string;
   seriesName: string;
   rarity: RarityCode;
-  baseType: ToyBaseType;
+  qualityScore: number;
+  transparencyGrade: number;
   jadeGrade: string;
-  colorName: string;
-  palette: string;
+  appearanceSeed: number;
+  generationVersion: number;
+  appearance: AppearanceVector;
+  appearanceSignature: string;
   shortDescription: string;
-  drawWeight: number;
-  assets: ToyAssets;
+  createdAt: string;
+};
+
+export type DrawRecord = {
+  id: string;
+  collectibleId: string;
+  createdAt: string;
 };
 
 export type SocialActivity = {

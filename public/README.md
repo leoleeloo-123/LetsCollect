@@ -5,13 +5,16 @@ Deployable static assets live here.
 Only place assets here when the browser must request them at runtime. Raw or
 high-quality source files belong in `assets/models/source/`.
 
-The current hero GLBs live at:
+The current runtime model pool contains Web and Mobile GLBs for:
 
-`public/models/toys/jelly-jade-unicorn/model-web-v001.glb`
-
-`public/models/toys/jelly-jade-unicorn/model-mobile-v001.glb`
-
-Planned:
+```text
+jelly-jade-unicorn
+jelly-jade-kitty
+jelly-jade-bunny
+jelly-jade-bird
+jelly-jade-doggy
+jelly-jade-karpy
+```
 
 ```text
 public/models/toys/
@@ -28,3 +31,6 @@ public/models/toys/{toy-slug}/model-web-v001.glb
 public/models/toys/{toy-slug}/model-mobile-v001.glb
 public/models/toys/{toy-slug}/model-preview-v001.glb
 ```
+
+Model URLs are registered in `src/features/toys/catalog.ts`. Do not hard-code
+new model paths in pages or viewer components.
