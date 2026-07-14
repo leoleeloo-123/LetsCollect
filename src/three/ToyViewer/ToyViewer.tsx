@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { Rotate3D } from "lucide-react";
-import { ToyVisual } from "../../components/toys/ToyVisual";
+import { ToyThumbnail } from "../../components/toys/ToyThumbnail";
 import { getToyModel, getToyPalette } from "../../features/toys/catalog";
-import { getAppearanceVariation } from "../../features/toys/generator";
 import type { Collectible } from "../../types/toy";
+import { createJadeMaterial } from "../material/createJadeMaterial";
 import { loadRoomEnvironment, loadToyModel, loadToyViewerRuntime } from "./runtime";
 
 type ToyViewerProps = {
@@ -71,16 +71,9 @@ export function ToyViewer({
       if (cancelled || !canvasHostRef.current) return;
 
       const currentHost = canvasHostRef.current;
-      const variation = getAppearanceVariation(toy.appearanceSeed);
-      const transparency = toy.appearance.transparency / 100;
-      const colorDepth = toy.appearance.colorDepth / 100;
       const hydration = toy.appearance.hydration / 100;
       const luster = toy.appearance.luster / 100;
       const glow = toy.appearance.glow / 100;
-      const bodyColor = new THREE.Color(palette.color);
-      bodyColor.offsetHSL(variation.hueShift, -0.12 + colorDepth * 0.15, 0.16 - colorDepth * 0.2);
-      const attenuationColor = new THREE.Color(palette.attenuation);
-      attenuationColor.offsetHSL(variation.hueShift * 0.6, -0.04 + colorDepth * 0.06, 0.08 - colorDepth * 0.1);
       const renderer = new THREE.WebGLRenderer({
         alpha: true,
         antialias: true,
@@ -118,23 +111,8 @@ export function ToyViewer({
 
       // V1 maps the fixed five-dimensional value vector to one shared physical
       // material. Seeded micro-variation changes uniforms only and adds no asset.
-      const jadeMaterial = new THREE.MeshPhysicalMaterial({
-        color: bodyColor,
-        roughness: THREE.MathUtils.clamp((useLightweightStage ? 0.22 : 0.18) - hydration * 0.08 - luster * 0.05, 0.045, 0.2),
-        metalness: 0,
-        transmission: (useLightweightStage ? 0.38 : 0.46) + transparency * (useLightweightStage ? 0.32 : 0.4),
-        thickness: 2.6 + hydration * 2.3,
-        ior: 1.43 + transparency * 0.08,
-        transparent: false,
-        opacity: 1,
-        clearcoat: 0.72 + luster * 0.28,
-        clearcoatRoughness: 0.1 - luster * 0.075,
-        attenuationColor,
-        attenuationDistance: (1.1 + transparency * 2.6 + hydration * 0.8) * variation.attenuationScale,
-        emissive: new THREE.Color(palette.emissive),
-        emissiveIntensity: 0.012 + glow * 0.075,
-        specularIntensity: (0.72 + luster * 0.28) * variation.glossScale,
-        envMapIntensity: (useLightweightStage ? 0.5 : 0.95) + luster * 0.5
+      const { material: jadeMaterial } = createJadeMaterial(THREE, toy, {
+        lightweight: useLightweightStage
       });
 
       scene.add(new THREE.HemisphereLight(0xffffff, palette.attenuation, 1.9 + hydration * 0.4));
@@ -434,7 +412,7 @@ export function ToyViewer({
       {status === "loading" ? (
         <div className="toy-viewer__status" role="status">
           <div className="toy-viewer__poster" aria-hidden="true">
-            <ToyVisual toy={toy} size="large" />
+            <ToyThumbnail toy={toy} size="large" cacheOnly />
           </div>
           <span className="toy-viewer__spinner" aria-hidden="true" />
           <strong>正在唤醒{modelDefinition.name}</strong>

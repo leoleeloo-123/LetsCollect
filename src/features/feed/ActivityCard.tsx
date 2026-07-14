@@ -2,7 +2,7 @@ import { Heart, TicketCheck } from "lucide-react";
 import { useMvpState } from "../../app/MvpState";
 import { toyById } from "../../data/mock/toys";
 import type { SocialActivity } from "../../types/toy";
-import { ToyVisual } from "../../components/toys/ToyVisual";
+import { ToyThumbnail } from "../../components/toys/ToyThumbnail";
 
 type ActivityCardProps = {
   activity: SocialActivity;
@@ -28,7 +28,7 @@ export function ActivityCard({ activity }: ActivityCardProps) {
           <span>{activity.timeLabel}</span>
         </div>
         <div className="activity-card__toy">
-          <ToyVisual toy={toy} size="small" />
+          <ToyThumbnail toy={toy} size="small" />
           <div>
             <strong>{toy.name}</strong>
             <span>{toy.seriesName}</span>

@@ -50,6 +50,17 @@ public/models/toys/jelly-jade-unicorn/model-web-v001.glb
 - Keep mobile model variants lighter than desktop.
 - Use poster images for catalog and first-paint placeholders.
 
+## List Thumbnail Strategy
+
+Collection, feed, friend, and draw-history lists use WebP stills rendered from
+the real Mobile GLB. They do not mount a live `ToyViewer` per item. The first
+visible render is queued and persisted in IndexedDB; later page loads use the
+cached image. `ToyViewer` and the thumbnail renderer share the same jade
+material mapping.
+
+See `playbooks/toy-thumbnail-rendering.md` for cache versioning, performance
+rules, and the future Supabase Storage boundary.
+
 The standardized model workflow lives in:
 
 `playbooks/model-asset-pipeline.md`

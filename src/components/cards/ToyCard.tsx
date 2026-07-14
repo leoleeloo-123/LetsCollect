@@ -1,6 +1,6 @@
 import { rarityLabels } from "../../features/toys/catalog";
 import type { Collectible } from "../../types/toy";
-import { ToyVisual } from "../toys/ToyVisual";
+import { ToyThumbnail } from "../toys/ToyThumbnail";
 
 type ToyCardProps = {
   toy: Collectible;
@@ -11,7 +11,7 @@ export function ToyCard({ toy, onSelect }: ToyCardProps) {
   const content = (
     <>
       <div className={`toy-card__preview toy-card__preview--${toy.rarity}`}>
-        <ToyVisual toy={toy} />
+        <ToyThumbnail toy={toy} />
         <span className="toy-card__score" aria-label={`综合品质 ${toy.qualityScore} 分`}>
           {toy.qualityScore}
         </span>

@@ -316,7 +316,85 @@
   background: #f2f5f3;
 }
 
-/* Parameterized CSS toy proxy. Real GLB rendering will replace only this visual boundary. */
+/* Cached still rendered from the real GLB. One image replaces many live canvases. */
+.toy-thumbnail {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  flex: 0 0 auto;
+  overflow: hidden;
+  place-items: center;
+  background: rgba(237, 244, 240, 0.72);
+  isolation: isolate;
+}
+
+.toy-thumbnail--small {
+  width: 64px;
+  height: 64px;
+  border-radius: 6px;
+}
+
+.toy-thumbnail--card {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.toy-thumbnail--large {
+  width: min(250px, 66vw);
+  aspect-ratio: 1;
+  border-radius: var(--radius-card);
+}
+
+.toy-thumbnail img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+  animation: thumbnail-arrive 240ms ease-out both;
+}
+
+.toy-thumbnail__placeholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  overflow: hidden;
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 44%, rgba(255,255,255,0.86), transparent 22%),
+    linear-gradient(115deg, #e5eee9 18%, #f7fbf9 45%, #e5eee9 72%);
+  background-size: 100% 100%, 220% 100%;
+  animation: thumbnail-loading 1.15s ease-in-out infinite;
+}
+
+.toy-thumbnail__placeholder > span {
+  width: 38%;
+  aspect-ratio: 0.86;
+  border: 1px solid rgba(106, 139, 127, 0.14);
+  border-radius: 44% 44% 40% 40%;
+  background: rgba(158, 190, 178, 0.17);
+  filter: blur(1px);
+}
+
+.toy-thumbnail[data-status="error"] .toy-thumbnail__placeholder {
+  animation: none;
+  opacity: 0.72;
+}
+
+@keyframes thumbnail-loading {
+  0% { background-position: 0 0, 100% 0; }
+  100% { background-position: 0 0, -100% 0; }
+}
+
+@keyframes thumbnail-arrive {
+  from { opacity: 0; transform: scale(1.025); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Legacy CSS proxy retained only as an emergency non-WebGL reference. */
 .toy-visual {
   --toy-deep: #b93f5c;
   --toy-mid: #ee7991;
@@ -607,7 +685,8 @@
 .toy-card__preview {
   position: relative;
   display: grid;
-  min-height: 156px;
+  min-height: 0;
+  aspect-ratio: 1;
   place-items: center;
   background: #edf4f0;
 }
@@ -619,6 +698,7 @@
 
 .toy-card__score {
   position: absolute;
+  z-index: 2;
   right: 8px;
   top: 8px;
   display: grid;
@@ -718,7 +798,7 @@
     0 0 0 42px rgba(22,133,107,0.06);
 }
 
-.draw-stage--active .toy-visual,
+.draw-stage--active .toy-thumbnail,
 .draw-stage--active .toy-viewer {
   animation: draw-pulse 850ms ease-in-out;
 }
@@ -819,7 +899,7 @@
   gap: 8px;
 }
 
-.recent-draws .toy-visual {
+.recent-draws .toy-thumbnail {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
   background: var(--color-surface);
@@ -1183,7 +1263,7 @@
   animation: viewer-poster-breathe 1.8s ease-in-out infinite alternate;
 }
 
-.toy-viewer__poster .toy-visual {
+.toy-viewer__poster .toy-thumbnail {
   transform: scale(0.82);
 }
 
@@ -1295,7 +1375,7 @@
   background: rgba(255,255,255,0.48);
 }
 
-.friend-row > .toy-visual {
+.friend-row > .toy-thumbnail {
   display: none;
 }
 
@@ -1471,7 +1551,7 @@
     grid-template-columns: auto minmax(0, 1fr) auto auto;
   }
 
-  .friend-row > .toy-visual {
+  .friend-row > .toy-thumbnail {
     display: block;
   }
 }

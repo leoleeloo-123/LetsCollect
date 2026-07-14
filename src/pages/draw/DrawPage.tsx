@@ -4,7 +4,7 @@ import { DRAW_COST, useMvpState } from "../../app/MvpState";
 import { routes } from "../../app/routes";
 import { ButtonLink } from "../../components/ui/ButtonLink";
 import { PageHeader } from "../../components/ui/PageHeader";
-import { ToyVisual } from "../../components/toys/ToyVisual";
+import { ToyThumbnail } from "../../components/toys/ToyThumbnail";
 import { featuredToy } from "../../data/mock/toys";
 import { DrawReveal } from "../../features/draw/DrawReveal";
 import { getToyModel, getToyPalette, rarityLabels } from "../../features/toys/catalog";
@@ -92,7 +92,7 @@ export function DrawPage() {
           <div className="recent-draws">
             {recentDraws.map((draw) => {
               const collectible = collectionById.get(draw.collectibleId);
-              return collectible ? <ToyVisual key={draw.id} toy={collectible} size="small" /> : null;
+              return collectible ? <ToyThumbnail key={draw.id} toy={collectible} size="small" /> : null;
             })}
           </div>
         </section>

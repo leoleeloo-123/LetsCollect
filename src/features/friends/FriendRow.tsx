@@ -1,7 +1,7 @@
 import { Check, UserPlus } from "lucide-react";
 import { toyById } from "../../data/mock/toys";
 import type { FriendProfile } from "../../types/toy";
-import { ToyVisual } from "../../components/toys/ToyVisual";
+import { ToyThumbnail } from "../../components/toys/ToyThumbnail";
 
 type FriendRowProps = {
   friend: FriendProfile;
@@ -19,7 +19,7 @@ export function FriendRow({ friend, status, onAction }: FriendRowProps) {
         <strong>{friend.name}</strong>
         <span>{friend.handle} · {friend.collectionCount} 件藏品</span>
       </div>
-      {toy ? <ToyVisual toy={toy} size="small" /> : null}
+      {toy ? <ToyThumbnail toy={toy} size="small" /> : null}
       {status === "friend" ? (
         <span className="friend-row__status"><Check size={15} /> 好友</span>
       ) : (
