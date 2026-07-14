@@ -1,6 +1,9 @@
 # Public Assets
 
-Future deployable static assets live here.
+Deployable static assets live here.
+
+Only place assets here when the browser must request them at runtime. Raw or
+high-quality source files belong in `assets/models/source/`.
 
 The current hero GLB lives at:
 
@@ -14,4 +17,12 @@ public/images/toys/
 public/images/series/
 public/icons/
 public/favicon/
+```
+
+Model convention:
+
+```text
+public/models/toys/{toy-slug}/model-web-v001.glb
+public/models/toys/{toy-slug}/model-mobile-v001.glb
+public/models/toys/{toy-slug}/model-preview-v001.glb
 ```

@@ -6,6 +6,10 @@ Current deployed GLB:
 
 `public/models/toys/jelly-jade-unicorn/model-web-v001.glb`
 
+Current source-only model waiting for optimization:
+
+`assets/models/source/jelly-jade-kitty/model-source-v001.glb`
+
 Current load path in page:
 
 ```js
@@ -44,13 +48,18 @@ public/models/toys/jelly-jade-unicorn/model-web-v001.glb
 
 ## Asset Rules
 
-- Do not commit uncompressed source GLB files.
-- Keep original source files outside Git or in ignored paths.
+- Keep source GLB files in `assets/models/source/` and track them with Git LFS.
+- Do not reference source models from React or Three.js code.
+- Only optimized runtime GLBs should live in `public/models/toys/`.
 - Prefer Draco or Meshopt geometry compression.
 - Consider KTX2 or Basis for texture-heavy models.
 - Remove unused nodes, cameras, lights, animations, and materials before export.
 - Keep mobile model variants lighter than desktop.
 - Use poster images for catalog and first-paint placeholders.
+
+The standardized model workflow lives in:
+
+`playbooks/model-asset-pipeline.md`
 
 ## Viewer Extraction Requirements
 
@@ -75,6 +84,9 @@ The future ThreeViewer should support:
 ## Deployment Notes
 
 GLB files must be deployed with the site because the browser requests them at runtime. Vercel currently adds long cache headers for `*.glb` through `vercel.json`.
+
+Source GLB files do not need to be deployed. They can stay under `assets/`,
+where they are available to the repo but not served as public URLs.
 
 When replacing a model, update:
 

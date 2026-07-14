@@ -8,6 +8,8 @@ Let's Collect is an early-stage mobile-first 3D collectible toy platform. The cu
 - Current entry: React + Vite application in `src/`
 - Legacy prototype: `legacy/hero-prototype/hero-jelly-jade-toy.html`
 - Production model: `public/models/toys/jelly-jade-unicorn/model-web-v001.glb`
+- Source model assets: `assets/models/source/`
+- Model pipeline playbook: `playbooks/model-asset-pipeline.md`
 - Supabase project: `fpfmtmykncuknwlnakiv`
 - Database migrations: `supabase/migrations/`
 
@@ -23,3 +25,8 @@ Copy `.env.example` to `.env.local` when switching Supabase projects. The checke
 Anonymous Auth must remain enabled in Supabase under **Authentication > Sign In / Providers > Allow anonymous sign-ins**. First-time visitors create a repeatable display name and a fixed avatar; Supabase Auth supplies the internal UUID and `profiles.public_code` supplies the unique shareable identity.
 
 Start with [`docs/START_HERE.md`](docs/START_HERE.md) before larger architecture changes. The old HTML remains a visual and 3D behavior reference only; product work belongs in `src/`.
+
+For new toy GLB assets, keep source files in `assets/models/source/{toy-slug}/`
+and export compressed frontend files into `public/models/toys/{toy-slug}/`.
+Follow [`playbooks/model-asset-pipeline.md`](playbooks/model-asset-pipeline.md)
+before wiring a model into the draw flow.
