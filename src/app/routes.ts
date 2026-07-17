@@ -6,5 +6,6 @@ export const routes = {
   profile: "/profile",
   onboarding: "/onboarding",
   login: "/login",
-  register: "/register"
+  register: "/register",
+  materialLab: "/material-lab"
 } as const;

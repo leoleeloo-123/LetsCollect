@@ -3,6 +3,7 @@ export type RarityCode = "common" | "rare" | "epic" | "legendary" | "mythic";
 export type ToyModelId = "unicorn" | "kitty" | "bunny" | "bird" | "doggy" | "karpy";
 export type ToyFallbackShape = "unicorn" | "cat" | "bunny" | "bird" | "dog" | "blob";
 export type ToyPaletteId = "rose" | "mint" | "honey" | "ice" | "emerald" | "lavender" | "moon" | "ink";
+export type ToyMaterialId = "jade" | "plastic" | "wood" | "iron" | "copper" | "silver" | "gold" | "crystal" | "diamond";
 
 export type ToyModelDefinition = {
   id: ToyModelId;
@@ -37,6 +38,14 @@ export type AppearanceVector = {
   glow: number;
 };
 
+export type MaterialTraits = {
+  craftsmanship: number;
+  finish: number;
+  purity: number;
+  character: number;
+  brilliance: number;
+};
+
 export type Collectible = {
   id: string;
   publicCode: string;
@@ -47,8 +56,11 @@ export type Collectible = {
   seriesName: string;
   rarity: RarityCode;
   qualityScore: number;
-  transparencyGrade: number;
-  jadeGrade: string;
+  materialId: ToyMaterialId;
+  materialGrade: string;
+  materialTraits: MaterialTraits;
+  transparencyGrade?: number;
+  jadeGrade?: string;
   appearanceSeed: number;
   generationVersion: number;
   appearance: AppearanceVector;

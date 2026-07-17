@@ -18,12 +18,14 @@ export function ToyVisual({ toy, size = "medium" }: ToyVisualProps) {
   const style: ToyVisualStyle = {
     "--toy-saturation": 0.78 + toy.appearance.colorDepth * 0.006,
     "--toy-brightness": 1.1 - toy.appearance.colorDepth * 0.002,
-    "--toy-body-opacity": 0.72 + toy.appearance.transparency * 0.0025
+    "--toy-body-opacity": toy.materialId === "jade"
+      ? 0.72 + toy.appearance.transparency * 0.0025
+      : ["crystal", "diamond"].includes(toy.materialId) ? 0.84 : 1
   };
 
   return (
     <div
-      className={`toy-visual toy-visual--${size} toy-visual--${model.fallbackShape} toy-visual--${toy.paletteId}`}
+      className={`toy-visual toy-visual--${size} toy-visual--${model.fallbackShape} toy-visual--${toy.paletteId} toy-visual--material-${toy.materialId}`}
       role="img"
       aria-label={toy.name}
       style={style}

@@ -21,7 +21,7 @@ The shared `ToyViewer` uses:
 - `GLTFLoader`
 - `DRACOLoader`
 - locally deployed Draco decoder files
-- `MeshPhysicalMaterial` driven by the collectible five-dimensional vector
+- versioned `MeshPhysicalMaterial` creation through `createToyMaterial`
 
 ## Naming Direction
 
@@ -55,8 +55,8 @@ public/models/toys/jelly-jade-unicorn/model-web-v001.glb
 Collection, feed, friend, and draw-history lists use WebP stills rendered from
 the real Mobile GLB. They do not mount a live `ToyViewer` per item. The first
 visible render is queued and persisted in IndexedDB; later page loads use the
-cached image. `ToyViewer` and the thumbnail renderer share the same jade
-material mapping.
+cached image. `ToyViewer` and the thumbnail renderer share the same versioned
+material factory for legacy jade and V2 materials.
 
 See `playbooks/toy-thumbnail-rendering.md` for cache versioning, performance
 rules, and the future Supabase Storage boundary.
@@ -84,7 +84,7 @@ The shared ThreeViewer supports or should continue to support:
 - WebGL unavailable fallback.
 - Model switching.
 - Resource disposal for geometry, material, texture, renderer, and event listeners.
-- Five-dimensional material mapping without creating model variants.
+- Versioned jade and V2 material mapping without duplicating base model geometry.
 
 ## Deployment Notes
 

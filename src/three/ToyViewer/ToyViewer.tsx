@@ -3,7 +3,10 @@ import { Rotate3D } from "lucide-react";
 import { ToyThumbnail } from "../../components/toys/ToyThumbnail";
 import { getToyModel, getToyPalette } from "../../features/toys/catalog";
 import type { Collectible } from "../../types/toy";
-import { createJadeMaterial } from "../material/createJadeMaterial";
+import {
+  createToyMaterial,
+  getCollectibleRenderTraits
+} from "../material/createToyMaterial";
 import { loadRoomEnvironment, loadToyModel, loadToyViewerRuntime } from "./runtime";
 
 type ToyViewerProps = {
@@ -59,21 +62,22 @@ export function ToyViewer({
 
       const isCompactDevice = window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 760;
       const useLightweightStage = isCompactDevice && variant !== "inspect";
+      const isRefractiveMaterial = toy.materialId === "crystal" || toy.materialId === "diamond";
+      const materialLightScale = isRefractiveMaterial ? 0.58 : 1;
       const resolvedModelUrl = isCompactDevice
         ? modelDefinition.assets.mobileModelUrl ?? availableModelUrl
         : modelDefinition.assets.modelUrl ?? availableModelUrl;
+      const needsEnvironment = !useLightweightStage || toy.materialId !== "jade";
       const [{ THREE }, RoomEnvironment] = await Promise.all([
         loadToyViewerRuntime(),
-        useLightweightStage ? Promise.resolve(null) : loadRoomEnvironment()
+        needsEnvironment ? loadRoomEnvironment() : Promise.resolve(null)
       ]);
       recordTiming("modules-ready");
 
       if (cancelled || !canvasHostRef.current) return;
 
       const currentHost = canvasHostRef.current;
-      const hydration = toy.appearance.hydration / 100;
-      const luster = toy.appearance.luster / 100;
-      const glow = toy.appearance.glow / 100;
+      const { hydration, luster, glow } = getCollectibleRenderTraits(toy);
       const renderer = new THREE.WebGLRenderer({
         alpha: true,
         antialias: true,
@@ -84,7 +88,7 @@ export function ToyViewer({
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, initialPixelRatioCap));
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      renderer.toneMappingExposure = 1.12;
+      renderer.toneMappingExposure = isRefractiveMaterial ? 0.88 : 1.12;
       renderer.domElement.className = "toy-viewer__canvas";
       renderer.domElement.setAttribute("aria-hidden", "true");
       renderer.domElement.dataset.modelUrl = resolvedModelUrl;
@@ -109,24 +113,24 @@ export function ToyViewer({
       toyGroup.position.y = 0.08 + modelDefinition.viewer.yOffset;
       scene.add(toyGroup);
 
-      // V1 maps the fixed five-dimensional value vector to one shared physical
-      // material. Seeded micro-variation changes uniforms only and adds no asset.
-      const { material: jadeMaterial } = createJadeMaterial(THREE, toy, {
+      // V1 jade and V2 materials share one version-aware factory. Seeded
+      // variation changes uniforms only and adds no per-collectible asset.
+      const { material: toyMaterial } = createToyMaterial(THREE, toy, {
         lightweight: useLightweightStage
       });
 
-      scene.add(new THREE.HemisphereLight(0xffffff, palette.attenuation, 1.9 + hydration * 0.4));
+      scene.add(new THREE.HemisphereLight(0xffffff, palette.attenuation, (1.9 + hydration * 0.4) * materialLightScale));
 
-      const keyLight = new THREE.DirectionalLight(0xffffff, 2.6 + luster * 0.9);
+      const keyLight = new THREE.DirectionalLight(0xffffff, (2.6 + luster * 0.9) * materialLightScale);
       keyLight.position.set(-3.8, 5.1, 4.5);
       scene.add(keyLight);
 
-      const rimLight = new THREE.DirectionalLight(palette.glow, 1.7 + glow * 1.8);
+      const rimLight = new THREE.DirectionalLight(palette.glow, (1.7 + glow * 1.8) * materialLightScale);
       rimLight.position.set(4.1, 2.5, -3.2);
       scene.add(rimLight);
 
       if (!useLightweightStage) {
-        const fillLight = new THREE.PointLight(0xffffff, 1.05, 9);
+        const fillLight = new THREE.PointLight(0xffffff, 1.05 * materialLightScale, 9);
         fillLight.position.set(0, 2.1, 3.5);
         scene.add(fillLight);
       }
@@ -193,7 +197,7 @@ export function ToyViewer({
       function disposeStaticResources() {
         if (staticResourcesDisposed) return;
         staticResourcesDisposed = true;
-        jadeMaterial.dispose();
+        toyMaterial.dispose();
         environmentTexture?.dispose();
         pedestal.geometry.dispose();
         (pedestal.material as import("three").Material).dispose();
@@ -224,7 +228,7 @@ export function ToyViewer({
       model.rotation.y = modelDefinition.viewer.rotationY;
       model.traverse((child) => {
         if (!(child instanceof THREE.Mesh)) return;
-        child.material = jadeMaterial;
+        child.material = toyMaterial;
         child.castShadow = false;
         child.receiveShadow = false;
       });
@@ -332,7 +336,7 @@ export function ToyViewer({
         toyGroup.rotation.y = currentRotationY;
         glowRing.rotation.z += delta * 0.16;
         underGlow.intensity = baseUnderGlow + Math.abs(Math.sin(currentRotationY)) * (0.22 + glow * 0.62);
-        jadeMaterial.emissiveIntensity = baseEmissive + Math.abs(Math.sin(currentRotationY)) * (0.008 + glow * 0.026);
+        toyMaterial.emissiveIntensity = baseEmissive + Math.abs(Math.sin(currentRotationY)) * (0.008 + glow * 0.026);
         mixer?.update(delta);
         renderer.render(scene, camera);
         needsRender = false;
@@ -397,6 +401,12 @@ export function ToyViewer({
     toy.appearance.hydration,
     toy.appearance.luster,
     toy.appearance.transparency,
+    toy.materialId,
+    toy.materialTraits.brilliance,
+    toy.materialTraits.character,
+    toy.materialTraits.craftsmanship,
+    toy.materialTraits.finish,
+    toy.materialTraits.purity,
     toy.appearanceSeed,
     variant
   ]);

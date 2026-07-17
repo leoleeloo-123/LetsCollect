@@ -3,6 +3,8 @@ import { useEffect } from "react";
 import { AppearanceVector } from "../../components/collectibles/AppearanceVector";
 import { ToyViewerPanel } from "../../components/three-viewer/ToyViewerPanel";
 import { getToyModel, getToyPalette, rarityLabels } from "../toys/catalog";
+import { getCollectibleGradeLabel } from "../toys/compatibility";
+import { getToyMaterial } from "../toys/materialCatalog";
 import type { Collectible } from "../../types/toy";
 
 type ToyDetailSheetProps = {
@@ -13,6 +15,8 @@ type ToyDetailSheetProps = {
 export function ToyDetailSheet({ toy, onClose }: ToyDetailSheetProps) {
   const model = getToyModel(toy.modelId);
   const palette = getToyPalette(toy.paletteId);
+  const material = getToyMaterial(toy.materialId);
+  const grade = getCollectibleGradeLabel(toy);
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
@@ -55,8 +59,9 @@ export function ToyDetailSheet({ toy, onClose }: ToyDetailSheetProps) {
             <AppearanceVector collectible={toy} />
             <dl className="metadata-list">
               <div><dt>造型</dt><dd>{model.name}</dd></div>
-              <div><dt>颜色</dt><dd>{palette.name}</dd></div>
-              <div><dt>通透档位</dt><dd>T{toy.transparencyGrade} · {toy.jadeGrade}</dd></div>
+              <div><dt>材质</dt><dd>{material.name}</dd></div>
+              <div><dt>氛围色</dt><dd>{palette.name}</dd></div>
+              <div><dt>{toy.materialId === "jade" ? "通透档位" : "品相"}</dt><dd>{toy.materialId === "jade" ? ["T", toy.transparencyGrade ?? "-", " · ", grade].join("") : grade}</dd></div>
               <div><dt>外观种子</dt><dd>{toy.appearanceSeed}</dd></div>
               <div><dt>生成规则</dt><dd>V{toy.generationVersion}</dd></div>
             </dl>

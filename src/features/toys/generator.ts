@@ -1,21 +1,21 @@
-import type { AppearanceVector, Collectible, RarityCode, ToyModelId, ToyPaletteId } from "../../types/toy";
+import type {
+  AppearanceVector,
+  Collectible,
+  MaterialTraits,
+  RarityCode,
+  ToyMaterialId,
+  ToyModelId,
+  ToyPaletteId
+} from "../../types/toy";
+import { getToyModel, getToyPalette, toyModels, toyPalettes } from "./catalog";
 import {
-  getToyModel,
-  getToyPalette,
-  toyModels,
-  toyPalettes,
-  transparencyGrades
-} from "./catalog";
+  drawableMaterials,
+  getMaterialGrade,
+  getToyMaterial,
+  materialTraitWeights
+} from "./materialCatalog";
 
-export const GENERATION_VERSION = 1;
-
-export const appearanceWeights: Record<keyof AppearanceVector, number> = {
-  transparency: 0.35,
-  colorDepth: 0.2,
-  hydration: 0.18,
-  luster: 0.17,
-  glow: 0.1
-};
+export const GENERATION_VERSION = 2;
 
 type GenerateCollectibleOptions = {
   seed?: number;
@@ -23,6 +23,7 @@ type GenerateCollectibleOptions = {
   publicCode?: string;
   modelId?: ToyModelId;
   paletteId?: ToyPaletteId;
+  materialId?: Exclude<ToyMaterialId, "jade">;
   createdAt?: string;
 };
 
@@ -51,13 +52,34 @@ function clampScore(value: number) {
   return Math.max(1, Math.min(100, Math.round(value)));
 }
 
-function chooseTransparencyGrade(roll: number) {
+function chooseMaterial(roll: number) {
   let cursor = roll * 100;
-  for (const grade of transparencyGrades) {
-    cursor -= grade.probability;
-    if (cursor <= 0) return grade;
+  for (const material of drawableMaterials) {
+    cursor -= material.probability;
+    if (cursor <= 0) return material;
   }
-  return transparencyGrades[transparencyGrades.length - 1];
+  return drawableMaterials[drawableMaterials.length - 1];
+}
+
+function createMaterialTraits(rolls: number[]): MaterialTraits {
+  const qualityTendency = 24 + ((rolls[3] + rolls[4]) / 2) * 52;
+  return {
+    craftsmanship: clampScore(qualityTendency + (rolls[5] - 0.5) * 28 + 5),
+    finish: clampScore(qualityTendency + (rolls[6] - 0.5) * 32 + 2),
+    purity: clampScore(qualityTendency + (rolls[7] - 0.5) * 34),
+    character: clampScore(qualityTendency + (rolls[8] - 0.5) * 38),
+    brilliance: clampScore(qualityTendency + (rolls[9] - 0.5) * 36 + 1)
+  };
+}
+
+export function getMaterialCraftScore(traits: MaterialTraits) {
+  return Math.round(
+    traits.craftsmanship * materialTraitWeights.craftsmanship
+      + traits.finish * materialTraitWeights.finish
+      + traits.purity * materialTraitWeights.purity
+      + traits.character * materialTraitWeights.character
+      + traits.brilliance * materialTraitWeights.brilliance
+  );
 }
 
 export function getRarityForQuality(score: number): RarityCode {
@@ -77,43 +99,50 @@ export function getAppearanceVariation(seed: number) {
   };
 }
 
+function createCompatibilityAppearance(
+  materialId: Exclude<ToyMaterialId, "jade">,
+  traits: MaterialTraits
+): AppearanceVector {
+  const isMineral = materialId === "crystal" || materialId === "diamond";
+  return {
+    transparency: isMineral
+      ? traits.purity
+      : materialId === "plastic"
+        ? clampScore(traits.purity * 0.45)
+        : 1,
+    colorDepth: traits.character,
+    hydration: traits.finish,
+    luster: traits.brilliance,
+    glow: clampScore(traits.brilliance * (isMineral ? 0.72 : 0.34))
+  };
+}
+
 export function generateCollectible(options: GenerateCollectibleOptions = {}): Collectible {
   const seed = options.seed ?? randomSeed();
   const random = createSeededRandom(seed);
   const rolls = Array.from({ length: 10 }, () => random());
   const modelId = options.modelId ?? toyModels[Math.floor(rolls[0] * toyModels.length)].id;
   const paletteId = options.paletteId ?? toyPalettes[Math.floor(rolls[1] * toyPalettes.length)].id;
-  const grade = chooseTransparencyGrade(rolls[2]);
-  const transparency = grade.min + Math.floor(rolls[3] * (grade.max - grade.min + 1));
-
-  // One shared quality tendency keeps the five traits coherent; bounded jitter
-  // still gives every collectible a distinct strengths-and-weaknesses profile.
-  const qualityTendency = transparency * 0.58 + 100 * Math.pow(rolls[4], 1.55) * 0.42;
-  const appearance: AppearanceVector = {
-    transparency,
-    colorDepth: clampScore(qualityTendency + (rolls[5] - 0.5) * 32),
-    hydration: clampScore(qualityTendency + (rolls[6] - 0.5) * 30 + 3),
-    luster: clampScore(qualityTendency + (rolls[7] - 0.5) * 28 + 5),
-    glow: clampScore(qualityTendency + (rolls[8] - 0.5) * 36 - 3)
-  };
-  const qualityScore = Math.round(
-    appearance.transparency * appearanceWeights.transparency
-      + appearance.colorDepth * appearanceWeights.colorDepth
-      + appearance.hydration * appearanceWeights.hydration
-      + appearance.luster * appearanceWeights.luster
-      + appearance.glow * appearanceWeights.glow
-  );
+  const material = options.materialId
+    ? getToyMaterial(options.materialId)
+    : chooseMaterial(rolls[2]);
+  const materialId = material.id as Exclude<ToyMaterialId, "jade">;
+  const materialTraits = createMaterialTraits(rolls);
+  const craftScore = getMaterialCraftScore(materialTraits);
+  const qualityScore = clampScore(material.baseQuality + (craftScore - 50) * 0.28);
   const rarity = getRarityForQuality(qualityScore);
   const model = getToyModel(modelId);
   const palette = getToyPalette(paletteId);
   const id = options.id ?? createId();
   const normalizedId = id.replace(/[^a-z0-9]/gi, "").toUpperCase();
   const publicCode = options.publicCode ?? `LC-${normalizedId.slice(-8).padStart(8, "0")}`;
+  const appearance = createCompatibilityAppearance(materialId, materialTraits);
   const appearanceSignature = [
     GENERATION_VERSION,
     modelId,
     paletteId,
-    ...Object.values(appearance),
+    materialId,
+    ...Object.values(materialTraits),
     seed.toString(36)
   ].join("-");
 
@@ -122,18 +151,19 @@ export function generateCollectible(options: GenerateCollectibleOptions = {}): C
     publicCode,
     modelId,
     paletteId,
-    name: `${palette.name}果冻${model.name}`,
-    seriesId: "series_jade_dreams",
-    seriesName: "玉梦初遇",
+    materialId,
+    materialGrade: getMaterialGrade(rarity),
+    materialTraits,
+    name: `${material.name}${model.name}`,
+    seriesId: "series_material_origins",
+    seriesName: "材质初铸",
     rarity,
     qualityScore,
-    transparencyGrade: grade.id,
-    jadeGrade: grade.name,
     appearanceSeed: seed,
     generationVersion: GENERATION_VERSION,
     appearance,
     appearanceSignature,
-    shortDescription: `一只拥有独立五维材质参数的${palette.name}果冻${model.name}。`,
+    shortDescription: `一只以${material.name}为主体、带有${palette.name}氛围光的独立${model.name}。`,
     createdAt: options.createdAt ?? new Date().toISOString()
   };
 }

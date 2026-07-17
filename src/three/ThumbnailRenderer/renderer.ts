@@ -1,12 +1,15 @@
 import type * as Three from "three";
 import { getToyModel, getToyPalette } from "../../features/toys/catalog";
 import type { Collectible } from "../../types/toy";
-import { createJadeMaterial } from "../material/createJadeMaterial";
+import {
+  createToyMaterial,
+  getCollectibleRenderTraits
+} from "../material/createToyMaterial";
 import { loadRoomEnvironment, loadToyModel, loadToyViewerRuntime } from "../ToyViewer/runtime";
 import { readThumbnailBlob, writeThumbnailBlob } from "./storage";
 
 const THUMBNAIL_SIZE = 384;
-const THUMBNAIL_RENDER_VERSION = 2;
+const THUMBNAIL_RENDER_VERSION = 3;
 const WEBP_QUALITY = 0.84;
 
 type ThumbnailContext = {
@@ -99,17 +102,21 @@ async function renderThumbnail(toy: Collectible) {
   const { THREE, renderer, environmentTexture } = await getContext();
   const modelDefinition = getToyModel(toy.modelId);
   const palette = getToyPalette(toy.paletteId);
+  const isRefractiveMaterial = toy.materialId === "crystal" || toy.materialId === "diamond";
+  const materialLightScale = isRefractiveMaterial ? 0.58 : 1;
   const gltf = await loadToyModel(
     modelDefinition.assets.mobileModelUrl ?? modelDefinition.assets.modelUrl
   );
   const scene = new THREE.Scene();
   scene.environment = environmentTexture;
+  renderer.toneMappingExposure = isRefractiveMaterial ? 0.88 : 1.12;
 
   const camera = new THREE.PerspectiveCamera(31, 1, 0.1, 100);
   camera.position.set(0, 0.58, 7.15);
   camera.lookAt(0, 0.05, 0);
 
-  const { material, glowColor } = createJadeMaterial(THREE, toy);
+  const { material, glowColor } = createToyMaterial(THREE, toy);
+  const { glow } = getCollectibleRenderTraits(toy);
   const model = gltf.scene;
   model.rotation.y = modelDefinition.viewer.rotationY - 0.08;
   model.traverse((child) => {
@@ -131,17 +138,17 @@ async function renderThumbnail(toy: Collectible) {
   );
   scene.add(model);
 
-  scene.add(new THREE.HemisphereLight(0xffffff, palette.attenuation, 2.2));
-  const keyLight = new THREE.DirectionalLight(0xffffff, 3.3);
+  scene.add(new THREE.HemisphereLight(0xffffff, palette.attenuation, 2.2 * materialLightScale));
+  const keyLight = new THREE.DirectionalLight(0xffffff, 3.3 * materialLightScale);
   keyLight.position.set(-3.8, 5.2, 4.7);
   scene.add(keyLight);
-  const rimLight = new THREE.DirectionalLight(glowColor, 2.35 + toy.appearance.glow * 0.016);
+  const rimLight = new THREE.DirectionalLight(glowColor, (2.35 + glow * 1.6) * materialLightScale);
   rimLight.position.set(4.2, 2.8, -3.4);
   scene.add(rimLight);
-  const fillLight = new THREE.PointLight(0xffffff, 1.2, 10);
+  const fillLight = new THREE.PointLight(0xffffff, 1.2 * materialLightScale, 10);
   fillLight.position.set(0.6, 1.6, 4.2);
   scene.add(fillLight);
-  const underGlow = new THREE.PointLight(glowColor, 1.8 + toy.appearance.glow * 0.03, 5.5);
+  const underGlow = new THREE.PointLight(glowColor, 1.8 + glow * 3, 5.5);
   underGlow.position.set(0, -1.65, 0.25);
   scene.add(underGlow);
 

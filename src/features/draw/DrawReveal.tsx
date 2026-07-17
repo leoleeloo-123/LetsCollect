@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { routes } from "../../app/routes";
 import { AppearanceVector } from "../../components/collectibles/AppearanceVector";
 import { getToyModel, getToyPalette, rarityLabels } from "../toys/catalog";
+import { getCollectibleGradeLabel } from "../toys/compatibility";
+import { getToyMaterial } from "../toys/materialCatalog";
 import type { Collectible } from "../../types/toy";
 import { ToyViewer } from "../../three/ToyViewer";
 
@@ -15,6 +17,8 @@ type DrawRevealProps = {
 export function DrawReveal({ toy, onClose }: DrawRevealProps) {
   const model = getToyModel(toy.modelId);
   const palette = getToyPalette(toy.paletteId);
+  const material = getToyMaterial(toy.materialId);
+  const grade = getCollectibleGradeLabel(toy);
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
@@ -51,7 +55,7 @@ export function DrawReveal({ toy, onClose }: DrawRevealProps) {
             <strong>{toy.qualityScore}<small> / 100</small></strong>
           </div>
           <h2 id="reveal-title">{toy.name}</h2>
-          <p>{toy.publicCode} · {model.name} · {palette.name} · {toy.jadeGrade}</p>
+          <p>{toy.publicCode} · {model.name} · {material.name} · {palette.name}光 · {grade}</p>
           <AppearanceVector collectible={toy} compact />
         </div>
         <div className="reveal-sheet__actions">

@@ -18,7 +18,7 @@ export function HomePage() {
     <div className="page-stack home-page">
       <section className="feature-spotlight">
         <div className="feature-spotlight__copy">
-          <p className="eyebrow">本周主题 · 玉梦初遇</p>
+          <p className="eyebrow">本周主题 · 材质初铸</p>
           <h1>今天，和朋友一起遇见新藏品</h1>
           <p>{featuredToy.shortDescription}</p>
           <ButtonLink to={routes.draw}>

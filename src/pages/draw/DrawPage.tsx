@@ -47,14 +47,14 @@ export function DrawPage() {
   return (
     <div className="page-stack draw-page">
       <div className="page-title-row">
-        <PageHeader eyebrow="抽取" title="玉梦初遇" description="六种造型、八种色泽与五维材质，共同决定每一次独特相遇。" />
+        <PageHeader eyebrow="抽取" title="材质初铸" description="六种造型、八种基础材质与五项工艺，共同决定每一次独特相遇。" />
         <TicketBalance />
       </div>
 
       <section className={`draw-stage${isDrawing ? " draw-stage--active" : ""}`}>
         <div className="draw-stage__status">
-          <span>V1 独立藏品生成</span>
-          <strong>6 × 8 × 五维参数</strong>
+          <span>V2 材质藏品生成</span>
+          <strong>6 种造型 × 8 种材质</strong>
         </div>
         <div className="draw-stage__visual">
           <span className="draw-stage__halo" aria-hidden="true" />
@@ -62,12 +62,12 @@ export function DrawPage() {
         </div>
         <div className="draw-stage__copy">
           <p className="eyebrow">本期模型池</p>
-          <h2>果冻玉玩偶实验室</h2>
-          <p>{featuredModel.name}示例 · {featuredPalette.name} · 每次参数独立生成</p>
+          <h2>八材质玩偶工坊</h2>
+          <p>{featuredModel.name}示例 · {featuredPalette.name}氛围光 · 每次工艺独立生成</p>
         </div>
         <button className="draw-button" type="button" onClick={handleDraw} disabled={isDrawing}>
           <Sparkles size={20} />
-          {isDrawing ? "正在生成五维参数..." : "抽取独立藏品"}
+          {isDrawing ? "正在生成材质与工艺..." : "抽取独立藏品"}
           <span><Ticket size={16} /> {DRAW_COST}</span>
         </button>
         {message ? (
@@ -79,11 +79,11 @@ export function DrawPage() {
       </section>
 
       <details className="probability-panel">
-        <summary><CircleHelp size={18} /> 查看 V1 品质概率</summary>
+        <summary><CircleHelp size={18} /> 查看 V2 品质概率</summary>
         <div className="probability-panel__grid">
-          <span>普通约 55%</span><span>稀有约 28%</span><span>史诗约 11%</span><span>传说约 5%</span><span>神话约 1%</span>
+          <span>普通约 54%</span><span>稀有约 28%</span><span>史诗约 11%</span><span>传说约 6%</span><span>神话约 1%</span>
         </div>
-        <p>模型和颜色等概率。{rarityLabels.mythic}等稀有度由五维品质综合计算，不单独随机。</p>
+        <p>模型和氛围色等概率。材质决定基础价值区间，五项工艺决定区间内的最终品质；{rarityLabels.mythic}约占 1%。</p>
       </details>
 
       {recentDraws.length > 0 ? (

@@ -988,9 +988,9 @@
 
 .collection-figures {
   display: grid;
-  width: min(820px, 100%);
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 24px 8px;
+  width: min(680px, 100%);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px 4px;
   margin-inline: auto;
   padding: 4px 0 14px;
 }
@@ -1009,7 +1009,8 @@
 .collection-figure__visual {
   position: relative;
   display: block;
-  width: 100%;
+  width: 92%;
+  margin-inline: auto;
   aspect-ratio: 1;
 }
 
@@ -1041,8 +1042,8 @@
   display: -webkit-box;
   overflow: hidden;
   max-width: 100%;
-  font-size: 11px;
-  line-height: 1.35;
+  font-size: 9px;
+  line-height: 1.3;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }

@@ -28,7 +28,7 @@ export function CollectionPage() {
             aria-pressed={filter === value}
             onClick={() => setFilter(value)}
           >
-            {value === "all" ? "全部" : value === "high" ? "史诗以上" : "神话"}
+            {value === "all" ? `全部 ${collection.length}` : value === "high" ? "史诗以上" : "神话"}
           </button>
         ))}
       </div>
