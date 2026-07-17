@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-07-17
+
+- Confirmed `main` is the current React + Vite + TypeScript MVP and is aligned with `origin/main`.
+- Confirmed GitHub remote is `https://github.com/leoleeloo-123/LetsCollect.git`.
+- Updated product overview wording so it no longer describes the legacy static hero as the current production entry.
+- Marked the July 13 project audit as a historical baseline to avoid confusing it with the current React app state.
+
 ## 2026-07-13
 
 - Created `feature/react-product-shell` branch for React + Vite + TypeScript work.

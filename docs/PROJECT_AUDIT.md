@@ -2,6 +2,8 @@
 
 Audit date: 2026-07-13
 
+This file is a historical baseline audit from before the React MVP became the production `main` application. For the current project entry, deployment state, routes, and development rules, start with `docs/START_HERE.md`.
+
 ## Current Directory Tree
 
 Tracked in GitHub `main`:
