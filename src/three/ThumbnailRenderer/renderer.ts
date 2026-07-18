@@ -9,7 +9,7 @@ import { loadRoomEnvironment, loadToyModel, loadToyViewerRuntime } from "../ToyV
 import { readThumbnailBlob, writeThumbnailBlob } from "./storage";
 
 const THUMBNAIL_SIZE = 384;
-const THUMBNAIL_RENDER_VERSION = 9;
+const THUMBNAIL_RENDER_VERSION = 10;
 const WEBP_QUALITY = 0.84;
 
 type ThumbnailContext = {
@@ -152,19 +152,6 @@ async function renderThumbnail(toy: Collectible) {
   underGlow.position.set(0, -1.65, 0.25);
   scene.add(underGlow);
 
-  const shadow = new THREE.Mesh(
-    new THREE.CircleGeometry(1.75, 64),
-    new THREE.MeshBasicMaterial({
-      color: 0x18382e,
-      transparent: true,
-      opacity: 0.15,
-      depthWrite: false
-    })
-  );
-  shadow.rotation.x = -Math.PI / 2;
-  shadow.position.set(0, -1.76, 0.2);
-  shadow.scale.set(1.05, 0.5, 1);
-  scene.add(shadow);
 
   try {
     renderer.compile(scene, camera);
@@ -174,8 +161,6 @@ async function renderThumbnail(toy: Collectible) {
   } finally {
     disposeModel(THREE, model);
     material.dispose();
-    shadow.geometry.dispose();
-    (shadow.material as Three.Material).dispose();
     scene.clear();
   }
 }
