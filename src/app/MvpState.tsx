@@ -13,8 +13,8 @@ import { normalizeStoredCollectible } from "../features/toys/compatibility";
 import { generateCollectible } from "../features/toys/generator";
 import type { Collectible, DrawRecord } from "../types/toy";
 
-const STORAGE_KEY = "lets-collect-mvp-state-v4";
-const LEGACY_STORAGE_KEY = "lets-collect-mvp-state-v3";
+const STORAGE_KEY = "lets-collect-mvp-state-v5";
+const LEGACY_STORAGE_KEYS = ["lets-collect-mvp-state-v4", "lets-collect-mvp-state-v3"];
 export const DRAW_COST = 3;
 
 type MvpSnapshot = {
@@ -46,7 +46,9 @@ const initialSnapshot: MvpSnapshot = {
 function loadSnapshot(): MvpSnapshot {
   try {
     const currentStored = window.localStorage.getItem(STORAGE_KEY);
-    const legacyStored = window.localStorage.getItem(LEGACY_STORAGE_KEY);
+    const legacyStored = LEGACY_STORAGE_KEYS
+      .map((key) => window.localStorage.getItem(key))
+      .find((value) => value !== null) ?? null;
     const stored = currentStored ?? legacyStored;
     if (!stored) return initialSnapshot;
 
@@ -94,7 +96,7 @@ export function MvpStateProvider({ children }: MvpStateProviderProps) {
   // consume domain objects, so a Supabase-backed adapter can replace it later.
   useEffect(() => {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
-    window.localStorage.removeItem(LEGACY_STORAGE_KEY);
+    LEGACY_STORAGE_KEYS.forEach((key) => window.localStorage.removeItem(key));
   }, [snapshot]);
 
   const interactAndEarn = useCallback((activityId: string, reward: number) => {

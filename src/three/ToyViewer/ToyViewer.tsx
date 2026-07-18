@@ -62,8 +62,8 @@ export function ToyViewer({
 
       const isCompactDevice = window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 760;
       const useLightweightStage = isCompactDevice && variant !== "inspect";
-      const isRefractiveMaterial = toy.materialId === "crystal" || toy.materialId === "diamond";
-      const materialLightScale = isRefractiveMaterial ? 0.58 : 1;
+      const materialLightScale = toy.materialId === "glass" ? 0.5 : 1;
+      const materialExposure = toy.materialId === "glass" ? 0.82 : 1.12;
       const resolvedModelUrl = isCompactDevice
         ? modelDefinition.assets.mobileModelUrl ?? availableModelUrl
         : modelDefinition.assets.modelUrl ?? availableModelUrl;
@@ -88,7 +88,7 @@ export function ToyViewer({
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, initialPixelRatioCap));
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      renderer.toneMappingExposure = isRefractiveMaterial ? 0.88 : 1.12;
+      renderer.toneMappingExposure = materialExposure;
       renderer.domElement.className = "toy-viewer__canvas";
       renderer.domElement.setAttribute("aria-hidden", "true");
       renderer.domElement.dataset.modelUrl = resolvedModelUrl;
@@ -115,7 +115,7 @@ export function ToyViewer({
 
       // V1 jade and V2 materials share one version-aware factory. Seeded
       // variation changes uniforms only and adds no per-collectible asset.
-      const { material: toyMaterial } = createToyMaterial(THREE, toy, {
+      const { material: toyMaterial, glowColor } = createToyMaterial(THREE, toy, {
         lightweight: useLightweightStage
       });
 
@@ -125,7 +125,7 @@ export function ToyViewer({
       keyLight.position.set(-3.8, 5.1, 4.5);
       scene.add(keyLight);
 
-      const rimLight = new THREE.DirectionalLight(palette.glow, (1.7 + glow * 1.8) * materialLightScale);
+      const rimLight = new THREE.DirectionalLight(glowColor, (1.7 + glow * 1.8) * materialLightScale);
       rimLight.position.set(4.1, 2.5, -3.2);
       scene.add(rimLight);
 
@@ -137,7 +137,7 @@ export function ToyViewer({
 
       const baseUnderGlow = 1.8 + glow * 2.6;
       const baseEmissive = 0.012 + glow * 0.075;
-      const underGlow = new THREE.PointLight(palette.glow, baseUnderGlow, 5.2);
+      const underGlow = new THREE.PointLight(glowColor, baseUnderGlow, 5.2);
       underGlow.position.set(0, -1.7, 0.25);
       scene.add(underGlow);
 
@@ -153,7 +153,7 @@ export function ToyViewer({
       );
       pedestal.position.set(0, -1.83, 0);
       pedestal.scale.set(1.12, 1, 0.65);
-      scene.add(pedestal);
+      if (variant !== "hero") scene.add(pedestal);
 
       const contactShadow = new THREE.Mesh(
         new THREE.CircleGeometry(1.9, useLightweightStage ? 36 : 72),
@@ -167,12 +167,12 @@ export function ToyViewer({
       contactShadow.rotation.x = -Math.PI / 2;
       contactShadow.position.set(0, -1.88, 0.16);
       contactShadow.scale.set(1.1, 0.52, 1);
-      scene.add(contactShadow);
+      if (variant !== "hero") scene.add(contactShadow);
 
       const glowRing = new THREE.Mesh(
         new THREE.TorusGeometry(1.42, 0.012, 8, useLightweightStage ? 48 : 96),
         new THREE.MeshBasicMaterial({
-          color: palette.glow,
+          color: glowColor,
           transparent: true,
           opacity: 0.16 + glow * 0.34,
           blending: THREE.AdditiveBlending
@@ -180,7 +180,7 @@ export function ToyViewer({
       );
       glowRing.position.set(0, -1.77, 0);
       glowRing.rotation.x = Math.PI / 2;
-      scene.add(glowRing);
+      if (variant !== "hero") scene.add(glowRing);
       recordTiming("scene-ready");
 
       let mixer: import("three").AnimationMixer | null = null;

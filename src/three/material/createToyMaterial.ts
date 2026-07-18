@@ -50,6 +50,8 @@ export function createToyMaterial(
     toy.materialId as MaterialPrototypeId,
     {
       tint: palette.color,
+      attenuation: palette.attenuation,
+      emissive: palette.emissive,
       traits: toy.materialTraits,
       seed: toy.appearanceSeed,
       lightweight: options.lightweight
@@ -58,7 +60,7 @@ export function createToyMaterial(
 
   return {
     material,
-    glowColor: new THREE.Color(palette.glow),
+    glowColor: new THREE.Color(toy.materialId === "glass" ? 0x8fdbe8 : palette.glow),
     attenuationColor: material.attenuationColor.clone()
   };
 }

@@ -9,7 +9,7 @@ import { loadRoomEnvironment, loadToyModel, loadToyViewerRuntime } from "../ToyV
 import { readThumbnailBlob, writeThumbnailBlob } from "./storage";
 
 const THUMBNAIL_SIZE = 384;
-const THUMBNAIL_RENDER_VERSION = 3;
+const THUMBNAIL_RENDER_VERSION = 9;
 const WEBP_QUALITY = 0.84;
 
 type ThumbnailContext = {
@@ -102,14 +102,14 @@ async function renderThumbnail(toy: Collectible) {
   const { THREE, renderer, environmentTexture } = await getContext();
   const modelDefinition = getToyModel(toy.modelId);
   const palette = getToyPalette(toy.paletteId);
-  const isRefractiveMaterial = toy.materialId === "crystal" || toy.materialId === "diamond";
-  const materialLightScale = isRefractiveMaterial ? 0.58 : 1;
+  const materialLightScale = toy.materialId === "glass" ? 0.5 : 1;
+  const materialExposure = toy.materialId === "glass" ? 0.82 : 1.12;
   const gltf = await loadToyModel(
     modelDefinition.assets.mobileModelUrl ?? modelDefinition.assets.modelUrl
   );
   const scene = new THREE.Scene();
   scene.environment = environmentTexture;
-  renderer.toneMappingExposure = isRefractiveMaterial ? 0.88 : 1.12;
+  renderer.toneMappingExposure = materialExposure;
 
   const camera = new THREE.PerspectiveCamera(31, 1, 0.1, 100);
   camera.position.set(0, 0.58, 7.15);

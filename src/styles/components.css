@@ -115,16 +115,6 @@
     linear-gradient(145deg, rgba(225, 243, 234, 0.92), rgba(255, 246, 241, 0.88) 58%, #fff);
 }
 
-.feature-spotlight::after {
-  position: absolute;
-  right: -12%;
-  bottom: -24%;
-  width: 58%;
-  aspect-ratio: 1;
-  border: 1px solid rgba(22, 133, 107, 0.13);
-  border-radius: 50%;
-  content: "";
-}
 
 .feature-spotlight__copy {
   position: relative;

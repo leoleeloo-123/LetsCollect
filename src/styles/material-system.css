@@ -33,10 +33,18 @@
   --toy-saturation: 0.9;
 }
 
-.toy-visual--material-diamond {
-  --toy-deep: #8ab8c3;
-  --toy-mid: #d9f0f4;
+.toy-visual--material-glass {
+  --toy-deep: #b7cbd0;
+  --toy-mid: #e4f1f3;
   --toy-light: #ffffff;
-  --toy-saturation: 0.28;
-  --toy-brightness: 1.08;
+  --toy-saturation: 0.08;
+  --toy-brightness: 1.02;
+}
+
+.toy-visual--material-crystal {
+  --toy-deep: #7fa9b8;
+  --toy-mid: #d5eef6;
+  --toy-light: #ffffff;
+  --toy-saturation: 0.22;
+  --toy-brightness: 1.04;
 }

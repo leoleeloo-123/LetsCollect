@@ -103,7 +103,7 @@ function createCompatibilityAppearance(
   materialId: Exclude<ToyMaterialId, "jade">,
   traits: MaterialTraits
 ): AppearanceVector {
-  const isMineral = materialId === "crystal" || materialId === "diamond";
+  const isMineral = materialId === "glass" || materialId === "crystal";
   return {
     transparency: isMineral
       ? traits.purity

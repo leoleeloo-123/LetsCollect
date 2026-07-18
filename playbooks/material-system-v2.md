@@ -24,13 +24,13 @@ within and occasionally across an adjacent rarity boundary.
 | Material | Draw weight | Base quality | Current fidelity |
 | --- | ---: | ---: | --- |
 | Plastic | 30% | 15 | Ready |
-| Wood | 24% | 20 | Approximate procedural grain |
-| Iron | 19% | 32 | Ready |
-| Copper | 13% | 40 | Ready |
-| Silver | 7% | 51 | Ready |
-| Gold | 3% | 60 | Ready |
-| Crystal | 3% | 62 | Ready |
-| Diamond | 1% | 82 | Approximate smooth geometry |
+| Glass | 24% | 20 | Ready, colorless high transmission |
+| Wood | 19% | 32 | Approximate procedural grain |
+| Iron | 13% | 40 | Ready |
+| Copper | 7% | 51 | Ready |
+| Silver | 3% | 60 | Ready |
+| Gold | 3% | 62 | Ready |
+| Crystal | 1% | 82 | Ready, smooth translucent geometry |
 
 `jade` remains a legacy-only material identifier and has no V2 draw weight.
 
@@ -48,7 +48,7 @@ Every V2 collectible stores five normalized values from 1 to 100:
 
 The UI maps these generic slots to material-specific language. For example,
 `character` is shown as grain for wood, oxidation for copper, and inclusion
-character for crystal and diamond.
+character for glass and crystal.
 
 ```text
 craftScore = weighted sum of the five craft traits
@@ -87,8 +87,8 @@ configured 30 / 24 / 19 / 13 / 7 / 3 / 3 / 1 weights.
 - Legacy `jade` delegates to `createJadeMaterial` without changing its shader or
   appearance signature.
 - V2 materials use the shared prototype registry plus collectible craft traits.
-- Mobile stages retain environment reflection for V2 metals and minerals.
-- Thumbnail render version 3 invalidates V1 material previews without changing
+- Mobile stages retain environment reflection for V2 metals, glass, and crystal.
+- Thumbnail render version 4 invalidates earlier material previews without changing
   collectible identity.
 - The unlisted `/material-lab` route remains available for same-light comparison.
 
@@ -110,8 +110,8 @@ colors, or semantic material slots.
 
 - Production wood still needs validated UVs and a shared compressed texture set,
   or a dedicated triplanar shader with mobile profiling.
-- Production diamond needs faceted geometry or an approved normal treatment to
-  become clearly distinct from crystal.
+- Glass and crystal still need validated thickness, refraction, and environment
+  treatment across light and dark production stages.
 - Accent colors and separate eyes or accessories require material slots, vertex
   masks, or additional geometry in the model pipeline.
 

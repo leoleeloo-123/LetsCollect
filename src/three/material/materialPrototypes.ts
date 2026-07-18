@@ -6,13 +6,13 @@ type ThreeRuntime = typeof import("three");
 
 export const materialPrototypeIds = [
   "plastic",
+  "glass",
   "wood",
   "iron",
   "copper",
   "silver",
   "gold",
-  "crystal",
-  "diamond"
+  "crystal"
 ] as const;
 
 export type MaterialPrototypeId = Exclude<ToyMaterialId, "jade">;
@@ -26,6 +26,8 @@ export const materialPrototypes = drawableMaterials.map(({ id, name, swatch, fid
 
 type PrototypeMaterialOptions = {
   tint?: string;
+  attenuation?: string;
+  emissive?: string;
   traits?: MaterialTraits;
   seed?: number;
   lightweight?: boolean;
@@ -160,43 +162,45 @@ export function createPrototypeMaterial(
     });
   }
 
-  if (id === "crystal") {
-    const crystalColor = getMaterialColor(THREE, tint);
-    crystalColor.lerp(getMaterialColor(THREE, 0xffffff), 0.58);
+  if (id === "glass") {
+    const glassColor = getMaterialColor(THREE, 0xc8edf4);
     return new THREE.MeshPhysicalMaterial({
-      color: crystalColor,
-      roughness: THREE.MathUtils.lerp(0.18, 0.025, finish),
+      color: glassColor,
+      roughness: THREE.MathUtils.lerp(0.12, 0.035, finish),
       metalness: 0,
-      transmission: THREE.MathUtils.lerp(options.lightweight ? 0.58 : 0.72, 0.96, purity),
-      thickness: 1.25 + purity * 1.2,
-      ior: 1.52,
-      dispersion: brilliance * 0.035,
-      attenuationColor: crystalColor,
-      attenuationDistance: 1.8 + purity * 4.2,
-      clearcoat: 0.7 + brilliance * 0.25,
+      transmission: THREE.MathUtils.lerp(options.lightweight ? 0.78 : 0.84, 0.92, purity),
+      thickness: 0.72 + purity * 0.58,
+      ior: 1.48,
+      dispersion: 0,
+      attenuationColor: getMaterialColor(THREE, 0x78c9d8),
+      attenuationDistance: 1.45 + purity * 1.8,
+      clearcoat: 1,
       clearcoatRoughness: 0.04,
-      envMapIntensity: 1.05 + brilliance * 0.48
+      envMapIntensity: 1.45 + brilliance * 0.55,
+      specularIntensity: 1
     });
   }
 
-  const diamondColor = getMaterialColor(THREE, tint);
-  diamondColor.lerp(getMaterialColor(THREE, 0xdff7ff), 0.38);
+  const crystalColor = getMaterialColor(THREE, tint);
+  crystalColor.offsetHSL(0, -0.12 + character * 0.15, 0.16 - character * 0.2);
+  const crystalAttenuation = getMaterialColor(THREE, options.attenuation ?? tint);
+  crystalAttenuation.offsetHSL(0, -0.04 + character * 0.06, 0.08 - character * 0.1);
   return new THREE.MeshPhysicalMaterial({
-    color: diamondColor,
-    roughness: THREE.MathUtils.lerp(0.11, 0.018, finish),
+    color: crystalColor,
+    roughness: THREE.MathUtils.lerp(options.lightweight ? 0.14 : 0.11, 0.045, finish),
     metalness: 0,
-    transmission: THREE.MathUtils.lerp(options.lightweight ? 0.42 : 0.5, 0.68, purity),
-    thickness: 1.05 + purity * 0.7,
-    ior: 2.42,
-    dispersion: 0.055 + brilliance * 0.09,
-    attenuationColor: diamondColor,
-    attenuationDistance: 0.7 + purity * 1.5,
-    clearcoat: 0.9,
-    clearcoatRoughness: 0.018,
-    envMapIntensity: 0.88 + brilliance * 0.42,
-    specularIntensity: 0.68,
-    iridescence: 0.08 + brilliance * 0.18,
-    iridescenceIOR: 1.3,
-    iridescenceThicknessRange: [180, 430]
+    transmission: 0.8 + purity * 0.15,
+    thickness: 3.4 + finish * 2,
+    ior: 1.49,
+    transparent: true,
+    opacity: 0.76 - purity * 0.12,
+    attenuationColor: crystalAttenuation,
+    attenuationDistance: 2 + purity * 2.1,
+    emissive: getMaterialColor(THREE, options.emissive ?? options.attenuation ?? tint),
+    emissiveIntensity: 0.055 + brilliance * 0.04,
+    clearcoat: 0.82 + brilliance * 0.18,
+    clearcoatRoughness: 0.07 - brilliance * 0.045,
+    envMapIntensity: (options.lightweight ? 0.9 : 1.25) + brilliance * 0.5,
+    specularIntensity: 0.82 + brilliance * 0.18
   });
 }

@@ -39,7 +39,7 @@ export function MaterialLabPage() {
 
       <section className="material-lab-notes" aria-label="原型边界">
         <Info size={19} />
-        <p><strong>原型边界</strong> 木头使用无 UV 程序化纹理；钻石使用现有光滑几何，后续需要切面模型验证最终质感。</p>
+        <p><strong>原型边界</strong> 玻璃为无色高透材质；水晶沿用光滑晶体几何并提高透明度；木头仍使用无 UV 程序化纹理。</p>
       </section>
     </main>
   );

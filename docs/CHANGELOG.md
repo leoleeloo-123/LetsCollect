@@ -2,15 +2,16 @@
 
 ## 2026-07-17
 
+- Replaced diamond with higher-transparency crystal, introduced colorless glass after plastic, and preserved the calibrated material-tier distribution.
 - Promoted the eight-material study into generation V2 for new local Mock draws.
 - Added material-weighted value ranges plus a five-trait craft vector while preserving the existing rarity economy.
 - Calibrated 100,000 deterministic draws to 54.28% common, 27.66% rare, 11.05% epic, 6.01% legendary, and 1.00% mythic.
 - Preserved stored V1 jelly-jade collectibles through a compatibility normalizer without changing their identity or appearance signature.
 - Unified live 3D and thumbnail rendering behind `createToyMaterial`, retained mobile environment reflection for V2, and bumped thumbnail rendering to V3.
-- Corrected crystal and diamond exposure so refractive collectibles remain legible against light mobile stages and thumbnails.
+- Corrected glass and crystal exposure so refractive collectibles remain legible against light mobile stages and thumbnails.
 - Replaced the local legacy collection with a deterministic 48-piece V2 material showcase and a compact four-column mobile gallery.
 - Corrected `pnpm run typecheck` so it checks `tsconfig.app.json` instead of returning a false positive on the solution config.
-- Added an unlisted `/material-lab` visual study comparing plastic, wood, iron, copper, silver, gold, crystal, and diamond in one WebGL context.
+- Added an unlisted `/material-lab` visual study comparing plastic, glass, wood, iron, copper, silver, gold, and crystal in one WebGL context.
 - Kept the V1 jelly-jade generator, draw probabilities, persisted collectibles, and thumbnail cache contract unchanged.
 - Documented the Material System V2 validation, migration, asset, and rollback boundaries in `playbooks/material-system-v2.md`.
 - Confirmed `main` is the current React + Vite + TypeScript MVP and is aligned with `origin/main`.

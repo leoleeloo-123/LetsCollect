@@ -21,13 +21,13 @@ const genericTraitLabels: Record<keyof MaterialTraits, string> = {
 export const toyMaterials: MaterialDefinition[] = [
   { id: "jade", name: "果冻玉", probability: 0, baseQuality: 50, swatch: "#78d9b7", fidelity: "legacy", traitLabels: { craftsmanship: "综合品质", finish: "光泽度", purity: "通透度", character: "色泽度", brilliance: "荧光度" } },
   { id: "plastic", name: "塑料", probability: 30, baseQuality: 15, swatch: "#ef6f86", fidelity: "ready", traitLabels: { craftsmanship: "注塑工艺", finish: "光洁度", purity: "透明度", character: "色彩度", brilliance: "亮片度" } },
-  { id: "wood", name: "木头", probability: 24, baseQuality: 20, swatch: "#9a5d35", fidelity: "approximate", traitLabels: { craftsmanship: "雕刻工艺", finish: "细腻度", purity: "完整度", character: "纹理度", brilliance: "包浆度" } },
-  { id: "iron", name: "铁", probability: 19, baseQuality: 32, swatch: "#555c5f", fidelity: "ready", traitLabels: { craftsmanship: "铸造工艺", finish: "打磨度", purity: "完整度", character: "锤纹度", brilliance: "反射度" } },
-  { id: "copper", name: "铜", probability: 13, baseQuality: 40, swatch: "#b66a3c", fidelity: "ready", traitLabels: { craftsmanship: "铸造工艺", finish: "抛光度", purity: "完整度", character: "氧化度", brilliance: "反射度" } },
-  { id: "silver", name: "银", probability: 7, baseQuality: 51, swatch: "#c8d0d2", fidelity: "ready", traitLabels: { craftsmanship: "锻造工艺", finish: "抛光度", purity: "纯度", character: "拉丝度", brilliance: "反射度" } },
-  { id: "gold", name: "金", probability: 3, baseQuality: 60, swatch: "#d8a72d", fidelity: "ready", traitLabels: { craftsmanship: "锻造工艺", finish: "抛光度", purity: "纯度", character: "色泽度", brilliance: "辉光度" } },
-  { id: "crystal", name: "水晶", probability: 3, baseQuality: 62, swatch: "#b7e7e3", fidelity: "ready", traitLabels: { craftsmanship: "琢磨工艺", finish: "切磨度", purity: "净度", character: "内含物", brilliance: "折射度" } },
-  { id: "diamond", name: "钻石", probability: 1, baseQuality: 82, swatch: "#eefbff", fidelity: "approximate", traitLabels: { craftsmanship: "切割工艺", finish: "切面度", purity: "净度", character: "内含物", brilliance: "火彩度" } }
+  { id: "glass", name: "玻璃", probability: 24, baseQuality: 20, swatch: "#f3fbff", fidelity: "ready", traitLabels: { craftsmanship: "熔制工艺", finish: "平整度", purity: "澄净度", character: "无瑕度", brilliance: "透光度" } },
+  { id: "wood", name: "木头", probability: 19, baseQuality: 32, swatch: "#9a5d35", fidelity: "approximate", traitLabels: { craftsmanship: "雕刻工艺", finish: "细腻度", purity: "完整度", character: "纹理度", brilliance: "包浆度" } },
+  { id: "iron", name: "铁", probability: 13, baseQuality: 40, swatch: "#555c5f", fidelity: "ready", traitLabels: { craftsmanship: "铸造工艺", finish: "打磨度", purity: "完整度", character: "锤纹度", brilliance: "反射度" } },
+  { id: "copper", name: "铜", probability: 7, baseQuality: 51, swatch: "#b66a3c", fidelity: "ready", traitLabels: { craftsmanship: "铸造工艺", finish: "抛光度", purity: "完整度", character: "氧化度", brilliance: "反射度" } },
+  { id: "silver", name: "银", probability: 3, baseQuality: 60, swatch: "#c8d0d2", fidelity: "ready", traitLabels: { craftsmanship: "锻造工艺", finish: "抛光度", purity: "纯度", character: "拉丝度", brilliance: "反射度" } },
+  { id: "gold", name: "金", probability: 3, baseQuality: 62, swatch: "#d8a72d", fidelity: "ready", traitLabels: { craftsmanship: "锻造工艺", finish: "抛光度", purity: "纯度", character: "色泽度", brilliance: "辉光度" } },
+  { id: "crystal", name: "水晶", probability: 1, baseQuality: 82, swatch: "#a8d7ee", fidelity: "ready", traitLabels: { craftsmanship: "琢磨工艺", finish: "通透度", purity: "净度", character: "晶体特征", brilliance: "折射度" } }
 ];
 
 export const drawableMaterials = toyMaterials.filter((material) => material.probability > 0);

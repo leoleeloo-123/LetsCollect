@@ -20,7 +20,7 @@ export function ToyVisual({ toy, size = "medium" }: ToyVisualProps) {
     "--toy-brightness": 1.1 - toy.appearance.colorDepth * 0.002,
     "--toy-body-opacity": toy.materialId === "jade"
       ? 0.72 + toy.appearance.transparency * 0.0025
-      : ["crystal", "diamond"].includes(toy.materialId) ? 0.84 : 1
+      : toy.materialId === "glass" ? 0.72 : toy.materialId === "crystal" ? 0.82 : 1
   };
 
   return (
