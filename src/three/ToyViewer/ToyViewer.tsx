@@ -7,6 +7,10 @@ import {
   createToyMaterial,
   getCollectibleRenderTraits
 } from "../material/createToyMaterial";
+import {
+  cloneProtectedCoatMaterials,
+  prepareProtectedCoatTexture
+} from "../material/createProtectedCoatMaterial";
 import { loadRoomEnvironment, loadToyModel, loadToyViewerRuntime } from "./runtime";
 
 type ToyViewerProps = {
@@ -113,11 +117,22 @@ export function ToyViewer({
       toyGroup.position.y = 0.08 + modelDefinition.viewer.yOffset;
       scene.add(toyGroup);
 
-      // V1 jade and V2 materials share one version-aware factory. Seeded
-      // variation changes uniforms only and adds no per-collectible asset.
-      const { material: toyMaterial, glowColor } = createToyMaterial(THREE, toy, {
-        lightweight: useLightweightStage
-      });
+      // Protected color models retain their authored facial texture and recolor only the coat.
+      const protectedCoat = modelDefinition.rendering?.mode === "protected-coat"
+        ? modelDefinition.rendering
+        : null;
+      const standardMaterialResult = protectedCoat
+        ? null
+        : createToyMaterial(THREE, toy, { lightweight: useLightweightStage });
+      const toyMaterial = standardMaterialResult?.material ?? null;
+      const glowColor = standardMaterialResult?.glowColor ?? new THREE.Color(palette.glow);
+      const protectMap = protectedCoat
+        ? prepareProtectedCoatTexture(
+            THREE,
+            await new THREE.TextureLoader().loadAsync(protectedCoat.protectMaskUrl)
+          )
+        : null;
+      let protectedMaterials: import("three").Material[] = [];
 
       scene.add(new THREE.HemisphereLight(0xffffff, palette.attenuation, (1.9 + hydration * 0.4) * materialLightScale));
 
@@ -197,7 +212,9 @@ export function ToyViewer({
       function disposeStaticResources() {
         if (staticResourcesDisposed) return;
         staticResourcesDisposed = true;
-        toyMaterial.dispose();
+        toyMaterial?.dispose();
+        protectedMaterials.forEach((material) => material.dispose());
+        protectMap?.dispose();
         environmentTexture?.dispose();
         pedestal.geometry.dispose();
         (pedestal.material as import("three").Material).dispose();
@@ -226,12 +243,23 @@ export function ToyViewer({
 
       const model = gltf.scene;
       model.rotation.y = modelDefinition.viewer.rotationY;
-      model.traverse((child) => {
-        if (!(child instanceof THREE.Mesh)) return;
-        child.material = toyMaterial;
-        child.castShadow = false;
-        child.receiveShadow = false;
-      });
+      if (protectedCoat && protectMap) {
+        const coatColor = new THREE.Color(palette.color).multiplyScalar(protectedCoat.coatColorScale);
+        protectedMaterials = cloneProtectedCoatMaterials(
+          THREE,
+          model,
+          coatColor,
+          protectMap,
+          renderer.capabilities.getMaxAnisotropy()
+        );
+      } else {
+        model.traverse((child) => {
+          if (!(child instanceof THREE.Mesh) || !toyMaterial) return;
+          child.material = toyMaterial;
+          child.castShadow = false;
+          child.receiveShadow = false;
+        });
+      }
 
       const box = new THREE.Box3().setFromObject(model);
       const center = box.getCenter(new THREE.Vector3());
@@ -336,7 +364,9 @@ export function ToyViewer({
         toyGroup.rotation.y = currentRotationY;
         glowRing.rotation.z += delta * 0.16;
         underGlow.intensity = baseUnderGlow + Math.abs(Math.sin(currentRotationY)) * (0.22 + glow * 0.62);
-        toyMaterial.emissiveIntensity = baseEmissive + Math.abs(Math.sin(currentRotationY)) * (0.008 + glow * 0.026);
+        if (toyMaterial) {
+          toyMaterial.emissiveIntensity = baseEmissive + Math.abs(Math.sin(currentRotationY)) * (0.008 + glow * 0.026);
+        }
         mixer?.update(delta);
         renderer.render(scene, camera);
         needsRender = false;

@@ -5,6 +5,10 @@ import {
   createToyMaterial,
   getCollectibleRenderTraits
 } from "../material/createToyMaterial";
+import {
+  cloneProtectedCoatMaterials,
+  prepareProtectedCoatTexture
+} from "../material/createProtectedCoatMaterial";
 import { loadRoomEnvironment, loadToyModel, loadToyViewerRuntime } from "../ToyViewer/runtime";
 import { readThumbnailBlob, writeThumbnailBlob } from "./storage";
 
@@ -29,6 +33,7 @@ function getThumbnailKey(toy: Collectible) {
     "toy-thumbnail",
     THUMBNAIL_RENDER_VERSION,
     model.assets.mobileModelUrl,
+    model.rendering?.protectMaskUrl ?? "standard",
     toy.appearanceSignature
   ].join(":");
 }
@@ -115,16 +120,38 @@ async function renderThumbnail(toy: Collectible) {
   camera.position.set(0, 0.58, 7.15);
   camera.lookAt(0, 0.05, 0);
 
-  const { material, glowColor } = createToyMaterial(THREE, toy);
+  const protectedCoat = modelDefinition.rendering?.mode === "protected-coat"
+    ? modelDefinition.rendering
+    : null;
+  const standardMaterialResult = protectedCoat ? null : createToyMaterial(THREE, toy);
+  const material = standardMaterialResult?.material ?? null;
+  const glowColor = standardMaterialResult?.glowColor ?? new THREE.Color(palette.glow);
+  const protectMap = protectedCoat
+    ? prepareProtectedCoatTexture(
+        THREE,
+        await new THREE.TextureLoader().loadAsync(protectedCoat.protectMaskUrl)
+      )
+    : null;
   const { glow } = getCollectibleRenderTraits(toy);
   const model = gltf.scene;
   model.rotation.y = modelDefinition.viewer.rotationY - 0.08;
-  model.traverse((child) => {
-    if (!(child instanceof THREE.Mesh)) return;
-    child.material = material;
-    child.castShadow = false;
-    child.receiveShadow = false;
-  });
+  const protectedMaterials = protectedCoat && protectMap
+    ? cloneProtectedCoatMaterials(
+        THREE,
+        model,
+        new THREE.Color(palette.color).multiplyScalar(protectedCoat.coatColorScale),
+        protectMap,
+        renderer.capabilities.getMaxAnisotropy()
+      )
+    : [];
+  if (!protectedCoat) {
+    model.traverse((child) => {
+      if (!(child instanceof THREE.Mesh) || !material) return;
+      child.material = material;
+      child.castShadow = false;
+      child.receiveShadow = false;
+    });
+  }
 
   const box = new THREE.Box3().setFromObject(model);
   const center = box.getCenter(new THREE.Vector3());
@@ -160,7 +187,9 @@ async function renderThumbnail(toy: Collectible) {
     return await canvasToBlob(renderer.domElement);
   } finally {
     disposeModel(THREE, model);
-    material.dispose();
+    material?.dispose();
+    protectedMaterials.forEach((item) => item.dispose());
+    protectMap?.dispose();
     scene.clear();
   }
 }

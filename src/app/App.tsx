@@ -6,6 +6,8 @@ import { HomePage } from "../pages/home/HomePage";
 import { OnboardingPage } from "../pages/auth/OnboardingPage";
 import { FriendsPage } from "../pages/friends/FriendsPage";
 import { MaterialLabPage } from "../pages/material-lab/MaterialLabPage";
+import { ColorDogLabPage } from "../pages/color-dog-lab/ColorDogLabPage";
+import { ColorUnicornLabPage } from "../pages/color-unicorn-lab/ColorUnicornLabPage";
 import { NotFoundPage } from "../pages/not-found/NotFoundPage";
 import { RequireProfile } from "../features/auth/RequireProfile";
 
@@ -18,6 +20,8 @@ export function App() {
       <Route path="auth/login" element={<Navigate to="/onboarding" replace />} />
       <Route path="auth/register" element={<Navigate to="/onboarding" replace />} />
       <Route path="material-lab" element={<MaterialLabPage />} />
+      <Route path="color-dog-lab" element={<ColorDogLabPage />} />
+      <Route path="color-unicorn-lab" element={<ColorUnicornLabPage />} />
       <Route element={<RequireProfile />}>
         <Route element={<AppLayout />}>
           <Route index element={<HomePage />} />

@@ -75,6 +75,23 @@ export const toyModels: ToyModelDefinition[] = [
   }
 ];
 
+export const colorDogModel: ToyModelDefinition = {
+  id: "color-dog",
+  slug: "color-dog",
+  name: "Color Dog",
+  fallbackShape: "dog",
+  assets: {
+    modelUrl: "/models/toys/color-dog/model-mobile-v002.glb",
+    mobileModelUrl: "/models/toys/color-dog/model-mobile-v002.glb"
+  },
+  viewer: { scaleMultiplier: 1, yOffset: 0, rotationY: 0 },
+  rendering: {
+    mode: "protected-coat",
+    protectMaskUrl: "/models/toys/color-dog/protect-mask-mobile-v027.webp",
+    coatColorScale: 0.86
+  }
+};
+
 export const toyPalettes: ToyPaletteDefinition[] = [
   { id: "rose", name: "樱花粉", color: "#ff789e", attenuation: "#8f2346", emissive: "#c83464", glow: "#ff7da5" },
   { id: "mint", name: "薄荷绿", color: "#78d9b7", attenuation: "#145f4b", emissive: "#29936f", glow: "#78e6bf" },
@@ -115,7 +132,7 @@ export const rarityLabels: Record<RarityCode, string> = {
   mythic: "神话"
 };
 
-const toyModelById = new Map(toyModels.map((model) => [model.id, model]));
+const toyModelById = new Map([...toyModels, colorDogModel].map((model) => [model.id, model]));
 const toyPaletteById = new Map(toyPalettes.map((palette) => [palette.id, palette]));
 
 export function getToyModel(id: ToyModelId) {
