@@ -14,8 +14,9 @@ C:\Users\licunhongyu\Desktop\LetsCollect
 |-- .env.example
 |-- .gitattributes
 |-- assets/
-|   `-- models/source/
-|       `-- jelly-jade-kitty/model-source-v001.glb
+|   `-- models/
+|       |-- source/{toy-slug}/model-source-v001.glb
+|       `-- archive/{toy-slug}/
 |-- docs/
 |-- legacy/hero-prototype/
 |-- playbooks/
@@ -71,6 +72,7 @@ src/
 ## Asset Responsibilities
 
 - `assets/models/source/`: source or high-quality model assets, tracked with Git LFS.
+- `assets/models/archive/`: superseded experiments retained for rollback; never served to browsers.
 - `public/models/toys/`: optimized runtime GLB files served to browsers.
 - `public/draco/`: Draco decoder files used by `ToyViewer`.
 - `playbooks/`: repeatable operational workflows such as model compression and QA.

@@ -18,6 +18,9 @@ public/models/toys/{toy-slug}/
   model-web-v001.glb             # default frontend model
   model-mobile-v001.glb          # optional lighter mobile model
   model-preview-v001.glb         # optional very small catalog preview
+
+assets/models/archive/{toy-slug}/
+  ...                            # superseded experiments, never browser-served
 ```
 
 Current source model area:
@@ -35,6 +38,10 @@ public/models/toys/jelly-jade-*/model-mobile-v001.glb
 
 Only files under `public/` are served to the browser. Source files under
 `assets/` are for editing, audit, and re-export.
+
+Keep `public/models/toys/{toy-slug}/` limited to files referenced by the active
+catalog or a documented cache-safe rollback. Move intermediate masks and unused
+runtime experiments to `assets/models/archive/`.
 
 ## Naming Rules
 
