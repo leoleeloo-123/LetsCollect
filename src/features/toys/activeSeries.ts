@@ -5,7 +5,7 @@ import type {
   ToyModelId,
   ToyPaletteId
 } from "../../types/toy";
-import { colorAnimalPalettes, colorDogModel } from "./catalog";
+import { colorAnimalPalettes, colorBirdModel, colorDogModel } from "./catalog";
 
 export const COLOR_ANIMALS_GENERATION_VERSION = 3;
 
@@ -14,7 +14,8 @@ export const colorAnimalsSeries = {
   name: "软萌变色伙伴",
   materialId: "plastic",
   materialLabel: "柔雾树脂",
-  modelIds: [colorDogModel.id] as readonly ToyModelId[],
+  modelIds: [colorDogModel.id, colorBirdModel.id] as readonly ToyModelId[],
+  drawModelIds: [colorDogModel.id] as readonly ToyModelId[],
   paletteIds: colorAnimalPalettes.map((palette) => palette.id) as readonly ToyPaletteId[],
   traitLabels: {
     craftsmanship: "造型完整度",

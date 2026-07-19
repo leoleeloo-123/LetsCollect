@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Rotate3D } from "lucide-react";
 import { ToyThumbnail } from "../../components/toys/ToyThumbnail";
-import { getToyModel, getToyPalette } from "../../features/toys/catalog";
+import { getColorBirdAccentPalette, getToyModel, getToyPalette } from "../../features/toys/catalog";
 import type { Collectible } from "../../types/toy";
 import {
   createToyMaterial,
@@ -11,6 +11,10 @@ import {
   cloneProtectedCoatMaterials,
   prepareProtectedCoatTexture
 } from "../material/createProtectedCoatMaterial";
+import {
+  cloneColorBirdMaterials,
+  prepareColorBirdZoneTexture
+} from "../material/createColorBirdMaterials";
 import { loadRoomEnvironment, loadToyModel, loadToyViewerRuntime } from "./runtime";
 
 type ToyViewerProps = {
@@ -121,7 +125,10 @@ export function ToyViewer({
       const protectedCoat = modelDefinition.rendering?.mode === "protected-coat"
         ? modelDefinition.rendering
         : null;
-      const standardMaterialResult = protectedCoat
+      const colorBirdZones = modelDefinition.rendering?.mode === "color-bird-zones"
+        ? modelDefinition.rendering
+        : null;
+      const standardMaterialResult = protectedCoat || colorBirdZones
         ? null
         : createToyMaterial(THREE, toy, { lightweight: useLightweightStage });
       const toyMaterial = standardMaterialResult?.material ?? null;
@@ -132,7 +139,14 @@ export function ToyViewer({
             await new THREE.TextureLoader().loadAsync(protectedCoat.protectMaskUrl)
           )
         : null;
+      const colorBirdZoneMap = colorBirdZones
+        ? prepareColorBirdZoneTexture(
+            THREE,
+            await new THREE.TextureLoader().loadAsync(colorBirdZones.zoneMaskUrl)
+          )
+        : null;
       let protectedMaterials: import("three").Material[] = [];
+      let colorBirdMaterials: import("three").Material[] = [];
 
       scene.add(new THREE.HemisphereLight(0xffffff, palette.attenuation, (1.9 + hydration * 0.4) * materialLightScale));
 
@@ -214,7 +228,9 @@ export function ToyViewer({
         staticResourcesDisposed = true;
         toyMaterial?.dispose();
         protectedMaterials.forEach((material) => material.dispose());
+        colorBirdMaterials.forEach((material) => material.dispose());
         protectMap?.dispose();
+        colorBirdZoneMap?.dispose();
         environmentTexture?.dispose();
         pedestal.geometry.dispose();
         (pedestal.material as import("three").Material).dispose();
@@ -250,6 +266,20 @@ export function ToyViewer({
           model,
           coatColor,
           protectMap,
+          renderer.capabilities.getMaxAnisotropy()
+        );
+      } else if (colorBirdZones && colorBirdZoneMap) {
+        const accentPalette = getColorBirdAccentPalette(toy.paletteId, toy.appearanceSeed);
+        colorBirdMaterials = cloneColorBirdMaterials(
+          THREE,
+          model,
+          {
+            body: new THREE.Color(palette.color).multiplyScalar(colorBirdZones.bodyColorScale),
+            cap: new THREE.Color(accentPalette.color).multiplyScalar(colorBirdZones.capColorScale),
+            blush: new THREE.Color(colorBirdZones.blushColor),
+            feet: new THREE.Color(colorBirdZones.feetColor)
+          },
+          colorBirdZoneMap,
           renderer.capabilities.getMaxAnisotropy()
         );
       } else {

@@ -14,7 +14,7 @@ import { normalizeStoredCollectible } from "../features/toys/compatibility";
 import { generateCollectible } from "../features/toys/generator";
 import type { Collectible, DrawRecord } from "../types/toy";
 
-const STORAGE_KEY = "lets-collect-mvp-state-v6";
+const STORAGE_KEY = "lets-collect-mvp-state-v9";
 export const DRAW_COST = 3;
 
 type MvpSnapshot = {

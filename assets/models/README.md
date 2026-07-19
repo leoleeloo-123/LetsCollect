@@ -8,7 +8,7 @@ This directory contains source and archived 3D work. Nothing here is served to t
 | --- | --- | --- |
 | Color Dog | `source/color-dog/model-source-v001.glb` | Active mobile runtime: `public/models/toys/color-dog/model-mobile-v002.glb` (344,052 bytes) |
 | Color Unicorn | `source/color-unicorn/model-source-v001.glb` | Raw source retained; current recoloring experiment is not active |
-| Color Bird | `source/color-bird/model-source-v001.glb` | Raw source archived on 2026-07-19; not optimized or deployed yet |
+| Color Bird | `source/color-bird/model-source-v001.glb` | 310 KB mobile runtime and v014 zone mask deployed for collection preview |
 | Jelly Jade toys | `source/jelly-jade-*/model-source-v001.glb` | Existing production family |
 
 Source GLBs under `assets/models/source/` are tracked with Git LFS.

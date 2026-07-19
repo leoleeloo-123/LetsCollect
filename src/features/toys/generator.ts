@@ -9,7 +9,8 @@ import type {
 import {
   colorAnimalPalettes,
   getToyModel,
-  getToyPalette
+  getToyPalette,
+  getToyRenderingAssetKey
 } from "./catalog";
 import {
   COLOR_ANIMALS_GENERATION_VERSION,
@@ -121,7 +122,7 @@ export function generateCollectible(options: GenerateCollectibleOptions = {}): C
     ? options.paletteId
     : null;
   const modelId = requestedModel
-    ?? colorAnimalsSeries.modelIds[Math.floor(rolls[0] * colorAnimalsSeries.modelIds.length)];
+    ?? colorAnimalsSeries.drawModelIds[Math.floor(rolls[0] * colorAnimalsSeries.drawModelIds.length)];
   const paletteId = requestedPalette
     ?? colorAnimalPalettes[Math.floor(rolls[1] * colorAnimalPalettes.length)].id;
   const model = getToyModel(modelId);
@@ -138,7 +139,7 @@ export function generateCollectible(options: GenerateCollectibleOptions = {}): C
     modelId,
     paletteId,
     materialId,
-    model.rendering?.protectMaskUrl ?? "unmasked",
+    getToyRenderingAssetKey(model),
     ...Object.values(materialTraits),
     seed.toString(36)
   ].join("-");

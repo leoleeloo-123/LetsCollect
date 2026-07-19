@@ -92,6 +92,26 @@ export const colorDogModel: ToyModelDefinition = {
   }
 };
 
+export const colorBirdModel: ToyModelDefinition = {
+  id: "color-bird",
+  slug: "color-bird",
+  name: "小鸟",
+  fallbackShape: "bird",
+  assets: {
+    modelUrl: "/models/toys/color-bird/model-mobile-v001.glb",
+    mobileModelUrl: "/models/toys/color-bird/model-mobile-v001.glb"
+  },
+  viewer: { scaleMultiplier: 0.96, yOffset: 0, rotationY: -0.08 },
+  rendering: {
+    mode: "color-bird-zones",
+    zoneMaskUrl: "/models/toys/color-bird/protect-mask-mobile-v014.webp",
+    bodyColorScale: 0.92,
+    capColorScale: 0.92,
+    blushColor: "#ef8797",
+    feetColor: "#efa04f"
+  }
+};
+
 export const toyPalettes: ToyPaletteDefinition[] = [
   { id: "rose", name: "樱花粉", color: "#ff789e", attenuation: "#8f2346", emissive: "#c83464", glow: "#ff7da5" },
   { id: "mint", name: "薄荷绿", color: "#78d9b7", attenuation: "#145f4b", emissive: "#29936f", glow: "#78e6bf" },
@@ -143,7 +163,7 @@ export const rarityLabels: Record<RarityCode, string> = {
   mythic: "神话"
 };
 
-const toyModelById = new Map([...toyModels, colorDogModel].map((model) => [model.id, model]));
+const toyModelById = new Map([...toyModels, colorDogModel, colorBirdModel].map((model) => [model.id, model]));
 const toyPaletteById = new Map(
   [...toyPalettes, ...colorAnimalPalettes].map((palette) => [palette.id, palette])
 );
@@ -154,6 +174,18 @@ export function getToyModel(id: ToyModelId) {
 
 export function getToyPalette(id: ToyPaletteId) {
   return toyPaletteById.get(id) ?? toyPalettes[0];
+}
+
+export function getColorBirdAccentPalette(bodyPaletteId: ToyPaletteId, appearanceSeed: number) {
+  const bodyIndex = Math.max(0, colorAnimalPalettes.findIndex((palette) => palette.id === bodyPaletteId));
+  const accentOffset = 2 + Math.abs(appearanceSeed % 3);
+  return colorAnimalPalettes[(bodyIndex + accentOffset) % colorAnimalPalettes.length];
+}
+
+export function getToyRenderingAssetKey(model: ToyModelDefinition) {
+  if (model.rendering?.mode === "protected-coat") return model.rendering.protectMaskUrl;
+  if (model.rendering?.mode === "color-bird-zones") return model.rendering.zoneMaskUrl;
+  return "unmasked";
 }
 
 export function getTransparencyGrade(score: number) {

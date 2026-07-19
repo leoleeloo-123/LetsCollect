@@ -1,5 +1,5 @@
 import type * as Three from "three";
-import { getToyModel, getToyPalette } from "../../features/toys/catalog";
+import { getColorBirdAccentPalette, getToyModel, getToyPalette, getToyRenderingAssetKey } from "../../features/toys/catalog";
 import type { Collectible } from "../../types/toy";
 import {
   createToyMaterial,
@@ -9,11 +9,15 @@ import {
   cloneProtectedCoatMaterials,
   prepareProtectedCoatTexture
 } from "../material/createProtectedCoatMaterial";
+import {
+  cloneColorBirdMaterials,
+  prepareColorBirdZoneTexture
+} from "../material/createColorBirdMaterials";
 import { loadRoomEnvironment, loadToyModel, loadToyViewerRuntime } from "../ToyViewer/runtime";
 import { readThumbnailBlob, writeThumbnailBlob } from "./storage";
 
 const THUMBNAIL_SIZE = 384;
-const THUMBNAIL_RENDER_VERSION = 10;
+const THUMBNAIL_RENDER_VERSION = 11;
 const WEBP_QUALITY = 0.84;
 
 type ThumbnailContext = {
@@ -33,7 +37,7 @@ function getThumbnailKey(toy: Collectible) {
     "toy-thumbnail",
     THUMBNAIL_RENDER_VERSION,
     model.assets.mobileModelUrl,
-    model.rendering?.protectMaskUrl ?? "standard",
+    getToyRenderingAssetKey(model),
     toy.appearanceSignature
   ].join(":");
 }
@@ -123,13 +127,22 @@ async function renderThumbnail(toy: Collectible) {
   const protectedCoat = modelDefinition.rendering?.mode === "protected-coat"
     ? modelDefinition.rendering
     : null;
-  const standardMaterialResult = protectedCoat ? null : createToyMaterial(THREE, toy);
+  const colorBirdZones = modelDefinition.rendering?.mode === "color-bird-zones"
+    ? modelDefinition.rendering
+    : null;
+  const standardMaterialResult = protectedCoat || colorBirdZones ? null : createToyMaterial(THREE, toy);
   const material = standardMaterialResult?.material ?? null;
   const glowColor = standardMaterialResult?.glowColor ?? new THREE.Color(palette.glow);
   const protectMap = protectedCoat
     ? prepareProtectedCoatTexture(
         THREE,
         await new THREE.TextureLoader().loadAsync(protectedCoat.protectMaskUrl)
+      )
+    : null;
+  const colorBirdZoneMap = colorBirdZones
+    ? prepareColorBirdZoneTexture(
+        THREE,
+        await new THREE.TextureLoader().loadAsync(colorBirdZones.zoneMaskUrl)
       )
     : null;
   const { glow } = getCollectibleRenderTraits(toy);
@@ -144,7 +157,24 @@ async function renderThumbnail(toy: Collectible) {
         renderer.capabilities.getMaxAnisotropy()
       )
     : [];
-  if (!protectedCoat) {
+  const accentPalette = colorBirdZones
+    ? getColorBirdAccentPalette(toy.paletteId, toy.appearanceSeed)
+    : null;
+  const colorBirdMaterials = colorBirdZones && colorBirdZoneMap && accentPalette
+    ? cloneColorBirdMaterials(
+        THREE,
+        model,
+        {
+          body: new THREE.Color(palette.color).multiplyScalar(colorBirdZones.bodyColorScale),
+          cap: new THREE.Color(accentPalette.color).multiplyScalar(colorBirdZones.capColorScale),
+          blush: new THREE.Color(colorBirdZones.blushColor),
+          feet: new THREE.Color(colorBirdZones.feetColor)
+        },
+        colorBirdZoneMap,
+        renderer.capabilities.getMaxAnisotropy()
+      )
+    : [];
+  if (!protectedCoat && !colorBirdZones) {
     model.traverse((child) => {
       if (!(child instanceof THREE.Mesh) || !material) return;
       child.material = material;
@@ -189,7 +219,9 @@ async function renderThumbnail(toy: Collectible) {
     disposeModel(THREE, model);
     material?.dispose();
     protectedMaterials.forEach((item) => item.dispose());
+    colorBirdMaterials.forEach((item) => item.dispose());
     protectMap?.dispose();
+    colorBirdZoneMap?.dispose();
     scene.clear();
   }
 }
