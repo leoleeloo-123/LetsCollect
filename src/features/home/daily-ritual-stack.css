@@ -1,0 +1,319 @@
+.ritual-deck.ritual-deck--stack {
+  display: grid;
+  gap: 2px;
+  padding: 0 2px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.ritual-deck--stack .ritual-deck__heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding-inline: 2px;
+}
+
+.ritual-deck--stack .ritual-deck__heading > div {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.ritual-deck--stack .ritual-deck__heading .eyebrow {
+  flex: 0 0 auto;
+  margin: 0;
+  font-size: 8px;
+  white-space: nowrap;
+}
+
+.ritual-deck--stack .ritual-deck__heading h2 {
+  overflow: hidden;
+  min-width: 0;
+  margin: 0;
+  font-size: clamp(14px, 4.1vw, 19px);
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ritual-deck--stack .ritual-deck__heading > span {
+  display: inline-flex;
+  min-height: 28px;
+  align-items: center;
+  gap: 4px;
+  padding: 0 8px;
+  border: 1px solid rgba(212, 154, 42, 0.2);
+  border-radius: 999px;
+  color: #815e19;
+  background: #fffaf0;
+  font-size: 10px;
+  font-weight: 850;
+}
+
+.ritual-card-stack {
+  position: relative;
+  height: 154px;
+  margin: 0 7px 2px;
+  outline: none;
+  perspective: 900px;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.ritual-card-stack:focus-visible {
+  border-radius: 17px;
+  outline: 3px solid rgba(22, 133, 107, 0.2);
+  outline-offset: 3px;
+}
+
+.ritual-stack-card {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 6px;
+  overflow: hidden;
+  padding: 11px 13px;
+  border: 1px solid #d9e2dd;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 12px 30px rgba(35, 74, 60, 0.09);
+  transform-origin: 50% 92%;
+  transition:
+    transform 260ms cubic-bezier(0.22, 0.82, 0.32, 1),
+    opacity 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.ritual-stack-card[data-depth="2"] {
+  z-index: 0;
+  transform: translate3d(0, 14px, -24px) scale(0.925) rotate(0.8deg);
+  background: #f3f7f5;
+  box-shadow: 0 5px 14px rgba(35, 74, 60, 0.04);
+}
+
+.ritual-stack-card[data-depth="1"] {
+  z-index: 1;
+  transform: translate3d(0, 8px, -12px) scale(0.962) rotate(-0.45deg);
+  background: #f8faf9;
+  box-shadow: 0 8px 20px rgba(35, 74, 60, 0.06);
+}
+
+.ritual-stack-card.is-top {
+  z-index: 3;
+  cursor: grab;
+  transform: translate3d(var(--ritual-drag-x, 0), 0, 0) rotate(var(--ritual-drag-rotate, 0));
+  animation: ritual-stack-arrive 280ms cubic-bezier(0.22, 0.82, 0.32, 1) both;
+  will-change: transform, opacity;
+}
+
+.ritual-stack-card.is-top.is-dragging {
+  cursor: grabbing;
+  box-shadow: 0 18px 38px rgba(35, 74, 60, 0.14);
+  transition: box-shadow 160ms ease;
+  animation: none;
+}
+
+.ritual-stack-card.is-top.is-exiting-left {
+  opacity: 0;
+  transform: translate3d(-118%, -6px, 0) rotate(-9deg);
+}
+
+.ritual-stack-card.is-top.is-exiting-right {
+  opacity: 0;
+  transform: translate3d(118%, -6px, 0) rotate(9deg);
+}
+
+.ritual-stack-card.is-complete {
+  border-color: #bad3c7;
+}
+
+.ritual-stack-card__topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--color-muted);
+  font-size: 8px;
+  font-weight: 800;
+}
+
+.ritual-stack-card__topline strong {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 3px;
+  color: #8a6519;
+}
+
+.ritual-stack-card.is-complete .ritual-stack-card__topline strong {
+  color: var(--color-brand-deep);
+}
+
+.ritual-stack-card__body {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.ritual-stack-card__icon {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border: 1px solid #bed3c8;
+  border-radius: 12px;
+  color: var(--color-brand-deep);
+  background: #eef7f2;
+}
+
+.ritual-stack-card__copy {
+  min-width: 0;
+}
+
+.ritual-stack-card__copy h3 {
+  overflow: hidden;
+  margin: 0 0 4px;
+  font-size: 15px;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ritual-stack-card__copy p {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 9px;
+  line-height: 1.45;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.ritual-stack-card__action {
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 0 9px;
+  border: 1px solid var(--color-brand);
+  border-radius: 10px;
+  color: #ffffff;
+  background: var(--color-brand);
+  font-size: 9px;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.ritual-stack-card.is-complete .ritual-stack-card__action {
+  color: var(--color-brand-deep);
+  border-color: #c6dad0;
+  background: #edf6f1;
+}
+
+.ritual-stack-card__peek {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--color-muted);
+  opacity: 0.54;
+  font-size: 8px;
+}
+
+.ritual-stack-card__peek strong {
+  overflow: hidden;
+  max-width: 70%;
+  font-size: 9px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ritual-deck__footer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  min-height: 18px;
+  padding-inline: 10px;
+  color: var(--color-muted);
+  font-size: 8px;
+}
+
+.ritual-deck__footer > strong {
+  justify-self: end;
+  color: var(--color-ink-soft);
+  font-size: 8px;
+}
+
+.ritual-deck__progress {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.ritual-deck__progress span {
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: #c8d3ce;
+  transition: width 180ms ease, background 180ms ease;
+}
+
+.ritual-deck__progress span.is-complete:not(.is-active) {
+  background: #8fb7a5;
+}
+
+.ritual-deck__progress span.is-active {
+  width: 18px;
+  background: var(--color-brand);
+}
+
+@keyframes ritual-stack-arrive {
+  from {
+    opacity: 0.72;
+    transform: translate3d(18px, 5px, -8px) scale(0.97) rotate(1deg);
+  }
+}
+
+@media (min-width: 760px) {
+  .ritual-deck.ritual-deck--stack {
+    width: min(820px, 100%);
+    margin-inline: auto;
+  }
+
+  .ritual-deck--stack .ritual-deck__heading h2 {
+    font-size: 19px;
+  }
+
+  .ritual-card-stack {
+    height: 162px;
+  }
+
+  .ritual-stack-card {
+    padding: 13px 16px;
+  }
+
+  .ritual-stack-card__copy h3 {
+    font-size: 17px;
+  }
+
+  .ritual-stack-card__copy p {
+    font-size: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ritual-stack-card,
+  .ritual-stack-card.is-top {
+    animation: none;
+    transition-duration: 1ms;
+  }
+}
