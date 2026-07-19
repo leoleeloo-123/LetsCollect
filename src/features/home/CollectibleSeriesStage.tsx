@@ -15,6 +15,7 @@ import { routes } from "../../app/routes";
 import { ToyThumbnail } from "../../components/toys/ToyThumbnail";
 import { ButtonLink } from "../../components/ui/ButtonLink";
 import { homeSeriesToys } from "../../data/mock/homeSeries";
+import { colorAnimalsSeries } from "../toys/activeSeries";
 import { ToyViewer } from "../../three/ToyViewer";
 
 const AUTO_ADVANCE_MS = 5200;
@@ -85,7 +86,7 @@ export function CollectibleSeriesStage() {
         }}
       >
         <div className="collection-stage__meta">
-          <span><LibraryBig size={15} /> 水晶动物系列</span>
+          <span><LibraryBig size={15} /> {colorAnimalsSeries.name}</span>
           <strong>{String(activeIndex + 1).padStart(2, "0")} / {String(homeSeriesToys.length).padStart(2, "0")}</strong>
         </div>
 

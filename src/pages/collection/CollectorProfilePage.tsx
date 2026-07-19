@@ -3,10 +3,10 @@ import {
   Award,
   BookOpenCheck,
   CalendarDays,
-  Gem,
+  Dog,
   Medal,
+  Palette,
   ScanSearch,
-  Sparkles,
   Star,
   Trophy
 } from "lucide-react";
@@ -14,19 +14,15 @@ import { useMvpState } from "../../app/MvpState";
 import { ToyThumbnail } from "../../components/toys/ToyThumbnail";
 import { collectorProfile } from "../../data/mock/community";
 import { ToyDetailSheet } from "../../features/collection/ToyDetailSheet";
-import { rarityLabels, toyModels } from "../../features/toys/catalog";
-import { drawableMaterials } from "../../features/toys/materialCatalog";
+import { colorAnimalPalettes, rarityLabels } from "../../features/toys/catalog";
+import { colorAnimalsSeries } from "../../features/toys/activeSeries";
 import { ToyViewer } from "../../three/ToyViewer";
 import type { Collectible } from "../../types/toy";
 
 type CollectionFilter = "all" | "high" | "mythic";
 
 function pickPinnedToys(collection: Collectible[]) {
-  const preferredIds = [
-    "showcase_kitty_gold",
-    "showcase_bunny_crystal",
-    "showcase_bird_copper"
-  ];
+  const preferredIds = ["toy_001", "toy_002", "toy_003"];
   const selected = preferredIds
     .map((id) => collection.find((toy) => toy.id === id))
     .filter((toy): toy is Collectible => Boolean(toy));
@@ -44,30 +40,14 @@ export function CollectorProfilePage() {
   const [filter, setFilter] = useState<CollectionFilter>("all");
   const [selectedToy, setSelectedToy] = useState<Collectible | null>(null);
 
-  const favoriteToy = collection.find((toy) =>
-    toy.id === "showcase_unicorn_crystal"
-  ) ?? collection.find((toy) => toy.materialId === "crystal") ?? collection[0];
+  const favoriteToy = collection[0];
   const pinnedToys = useMemo(() => pickPinnedToys(collection), [collection]);
   const mythicCount = collection.filter((toy) => toy.rarity === "mythic").length;
-  const distinctMaterials = new Set(collection.map((toy) => toy.materialId)).size;
+  const distinctPalettes = new Set(collection.map((toy) => toy.paletteId)).size;
   const collectorLevel = Math.max(1, Math.floor(collection.length / 4));
-
-  const crystalProgress = new Set(
-    collection.filter((toy) => toy.materialId === "crystal").map((toy) => toy.modelId)
-  ).size;
-  const unicornProgress = new Set(
-    collection.filter((toy) => toy.modelId === "unicorn").map((toy) => toy.materialId)
-  ).size;
-  const completedModelSets = toyModels.filter((model) =>
-    new Set(collection.filter((toy) => toy.modelId === model.id).map((toy) => toy.materialId)).size
-      >= drawableMaterials.length
-  ).length;
-  const completedMaterialSets = drawableMaterials.filter((material) =>
-    new Set(collection.filter((toy) => toy.materialId === material.id).map((toy) => toy.modelId)).size
-      >= toyModels.length
-  ).length;
-  const completedSetCount = completedModelSets + completedMaterialSets;
-
+  const colorProgress = distinctPalettes;
+  const modelProgress = new Set(collection.map((toy) => toy.modelId)).size;
+  const completedSetCount = Number(colorProgress >= colorAnimalPalettes.length);
   const filteredToys = collection.filter((toy) => {
     if (filter === "mythic") return toy.rarity === "mythic";
     if (filter === "high") return ["epic", "legendary", "mythic"].includes(toy.rarity);
@@ -82,7 +62,7 @@ export function CollectorProfilePage() {
         </div>
         <div className="collector-identity__copy">
           <span>{collectorProfile.handle}</span>
-          <h1 id="collector-name">{collectorProfile.favoriteMaterialLabel}</h1>
+          <h1 id="collector-name">{collectorProfile.title}</h1>
           <p>{collectorProfile.bio}</p>
           <small><CalendarDays size={14} /> {collectorProfile.joinedLabel}</small>
         </div>
@@ -143,25 +123,25 @@ export function CollectorProfilePage() {
         <div className="section-heading section-heading--inline">
           <div>
             <p className="eyebrow">收藏图鉴</p>
-            <h2 id="sets-title">同一批玩偶，也能讲两种收集故事</h2>
+            <h2 id="sets-title">同一只小狗，也能组成丰富色卡</h2>
           </div>
           <BookOpenCheck size={22} aria-hidden="true" />
         </div>
         <div className="collector-set-list">
           <article className="collector-set">
-            <span className="collector-set__icon collector-set__icon--crystal"><Gem size={21} /></span>
+            <span className="collector-set__icon collector-set__icon--crystal"><Palette size={21} /></span>
             <div className="collector-set__copy">
-              <div><strong>水晶动物</strong><span>{crystalProgress}/{toyModels.length}</span></div>
-              <p>收集六种不同造型的水晶玩偶。</p>
-              <div className="collector-set__bar"><span style={{ width: `${crystalProgress / toyModels.length * 100}%` }} /></div>
+              <div><strong>小狗配色图鉴</strong><span>{colorProgress}/{colorAnimalPalettes.length}</span></div>
+              <p>收集九种不同身体配色的柔雾小狗。</p>
+              <div className="collector-set__bar"><span style={{ width: `${colorProgress / colorAnimalPalettes.length * 100}%` }} /></div>
             </div>
           </article>
           <article className="collector-set">
-            <span className="collector-set__icon collector-set__icon--unicorn"><Sparkles size={21} /></span>
+            <span className="collector-set__icon collector-set__icon--unicorn"><Dog size={21} /></span>
             <div className="collector-set__copy">
-              <div><strong>独角兽全材质</strong><span>{unicornProgress}/{drawableMaterials.length}</span></div>
-              <p>点亮独角兽的八种基础材质。</p>
-              <div className="collector-set__bar"><span style={{ width: `${unicornProgress / drawableMaterials.length * 100}%` }} /></div>
+              <div><strong>软萌伙伴系列</strong><span>{modelProgress}/{colorAnimalsSeries.modelIds.length}</span></div>
+              <p>首发 Color Dog 已到位，后续小鸟与泰迪会逐步加入。</p>
+              <div className="collector-set__bar"><span style={{ width: `${modelProgress / colorAnimalsSeries.modelIds.length * 100}%` }} /></div>
             </div>
           </article>
         </div>
@@ -181,15 +161,15 @@ export function CollectorProfilePage() {
             <strong>初次相遇</strong>
             <small>拥有第一件藏品</small>
           </article>
-          <article className={distinctMaterials >= drawableMaterials.length ? "is-unlocked" : ""}>
-            <span><Gem size={22} /></span>
-            <strong>材质研究员</strong>
-            <small>集齐八种材质</small>
+          <article className={distinctPalettes >= 4 ? "is-unlocked" : ""}>
+            <span><Palette size={22} /></span>
+            <strong>配色收藏家</strong>
+            <small>拥有四种身体配色</small>
           </article>
           <article className={completedSetCount > 0 ? "is-unlocked" : ""}>
             <span><Trophy size={22} /></span>
-            <strong>完整图鉴</strong>
-            <small>完成一套收藏图鉴</small>
+            <strong>完整色卡</strong>
+            <small>集齐九种小狗配色</small>
           </article>
         </div>
       </section>
@@ -198,7 +178,7 @@ export function CollectorProfilePage() {
         <div className="section-heading section-heading--inline">
           <div>
             <p className="eyebrow">全部收藏</p>
-            <h2 id="collection-library-title">我的材质展柜</h2>
+            <h2 id="collection-library-title">我的软萌展柜</h2>
           </div>
           <span>{filteredToys.length} 件</span>
         </div>

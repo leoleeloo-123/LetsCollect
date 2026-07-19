@@ -29,8 +29,8 @@ const eventIcons: Record<CommunityEventKind, typeof Sparkles> = {
 };
 
 const recentComments: Record<string, string> = {
-  activity_001: "小满：最后一只终于到齐了！",
-  activity_002: "Luna：八种材质放在一起一定很好看。",
+  activity_001: "小满：这组颜色放在一起太可爱了！",
+  activity_002: "Luna：下一种会遇见什么颜色呢？",
   activity_003: "Mia：这只很适合做代表藏品。"
 };
 

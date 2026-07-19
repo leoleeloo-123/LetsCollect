@@ -6,7 +6,7 @@ export const mockActivities: SocialActivity[] = [
     userName: "Mia",
     userInitial: "M",
     action: "刚刚抽到了",
-    toyId: "toy_005",
+    toyId: "toy_001",
     timeLabel: "8 分钟前",
     reward: 1
   },
@@ -14,7 +14,7 @@ export const mockActivities: SocialActivity[] = [
     id: "activity_002",
     userName: "阿澈",
     userInitial: "澈",
-    action: "完成了材质初铸 4/8",
+    action: "点亮了第四种小狗配色",
     toyId: "toy_002",
     timeLabel: "32 分钟前",
     reward: 1
@@ -37,12 +37,12 @@ export const mockFriends: FriendProfile[] = [
     handle: "@mintmia",
     initial: "M",
     collectionCount: 18,
-    featuredToyId: "toy_005"
+    featuredToyId: "toy_001"
   },
   {
     id: "friend_chen",
     name: "阿澈",
-    handle: "@jadechen",
+    handle: "@candychen",
     initial: "澈",
     collectionCount: 12,
     featuredToyId: "toy_002"

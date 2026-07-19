@@ -2,7 +2,24 @@ export type RarityCode = "common" | "rare" | "epic" | "legendary" | "mythic";
 
 export type ToyModelId = "unicorn" | "kitty" | "bunny" | "bird" | "doggy" | "karpy" | "color-dog";
 export type ToyFallbackShape = "unicorn" | "cat" | "bunny" | "bird" | "dog" | "blob";
-export type ToyPaletteId = "rose" | "mint" | "honey" | "ice" | "emerald" | "lavender" | "moon" | "ink";
+export type ToyPaletteId =
+  | "rose"
+  | "mint"
+  | "honey"
+  | "ice"
+  | "emerald"
+  | "lavender"
+  | "moon"
+  | "ink"
+  | "cocoa"
+  | "apricot"
+  | "cream-rose"
+  | "berry"
+  | "candy-mint"
+  | "grape"
+  | "coral"
+  | "lime"
+  | "sky";
 export type ToyMaterialId = "jade" | "plastic" | "glass" | "wood" | "iron" | "copper" | "silver" | "gold" | "crystal";
 
 export type ToyModelDefinition = {

@@ -1,5 +1,5 @@
 import { toyModels } from "../../features/toys/catalog";
-import { generateCollectible } from "../../features/toys/generator";
+import { generateCollectible } from "../../features/toys/legacyGenerator";
 import { drawableMaterials } from "../../features/toys/materialCatalog";
 import type { ToyMaterialId } from "../../types/toy";
 

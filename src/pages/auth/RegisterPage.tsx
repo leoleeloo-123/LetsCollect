@@ -13,7 +13,7 @@ export function RegisterPage() {
       <form className="auth-card">
         <label>
           昵称
-          <input type="text" placeholder="材质收藏家" />
+          <input type="text" placeholder="配色收藏家" />
         </label>
         <label>
           邮箱

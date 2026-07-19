@@ -40,7 +40,7 @@ export function OnboardingPage() {
         <span className="onboarding-intro__brand">Let's Collect</span>
         <p className="eyebrow">第一次见面</p>
         <h1>为你的收藏身份<br />取一个名字</h1>
-        <p>不用邮箱或密码。选好昵称和头像，就可以开始遇见第一只材质玩偶。</p>
+        <p>不用邮箱或密码。选好昵称和头像，就可以开始遇见第一只软萌小动物。</p>
         <div className="onboarding-intro__glow" aria-hidden="true">
           <span className={`profile-avatar profile-avatar--${avatarKey.replace("-unicorn", "")}`}>
             <Sparkles size={28} />
@@ -60,7 +60,7 @@ export function OnboardingPage() {
                 setDisplayName(event.target.value);
                 setFieldError("");
               }}
-              placeholder="例如：材质收藏家"
+              placeholder="例如：配色收藏家"
               autoComplete="nickname"
               maxLength={24}
               aria-describedby="display-name-help display-name-error"

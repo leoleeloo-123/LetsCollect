@@ -1,6 +1,6 @@
 import { rarityLabels } from "../../features/toys/catalog";
 import { getCollectibleGradeLabel } from "../../features/toys/compatibility";
-import { getToyMaterial } from "../../features/toys/materialCatalog";
+import { getCollectibleMaterialLabel } from "../../features/toys/presentation";
 import type { Collectible } from "../../types/toy";
 import { ToyThumbnail } from "../toys/ToyThumbnail";
 
@@ -10,7 +10,7 @@ type ToyCardProps = {
 };
 
 export function ToyCard({ toy, onSelect }: ToyCardProps) {
-  const material = getToyMaterial(toy.materialId);
+  const materialLabel = getCollectibleMaterialLabel(toy);
   const grade = getCollectibleGradeLabel(toy);
   const content = (
     <>
@@ -25,7 +25,7 @@ export function ToyCard({ toy, onSelect }: ToyCardProps) {
           {rarityLabels[toy.rarity]}
         </span>
         <h3>{toy.name}</h3>
-        <p>{material.name} · {grade}</p>
+        <p>{materialLabel} · {grade}</p>
         <span className="toy-card__code">{toy.publicCode}</span>
       </div>
     </>

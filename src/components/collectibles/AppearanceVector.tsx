@@ -1,4 +1,4 @@
-import { getToyMaterial } from "../../features/toys/materialCatalog";
+import { getCollectibleTraitLabels } from "../../features/toys/presentation";
 import type {
   AppearanceVector as AppearanceVectorValue,
   Collectible,
@@ -27,11 +27,11 @@ const materialTraitKeys: Array<keyof MaterialTraits> = [
 ];
 
 export function AppearanceVector({ collectible, compact = false }: AppearanceVectorProps) {
-  const material = getToyMaterial(collectible.materialId);
+  const traitLabels = getCollectibleTraitLabels(collectible);
   const attributes = collectible.materialId === "jade"
     ? jadeAttributes.map(({ key, label }) => ({ label, score: collectible.appearance[key] }))
     : materialTraitKeys.map((key) => ({
-        label: material.traitLabels[key],
+        label: traitLabels[key],
         score: collectible.materialTraits[key]
       }));
 

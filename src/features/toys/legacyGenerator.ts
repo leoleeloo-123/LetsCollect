@@ -3,22 +3,19 @@ import type {
   Collectible,
   MaterialTraits,
   RarityCode,
+  ToyMaterialId,
   ToyModelId,
   ToyPaletteId
 } from "../../types/toy";
+import { getToyModel, getToyPalette, toyModels, toyPalettes } from "./catalog";
 import {
-  colorAnimalPalettes,
-  getToyModel,
-  getToyPalette
-} from "./catalog";
-import {
-  COLOR_ANIMALS_GENERATION_VERSION,
-  colorAnimalsSeries,
-  getColorAnimalGrade
-} from "./activeSeries";
-import { materialTraitWeights } from "./materialCatalog";
+  drawableMaterials,
+  getMaterialGrade,
+  getToyMaterial,
+  materialTraitWeights
+} from "./materialCatalog";
 
-export const GENERATION_VERSION = COLOR_ANIMALS_GENERATION_VERSION;
+export const GENERATION_VERSION = 2;
 
 type GenerateCollectibleOptions = {
   seed?: number;
@@ -26,6 +23,7 @@ type GenerateCollectibleOptions = {
   publicCode?: string;
   modelId?: ToyModelId;
   paletteId?: ToyPaletteId;
+  materialId?: Exclude<ToyMaterialId, "jade">;
   createdAt?: string;
 };
 
@@ -50,23 +48,27 @@ function createId() {
   return globalThis.crypto.randomUUID();
 }
 
-function createPublicCode(id: string, suppliedCode?: string) {
-  if (suppliedCode) return suppliedCode;
-  const normalizedId = id.replace(/[^a-z0-9]/gi, "").toUpperCase();
-  return "LC-" + normalizedId.slice(-8).padStart(8, "0");
-}
-
 function clampScore(value: number) {
   return Math.max(1, Math.min(100, Math.round(value)));
 }
 
-function createColorAnimalTraits(rolls: number[]): MaterialTraits {
+function chooseMaterial(roll: number) {
+  let cursor = roll * 100;
+  for (const material of drawableMaterials) {
+    cursor -= material.probability;
+    if (cursor <= 0) return material;
+  }
+  return drawableMaterials[drawableMaterials.length - 1];
+}
+
+function createMaterialTraits(rolls: number[]): MaterialTraits {
+  const qualityTendency = 24 + ((rolls[3] + rolls[4]) / 2) * 52;
   return {
-    craftsmanship: clampScore(48 + rolls[3] * 48),
-    finish: 84,
-    purity: clampScore(58 + rolls[7] * 40),
-    character: clampScore(52 + rolls[8] * 44),
-    brilliance: 62
+    craftsmanship: clampScore(qualityTendency + (rolls[5] - 0.5) * 28 + 5),
+    finish: clampScore(qualityTendency + (rolls[6] - 0.5) * 32 + 2),
+    purity: clampScore(qualityTendency + (rolls[7] - 0.5) * 34),
+    character: clampScore(qualityTendency + (rolls[8] - 0.5) * 38),
+    brilliance: clampScore(qualityTendency + (rolls[9] - 0.5) * 36 + 1)
   };
 }
 
@@ -97,70 +99,71 @@ export function getAppearanceVariation(seed: number) {
   };
 }
 
-function createColorAnimalAppearance(traits: MaterialTraits): AppearanceVector {
+function createCompatibilityAppearance(
+  materialId: Exclude<ToyMaterialId, "jade">,
+  traits: MaterialTraits
+): AppearanceVector {
+  const isMineral = materialId === "glass" || materialId === "crystal";
   return {
-    transparency: 1,
+    transparency: isMineral
+      ? traits.purity
+      : materialId === "plastic"
+        ? clampScore(traits.purity * 0.45)
+        : 1,
     colorDepth: traits.character,
     hydration: traits.finish,
     luster: traits.brilliance,
-    glow: 18
+    glow: clampScore(traits.brilliance * (isMineral ? 0.72 : 0.34))
   };
 }
 
-/** Active V3 generator: fixed soft-matte material, random approved model and body color. */
 export function generateCollectible(options: GenerateCollectibleOptions = {}): Collectible {
   const seed = options.seed ?? randomSeed();
   const random = createSeededRandom(seed);
   const rolls = Array.from({ length: 10 }, () => random());
-  const requestedModel = options.modelId
-    && colorAnimalsSeries.modelIds.includes(options.modelId)
-    ? options.modelId
-    : null;
-  const requestedPalette = options.paletteId
-    && colorAnimalsSeries.paletteIds.includes(options.paletteId)
-    ? options.paletteId
-    : null;
-  const modelId = requestedModel
-    ?? colorAnimalsSeries.modelIds[Math.floor(rolls[0] * colorAnimalsSeries.modelIds.length)];
-  const paletteId = requestedPalette
-    ?? colorAnimalPalettes[Math.floor(rolls[1] * colorAnimalPalettes.length)].id;
+  const modelId = options.modelId ?? toyModels[Math.floor(rolls[0] * toyModels.length)].id;
+  const paletteId = options.paletteId ?? toyPalettes[Math.floor(rolls[1] * toyPalettes.length)].id;
+  const material = options.materialId
+    ? getToyMaterial(options.materialId)
+    : chooseMaterial(rolls[2]);
+  const materialId = material.id as Exclude<ToyMaterialId, "jade">;
+  const materialTraits = createMaterialTraits(rolls);
+  const craftScore = getMaterialCraftScore(materialTraits);
+  const qualityScore = clampScore(material.baseQuality + (craftScore - 50) * 0.28);
+  const rarity = getRarityForQuality(qualityScore);
   const model = getToyModel(modelId);
   const palette = getToyPalette(paletteId);
-  const materialId = colorAnimalsSeries.materialId;
-  const materialTraits = createColorAnimalTraits(rolls);
-  const qualityScore = getMaterialCraftScore(materialTraits);
-  const rarity = getRarityForQuality(qualityScore);
   const id = options.id ?? createId();
-  const appearance = createColorAnimalAppearance(materialTraits);
+  const normalizedId = id.replace(/[^a-z0-9]/gi, "").toUpperCase();
+  const publicCode = options.publicCode ?? `LC-${normalizedId.slice(-8).padStart(8, "0")}`;
+  const appearance = createCompatibilityAppearance(materialId, materialTraits);
   const appearanceSignature = [
     GENERATION_VERSION,
-    colorAnimalsSeries.id,
     modelId,
     paletteId,
     materialId,
-    model.rendering?.protectMaskUrl ?? "unmasked",
     ...Object.values(materialTraits),
     seed.toString(36)
   ].join("-");
 
   return {
     id,
-    publicCode: createPublicCode(id, options.publicCode),
+    publicCode,
     modelId,
     paletteId,
     materialId,
-    materialGrade: getColorAnimalGrade(rarity),
+    materialGrade: getMaterialGrade(rarity),
     materialTraits,
-    name: palette.name + model.name,
-    seriesId: colorAnimalsSeries.id,
-    seriesName: colorAnimalsSeries.name,
+    name: `${material.name}${model.name}`,
+    seriesId: "series_material_origins",
+    seriesName: "材质初铸",
     rarity,
     qualityScore,
     appearanceSeed: seed,
     generationVersion: GENERATION_VERSION,
     appearance,
     appearanceSignature,
-    shortDescription: "一只采用" + palette.name + "身体配色的柔雾小狗，眼睛、鼻嘴和粉色肉球保留原始细节。",
+    shortDescription: `一只以${material.name}为主体、带有${palette.name}氛围光的独立${model.name}。`,
     createdAt: options.createdAt ?? new Date().toISOString()
   };
 }

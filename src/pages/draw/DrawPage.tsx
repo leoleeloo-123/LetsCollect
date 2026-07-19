@@ -7,7 +7,7 @@ import { PageHeader } from "../../components/ui/PageHeader";
 import { ToyThumbnail } from "../../components/toys/ToyThumbnail";
 import { featuredToy } from "../../data/mock/toys";
 import { DrawReveal } from "../../features/draw/DrawReveal";
-import { getToyModel, getToyPalette, rarityLabels } from "../../features/toys/catalog";
+import { getToyModel, getToyPalette } from "../../features/toys/catalog";
 import { TicketBalance } from "../../features/tickets/TicketBalance";
 import { ToyViewer } from "../../three/ToyViewer";
 import type { Collectible } from "../../types/toy";
@@ -47,27 +47,27 @@ export function DrawPage() {
   return (
     <div className="page-stack draw-page">
       <div className="page-title-row">
-        <PageHeader eyebrow="抽取" title="材质初铸" description="六种造型、八种基础材质与五项工艺，共同决定每一次独特相遇。" />
+        <PageHeader eyebrow="抽取" title="软萌变色伙伴" description="同一只柔雾小狗，每次会遇见一种新的身体配色；眼睛、鼻嘴和粉色肉球始终保留。" />
         <TicketBalance />
       </div>
 
       <section className={`draw-stage${isDrawing ? " draw-stage--active" : ""}`}>
         <div className="draw-stage__status">
-          <span>V2 材质藏品生成</span>
-          <strong>6 种造型 × 8 种材质</strong>
+          <span>V3 色彩藏品生成</span>
+          <strong>1 种造型 × 9 种配色</strong>
         </div>
         <div className="draw-stage__visual">
           <span className="draw-stage__halo" aria-hidden="true" />
           <ToyViewer toy={featuredToy} active={!result} />
         </div>
         <div className="draw-stage__copy">
-          <p className="eyebrow">本期模型池</p>
-          <h2>八材质玩偶工坊</h2>
-          <p>{featuredModel.name}示例 · {featuredPalette.name}氛围光 · 每次工艺独立生成</p>
+          <p className="eyebrow">本期配色池</p>
+          <h2>柔雾小狗配色室</h2>
+          <p>{featuredModel.name}示例 · {featuredPalette.name}身体色 · 每次配色独立生成</p>
         </div>
         <button className="draw-button" type="button" onClick={handleDraw} disabled={isDrawing}>
           <Sparkles size={20} />
-          {isDrawing ? "正在生成材质与工艺..." : "抽取独立藏品"}
+          {isDrawing ? "正在挑选新的配色..." : "随机生成一只小狗"}
           <span><Ticket size={16} /> {DRAW_COST}</span>
         </button>
         {message ? (
@@ -79,11 +79,11 @@ export function DrawPage() {
       </section>
 
       <details className="probability-panel">
-        <summary><CircleHelp size={18} /> 查看 V2 品质概率</summary>
+        <summary><CircleHelp size={18} /> 查看 V3 配色规则</summary>
         <div className="probability-panel__grid">
-          <span>普通约 54%</span><span>稀有约 28%</span><span>史诗约 11%</span><span>传说约 6%</span><span>神话约 1%</span>
+          <span>每种配色约 11.1%</span><span>柔雾表面固定</span><span>五官细节固定</span>
         </div>
-        <p>模型和氛围色等概率。材质决定基础价值区间，五项工艺决定区间内的最终品质；{rarityLabels.mythic}约占 1%。</p>
+        <p>九种身体配色等概率出现，表面始终保持柔雾树脂效果；品质只记录这只玩偶的细节完成度，表面质感不会随机改变。</p>
       </details>
 
       {recentDraws.length > 0 ? (

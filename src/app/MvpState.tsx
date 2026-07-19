@@ -8,13 +8,13 @@ import {
   type ReactNode
 } from "react";
 import { initialFriendIds, initialPendingFriendIds } from "../data/mock/social";
-import { materialShowcaseToys } from "../data/mock/materialShowcase";
+import { starterCollectionToys } from "../data/mock/toys";
+import { isColorAnimalCollectible } from "../features/toys/activeSeries";
 import { normalizeStoredCollectible } from "../features/toys/compatibility";
 import { generateCollectible } from "../features/toys/generator";
 import type { Collectible, DrawRecord } from "../types/toy";
 
-const STORAGE_KEY = "lets-collect-mvp-state-v5";
-const LEGACY_STORAGE_KEYS = ["lets-collect-mvp-state-v4", "lets-collect-mvp-state-v3"];
+const STORAGE_KEY = "lets-collect-mvp-state-v6";
 export const DRAW_COST = 3;
 
 type MvpSnapshot = {
@@ -37,7 +37,7 @@ type MvpStateValue = MvpSnapshot & {
 const initialSnapshot: MvpSnapshot = {
   tickets: 100,
   interactedActivityIds: [],
-  collection: [...materialShowcaseToys],
+  collection: [...starterCollectionToys],
   friendIds: initialFriendIds,
   pendingFriendIds: initialPendingFriendIds,
   recentDraws: []
@@ -46,35 +46,25 @@ const initialSnapshot: MvpSnapshot = {
 function loadSnapshot(): MvpSnapshot {
   try {
     const currentStored = window.localStorage.getItem(STORAGE_KEY);
-    const legacyStored = LEGACY_STORAGE_KEYS
-      .map((key) => window.localStorage.getItem(key))
-      .find((value) => value !== null) ?? null;
-    const stored = currentStored ?? legacyStored;
-    if (!stored) return initialSnapshot;
+    if (!currentStored) return initialSnapshot;
 
-    const parsed = JSON.parse(stored) as Partial<MvpSnapshot>;
-    const migratingFromLegacy = !currentStored && Boolean(legacyStored);
+    const parsed = JSON.parse(currentStored) as Partial<MvpSnapshot>;
     const storedCollection = Array.isArray(parsed.collection)
       ? parsed.collection
           .map((toy) => normalizeStoredCollectible(toy))
-          .filter((toy) => toy.generationVersion >= 2)
+          .filter((toy) => isColorAnimalCollectible(toy))
       : initialSnapshot.collection;
 
     return {
       ...initialSnapshot,
       ...parsed,
-      collection: migratingFromLegacy ? initialSnapshot.collection : storedCollection,
-      recentDraws: migratingFromLegacy
-        ? []
-        : Array.isArray(parsed.recentDraws)
-          ? parsed.recentDraws
-          : []
+      collection: storedCollection,
+      recentDraws: Array.isArray(parsed.recentDraws) ? parsed.recentDraws : []
     };
   } catch {
     return initialSnapshot;
   }
 }
-
 function createDrawRecord(collectible: Collectible): DrawRecord {
   return {
     id: globalThis.crypto.randomUUID(),
@@ -96,7 +86,7 @@ export function MvpStateProvider({ children }: MvpStateProviderProps) {
   // consume domain objects, so a Supabase-backed adapter can replace it later.
   useEffect(() => {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
-    LEGACY_STORAGE_KEYS.forEach((key) => window.localStorage.removeItem(key));
+    // V5 and earlier keys remain untouched so the material showcase can be restored.
   }, [snapshot]);
 
   const interactAndEarn = useCallback((activityId: string, reward: number) => {
