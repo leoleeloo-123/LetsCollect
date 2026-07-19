@@ -33,7 +33,7 @@ export function ColorDogLabPage() {
       </header>
       <section className="color-dog-intro">
         <div>
-          <p className="eyebrow">COLOR DOG STUDY 03</p>
+          <p className="eyebrow">COLOR DOG STUDY 04</p>
           <h1>一只小狗，完整转一圈。</h1>
           <p>直接以带五官与原始深浅关系的 Color Dog 为底：眼球、眼白、鼻子、粉色嘴巴与脚掌肉球保持原色；身体只做统一换色，不再叠加腮红，因此眼睛边缘更干净。</p>
         </div>

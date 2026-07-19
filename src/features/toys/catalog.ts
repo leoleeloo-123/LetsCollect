@@ -87,7 +87,7 @@ export const colorDogModel: ToyModelDefinition = {
   viewer: { scaleMultiplier: 1, yOffset: 0, rotationY: 0 },
   rendering: {
     mode: "protected-coat",
-    protectMaskUrl: "/models/toys/color-dog/protect-mask-mobile-v027.webp",
+    protectMaskUrl: "/models/toys/color-dog/protect-mask-mobile-v028.webp",
     coatColorScale: 0.86
   }
 };

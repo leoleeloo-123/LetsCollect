@@ -17,7 +17,7 @@ type CoatControls = {
 };
 
 const MODEL_URL = "/models/toys/color-dog/model-mobile-v002.glb";
-const PROTECT_MASK_URL = "/models/toys/color-dog/protect-mask-mobile-v027.webp";
+const PROTECT_MASK_URL = "/models/toys/color-dog/protect-mask-mobile-v028.webp";
 
 function colorizeCoat(
   material: import("three").Material,

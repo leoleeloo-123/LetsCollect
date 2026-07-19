@@ -3,7 +3,7 @@ import type * as Three from "three";
 type ThreeRuntime = typeof import("three");
 
 export const COLOR_DOG_MODEL_URL = "/models/toys/color-dog/model-mobile-v002.glb";
-export const COLOR_DOG_PROTECT_MASK_URL = "/models/toys/color-dog/protect-mask-mobile-v027.webp";
+export const COLOR_DOG_PROTECT_MASK_URL = "/models/toys/color-dog/protect-mask-mobile-v028.webp";
 
 export function prepareProtectedCoatTexture(
   THREE: ThreeRuntime,
