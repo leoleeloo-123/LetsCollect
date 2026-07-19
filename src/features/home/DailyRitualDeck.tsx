@@ -12,7 +12,6 @@ import {
   useEffect,
   useRef,
   useState,
-  type CSSProperties,
   type KeyboardEvent as ReactKeyboardEvent,
   type PointerEvent as ReactPointerEvent
 } from "react";
@@ -35,9 +34,9 @@ type DragSession = {
   startTime: number;
 };
 
-type CardDirection = -1 | 0 | 1;
+type SlideDirection = -1 | 0 | 1;
 
-const EXIT_DURATION = 260;
+const TRANSITION_DURATION = 300;
 
 export const ritualTasks: RitualTask[] = [
   {
@@ -90,34 +89,36 @@ type DailyRitualDeckProps = {
 export function DailyRitualDeck({ completedTaskIds, onComplete }: DailyRitualDeckProps) {
   const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState(0);
-  const [dragX, setDragX] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const [exitDirection, setExitDirection] = useState<CardDirection>(0);
+  const [previousIndex, setPreviousIndex] = useState<number | null>(null);
+  const [slideDirection, setSlideDirection] = useState<SlideDirection>(0);
   const dragSessionRef = useRef<DragSession | null>(null);
-  const exitTimerRef = useRef<number | null>(null);
+  const transitionTimerRef = useRef<number | null>(null);
   const activeTask = ritualTasks[activeIndex];
-  const completed = completedTaskIds.includes(activeTask.id);
 
   useEffect(() => () => {
-    if (exitTimerRef.current !== null) window.clearTimeout(exitTimerRef.current);
+    if (transitionTimerRef.current !== null) window.clearTimeout(transitionTimerRef.current);
   }, []);
 
-  const moveDeck = (direction: Exclude<CardDirection, 0>) => {
-    if (exitDirection !== 0) return;
-    setExitDirection(direction);
-    setIsDragging(false);
-    exitTimerRef.current = window.setTimeout(() => {
-      setActiveIndex((current) => (
-        current + direction + ritualTasks.length
-      ) % ritualTasks.length);
-      setDragX(0);
-      setExitDirection(0);
-      exitTimerRef.current = null;
-    }, EXIT_DURATION);
+  const moveTo = (nextIndex: number, direction: Exclude<SlideDirection, 0>) => {
+    if (nextIndex === activeIndex) return;
+    if (transitionTimerRef.current !== null) window.clearTimeout(transitionTimerRef.current);
+    setPreviousIndex(activeIndex);
+    setSlideDirection(direction);
+    setActiveIndex(nextIndex);
+    transitionTimerRef.current = window.setTimeout(() => {
+      setPreviousIndex(null);
+      setSlideDirection(0);
+      transitionTimerRef.current = null;
+    }, TRANSITION_DURATION);
+  };
+
+  const moveBy = (direction: Exclude<SlideDirection, 0>) => {
+    const nextIndex = (activeIndex + direction + ritualTasks.length) % ritualTasks.length;
+    moveTo(nextIndex, direction);
   };
 
   const handleAction = async () => {
-    if (!completed) onComplete(activeTask.id);
+    if (!completedTaskIds.includes(activeTask.id)) onComplete(activeTask.id);
 
     if (activeTask.action === "feed") {
       window.setTimeout(() => {
@@ -147,22 +148,13 @@ export function DailyRitualDeck({ completedTaskIds, onComplete }: DailyRitualDec
   };
 
   const handlePointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
-    if (exitDirection !== 0 || (event.target as HTMLElement).closest("button")) return;
+    if ((event.target as HTMLElement).closest("button")) return;
     dragSessionRef.current = {
       pointerId: event.pointerId,
       startX: event.clientX,
       startTime: performance.now()
     };
-    setIsDragging(true);
     event.currentTarget.setPointerCapture(event.pointerId);
-  };
-
-  const handlePointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
-    const session = dragSessionRef.current;
-    if (!session || session.pointerId !== event.pointerId) return;
-    const distance = event.clientX - session.startX;
-    const resistedDistance = Math.sign(distance) * Math.min(Math.abs(distance), 150);
-    setDragX(resistedDistance);
   };
 
   const finishPointerGesture = (event: ReactPointerEvent<HTMLDivElement>) => {
@@ -172,116 +164,99 @@ export function DailyRitualDeck({ completedTaskIds, onComplete }: DailyRitualDec
     const elapsed = Math.max(performance.now() - session.startTime, 1);
     const velocity = distance / elapsed;
     dragSessionRef.current = null;
-    setIsDragging(false);
     if (event.currentTarget.hasPointerCapture(event.pointerId)) {
       event.currentTarget.releasePointerCapture(event.pointerId);
     }
-
-    const shouldMove = Math.abs(distance) > 52
-      || (Math.abs(distance) > 20 && Math.abs(velocity) > 0.5);
-    if (shouldMove) moveDeck(distance < 0 ? 1 : -1);
-    else setDragX(0);
+    if (Math.abs(distance) > 42 || (Math.abs(distance) > 20 && Math.abs(velocity) > 0.45)) {
+      moveBy(distance < 0 ? 1 : -1);
+    }
   };
 
   const cancelPointerGesture = (event: ReactPointerEvent<HTMLDivElement>) => {
     if (dragSessionRef.current?.pointerId !== event.pointerId) return;
     dragSessionRef.current = null;
-    setIsDragging(false);
-    setDragX(0);
   };
 
   const handleKeyDown = (event: ReactKeyboardEvent<HTMLDivElement>) => {
     if (event.key === "ArrowLeft") {
       event.preventDefault();
-      moveDeck(-1);
+      moveBy(-1);
     }
     if (event.key === "ArrowRight") {
       event.preventDefault();
-      moveDeck(1);
+      moveBy(1);
     }
   };
 
-  const topCardStyle = {
-    "--ritual-drag-x": `${dragX}px`,
-    "--ritual-drag-rotate": `${dragX * 0.035}deg`
-  } as CSSProperties;
+  const renderPanel = (task: RitualTask, isCurrent: boolean) => {
+    const TaskIcon = task.icon;
+    const completed = completedTaskIds.includes(task.id);
+    return (
+      <>
+        <span className="ritual-strip__icon" aria-hidden="true"><TaskIcon size={20} /></span>
+        <div className="ritual-strip__copy">
+          <h3>{task.title}</h3>
+          <p>{task.detail}</p>
+        </div>
+        <button
+          type="button"
+          className="ritual-strip__action"
+          onClick={isCurrent ? handleAction : undefined}
+          tabIndex={isCurrent ? 0 : -1}
+        >
+          {completed ? <Check size={14} /> : <Sparkles size={14} />}
+          {completed ? "再去看看" : task.actionLabel}
+        </button>
+      </>
+    );
+  };
+
+  const previousTask = previousIndex === null ? null : ritualTasks[previousIndex];
 
   return (
-    <section className="ritual-deck ritual-deck--stack" aria-label="今日收藏任务">
-      <div
-        className="ritual-card-stack"
-        role="group"
-        aria-roledescription="任务卡片堆"
-        aria-label={`第 ${activeIndex + 1} 张，共 ${ritualTasks.length} 张。左右拖动翻阅。`}
-        tabIndex={0}
-        onKeyDown={handleKeyDown}
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={finishPointerGesture}
-        onPointerCancel={cancelPointerGesture}
-      >
-        {[2, 1, 0].map((depth) => {
-          const taskIndex = (activeIndex + depth) % ritualTasks.length;
-          const task = ritualTasks[taskIndex];
-          const TaskIcon = task.icon;
-          const taskCompleted = completedTaskIds.includes(task.id);
-          const topCardClassName = [
-            "ritual-stack-card",
-            taskCompleted ? "is-complete" : "",
-            depth === 0 ? "is-top" : "",
-            depth === 0 && isDragging ? "is-dragging" : "",
-            depth === 0 && exitDirection === -1 ? "is-exiting-left" : "",
-            depth === 0 && exitDirection === 1 ? "is-exiting-right" : ""
-          ].filter(Boolean).join(" ");
-
-          return (
-            <article
-              key={`${task.id}-${depth}`}
-              className={topCardClassName}
-              data-depth={depth}
-              aria-hidden={depth > 0 ? "true" : undefined}
-              style={depth === 0 ? topCardStyle : undefined}
-            >
-              {depth === 0 ? (
-                <>
-                  <div className="ritual-stack-card__topline">
-                    <span>收藏小事 {String(activeIndex + 1).padStart(2, "0")}</span>
-                    <strong>{completed ? <><Check size={13} /> 已完成</> : "+1 抽取券"}</strong>
-                  </div>
-                  <div className="ritual-stack-card__body">
-                    <span className="ritual-stack-card__icon" aria-hidden="true"><TaskIcon size={21} /></span>
-                    <div className="ritual-stack-card__copy">
-                      <h3>{activeTask.title}</h3>
-                      <p>{activeTask.detail}</p>
-                    </div>
-                    <button type="button" className="ritual-stack-card__action" onClick={handleAction}>
-                      {completed ? <Check size={15} /> : <Sparkles size={15} />}
-                      {completed ? "再去看看" : activeTask.actionLabel}
-                    </button>
-                  </div>
-                </>
-              ) : (
-                <div className="ritual-stack-card__peek">
-                  <span>接下来</span>
-                  <strong>{task.title}</strong>
-                </div>
-              )}
-            </article>
-          );
-        })}
-      </div>
-
-      <div className="ritual-deck__footer">
-        <span>左右滑动翻阅</span>
-        <div className="ritual-deck__progress" aria-hidden="true">
+    <section className="ritual-strip" aria-label="今日收藏任务">
+      <div className="ritual-strip__topline">
+        <span>收藏小事 {String(activeIndex + 1).padStart(2, "0")}</span>
+        <div className="ritual-strip__progress" aria-label="选择收藏小事">
           {ritualTasks.map((task, index) => (
-            <span
+            <button
               key={task.id}
+              type="button"
               className={`${index === activeIndex ? "is-active" : ""}${completedTaskIds.includes(task.id) ? " is-complete" : ""}`}
+              aria-label={task.title}
+              aria-current={index === activeIndex ? "true" : undefined}
+              onClick={() => moveTo(index, index > activeIndex ? 1 : -1)}
             />
           ))}
         </div>
-        <strong>{String(activeIndex + 1).padStart(2, "0")}/{String(ritualTasks.length).padStart(2, "0")}</strong>
+        <strong>+1 抽取券</strong>
+      </div>
+
+      <div
+        className="ritual-strip__viewport"
+        role="group"
+        aria-live="polite"
+        aria-label={`第 ${activeIndex + 1} 张，共 ${ritualTasks.length} 张。左右滑动切换。`}
+        tabIndex={0}
+        onKeyDown={handleKeyDown}
+        onPointerDown={handlePointerDown}
+        onPointerUp={finishPointerGesture}
+        onPointerCancel={cancelPointerGesture}
+      >
+        {previousTask ? (
+          <article
+            className={`ritual-strip__panel is-previous ${slideDirection === 1 ? "is-leaving-next" : "is-leaving-previous"}`}
+            aria-hidden="true"
+          >
+            {renderPanel(previousTask, false)}
+          </article>
+        ) : null}
+        <article
+          key={activeTask.id}
+          className={`ritual-strip__panel is-current ${slideDirection === 1 ? "is-entering-next" : slideDirection === -1 ? "is-entering-previous" : ""}`}
+        >
+          {renderPanel(activeTask, true)}
+        </article>
       </div>
     </section>
   );

@@ -1,0 +1,183 @@
+.social-home-page {
+  gap: 14px;
+}
+
+.collection-stage.collection-stage--compact {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 10px 28px rgba(22, 50, 41, 0.05);
+}
+
+.collection-stage--compact .collection-stage__viewport {
+  height: 248px;
+  background: #f8eeee;
+}
+
+.collection-stage--compact .collection-stage__viewport::after {
+  display: none;
+  content: none;
+}
+
+.collection-stage--compact .collection-stage__meta {
+  top: 10px;
+  right: 12px;
+  left: 12px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 8px;
+  font-size: 9px;
+}
+
+.collection-stage--compact .collection-stage__meta > span:first-child {
+  overflow: hidden;
+  min-width: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.collection-stage--compact .collection-stage__meta strong {
+  justify-self: end;
+  font-size: 9px;
+  white-space: nowrap;
+}
+
+.collection-stage--compact .collection-stage__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0;
+}
+
+.collection-stage--compact .collection-stage__pagination button,
+.collection-stage--compact .collection-stage__pagination button.is-active {
+  width: 6px;
+  height: 6px;
+  flex: 0 0 6px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+}
+
+.collection-stage--compact .collection-stage__pagination button {
+  background: #c8d3ce;
+  cursor: pointer;
+  transition: background 180ms ease, transform 180ms ease;
+}
+
+.collection-stage--compact .collection-stage__pagination button.is-active {
+  background: var(--color-brand);
+  transform: scale(1.34);
+}
+
+.collection-stage--compact .collection-stage__pagination button:focus-visible {
+  outline: 3px solid rgba(22, 133, 107, 0.22);
+  outline-offset: 3px;
+}
+
+.collection-stage--compact .collection-stage__orbit {
+  inset: 29px 0 0;
+}
+
+.collection-stage--compact .collection-stage__hero {
+  bottom: -3px;
+  width: 92%;
+  height: 103%;
+}
+
+.collection-stage--compact .collection-stage__hero .toy-viewer,
+.collection-stage--compact .collection-stage__hero .toy-viewer--hero {
+  height: 100%;
+  min-height: 0;
+}
+
+.collection-stage--compact .collection-stage__hero .toy-viewer__canvas {
+  cursor: default;
+  pointer-events: none;
+}
+
+.collection-stage--compact .collection-stage__copy {
+  display: grid;
+  gap: 7px;
+  padding: 12px 14px 14px;
+}
+
+.collection-stage--compact .collection-stage__copy .eyebrow {
+  margin: 0;
+  font-size: 10px;
+}
+
+.collection-stage--compact .collection-stage__title-row {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.collection-stage--compact .collection-stage__copy h1 {
+  overflow: hidden;
+  min-width: 0;
+  margin: 0;
+  font-size: clamp(24px, 7.4vw, 29px);
+  line-height: 1.08;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.collection-stage--compact .collection-stage__title-row .button-link {
+  flex: 0 0 auto;
+  width: auto;
+  min-width: 0;
+  min-height: 36px;
+  gap: 5px;
+  padding: 0 12px;
+  border-radius: 8px;
+  box-shadow: 0 7px 16px rgba(11, 95, 77, 0.14);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+@media (min-width: 760px) {
+  .social-home-page {
+    gap: 20px;
+  }
+
+  .collection-stage.collection-stage--compact {
+    min-height: 340px;
+  }
+
+  .collection-stage--compact .collection-stage__viewport {
+    height: 340px;
+  }
+
+  .collection-stage--compact .collection-stage__hero {
+    width: 82%;
+    height: 104%;
+  }
+
+  .collection-stage--compact .collection-stage__copy {
+    align-content: center;
+    padding: 28px 28px 18px;
+  }
+
+  .collection-stage--compact .collection-stage__copy h1 {
+    font-size: 34px;
+  }
+
+  .collection-stage--compact .collection-stage__title-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .collection-stage--compact .collection-stage__title-row .button-link {
+    min-height: 38px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .collection-stage--compact .collection-stage__hero {
+    animation: none;
+  }
+}

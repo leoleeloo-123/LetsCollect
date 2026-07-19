@@ -1,6 +1,6 @@
 export type RarityCode = "common" | "rare" | "epic" | "legendary" | "mythic";
 
-export type ToyModelId = "unicorn" | "kitty" | "bunny" | "bird" | "doggy" | "karpy" | "color-dog" | "color-bird";
+export type ToyModelId = "unicorn" | "kitty" | "bunny" | "bird" | "doggy" | "karpy" | "color-dog" | "color-bird" | "color-teddy";
 
 export type ToyFallbackShape = "unicorn" | "cat" | "bunny" | "bird" | "dog" | "blob";
 export type ToyPaletteId =
@@ -50,6 +50,11 @@ export type ToyModelDefinition = {
         capColorScale: number;
         blushColor: string;
         feetColor: string;
+      }
+    | {
+        mode: "color-teddy-coat";
+        protectMaskUrl: string;
+        coatColorScale: number;
       };
 };
 

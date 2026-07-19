@@ -13,6 +13,10 @@ import {
   cloneColorBirdMaterials,
   prepareColorBirdZoneTexture
 } from "../material/createColorBirdMaterials";
+import {
+  cloneColorTeddyMaterials,
+  prepareColorTeddyProtectTexture
+} from "../material/createColorTeddyMaterials";
 import { loadRoomEnvironment, loadToyModel, loadToyViewerRuntime } from "../ToyViewer/runtime";
 import { readThumbnailBlob, writeThumbnailBlob } from "./storage";
 
@@ -130,7 +134,10 @@ async function renderThumbnail(toy: Collectible) {
   const colorBirdZones = modelDefinition.rendering?.mode === "color-bird-zones"
     ? modelDefinition.rendering
     : null;
-  const standardMaterialResult = protectedCoat || colorBirdZones ? null : createToyMaterial(THREE, toy);
+  const colorTeddyCoat = modelDefinition.rendering?.mode === "color-teddy-coat"
+    ? modelDefinition.rendering
+    : null;
+  const standardMaterialResult = protectedCoat || colorBirdZones || colorTeddyCoat ? null : createToyMaterial(THREE, toy);
   const material = standardMaterialResult?.material ?? null;
   const glowColor = standardMaterialResult?.glowColor ?? new THREE.Color(palette.glow);
   const protectMap = protectedCoat
@@ -143,6 +150,12 @@ async function renderThumbnail(toy: Collectible) {
     ? prepareColorBirdZoneTexture(
         THREE,
         await new THREE.TextureLoader().loadAsync(colorBirdZones.zoneMaskUrl)
+      )
+    : null;
+  const colorTeddyProtectMap = colorTeddyCoat
+    ? prepareColorTeddyProtectTexture(
+        THREE,
+        await new THREE.TextureLoader().loadAsync(colorTeddyCoat.protectMaskUrl)
       )
     : null;
   const { glow } = getCollectibleRenderTraits(toy);
@@ -174,7 +187,16 @@ async function renderThumbnail(toy: Collectible) {
         renderer.capabilities.getMaxAnisotropy()
       )
     : [];
-  if (!protectedCoat && !colorBirdZones) {
+  const colorTeddyMaterials = colorTeddyCoat && colorTeddyProtectMap
+    ? cloneColorTeddyMaterials(
+        THREE,
+        model,
+        new THREE.Color(palette.color).multiplyScalar(colorTeddyCoat.coatColorScale),
+        colorTeddyProtectMap,
+        renderer.capabilities.getMaxAnisotropy()
+      )
+    : [];
+  if (!protectedCoat && !colorBirdZones && !colorTeddyCoat) {
     model.traverse((child) => {
       if (!(child instanceof THREE.Mesh) || !material) return;
       child.material = material;
@@ -220,8 +242,10 @@ async function renderThumbnail(toy: Collectible) {
     material?.dispose();
     protectedMaterials.forEach((item) => item.dispose());
     colorBirdMaterials.forEach((item) => item.dispose());
+    colorTeddyMaterials.forEach((item) => item.dispose());
     protectMap?.dispose();
     colorBirdZoneMap?.dispose();
+    colorTeddyProtectMap?.dispose();
     scene.clear();
   }
 }

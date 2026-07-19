@@ -2,15 +2,14 @@ import { CircleHelp, Sparkles, Ticket } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { DRAW_COST, useMvpState } from "../../app/MvpState";
 import { routes } from "../../app/routes";
+import { ToyThumbnail } from "../../components/toys/ToyThumbnail";
 import { ButtonLink } from "../../components/ui/ButtonLink";
 import { PageHeader } from "../../components/ui/PageHeader";
-import { ToyThumbnail } from "../../components/toys/ToyThumbnail";
 import { featuredToy } from "../../data/mock/toys";
 import { DrawReveal } from "../../features/draw/DrawReveal";
-import { getToyModel, getToyPalette } from "../../features/toys/catalog";
-import { TicketBalance } from "../../features/tickets/TicketBalance";
 import { ToyViewer } from "../../three/ToyViewer";
 import type { Collectible } from "../../types/toy";
+import "./draw-compact.css";
 
 export function DrawPage() {
   const { collection, drawCollectible, recentDraws } = useMvpState();
@@ -18,8 +17,6 @@ export function DrawPage() {
   const [result, setResult] = useState<Collectible | null>(null);
   const [message, setMessage] = useState("");
   const revealTimer = useRef<number | null>(null);
-  const featuredPalette = getToyPalette(featuredToy.paletteId);
-  const featuredModel = getToyModel(featuredToy.modelId);
   const collectionById = useMemo(
     () => new Map(collection.map((collectible) => [collectible.id, collectible])),
     [collection]
@@ -45,29 +42,30 @@ export function DrawPage() {
   }
 
   return (
-    <div className="page-stack draw-page">
-      <div className="page-title-row">
-        <PageHeader eyebrow="抽取" title="软萌变色伙伴" description="同一只柔雾小狗，每次会遇见一种新的身体配色；眼睛、鼻嘴和粉色肉球始终保留。" />
-        <TicketBalance />
-      </div>
+    <div className="page-stack draw-page draw-page--compact">
+      <PageHeader
+        eyebrow="抽取"
+        title="软萌变色伙伴"
+        description="随机遇见一只新配色的小狗、小鸟或小熊。"
+      />
 
-      <section className={`draw-stage${isDrawing ? " draw-stage--active" : ""}`}>
+      <section className={`draw-stage draw-stage--compact${isDrawing ? " draw-stage--active" : ""}`}>
         <div className="draw-stage__status">
-          <span>V3 色彩藏品生成</span>
-          <strong>1 种造型 × 9 种配色</strong>
+          <span>本期收藏池</span>
+          <strong>3 种造型 × 9 种配色</strong>
         </div>
         <div className="draw-stage__visual">
-          <span className="draw-stage__halo" aria-hidden="true" />
-          <ToyViewer toy={featuredToy} active={!result} />
-        </div>
-        <div className="draw-stage__copy">
-          <p className="eyebrow">本期配色池</p>
-          <h2>柔雾小狗配色室</h2>
-          <p>{featuredModel.name}示例 · {featuredPalette.name}身体色 · 每次配色独立生成</p>
+          <ToyViewer
+            toy={featuredToy}
+            variant="hero"
+            interactive={false}
+            autoRotate="continuous"
+            active={!result}
+          />
         </div>
         <button className="draw-button" type="button" onClick={handleDraw} disabled={isDrawing}>
           <Sparkles size={20} />
-          {isDrawing ? "正在挑选新的配色..." : "随机生成一只小狗"}
+          {isDrawing ? "正在挑选新伙伴..." : "随机抽取一只玩偶"}
           <span><Ticket size={16} /> {DRAW_COST}</span>
         </button>
         {message ? (
@@ -81,9 +79,9 @@ export function DrawPage() {
       <details className="probability-panel">
         <summary><CircleHelp size={18} /> 查看 V3 配色规则</summary>
         <div className="probability-panel__grid">
-          <span>每种配色约 11.1%</span><span>柔雾表面固定</span><span>五官细节固定</span>
+          <span>三种造型各约 33.3%</span><span>每种配色约 11.1%</span><span>柔雾表面固定</span><span>五官细节固定</span>
         </div>
-        <p>九种身体配色等概率出现，表面始终保持柔雾树脂效果；品质只记录这只玩偶的细节完成度，表面质感不会随机改变。</p>
+        <p>小狗、小鸟和小熊等概率出现，九种身体配色也等概率生成；表面始终保持柔雾树脂效果，眼睛和面部细节保留原始设计。</p>
       </details>
 
       {recentDraws.length > 0 ? (

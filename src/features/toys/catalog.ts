@@ -112,6 +112,24 @@ export const colorBirdModel: ToyModelDefinition = {
   }
 };
 
+
+export const colorTeddyModel: ToyModelDefinition = {
+  id: "color-teddy",
+  slug: "color-teddy",
+  name: "小熊",
+  fallbackShape: "blob",
+  assets: {
+    modelUrl: "/models/toys/color-teddy/model-mobile-v001.glb",
+    mobileModelUrl: "/models/toys/color-teddy/model-mobile-v001.glb"
+  },
+  viewer: { scaleMultiplier: 0.94, yOffset: -0.02, rotationY: -0.24 },
+  rendering: {
+    mode: "color-teddy-coat",
+    protectMaskUrl: "/models/toys/color-teddy/protect-mask-mobile-v001.webp",
+    coatColorScale: 0.86
+  }
+};
+
 export const toyPalettes: ToyPaletteDefinition[] = [
   { id: "rose", name: "樱花粉", color: "#ff789e", attenuation: "#8f2346", emissive: "#c83464", glow: "#ff7da5" },
   { id: "mint", name: "薄荷绿", color: "#78d9b7", attenuation: "#145f4b", emissive: "#29936f", glow: "#78e6bf" },
@@ -163,7 +181,7 @@ export const rarityLabels: Record<RarityCode, string> = {
   mythic: "神话"
 };
 
-const toyModelById = new Map([...toyModels, colorDogModel, colorBirdModel].map((model) => [model.id, model]));
+const toyModelById = new Map([...toyModels, colorDogModel, colorBirdModel, colorTeddyModel].map((model) => [model.id, model]));
 const toyPaletteById = new Map(
   [...toyPalettes, ...colorAnimalPalettes].map((palette) => [palette.id, palette])
 );
@@ -185,6 +203,7 @@ export function getColorBirdAccentPalette(bodyPaletteId: ToyPaletteId, appearanc
 export function getToyRenderingAssetKey(model: ToyModelDefinition) {
   if (model.rendering?.mode === "protected-coat") return model.rendering.protectMaskUrl;
   if (model.rendering?.mode === "color-bird-zones") return model.rendering.zoneMaskUrl;
+  if (model.rendering?.mode === "color-teddy-coat") return model.rendering.protectMaskUrl;
   return "unmasked";
 }
 

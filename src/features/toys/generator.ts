@@ -161,7 +161,11 @@ export function generateCollectible(options: GenerateCollectibleOptions = {}): C
     generationVersion: GENERATION_VERSION,
     appearance,
     appearanceSignature,
-    shortDescription: "一只采用" + palette.name + "身体配色的柔雾小狗，眼睛、鼻嘴和粉色肉球保留原始细节。",
+    shortDescription: modelId === "color-bird"
+      ? "一只采用" + palette.name + "身体配色的柔雾小鸟，眼睛、鸟喙和粉色脸颊保留原始细节。"
+      : modelId === "color-teddy"
+        ? "一只采用" + palette.name + "身体配色的柔雾小熊，眼睛、鼻嘴、奶油口鼻与粉色腮红保留原始细节。"
+        : "一只采用" + palette.name + "身体配色的柔雾小狗，眼睛、鼻嘴和粉色肉球保留原始细节。",
     createdAt: options.createdAt ?? new Date().toISOString()
   };
 }

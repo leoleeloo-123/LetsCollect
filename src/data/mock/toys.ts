@@ -12,4 +12,5 @@ export const mockToys = [
 ];
 export const starterCollectionToys = [mockToys[0], mockToys[1], mockToys[6], mockToys[7]];
 export const featuredToy = mockToys[4];
+export const featuredBird = mockToys[6];
 export const toyById = new Map(mockToys.map((toy) => [toy.id, toy]));

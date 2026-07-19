@@ -15,12 +15,17 @@ import {
   cloneColorBirdMaterials,
   prepareColorBirdZoneTexture
 } from "../material/createColorBirdMaterials";
+import {
+  cloneColorTeddyMaterials,
+  prepareColorTeddyProtectTexture
+} from "../material/createColorTeddyMaterials";
 import { loadRoomEnvironment, loadToyModel, loadToyViewerRuntime } from "./runtime";
 
 type ToyViewerProps = {
   toy: Collectible;
   variant?: "hero" | "stage" | "inspect";
   interactive?: boolean;
+  autoRotate?: "intro" | "continuous" | "off";
   active?: boolean;
   className?: string;
 };
@@ -31,6 +36,7 @@ export function ToyViewer({
   toy,
   variant = "stage",
   interactive = true,
+  autoRotate = "intro",
   active = true,
   className = ""
 }: ToyViewerProps) {
@@ -104,7 +110,7 @@ export function ToyViewer({
 
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
-      camera.position.set(0, 0.72, variant === "inspect" ? 7.35 : 8.05);
+      camera.position.set(0, 0.72, variant === "inspect" ? 7.35 : variant === "hero" ? 6.85 : 8.05);
       camera.lookAt(0, 0.08, 0);
 
       let environmentTexture: import("three").Texture | null = null;
@@ -128,7 +134,10 @@ export function ToyViewer({
       const colorBirdZones = modelDefinition.rendering?.mode === "color-bird-zones"
         ? modelDefinition.rendering
         : null;
-      const standardMaterialResult = protectedCoat || colorBirdZones
+      const colorTeddyCoat = modelDefinition.rendering?.mode === "color-teddy-coat"
+        ? modelDefinition.rendering
+        : null;
+      const standardMaterialResult = protectedCoat || colorBirdZones || colorTeddyCoat
         ? null
         : createToyMaterial(THREE, toy, { lightweight: useLightweightStage });
       const toyMaterial = standardMaterialResult?.material ?? null;
@@ -145,8 +154,15 @@ export function ToyViewer({
             await new THREE.TextureLoader().loadAsync(colorBirdZones.zoneMaskUrl)
           )
         : null;
+      const colorTeddyProtectMap = colorTeddyCoat
+        ? prepareColorTeddyProtectTexture(
+            THREE,
+            await new THREE.TextureLoader().loadAsync(colorTeddyCoat.protectMaskUrl)
+          )
+        : null;
       let protectedMaterials: import("three").Material[] = [];
       let colorBirdMaterials: import("three").Material[] = [];
+      let colorTeddyMaterials: import("three").Material[] = [];
 
       scene.add(new THREE.HemisphereLight(0xffffff, palette.attenuation, (1.9 + hydration * 0.4) * materialLightScale));
 
@@ -229,8 +245,10 @@ export function ToyViewer({
         toyMaterial?.dispose();
         protectedMaterials.forEach((material) => material.dispose());
         colorBirdMaterials.forEach((material) => material.dispose());
+        colorTeddyMaterials.forEach((material) => material.dispose());
         protectMap?.dispose();
         colorBirdZoneMap?.dispose();
+        colorTeddyProtectMap?.dispose();
         environmentTexture?.dispose();
         pedestal.geometry.dispose();
         (pedestal.material as import("three").Material).dispose();
@@ -280,6 +298,14 @@ export function ToyViewer({
             feet: new THREE.Color(colorBirdZones.feetColor)
           },
           colorBirdZoneMap,
+          renderer.capabilities.getMaxAnisotropy()
+        );
+      } else if (colorTeddyCoat && colorTeddyProtectMap) {
+        colorTeddyMaterials = cloneColorTeddyMaterials(
+          THREE,
+          model,
+          new THREE.Color(palette.color).multiplyScalar(colorTeddyCoat.coatColorScale),
+          colorTeddyProtectMap,
           renderer.capabilities.getMaxAnisotropy()
         );
       } else {
@@ -379,7 +405,9 @@ export function ToyViewer({
       function render(time: number) {
         frameId = window.requestAnimationFrame(render);
         if (cancelled || document.hidden || !activeRef.current) return;
-        const idleRotating = !reducedMotion && time < idleUntil;
+        const idleRotating = !reducedMotion
+          && autoRotate !== "off"
+          && (autoRotate === "continuous" || time < idleUntil);
         if (!dragging && !idleRotating && !needsRender) return;
 
         const targetFrameTime = dragging ? 1000 / 60 : 1000 / 30;
@@ -387,7 +415,9 @@ export function ToyViewer({
         const delta = Math.min(clock.getDelta(), 0.05);
         lastRenderTime = time;
 
-        if (!dragging && idleRotating) targetRotationY += delta * 0.16;
+        if (!dragging && idleRotating) {
+          targetRotationY += delta * (autoRotate === "continuous" ? 0.095 : 0.16);
+        }
         currentRotationX = THREE.MathUtils.lerp(currentRotationX, targetRotationX, 0.1);
         currentRotationY = THREE.MathUtils.lerp(currentRotationY, targetRotationY, 0.1);
         toyGroup.rotation.x = currentRotationX;
@@ -452,6 +482,7 @@ export function ToyViewer({
     };
   }, [
     fallbackModelUrl,
+    autoRotate,
     interactive,
     modelDefinition,
     palette,
