@@ -1,6 +1,6 @@
 # 藏品生成系统架构 Playbook
 
-本文件保留 LetsCollect V1 藏品生成规则，并记录跨版本工程约定。当前新抽取使用 `generationVersion = 2` 的八材质与五项工艺系统，完整公式、概率和迁移边界见 `playbooks/material-system-v2.md`。
+本文件保留 LetsCollect 跨版本藏品生成规则与工程约定。当前新抽取使用 `generationVersion = 3` 的 Color Animals 系统：随机选择已批准的小动物模型与身体配色，表面固定为柔雾树脂；完整上线、性能、迁移与回退边界见 `docs/COLOR_ANIMALS_V3.md`。`generationVersion = 2` 的八材质与五项工艺系统继续保留为 legacy，公式见 `playbooks/material-system-v2.md`。
 
 ## 核心原则
 
