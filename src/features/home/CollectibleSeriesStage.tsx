@@ -13,7 +13,6 @@ import { ButtonLink } from "../../components/ui/ButtonLink";
 import { homeSeriesToys } from "../../data/mock/homeSeries";
 import { ToyViewer } from "../../three/ToyViewer";
 import { colorAnimalsSeries } from "../toys/activeSeries";
-import "./home-first-viewport.css";
 
 type SwipeSession = {
   pointerId: number;

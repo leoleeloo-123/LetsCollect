@@ -10,7 +10,6 @@ import { colorAnimalsSeries } from "../../features/toys/activeSeries";
 import { DrawReveal } from "../../features/draw/DrawReveal";
 import { ToyViewer } from "../../three/ToyViewer";
 import type { Collectible } from "../../types/toy";
-import "./draw-compact.css";
 
 export function DrawPage() {
   const { collection, drawCollectible, recentDraws } = useMvpState();

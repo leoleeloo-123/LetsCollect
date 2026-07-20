@@ -1,0 +1,490 @@
+/*
+ * Rose Frost global theme
+ *
+ * Visual values live in tokens.css. This file only maps semantic tokens onto
+ * shared components and feature surfaces; layout stays in feature CSS.
+ */
+
+.app-shell {
+  padding-bottom: calc(var(--nav-height) + 30px + env(safe-area-inset-bottom));
+  background: var(--background-page);
+}
+
+.app-main {
+  position: relative;
+}
+
+/* Shared chrome */
+.mobile-header,
+.desktop-nav {
+  border-color: var(--glass-border);
+  background: var(--glass-surface-strong);
+  box-shadow: var(--shadow-soft), var(--shadow-inset);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+}
+
+.brand-mark__gem {
+  border-radius: var(--radius-sm);
+  color: var(--color-on-brand);
+  background: var(--background-brand);
+  box-shadow: var(--shadow-brand), var(--shadow-inset);
+}
+
+.icon-button,
+.icon-text-button,
+.secondary-button,
+.button-link--secondary {
+  border-color: var(--glass-border-strong);
+  color: var(--color-brand-deep);
+  background: var(--glass-surface);
+  box-shadow: var(--shadow-soft), var(--shadow-inset);
+}
+
+.ticket-balance {
+  border-color: var(--color-ticket-border);
+  color: var(--color-ticket-ink);
+  background: var(--color-ticket-surface);
+  box-shadow: var(--shadow-inset);
+}
+
+/* Floating mobile navigation */
+.bottom-nav {
+  right: auto;
+  bottom: max(10px, env(safe-area-inset-bottom));
+  left: 50%;
+  width: min(calc(100% - 24px), 520px);
+  min-height: var(--nav-height);
+  padding: 6px;
+  border: 1px solid var(--glass-border-strong);
+  border-radius: var(--radius-nav);
+  background: var(--glass-surface-strong);
+  box-shadow: var(--shadow-nav), var(--shadow-inset);
+  transform: translateX(-50%);
+  -webkit-backdrop-filter: blur(var(--glass-blur-strong)) saturate(var(--glass-saturation));
+  backdrop-filter: blur(var(--glass-blur-strong)) saturate(var(--glass-saturation));
+  transition:
+    width var(--motion-standard) var(--ease-standard),
+    min-height var(--motion-standard) var(--ease-standard),
+    padding var(--motion-standard) var(--ease-standard),
+    border-radius var(--motion-standard) var(--ease-standard),
+    box-shadow var(--motion-standard) ease;
+}
+
+.bottom-nav-is-compact .bottom-nav {
+  width: min(calc(100% - 72px), 360px);
+  min-height: 56px;
+  padding: 4px 6px;
+  border-radius: calc(var(--radius-nav) - 2px);
+}
+
+.bottom-nav__item {
+  min-height: 58px;
+  padding: 5px 3px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-panel);
+  transition:
+    min-height var(--motion-standard) var(--ease-standard),
+    padding var(--motion-standard) var(--ease-standard),
+    gap var(--motion-fast) ease,
+    color var(--motion-fast) ease,
+    background var(--motion-fast) ease,
+    border-color var(--motion-fast) ease,
+    transform var(--motion-fast) ease;
+}
+
+.bottom-nav__item span {
+  overflow: hidden;
+  max-height: 16px;
+  opacity: 1;
+  transform: translateY(0);
+  white-space: nowrap;
+  transition:
+    max-height var(--motion-fast) var(--ease-standard),
+    opacity var(--motion-fast) ease,
+    transform var(--motion-fast) var(--ease-standard);
+}
+
+.bottom-nav__item svg {
+  transition: transform var(--motion-fast) var(--ease-standard);
+}
+
+.bottom-nav-is-compact .bottom-nav__item {
+  min-height: 46px;
+  gap: 0;
+  padding: 3px;
+  border-radius: var(--radius-card);
+}
+
+.bottom-nav-is-compact .bottom-nav__item span {
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(5px);
+}
+
+.bottom-nav-is-compact .bottom-nav__item svg {
+  transform: scale(1.06);
+}
+
+.bottom-nav__item.active {
+  border-color: var(--color-brand-subtle);
+  color: var(--color-brand-deep);
+  background: var(--color-brand-soft);
+  box-shadow: var(--shadow-inset);
+}
+
+.bottom-nav__item.active svg {
+  fill: var(--color-brand-soft);
+  transform: translateY(-1px);
+}
+
+/* Major glass surfaces: blur is reserved for a few large panels for mobile performance. */
+.collection-stage.collection-stage--compact,
+.ritual-strip,
+.draw-stage.draw-stage--compact,
+.profile-overview-card,
+.profile-section-switch,
+.profile-section-panel,
+.auth-card,
+.onboarding-form,
+.feature-spotlight,
+.collector-identity,
+.collector-showcase__feature {
+  border-color: var(--glass-border);
+  background: var(--glass-surface);
+  box-shadow: var(--shadow-card), var(--shadow-inset);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+}
+
+.collection-stage.collection-stage--compact,
+.ritual-strip,
+.draw-stage.draw-stage--compact,
+.profile-overview-card,
+.profile-section-panel,
+.auth-card,
+.feature-spotlight,
+.collector-identity,
+.collector-showcase__feature {
+  border-radius: var(--radius-card);
+}
+
+.profile-section-switch,
+.segmented-control {
+  border-color: var(--glass-border);
+  border-radius: var(--radius-control);
+  background: var(--glass-surface-muted);
+  box-shadow: var(--shadow-soft), var(--shadow-inset);
+}
+
+/* Repeated cards use translucent fills without individual blur layers. */
+.community-event,
+.activity-card,
+.toy-card,
+.friend-row,
+.profile-spotlight,
+.profile-pins button,
+.profile-atlas-progress,
+.profile-achievement-summary,
+.profile-palette-grid article,
+.profile-model-grid article,
+.collector-set,
+.achievement-list article,
+.state-block,
+.probability-panel,
+.recent-draws .toy-thumbnail {
+  border-color: var(--color-border);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-soft), var(--shadow-inset);
+}
+
+.community-event,
+.activity-card,
+.toy-card,
+.profile-spotlight,
+.profile-atlas-progress,
+.profile-achievement-summary,
+.collector-set,
+.achievement-list article,
+.state-block,
+.probability-panel,
+.recent-draws .toy-thumbnail {
+  border-radius: var(--radius-card);
+}
+
+/* Primary actions */
+.button-link--primary,
+.primary-button,
+.auth-card button,
+.draw-button,
+.onboarding-submit,
+.identity-gate button,
+.profile-spotlight__copy button,
+.collection-stage--compact .collection-stage__title-row .button-link,
+.ritual-strip__action,
+.community-event__comments form button {
+  color: var(--color-on-brand);
+  background: var(--background-brand);
+  box-shadow: var(--shadow-brand), var(--shadow-inset);
+}
+
+.profile-section-switch button.is-active {
+  color: var(--color-on-brand);
+  background: var(--background-brand);
+  box-shadow: var(--shadow-brand), var(--shadow-inset);
+}
+
+.segmented-control button.active {
+  color: var(--color-brand-deep);
+  background: var(--color-surface-strong);
+  box-shadow: var(--shadow-soft), var(--shadow-inset);
+}
+
+/* Home */
+.collection-stage--compact .collection-stage__viewport,
+.draw-stage--compact .draw-stage__visual,
+.viewer-panel__stage,
+.reveal-sheet__stage,
+.profile-spotlight__stage,
+.profile-model-grid__visual {
+  background: var(--background-stage);
+}
+
+.collection-stage__meta,
+.draw-stage--compact .draw-stage__status,
+.draw-stage--compact .draw-stage__status strong {
+  color: var(--color-brand-deep);
+}
+
+.collection-stage--compact .collection-stage__pagination button,
+.ritual-strip__progress button {
+  background: color-mix(in srgb, var(--color-brand) 28%, transparent);
+}
+
+.collection-stage--compact .collection-stage__pagination button.is-active,
+.ritual-strip__progress button.is-active {
+  background: var(--color-brand);
+  box-shadow: 0 0 0 3px var(--glass-surface);
+}
+
+.collection-stage--compact .collection-stage__pagination button:focus-visible,
+.ritual-strip__progress button:focus-visible,
+.ritual-strip__viewport:focus-visible,
+.profile-section-switch button:focus-visible,
+.profile-spotlight__copy button:focus-visible,
+.profile-pins button:focus-visible {
+  outline-color: var(--color-focus);
+}
+
+.ritual-strip__progress button.is-complete:not(.is-active) {
+  background: color-mix(in srgb, var(--color-brand) 55%, var(--color-surface-solid));
+}
+
+.ritual-strip__icon {
+  border-color: var(--color-border);
+  color: var(--color-brand-deep);
+  background: var(--color-brand-soft);
+  box-shadow: var(--shadow-inset);
+}
+
+.community-feed .section-heading > svg,
+.community-event--showcase_updated .community-event__type {
+  color: var(--color-brand-deep);
+}
+
+.community-event__avatar {
+  background: var(--background-brand-deep);
+  box-shadow: var(--shadow-brand);
+}
+
+.community-event__visual,
+.community-event__comments,
+.implementation-note {
+  background: var(--color-surface-soft);
+}
+
+.community-event__actions {
+  border-color: var(--color-border);
+}
+
+.community-event__actions button,
+.community-event__comments input {
+  border-color: var(--color-border);
+  background: var(--color-surface);
+}
+
+.community-event__actions button.is-active {
+  color: var(--color-brand-deep);
+  background: var(--color-brand-soft);
+}
+
+/* Draw and viewer */
+.draw-stage--compact .draw-button {
+  border-radius: var(--radius-control);
+}
+
+.probability-panel {
+  border-color: var(--color-border);
+}
+
+.viewer-panel__stage,
+.toy-viewer__status,
+.toy-viewer__hint {
+  border-color: var(--color-border);
+}
+
+.toy-viewer__status {
+  background: var(--color-surface-strong);
+}
+
+.toy-viewer__hint {
+  background: var(--glass-surface-strong);
+  box-shadow: var(--shadow-inset);
+}
+
+.toy-viewer__spinner {
+  border-color: var(--color-brand-soft);
+  border-top-color: var(--color-brand);
+}
+
+.modal-backdrop {
+  background: var(--color-overlay);
+}
+
+.reveal-sheet,
+.detail-sheet {
+  background: var(--color-surface-strong);
+  box-shadow: var(--shadow-raised);
+  -webkit-backdrop-filter: blur(var(--glass-blur-strong)) saturate(var(--glass-saturation));
+  backdrop-filter: blur(var(--glass-blur-strong)) saturate(var(--glass-saturation));
+}
+
+/* Collection profile */
+.profile-overview-card::after {
+  border-color: var(--color-brand-subtle);
+}
+
+.profile-overview-card__avatar {
+  color: var(--color-on-brand);
+  background: var(--background-brand);
+  box-shadow: var(--shadow-brand), var(--shadow-inset);
+}
+
+.profile-overview-card__rank {
+  border-color: var(--color-ticket-border);
+  color: var(--color-ticket-ink);
+  background: var(--color-ticket-surface);
+}
+
+.profile-overview-card__title span,
+.profile-overview-card__stats div,
+.profile-spotlight__stage > span,
+.profile-spotlight__meta span {
+  border-color: var(--color-border);
+  background: var(--color-surface);
+}
+
+.profile-pins button:hover {
+  border-color: var(--color-border-strong);
+  background: var(--color-surface-soft);
+}
+
+.profile-atlas-progress__bar,
+.collection-summary__bar,
+.daily-progress__bar {
+  background: var(--color-brand-subtle);
+}
+
+.profile-atlas-progress__bar span,
+.collection-summary__bar span,
+.daily-progress__bar span {
+  background: var(--background-brand);
+}
+
+.profile-palette-grid article.is-collected,
+.profile-model-grid article.is-collected,
+.profile-empty-state {
+  background: var(--color-surface-strong);
+}
+
+/* Friends and authentication */
+.search-field,
+.onboarding-name-input input {
+  border-color: var(--color-border-strong);
+  background: var(--color-surface-strong);
+  box-shadow: var(--shadow-inset);
+}
+
+.friend-row {
+  background: var(--color-surface);
+}
+
+.onboarding-page,
+.identity-gate {
+  background: var(--background-page);
+}
+
+.onboarding-intro {
+  color: var(--color-on-brand);
+  background: var(--background-brand-deep);
+}
+
+.onboarding-service-error {
+  color: var(--color-danger);
+  background: var(--color-danger-soft);
+}
+
+.avatar-option input:checked + .profile-avatar {
+  border-color: var(--color-brand-deep);
+  box-shadow: 0 0 0 3px var(--color-brand-soft), var(--shadow-brand);
+}
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .mobile-header,
+  .desktop-nav,
+  .bottom-nav,
+  .collection-stage.collection-stage--compact,
+  .ritual-strip,
+  .draw-stage.draw-stage--compact,
+  .profile-overview-card,
+  .profile-section-switch,
+  .profile-section-panel,
+  .auth-card,
+  .onboarding-form,
+  .feature-spotlight,
+  .collector-identity,
+  .collector-showcase__feature,
+  .reveal-sheet,
+  .detail-sheet {
+    background: var(--color-surface-strong);
+  }
+}
+
+@media (max-width: 359px) {
+  .bottom-nav {
+    width: calc(100% - 16px);
+  }
+
+  .bottom-nav__item {
+    font-size: 10px;
+  }
+}
+
+@media (min-width: 760px) {
+  .app-shell {
+    padding-bottom: 0;
+  }
+
+  .desktop-nav {
+    border-bottom-color: var(--glass-border);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bottom-nav,
+  .bottom-nav__item,
+  .bottom-nav__item span,
+  .bottom-nav__item svg {
+    transition: none;
+  }
+}

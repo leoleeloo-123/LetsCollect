@@ -16,10 +16,7 @@ body,
 body {
   color: var(--color-ink);
   font-family: var(--font-body);
-  background:
-    linear-gradient(120deg, rgba(216, 235, 225, 0.32), transparent 34%),
-    linear-gradient(300deg, rgba(249, 225, 218, 0.24), transparent 30%),
-    var(--color-page);
+  background: var(--background-page);
 }
 
 a {
@@ -45,7 +42,7 @@ button:focus-visible,
 a:focus-visible,
 input:focus-visible,
 summary:focus-visible {
-  outline: 3px solid rgba(22, 133, 107, 0.28);
+  outline: 3px solid var(--color-focus);
   outline-offset: 2px;
 }
 
@@ -63,6 +60,6 @@ svg {
 }
 
 ::selection {
-  color: #fff;
+  color: var(--color-on-brand);
   background: var(--color-brand);
 }

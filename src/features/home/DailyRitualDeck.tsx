@@ -17,7 +17,6 @@ import {
 } from "react";
 import { useNavigate } from "react-router-dom";
 import { routes } from "../../app/routes";
-import "./daily-ritual-stack.css";
 
 type RitualTask = {
   id: string;

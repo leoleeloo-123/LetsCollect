@@ -1,26 +1,85 @@
 :root {
   color-scheme: light;
-  --color-ink: #14231f;
-  --color-ink-soft: #344a43;
-  --color-muted: #6d7d77;
-  --color-page: #f4f7f4;
-  --color-surface: #ffffff;
-  --color-surface-soft: #edf3ef;
-  --color-border: #dbe4df;
-  --color-brand: #16856b;
-  --color-brand-deep: #0b5f4d;
+
+  /* Rose Frost brand palette */
+  --color-ink: #38252f;
+  --color-ink-soft: #5b414d;
+  --color-muted: #7d6873;
+  --color-on-brand: #ffffff;
+  --color-page: #fff6f9;
+  --color-surface: rgba(255, 255, 255, 0.72);
+  --color-surface-strong: rgba(255, 250, 252, 0.9);
+  --color-surface-solid: #fffafd;
+  --color-surface-soft: rgba(255, 239, 246, 0.7);
+  --color-surface-muted: rgba(250, 231, 239, 0.62);
+  --color-border: rgba(170, 72, 110, 0.17);
+  --color-border-strong: rgba(170, 72, 110, 0.28);
+  --color-focus: rgba(217, 92, 135, 0.3);
+  --color-overlay: rgba(56, 37, 47, 0.52);
+  --color-brand: #d95c87;
+  --color-brand-deep: #a73562;
+  --color-brand-soft: rgba(217, 92, 135, 0.16);
+  --color-brand-subtle: rgba(217, 92, 135, 0.09);
   --color-coral: #e45a72;
   --color-honey: #d49a2a;
   --color-blue: #3b78c4;
+  --color-danger: #b4334c;
+  --color-danger-soft: #fff3f5;
+
+  /* Functional colors stay stable across themes */
+  --color-ticket-ink: #77520d;
+  --color-ticket-surface: rgba(255, 249, 233, 0.88);
+  --color-ticket-border: rgba(212, 154, 42, 0.3);
   --color-common: #74847e;
   --color-rare: #3b78c4;
   --color-epic: #8064b3;
   --color-legendary: #b77a13;
   --color-mythic: #cf4661;
-  --shadow-soft: 0 14px 40px rgba(22, 50, 41, 0.09);
-  --shadow-raised: 0 18px 46px rgba(22, 50, 41, 0.14);
-  --radius-card: 8px;
-  --radius-control: 8px;
+
+  /* Glass transparency: adjust these values to tune the whole product */
+  --glass-surface: rgba(255, 255, 255, 0.58);
+  --glass-surface-strong: rgba(255, 248, 252, 0.72);
+  --glass-surface-muted: rgba(255, 240, 246, 0.48);
+  --glass-border: rgba(255, 255, 255, 0.82);
+  --glass-border-strong: rgba(255, 255, 255, 0.92);
+  --glass-blur: 18px;
+  --glass-blur-strong: 22px;
+  --glass-saturation: 125%;
+
+  /* Reusable backgrounds and gradients */
+  --background-page:
+    radial-gradient(circle at 8% 7%, rgba(255, 255, 255, 0.98) 0, rgba(255, 255, 255, 0.42) 19%, transparent 36%),
+    radial-gradient(circle at 92% 13%, rgba(235, 157, 188, 0.176) 0, transparent 31%),
+    radial-gradient(circle at 18% 72%, rgba(250, 193, 216, 0.112) 0, transparent 30%),
+    linear-gradient(155deg, #fffbfd 0%, #fff6f9 53%, #fcf1f6 100%);
+  --background-stage:
+    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.76) 0, rgba(255, 255, 255, 0.16) 44%, transparent 65%),
+    linear-gradient(155deg, rgba(255, 248, 251, 0.94), rgba(249, 229, 238, 0.68));
+  --background-brand: linear-gradient(145deg, #d95c87, #a73562);
+  --background-brand-deep: linear-gradient(145deg, #b94370, #7f2348);
+
+  /* Elevation */
+  --shadow-soft: 0 14px 38px rgba(129, 49, 82, 0.1);
+  --shadow-card: 0 16px 42px rgba(124, 48, 79, 0.11);
+  --shadow-raised: 0 20px 52px rgba(129, 49, 82, 0.15);
+  --shadow-nav: 0 18px 48px rgba(118, 45, 75, 0.2);
+  --shadow-brand: 0 10px 22px rgba(167, 53, 98, 0.2);
+  --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.88);
+
+  /* Shape scale */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-control: 12px;
+  --radius-card: 16px;
+  --radius-panel: 18px;
+  --radius-nav: 24px;
+  --radius-pill: 999px;
+  --radius-round: 50%;
+
+  /* Motion and layout */
+  --motion-fast: 180ms;
+  --motion-standard: 260ms;
+  --ease-standard: cubic-bezier(0.22, 0.72, 0.28, 1);
   --space-page: 16px;
   --nav-height: 72px;
   --font-body: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", Inter, ui-sans-serif, system-ui, sans-serif;

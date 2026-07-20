@@ -11,6 +11,7 @@ Let's Collect 是一个以 3D 数字收藏玩具为核心、优先服务手机�
 - `docs/SOCIAL_COLLECTING_V1.md`：社区、收藏身份与成就系统的第一轮产品基线；
 - `docs/ROADMAP.md`：实施顺序和验收闸门；
 - `docs/ARCHITECTURE.md`：前后端与 3D 模块边界；
+- `docs/THEMING.md`：前端主题变量、样式分层与调整规则；
 - `docs/THREE_MODEL_GUIDE.md`：GLB 与 Three.js 资产规则。
 - `docs/COLOR_ANIMALS_V3.md`：当前软萌变色小动物系列、移动端预算与回退方案。
 

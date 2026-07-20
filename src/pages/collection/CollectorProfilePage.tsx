@@ -17,7 +17,6 @@ import { ToyDetailSheet } from "../../features/collection/ToyDetailSheet";
 import { colorAnimalsSeries } from "../../features/toys/activeSeries";
 import { colorAnimalModels, colorAnimalPalettes, rarityLabels } from "../../features/toys/catalog";
 import type { Collectible } from "../../types/toy";
-import "./collector-profile.css";
 
 type ProfileSection = "showcase" | "atlas" | "achievements";
 

@@ -1,5 +1,8 @@
+/* 1. Design system primitives */
 @import "./tokens.css";
 @import "./base.css";
+
+/* 2. Shared structure and component layouts */
 @import "./layout.css";
 @import "./components.css";
 @import "./auth.css";
@@ -9,3 +12,12 @@
 @import "./color-dog-lab.css";
 @import "./material-system.css";
 @import "./social-collecting.css";
+
+/* 3. Feature and page layouts */
+@import "../features/home/home-first-viewport.css";
+@import "../features/home/daily-ritual-stack.css";
+@import "../pages/draw/draw-compact.css";
+@import "../pages/collection/collector-profile.css";
+
+/* 4. Active visual theme; keep last so it can map tokens consistently */
+@import "./themes/rose-frost.css";
