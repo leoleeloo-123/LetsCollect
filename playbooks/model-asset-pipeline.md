@@ -11,7 +11,7 @@ collectible system, load quickly on mobile, and remain easy to swap in
 
 ```text
 assets/models/source/{toy-slug}/
-  model-source-v001.glb          # raw or high quality source, Git LFS
+  model-source-v001.glb          # raw or high quality source, local only
   notes.md                       # optional artist/export notes
 
 public/models/toys/{toy-slug}/
@@ -249,7 +249,7 @@ Minimum acceptance:
 
 ## Git Rules
 
-- Source `.glb` files in `assets/models/source/**/*.glb` are tracked with Git LFS.
+- Source `.glb` files in `assets/models/source/**/*.glb` are local-only and ignored by Git.
 - Runtime `.glb` files in `public/models/toys/` should remain normal Git files
   when they are small enough for deployment.
 - Do not commit Blender autosaves, unpacked texture folders, or unused exports.

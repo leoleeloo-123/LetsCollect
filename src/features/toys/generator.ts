@@ -108,6 +108,22 @@ function createColorAnimalAppearance(traits: MaterialTraits): AppearanceVector {
   };
 }
 
+function getColorAnimalDescription(modelId: ToyModelId, paletteName: string) {
+  if (modelId === "color-bird") {
+    return `一只采用${paletteName}配色的软萌小鸟，保留灵动眼睛、喙部和脚部原色。`;
+  }
+  if (modelId === "color-teddy") {
+    return `一只采用${paletteName}配色的软萌小熊，保留眼睛、鼻子、嘴巴和脚掌细节。`;
+  }
+  if (modelId === "color-bunny") {
+    return `一只带着${paletteName}行李箱的软萌小兔，身体与面部细节保留原始配色。`;
+  }
+  if (modelId === "color-cat") {
+    return `一只穿着${paletteName}外套的软萌小猫，面部、耳朵与胡须细节保持清晰。`;
+  }
+  return `一只采用${paletteName}配色的软萌小狗，保留灵动眼睛、鼻嘴与粉色脚掌。`;
+}
+
 /** Active V3 generator: fixed soft-matte material, random approved model and body color. */
 export function generateCollectible(options: GenerateCollectibleOptions = {}): Collectible {
   const seed = options.seed ?? randomSeed();
@@ -161,11 +177,7 @@ export function generateCollectible(options: GenerateCollectibleOptions = {}): C
     generationVersion: GENERATION_VERSION,
     appearance,
     appearanceSignature,
-    shortDescription: modelId === "color-bird"
-      ? "一只采用" + palette.name + "身体配色的柔雾小鸟，眼睛、鸟喙和粉色脸颊保留原始细节。"
-      : modelId === "color-teddy"
-        ? "一只采用" + palette.name + "身体配色的柔雾小熊，眼睛、鼻嘴、奶油口鼻与粉色腮红保留原始细节。"
-        : "一只采用" + palette.name + "身体配色的柔雾小狗，眼睛、鼻嘴和粉色肉球保留原始细节。",
+    shortDescription: getColorAnimalDescription(modelId, palette.name),
     createdAt: options.createdAt ?? new Date().toISOString()
   };
 }

@@ -1,4 +1,6 @@
 import type { Collectible, MaterialTraits } from "../../types/toy";
+import { colorAnimalsSeries } from "./activeSeries";
+import { getToyModel, getToyPalette } from "./catalog";
 
 type StoredCollectible = Omit<
   Collectible,
@@ -18,8 +20,12 @@ function deriveLegacyTraits(toy: StoredCollectible): MaterialTraits {
 /** Adds the V2 material boundary without changing a V1 collectible identity. */
 export function normalizeStoredCollectible(toy: StoredCollectible): Collectible {
   const materialId = toy.materialId ?? "jade";
+  const name = colorAnimalsSeries.modelIds.includes(toy.modelId)
+    ? getToyPalette(toy.paletteId).name + getToyModel(toy.modelId).name
+    : toy.name;
   return {
     ...toy,
+    name,
     materialId,
     materialGrade: toy.materialGrade ?? toy.jadeGrade ?? "果冻玉",
     materialTraits: toy.materialTraits ?? deriveLegacyTraits(toy)

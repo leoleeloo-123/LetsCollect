@@ -130,6 +130,48 @@ export const colorTeddyModel: ToyModelDefinition = {
   }
 };
 
+
+export const colorBunnyModel: ToyModelDefinition = {
+  id: "color-bunny",
+  slug: "color-bunny",
+  name: "小兔",
+  fallbackShape: "bunny",
+  assets: {
+    modelUrl: "/models/toys/color-bunny/model-mobile-v001.glb",
+    mobileModelUrl: "/models/toys/color-bunny/model-mobile-v001.glb"
+  },
+  viewer: { scaleMultiplier: 0.94, yOffset: -0.02, rotationY: -0.24 },
+  rendering: {
+    mode: "color-bunny-bag",
+    protectMaskUrl: "/models/toys/color-bunny/protect-mask-mobile-v001.webp",
+    bagColorScale: 0.92
+  }
+};
+
+export const colorCatModel: ToyModelDefinition = {
+  id: "color-cat",
+  slug: "color-cat",
+  name: "小猫",
+  fallbackShape: "cat",
+  assets: {
+    modelUrl: "/models/toys/color-cat/model-mobile-v001.glb",
+    mobileModelUrl: "/models/toys/color-cat/model-mobile-v001.glb"
+  },
+  viewer: { scaleMultiplier: 0.71, yOffset: -0.08, rotationY: -0.12 },
+  rendering: {
+    mode: "color-cat-coat",
+    protectMaskUrl: "/models/toys/color-cat/protect-mask-mobile-v001.webp",
+    coatColorScale: 0.88
+  }
+};
+
+export const colorAnimalModels = [
+  colorDogModel,
+  colorBirdModel,
+  colorTeddyModel,
+  colorBunnyModel,
+  colorCatModel
+] as const;
 export const toyPalettes: ToyPaletteDefinition[] = [
   { id: "rose", name: "樱花粉", color: "#ff789e", attenuation: "#8f2346", emissive: "#c83464", glow: "#ff7da5" },
   { id: "mint", name: "薄荷绿", color: "#78d9b7", attenuation: "#145f4b", emissive: "#29936f", glow: "#78e6bf" },
@@ -181,7 +223,7 @@ export const rarityLabels: Record<RarityCode, string> = {
   mythic: "神话"
 };
 
-const toyModelById = new Map([...toyModels, colorDogModel, colorBirdModel, colorTeddyModel].map((model) => [model.id, model]));
+const toyModelById = new Map([...toyModels, ...colorAnimalModels].map((model) => [model.id, model]));
 const toyPaletteById = new Map(
   [...toyPalettes, ...colorAnimalPalettes].map((palette) => [palette.id, palette])
 );
@@ -204,6 +246,8 @@ export function getToyRenderingAssetKey(model: ToyModelDefinition) {
   if (model.rendering?.mode === "protected-coat") return model.rendering.protectMaskUrl;
   if (model.rendering?.mode === "color-bird-zones") return model.rendering.zoneMaskUrl;
   if (model.rendering?.mode === "color-teddy-coat") return model.rendering.protectMaskUrl;
+  if (model.rendering?.mode === "color-bunny-bag") return model.rendering.protectMaskUrl;
+  if (model.rendering?.mode === "color-cat-coat") return model.rendering.protectMaskUrl;
   return "unmasked";
 }
 

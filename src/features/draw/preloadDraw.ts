@@ -1,5 +1,5 @@
 import { featuredToy } from "../../data/mock/toys";
-import { getToyModel, toyModels } from "../toys/catalog";
+import { colorAnimalModels, getToyModel } from "../toys/catalog";
 import { preloadToyViewer } from "../../three/ToyViewer";
 
 let poolPreloadScheduled = false;
@@ -9,7 +9,7 @@ type NetworkInformation = {
 };
 
 async function preloadCompactModelPool() {
-  for (const model of toyModels) {
+  for (const model of colorAnimalModels) {
     await preloadToyViewer(model.assets.mobileModelUrl);
   }
 }

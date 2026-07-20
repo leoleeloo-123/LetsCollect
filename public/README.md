@@ -16,6 +16,16 @@ jelly-jade-doggy
 jelly-jade-karpy
 ```
 
+The active mobile-first Color Animals pool is:
+
+```text
+color-dog
+color-bird
+color-teddy
+color-bunny
+color-cat
+```
+
 ```text
 public/models/toys/
 public/images/toys/

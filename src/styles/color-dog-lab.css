@@ -56,3 +56,16 @@
   .color-dog-randomize:hover { transform: none; }
   .color-dog-viewer__spinner { animation-duration: 1.6s; }
 }
+.color-lab-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.color-lab-zone-toggle { display: inline-flex; width: fit-content; min-height: 46px; align-items: center; justify-content: center; gap: 9px; padding: 0 18px; border: 1px solid rgba(79, 59, 47, 0.2); border-radius: 999px; color: #4d392f; font-weight: 850; background: rgba(255, 250, 245, 0.92); cursor: pointer; }
+.color-lab-zone-toggle:hover { transform: translateY(-1px); }
+.color-lab-zone-toggle[aria-pressed="true"] { border-color: rgba(67, 107, 177, 0.36); color: #304a8e; background: #eef2ff; box-shadow: 0 10px 28px rgba(65, 99, 183, 0.14); }
+.color-lab-zone-toggle:focus-visible { outline: 3px solid rgba(85, 111, 188, 0.28); outline-offset: 3px; }
+
+@media (min-width: 700px) {
+  .color-lab-actions { justify-content: flex-end; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .color-lab-zone-toggle:hover { transform: none; }
+}

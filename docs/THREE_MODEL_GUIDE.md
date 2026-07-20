@@ -2,14 +2,11 @@
 
 ## Current Model Pool
 
-The runtime pool contains Unicorn, Kitty, Bunny, Bird, Doggy, and Karpy. Every
-model has a Web and Mobile GLB under `public/models/toys/{toy-slug}/`.
+The active mobile-first Color Animals pool contains Color Dog, Color Bird, Color Teddy, Color Bunny, and Color Cat. Runtime GLBs and their protection masks live under `public/models/toys/{toy-slug}/`; all active GLBs stay below 1 MB.
 
-All active Web models use about 100k triangles / 266-307 KB, and all Mobile
-models use about 50k triangles / 142-165 KB. The original 2.35 MB unicorn Web
-file remains available as the superseded V1 asset; the registry uses V2.
+Original high-resolution GLBs live under `assets/models/source/{toy-slug}/` and are never requested by the browser. Superseded experiments and rebuild history belong under `assets/models/archive/`. The earlier Unicorn, Kitty, Bunny, Bird, Doggy, and Karpy crystal pool remains in the repository only as rollback material.
 
-All runtime paths and per-model framing overrides are registered in:
+All runtime paths, protection masks, framing overrides, and recoloring modes are registered in:
 
 `src/features/toys/catalog.ts`
 
@@ -41,7 +38,7 @@ public/models/toys/jelly-jade-unicorn/model-web-v001.glb
 
 ## Asset Rules
 
-- Keep source GLB files in `assets/models/source/` and track them with Git LFS.
+- Keep source GLB files locally in `assets/models/source/`; Git ignores them.
 - Do not reference source models from React or Three.js code.
 - Only optimized runtime GLBs should live in `public/models/toys/`.
 - Prefer Draco or Meshopt geometry compression.
@@ -90,8 +87,8 @@ The shared ThreeViewer supports or should continue to support:
 
 GLB files must be deployed with the site because the browser requests them at runtime. Vercel currently adds long cache headers for `*.glb` through `vercel.json`.
 
-Source GLB files do not need to be deployed. They can stay under `assets/`,
-where they are available to the repo but not served as public URLs.
+Source GLB files do not need to be deployed or pushed. They stay in the local
+`assets/models/source/` workspace and are never served as public URLs.
 
 When replacing a model, update:
 

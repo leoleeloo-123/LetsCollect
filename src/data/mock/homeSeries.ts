@@ -1,3 +1,9 @@
-import { featuredBird, featuredToy } from "./toys";
+import {
+  featuredBird,
+  featuredBunny,
+  featuredCat,
+  featuredTeddy,
+  featuredToy
+} from "./toys";
 
-export const homeSeriesToys = [featuredToy, featuredBird];
+export const homeSeriesToys = [featuredBunny, featuredToy, featuredBird, featuredTeddy, featuredCat];

@@ -71,7 +71,7 @@ src/
 
 ## Asset Responsibilities
 
-- `assets/models/source/`: source or high-quality model assets, tracked with Git LFS.
+- `assets/models/source/`: local-only source or high-quality model assets, ignored by Git.
 - `assets/models/archive/`: superseded experiments retained for rollback; never served to browsers.
 - `public/models/toys/`: optimized runtime GLB files served to browsers.
 - `public/draco/`: Draco decoder files used by `ToyViewer`.
@@ -81,7 +81,7 @@ src/
 
 - `legacy/hero-prototype/` preserves the old HTML prototype as reference only.
 - `public/models/toys/jelly-jade-*/` contains the six active runtime model pairs.
-- `assets/models/source/jelly-jade-*/model-source-v001.glb` contains the source assets tracked by Git LFS.
+- `assets/models/source/*/model-source-v001.glb` contains local source assets that are not pushed.
 - `src/three/ToyViewer/` owns Three.js rendering, loading, interaction, and disposal.
 - `src/features/toys/catalog.ts` owns model URLs, palettes, and transparency grades.
 - `src/features/toys/generator.ts` owns deterministic V1 collectible generation.

@@ -12,6 +12,8 @@ temp-optimized.glb
 
 # Original uncompressed GLB (kept locally, not pushed)
 *-original.glb
+/assets/models/source/**/*.glb
+/*.glb
 
 # OS files
 Thumbs.db
@@ -31,3 +33,6 @@ yarn-debug.log*
 yarn-error.log*
 .codex-devserver*.log
 .codex-preview*.log
+.codex-*-dev.*.log
+__pycache__/
+*.pyc

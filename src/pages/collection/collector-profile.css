@@ -417,6 +417,45 @@
 .profile-palette-grid strong { overflow: hidden; max-width: 100%; font-size: 8px; text-overflow: ellipsis; white-space: nowrap; }
 .profile-palette-grid small { font-size: 7px; }
 
+.profile-model-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.profile-model-grid article {
+  display: grid;
+  min-width: 0;
+  gap: 4px;
+  padding: 6px 4px 8px;
+  border: 1px dashed var(--color-border);
+  border-radius: 11px;
+  color: var(--color-muted);
+  background: #f8faf9;
+  text-align: center;
+  opacity: 0.58;
+}
+
+.profile-model-grid article.is-collected {
+  border-style: solid;
+  color: var(--color-ink);
+  background: #ffffff;
+  opacity: 1;
+  box-shadow: 0 6px 16px rgba(22, 50, 41, 0.05);
+}
+
+.profile-model-grid__visual {
+  overflow: hidden;
+  aspect-ratio: 1;
+  border-radius: 9px;
+  background: linear-gradient(155deg, #fff9f7, #eef5f1);
+}
+
+.profile-model-grid__visual .toy-thumbnail { width: 100%; height: 100%; }
+.profile-model-grid article > div:last-child { display: grid; gap: 2px; min-width: 0; }
+.profile-model-grid strong { overflow: hidden; font-size: 8px; text-overflow: ellipsis; white-space: nowrap; }
+.profile-model-grid small { font-size: 7px; }
+
 .profile-section-panel .collector-set,
 .profile-section-panel .achievement-list article { border-radius: 12px; }
 

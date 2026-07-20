@@ -6,6 +6,7 @@ import { ToyThumbnail } from "../../components/toys/ToyThumbnail";
 import { ButtonLink } from "../../components/ui/ButtonLink";
 import { PageHeader } from "../../components/ui/PageHeader";
 import { featuredToy } from "../../data/mock/toys";
+import { colorAnimalsSeries } from "../../features/toys/activeSeries";
 import { DrawReveal } from "../../features/draw/DrawReveal";
 import { ToyViewer } from "../../three/ToyViewer";
 import type { Collectible } from "../../types/toy";
@@ -46,13 +47,13 @@ export function DrawPage() {
       <PageHeader
         eyebrow="抽取"
         title="软萌变色伙伴"
-        description="随机遇见一只新配色的小狗、小鸟或小熊。"
+        description="随机遇见一只新配色的小狗、小鸟、小熊、小兔或小猫。"
       />
 
       <section className={`draw-stage draw-stage--compact${isDrawing ? " draw-stage--active" : ""}`}>
         <div className="draw-stage__status">
           <span>本期收藏池</span>
-          <strong>3 种造型 × 9 种配色</strong>
+          <strong>{colorAnimalsSeries.drawModelIds.length} 种造型 × 9 种配色</strong>
         </div>
         <div className="draw-stage__visual">
           <ToyViewer
@@ -81,7 +82,7 @@ export function DrawPage() {
         <div className="probability-panel__grid">
           <span>三种造型各约 33.3%</span><span>每种配色约 11.1%</span><span>柔雾表面固定</span><span>五官细节固定</span>
         </div>
-        <p>小狗、小鸟和小熊等概率出现，九种身体配色也等概率生成；表面始终保持柔雾树脂效果，眼睛和面部细节保留原始设计。</p>
+        <p>五种软萌伙伴等概率出现，九种配色也等概率生成；表面始终保持柔雾树脂效果，模型各自的眼睛和面部细节保留原始设计。</p>
       </details>
 
       {recentDraws.length > 0 ? (

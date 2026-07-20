@@ -19,6 +19,14 @@ import {
   cloneColorTeddyMaterials,
   prepareColorTeddyProtectTexture
 } from "../material/createColorTeddyMaterials";
+import {
+  cloneColorBunnyMaterials,
+  prepareColorBunnyProtectTexture
+} from "../material/createColorBunnyMaterials";
+import {
+  cloneColorCatMaterials,
+  prepareColorCatProtectTexture
+} from "../material/createColorCatMaterials";
 import { loadRoomEnvironment, loadToyModel, loadToyViewerRuntime } from "./runtime";
 
 type ToyViewerProps = {
@@ -137,7 +145,13 @@ export function ToyViewer({
       const colorTeddyCoat = modelDefinition.rendering?.mode === "color-teddy-coat"
         ? modelDefinition.rendering
         : null;
-      const standardMaterialResult = protectedCoat || colorBirdZones || colorTeddyCoat
+      const colorBunnyBag = modelDefinition.rendering?.mode === "color-bunny-bag"
+        ? modelDefinition.rendering
+        : null;
+      const colorCatCoat = modelDefinition.rendering?.mode === "color-cat-coat"
+        ? modelDefinition.rendering
+        : null;
+      const standardMaterialResult = protectedCoat || colorBirdZones || colorTeddyCoat || colorBunnyBag || colorCatCoat
         ? null
         : createToyMaterial(THREE, toy, { lightweight: useLightweightStage });
       const toyMaterial = standardMaterialResult?.material ?? null;
@@ -160,9 +174,23 @@ export function ToyViewer({
             await new THREE.TextureLoader().loadAsync(colorTeddyCoat.protectMaskUrl)
           )
         : null;
+      const colorBunnyProtectMap = colorBunnyBag
+        ? prepareColorBunnyProtectTexture(
+            THREE,
+            await new THREE.TextureLoader().loadAsync(colorBunnyBag.protectMaskUrl)
+          )
+        : null;
+      const colorCatProtectMap = colorCatCoat
+        ? prepareColorCatProtectTexture(
+            THREE,
+            await new THREE.TextureLoader().loadAsync(colorCatCoat.protectMaskUrl)
+          )
+        : null;
       let protectedMaterials: import("three").Material[] = [];
       let colorBirdMaterials: import("three").Material[] = [];
       let colorTeddyMaterials: import("three").Material[] = [];
+      let colorBunnyMaterials: import("three").Material[] = [];
+      let colorCatMaterials: import("three").Material[] = [];
 
       scene.add(new THREE.HemisphereLight(0xffffff, palette.attenuation, (1.9 + hydration * 0.4) * materialLightScale));
 
@@ -246,9 +274,13 @@ export function ToyViewer({
         protectedMaterials.forEach((material) => material.dispose());
         colorBirdMaterials.forEach((material) => material.dispose());
         colorTeddyMaterials.forEach((material) => material.dispose());
+        colorBunnyMaterials.forEach((material) => material.dispose());
+        colorCatMaterials.forEach((material) => material.dispose());
         protectMap?.dispose();
         colorBirdZoneMap?.dispose();
         colorTeddyProtectMap?.dispose();
+        colorBunnyProtectMap?.dispose();
+        colorCatProtectMap?.dispose();
         environmentTexture?.dispose();
         pedestal.geometry.dispose();
         (pedestal.material as import("three").Material).dispose();
@@ -306,6 +338,22 @@ export function ToyViewer({
           model,
           new THREE.Color(palette.color).multiplyScalar(colorTeddyCoat.coatColorScale),
           colorTeddyProtectMap,
+          renderer.capabilities.getMaxAnisotropy()
+        );
+      } else if (colorBunnyBag && colorBunnyProtectMap) {
+        colorBunnyMaterials = cloneColorBunnyMaterials(
+          THREE,
+          model,
+          new THREE.Color(palette.color).multiplyScalar(colorBunnyBag.bagColorScale),
+          colorBunnyProtectMap,
+          renderer.capabilities.getMaxAnisotropy()
+        );
+      } else if (colorCatCoat && colorCatProtectMap) {
+        colorCatMaterials = cloneColorCatMaterials(
+          THREE,
+          model,
+          new THREE.Color(palette.color).multiplyScalar(colorCatCoat.coatColorScale),
+          colorCatProtectMap,
           renderer.capabilities.getMaxAnisotropy()
         );
       } else {

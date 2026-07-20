@@ -7,7 +7,7 @@ Let's Collect is an early-stage mobile-first 3D collectible toy platform. The cu
 - Production URL: `https://lets-collect.vercel.app/`
 - Current entry: React + Vite application in `src/`
 - Legacy prototype: `legacy/hero-prototype/hero-jelly-jade-toy.html`
-- Production model: `public/models/toys/jelly-jade-unicorn/model-web-v001.glb`
+- Active models: five mobile Color Animals registered in `src/features/toys/catalog.ts`
 - Source model assets: `assets/models/source/`
 - Model pipeline playbook: `playbooks/model-asset-pipeline.md`
 - Supabase project: `fpfmtmykncuknwlnakiv`

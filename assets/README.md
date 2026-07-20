@@ -27,7 +27,7 @@ pair for the original hero model.
 
 ## Rules
 
-- Keep large source `.glb` files in Git LFS.
+- Keep large source `.glb` files local under `assets/models/source/`; Git ignores them.
 - Do not reference `assets/` paths from React or Three.js code.
 - Export optimized runtime models to `public/models/toys/{toy-slug}/`.
 - Keep each source toy in its own slug folder.

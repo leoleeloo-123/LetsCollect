@@ -12,9 +12,10 @@ import {
 import { useMvpState } from "../../app/MvpState";
 import { ToyThumbnail } from "../../components/toys/ToyThumbnail";
 import { collectorProfile } from "../../data/mock/community";
+import { homeSeriesToys } from "../../data/mock/homeSeries";
 import { ToyDetailSheet } from "../../features/collection/ToyDetailSheet";
 import { colorAnimalsSeries } from "../../features/toys/activeSeries";
-import { colorAnimalPalettes, rarityLabels } from "../../features/toys/catalog";
+import { colorAnimalModels, colorAnimalPalettes, rarityLabels } from "../../features/toys/catalog";
 import type { Collectible } from "../../types/toy";
 import "./collector-profile.css";
 
@@ -28,7 +29,8 @@ export function CollectorProfilePage() {
   const distinctPalettes = new Set(collection.map((toy) => toy.paletteId));
   const colorProgress = distinctPalettes.size;
   const colorCompletion = Math.round((colorProgress / colorAnimalPalettes.length) * 100);
-  const modelProgress = new Set(collection.map((toy) => toy.modelId)).size;
+  const distinctModels = new Set(collection.map((toy) => toy.modelId));
+  const modelProgress = distinctModels.size;
   const collectorLevel = Math.max(1, Math.floor(collection.length / 4) + 1);
   const completedSetCount = Number(colorProgress >= colorAnimalPalettes.length);
   const achievementCount = 1
@@ -142,9 +144,9 @@ export function CollectorProfilePage() {
             <BookOpenCheck size={21} aria-hidden="true" />
           </header>
 
-          <section className="profile-atlas-progress" aria-label={`小狗配色图鉴完成 ${colorCompletion}%`}>
+          <section className="profile-atlas-progress" aria-label={`系列配色图鉴完成 ${colorCompletion}%`}>
             <div>
-              <span>小狗配色图鉴</span>
+              <span>九色配色图鉴</span>
               <strong>{colorProgress}<small> / {colorAnimalPalettes.length}</small></strong>
               <p>再收集 {Math.max(colorAnimalPalettes.length - colorProgress, 0)} 种配色即可完成整套色卡。</p>
             </div>
@@ -172,6 +174,30 @@ export function CollectorProfilePage() {
             </div>
           </section>
 
+          <section className="profile-subsection" aria-labelledby="model-atlas-title">
+            <div className="profile-subsection__heading">
+              <div><span>MODELS</span><h3 id="model-atlas-title">伙伴造型图鉴</h3></div>
+              <small>{modelProgress}/{colorAnimalModels.length} 已解锁</small>
+            </div>
+            <div className="profile-model-grid">
+              {colorAnimalModels.map((model) => {
+                const collected = distinctModels.has(model.id);
+                const representative = homeSeriesToys.find((toy) => toy.modelId === model.id);
+                return (
+                  <article key={model.id} className={collected ? "is-collected" : ""}>
+                    <div className="profile-model-grid__visual">
+                      {representative ? <ToyThumbnail toy={representative} size="small" /> : null}
+                    </div>
+                    <div>
+                      <strong>{model.name}</strong>
+                      <small>{collected ? "已收藏" : "待发现"}</small>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          </section>
+
           <section className="profile-subsection" aria-labelledby="series-atlas-title">
             <div className="profile-subsection__heading">
               <div><span>SERIES</span><h3 id="series-atlas-title">系列图鉴</h3></div>
@@ -180,8 +206,8 @@ export function CollectorProfilePage() {
               <article className="collector-set">
                 <span className="collector-set__icon collector-set__icon--crystal"><Palette size={21} /></span>
                 <div className="collector-set__copy">
-                  <div><strong>小狗配色图鉴</strong><span>{colorProgress}/{colorAnimalPalettes.length}</span></div>
-                  <p>收集九种不同身体配色的柔雾小狗。</p>
+                  <div><strong>九色配色图鉴</strong><span>{colorProgress}/{colorAnimalPalettes.length}</span></div>
+                  <p>收集九种配色，并应用在不同的软萌伙伴上。</p>
                   <div className="collector-set__bar"><span style={{ width: `${colorCompletion}%` }} /></div>
                 </div>
               </article>
@@ -189,7 +215,7 @@ export function CollectorProfilePage() {
                 <span className="collector-set__icon collector-set__icon--unicorn"><Dog size={21} /></span>
                 <div className="collector-set__copy">
                   <div><strong>软萌伙伴系列</strong><span>{modelProgress}/{colorAnimalsSeries.modelIds.length}</span></div>
-                  <p>首发 Color Dog 已到位，后续伙伴将逐步加入。</p>
+                  <p>小狗、小鸟、小熊、小兔和小猫已经组成首发伙伴阵容。</p>
                   <div className="collector-set__bar"><span style={{ width: `${modelProgress / colorAnimalsSeries.modelIds.length * 100}%` }} /></div>
                 </div>
               </article>
@@ -219,7 +245,7 @@ export function CollectorProfilePage() {
               <em>{colorProgress >= 4 ? "已获得" : `${colorProgress}/4`}</em>
             </article>
             <article className={completedSetCount > 0 ? "is-unlocked" : ""}>
-              <span><Trophy size={22} /></span><strong>完整色卡</strong><small>集齐九种小狗配色</small>
+              <span><Trophy size={22} /></span><strong>完整色卡</strong><small>集齐九种系列配色</small>
               <em>{completedSetCount > 0 ? "已获得" : `${colorProgress}/${colorAnimalPalettes.length}`}</em>
             </article>
           </div>
