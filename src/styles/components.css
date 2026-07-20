@@ -1662,3 +1662,13 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+.route-loading {
+  display: grid;
+  min-height: 100dvh;
+  place-items: center;
+  color: var(--color-muted);
+  background: var(--background-page);
+  font-size: 13px;
+  font-weight: 700;
+}

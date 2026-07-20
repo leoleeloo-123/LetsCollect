@@ -27,14 +27,24 @@ import {
   cloneColorCatMaterials,
   prepareColorCatProtectTexture
 } from "../material/createColorCatMaterials";
+import {
+  cloneColorPandaMaterials,
+  prepareColorPandaProtectTexture
+} from "../material/createColorPandaMaterials";
 import { loadRoomEnvironment, loadToyModel, loadToyViewerRuntime } from "./runtime";
+
+export type ToyRotationController = {
+  getRotation: () => number;
+  subscribe: (listener: () => void) => () => void;
+};
 
 type ToyViewerProps = {
   toy: Collectible;
-  variant?: "hero" | "stage" | "inspect";
+  variant?: "hero" | "stage" | "inspect" | "tile";
   interactive?: boolean;
   autoRotate?: "intro" | "continuous" | "off";
   active?: boolean;
+  rotationController?: ToyRotationController;
   className?: string;
 };
 
@@ -46,10 +56,12 @@ export function ToyViewer({
   interactive = true,
   autoRotate = "intro",
   active = true,
+  rotationController,
   className = ""
 }: ToyViewerProps) {
   const canvasHostRef = useRef<HTMLDivElement>(null);
   const activeRef = useRef(active);
+  const inViewportRef = useRef(true);
   const [status, setStatus] = useState<ViewerStatus>("loading");
   const [progress, setProgress] = useState(0);
   const [retryKey, setRetryKey] = useState(0);
@@ -58,7 +70,18 @@ export function ToyViewer({
   const fallbackModelUrl = modelDefinition.assets.modelUrl ?? modelDefinition.assets.mobileModelUrl;
 
   useEffect(() => {
-    activeRef.current = active;
+    activeRef.current = active && inViewportRef.current;
+  }, [active]);
+
+  useEffect(() => {
+    const host = canvasHostRef.current;
+    if (!host || !("IntersectionObserver" in window)) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      inViewportRef.current = entry.isIntersecting;
+      activeRef.current = active && entry.isIntersecting;
+    }, { rootMargin: "80px" });
+    observer.observe(host);
+    return () => observer.disconnect();
   }, [active]);
 
   useEffect(() => {
@@ -83,13 +106,14 @@ export function ToyViewer({
       };
 
       const isCompactDevice = window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 760;
-      const useLightweightStage = isCompactDevice && variant !== "inspect";
+      const isTile = variant === "tile";
+      const useLightweightStage = isTile || (isCompactDevice && variant !== "inspect");
       const materialLightScale = toy.materialId === "glass" ? 0.5 : 1;
       const materialExposure = toy.materialId === "glass" ? 0.82 : 1.12;
       const resolvedModelUrl = isCompactDevice
         ? modelDefinition.assets.mobileModelUrl ?? availableModelUrl
         : modelDefinition.assets.modelUrl ?? availableModelUrl;
-      const needsEnvironment = !useLightweightStage || toy.materialId !== "jade";
+      const needsEnvironment = !isTile && (!useLightweightStage || toy.materialId !== "jade");
       const [{ THREE }, RoomEnvironment] = await Promise.all([
         loadToyViewerRuntime(),
         needsEnvironment ? loadRoomEnvironment() : Promise.resolve(null)
@@ -105,8 +129,8 @@ export function ToyViewer({
         antialias: true,
         powerPreference: "high-performance"
       });
-      const initialPixelRatioCap = useLightweightStage ? 1.15 : isCompactDevice ? 1.25 : 1.5;
-      const settledPixelRatioCap = useLightweightStage ? 1.5 : isCompactDevice ? 1.6 : 1.75;
+      const initialPixelRatioCap = isTile ? 1.05 : useLightweightStage ? 1.15 : isCompactDevice ? 1.25 : 1.5;
+      const settledPixelRatioCap = isTile ? 1.15 : useLightweightStage ? 1.5 : isCompactDevice ? 1.6 : 1.75;
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, initialPixelRatioCap));
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -118,7 +142,7 @@ export function ToyViewer({
 
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
-      camera.position.set(0, 0.72, variant === "inspect" ? 7.35 : variant === "hero" ? 6.85 : 8.05);
+      camera.position.set(0, variant === "tile" ? 0.48 : 0.72, variant === "inspect" ? 7.35 : variant === "hero" ? 6.85 : variant === "tile" ? 7.35 : 8.05);
       camera.lookAt(0, 0.08, 0);
 
       let environmentTexture: import("three").Texture | null = null;
@@ -151,7 +175,10 @@ export function ToyViewer({
       const colorCatCoat = modelDefinition.rendering?.mode === "color-cat-coat"
         ? modelDefinition.rendering
         : null;
-      const standardMaterialResult = protectedCoat || colorBirdZones || colorTeddyCoat || colorBunnyBag || colorCatCoat
+      const colorPandaHat = modelDefinition.rendering?.mode === "color-panda-hat"
+        ? modelDefinition.rendering
+        : null;
+      const standardMaterialResult = protectedCoat || colorBirdZones || colorTeddyCoat || colorBunnyBag || colorCatCoat || colorPandaHat
         ? null
         : createToyMaterial(THREE, toy, { lightweight: useLightweightStage });
       const toyMaterial = standardMaterialResult?.material ?? null;
@@ -186,11 +213,46 @@ export function ToyViewer({
             await new THREE.TextureLoader().loadAsync(colorCatCoat.protectMaskUrl)
           )
         : null;
+      const colorPandaProtectMap = colorPandaHat
+        ? prepareColorPandaProtectTexture(
+            THREE,
+            await new THREE.TextureLoader().loadAsync(colorPandaHat.protectMaskUrl)
+          )
+        : null;
       let protectedMaterials: import("three").Material[] = [];
       let colorBirdMaterials: import("three").Material[] = [];
       let colorTeddyMaterials: import("three").Material[] = [];
       let colorBunnyMaterials: import("three").Material[] = [];
       let colorCatMaterials: import("three").Material[] = [];
+      let colorPandaMaterials: import("three").Material[] = [];
+      const tileTextureCopies: import("three").Texture[] = [];
+      const tileTextureCache = new Map<import("three").Texture, import("three").Texture>();
+      function applyTileMaterialProfile(materials: import("three").Material[]) {
+        if (!isTile) return;
+        materials.forEach((material) => {
+          if (!(material instanceof THREE.MeshStandardMaterial)) return;
+          material.normalMap = null;
+          material.roughness = 1;
+          material.envMapIntensity = Math.min(material.envMapIntensity, 0.05);
+          if (!material.map) {
+            material.needsUpdate = true;
+            return;
+          }
+          let tileMap = tileTextureCache.get(material.map);
+          if (!tileMap) {
+            tileMap = material.map.clone();
+            tileMap.generateMipmaps = true;
+            tileMap.minFilter = THREE.LinearMipmapLinearFilter;
+            tileMap.magFilter = THREE.LinearFilter;
+            tileMap.anisotropy = Math.min(2, renderer.capabilities.getMaxAnisotropy());
+            tileMap.needsUpdate = true;
+            tileTextureCache.set(material.map, tileMap);
+            tileTextureCopies.push(tileMap);
+          }
+          material.map = tileMap;
+          material.needsUpdate = true;
+        });
+      }
 
       scene.add(new THREE.HemisphereLight(0xffffff, palette.attenuation, (1.9 + hydration * 0.4) * materialLightScale));
 
@@ -226,7 +288,7 @@ export function ToyViewer({
       );
       pedestal.position.set(0, -1.83, 0);
       pedestal.scale.set(1.12, 1, 0.65);
-      if (variant !== "hero") scene.add(pedestal);
+      if (variant !== "hero" && variant !== "tile") scene.add(pedestal);
 
       const contactShadow = new THREE.Mesh(
         new THREE.CircleGeometry(1.9, useLightweightStage ? 36 : 72),
@@ -240,7 +302,7 @@ export function ToyViewer({
       contactShadow.rotation.x = -Math.PI / 2;
       contactShadow.position.set(0, -1.88, 0.16);
       contactShadow.scale.set(1.1, 0.52, 1);
-      if (variant !== "hero") scene.add(contactShadow);
+      if (variant !== "hero" && variant !== "tile") scene.add(contactShadow);
 
       const glowRing = new THREE.Mesh(
         new THREE.TorusGeometry(1.42, 0.012, 8, useLightweightStage ? 48 : 96),
@@ -253,7 +315,7 @@ export function ToyViewer({
       );
       glowRing.position.set(0, -1.77, 0);
       glowRing.rotation.x = Math.PI / 2;
-      if (variant !== "hero") scene.add(glowRing);
+      if (variant !== "hero" && variant !== "tile") scene.add(glowRing);
       recordTiming("scene-ready");
 
       let mixer: import("three").AnimationMixer | null = null;
@@ -276,11 +338,14 @@ export function ToyViewer({
         colorTeddyMaterials.forEach((material) => material.dispose());
         colorBunnyMaterials.forEach((material) => material.dispose());
         colorCatMaterials.forEach((material) => material.dispose());
+        colorPandaMaterials.forEach((material) => material.dispose());
+        tileTextureCopies.forEach((texture) => texture.dispose());
         protectMap?.dispose();
         colorBirdZoneMap?.dispose();
         colorTeddyProtectMap?.dispose();
         colorBunnyProtectMap?.dispose();
         colorCatProtectMap?.dispose();
+        colorPandaProtectMap?.dispose();
         environmentTexture?.dispose();
         pedestal.geometry.dispose();
         (pedestal.material as import("three").Material).dispose();
@@ -356,6 +421,14 @@ export function ToyViewer({
           colorCatProtectMap,
           renderer.capabilities.getMaxAnisotropy()
         );
+      } else if (colorPandaHat && colorPandaProtectMap) {
+        colorPandaMaterials = cloneColorPandaMaterials(
+          THREE,
+          model,
+          new THREE.Color(palette.color).multiplyScalar(colorPandaHat.hatColorScale),
+          colorPandaProtectMap,
+          renderer.capabilities.getMaxAnisotropy()
+        );
       } else {
         model.traverse((child) => {
           if (!(child instanceof THREE.Mesh) || !toyMaterial) return;
@@ -365,10 +438,20 @@ export function ToyViewer({
         });
       }
 
+      applyTileMaterialProfile([
+        ...protectedMaterials,
+        ...colorBirdMaterials,
+        ...colorTeddyMaterials,
+        ...colorBunnyMaterials,
+        ...colorCatMaterials,
+        ...colorPandaMaterials,
+        ...(toyMaterial ? [toyMaterial] : [])
+      ]);
+
       const box = new THREE.Box3().setFromObject(model);
       const center = box.getCenter(new THREE.Vector3());
       const size = box.getSize(new THREE.Vector3());
-      const targetHeight = variant === "inspect" ? 3.55 : 3.34;
+      const targetHeight = variant === "inspect" ? 3.55 : variant === "tile" ? 3.12 : 3.34;
       const scaleFactor = (targetHeight * modelDefinition.viewer.scaleMultiplier) / Math.max(size.y, 0.001);
       model.scale.setScalar(scaleFactor);
       model.position.set(-center.x * scaleFactor, -center.y * scaleFactor, -center.z * scaleFactor);
@@ -392,12 +475,15 @@ export function ToyViewer({
       let previousX = 0;
       let previousY = 0;
       let targetRotationX = -0.02;
-      let targetRotationY = -0.2;
+      let targetRotationY = rotationController?.getRotation() ?? (-0.2 + (toy.appearanceSeed % 11) * 0.12);
       let currentRotationX = targetRotationX;
       let currentRotationY = targetRotationY;
       let lastRenderTime = 0;
       let needsRender = true;
       let idleUntil = performance.now() + 3200;
+      const unsubscribeRotation = rotationController?.subscribe(() => {
+        needsRender = true;
+      }) ?? (() => {});
       const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
       function handlePointerDown(event: PointerEvent) {
@@ -453,12 +539,15 @@ export function ToyViewer({
       function render(time: number) {
         frameId = window.requestAnimationFrame(render);
         if (cancelled || document.hidden || !activeRef.current) return;
-        const idleRotating = !reducedMotion
+        if (rotationController) targetRotationY = rotationController.getRotation();
+        const rotationSettling = Math.abs(currentRotationY - targetRotationY) > 0.0005;
+        const idleRotating = !rotationController
+          && !reducedMotion
           && autoRotate !== "off"
           && (autoRotate === "continuous" || time < idleUntil);
-        if (!dragging && !idleRotating && !needsRender) return;
+        if (!dragging && !idleRotating && !needsRender && !rotationSettling) return;
 
-        const targetFrameTime = dragging ? 1000 / 60 : 1000 / 30;
+        const targetFrameTime = dragging ? 1000 / 60 : 1000 / (variant === "tile" ? 20 : 30);
         if (time - lastRenderTime < targetFrameTime) return;
         const delta = Math.min(clock.getDelta(), 0.05);
         lastRenderTime = time;
@@ -467,7 +556,7 @@ export function ToyViewer({
           targetRotationY += delta * (autoRotate === "continuous" ? 0.095 : 0.16);
         }
         currentRotationX = THREE.MathUtils.lerp(currentRotationX, targetRotationX, 0.1);
-        currentRotationY = THREE.MathUtils.lerp(currentRotationY, targetRotationY, 0.1);
+        currentRotationY = THREE.MathUtils.lerp(currentRotationY, targetRotationY, rotationController ? 0.2 : 0.1);
         toyGroup.rotation.x = currentRotationX;
         toyGroup.rotation.y = currentRotationY;
         glowRing.rotation.z += delta * 0.16;
@@ -477,7 +566,9 @@ export function ToyViewer({
         }
         mixer?.update(delta);
         renderer.render(scene, camera);
-        needsRender = false;
+        needsRender = rotationController
+          ? Math.abs(currentRotationY - targetRotationY) > 0.0005
+          : false;
 
         if (!firstFrameRendered) {
           firstFrameRendered = true;
@@ -506,6 +597,7 @@ export function ToyViewer({
         window.cancelAnimationFrame(frameId);
         window.clearTimeout(clarityUpgradeTimer);
         resizeObserver.disconnect();
+        unsubscribeRotation();
         renderer.domElement.removeEventListener("pointerdown", handlePointerDown);
         renderer.domElement.removeEventListener("pointermove", handlePointerMove);
         renderer.domElement.removeEventListener("pointerup", finishDrag);
@@ -533,6 +625,7 @@ export function ToyViewer({
     autoRotate,
     interactive,
     modelDefinition,
+    rotationController,
     palette,
     retryKey,
     toy.appearance.colorDepth,
@@ -558,7 +651,7 @@ export function ToyViewer({
       data-status={status}
     >
       <div className="toy-viewer__canvas-host" ref={canvasHostRef} />
-      {status === "loading" ? (
+      {status === "loading" && variant !== "tile" ? (
         <div className="toy-viewer__status" role="status">
           <div className="toy-viewer__poster" aria-hidden="true">
             <ToyThumbnail toy={toy} size="large" cacheOnly />

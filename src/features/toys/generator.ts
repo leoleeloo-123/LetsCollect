@@ -118,6 +118,9 @@ function getColorAnimalDescription(modelId: ToyModelId, paletteName: string) {
   if (modelId === "color-bunny") {
     return `一只带着${paletteName}行李箱的软萌小兔，身体与面部细节保留原始配色。`;
   }
+  if (modelId === "color-panda") {
+    return `一只戴着${paletteName}帽子的软萌熊猫，身体、黑白花纹、眼睛、鼻嘴和腮红保持原色。`;
+  }
   if (modelId === "color-cat") {
     return `一只穿着${paletteName}外套的软萌小猫，面部、耳朵与胡须细节保持清晰。`;
   }

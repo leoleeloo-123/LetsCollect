@@ -39,7 +39,7 @@ export function ToyThumbnail({
         setVisible(true);
         observer.disconnect();
       },
-      { rootMargin: "180px" }
+      { rootMargin: "24px" }
     );
     observer.observe(host);
     return () => observer.disconnect();

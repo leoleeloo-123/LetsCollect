@@ -9,6 +9,7 @@ export const routes = {
   register: "/register",
   materialLab: "/material-lab",
   colorBunnyLab: "/color-bunny-lab",
+  colorPandaLab: "/color-panda-lab",
   colorBirdLab: "/color-bird-lab",
   colorCatLab: "/color-cat-lab",
   colorDogLab: "/color-dog-lab",

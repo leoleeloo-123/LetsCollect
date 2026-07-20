@@ -43,7 +43,7 @@ GitHub：
 
 当前默认 Hero 页面加载：
 
-`Color Dog / Color Bird / Color Teddy / Color Bunny / Color Cat` 五种移动端模型轮播。
+`Color Dog / Color Bird / Color Teddy / Color Bunny / Color Cat / Color Panda` 六种移动端模型展示。
 
 ## 当前 React MVP
 
@@ -75,7 +75,7 @@ GitHub：
 
 还可以验证：
 
-- 五种 Color Animals 移动端 GLB 的动态切换、随机配色与详情保护；
+- 六种 Color Animals 移动端 GLB 的动态展示、随机配色与详情保护；
 - 收藏筛选、材质工艺品质与 3D 详情浮层；
 - 好友搜索、添加与接受申请；
 - 手机端底部导航；

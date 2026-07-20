@@ -11,7 +11,8 @@ export type ToyModelId =
   | "color-bird"
   | "color-teddy"
   | "color-bunny"
-  | "color-cat";
+  | "color-cat"
+  | "color-panda";
 
 export type ToyFallbackShape = "unicorn" | "cat" | "bunny" | "bird" | "dog" | "blob";
 export type ToyPaletteId =
@@ -76,6 +77,11 @@ export type ToyModelDefinition = {
         mode: "color-cat-coat";
         protectMaskUrl: string;
         coatColorScale: number;
+      }
+    | {
+        mode: "color-panda-hat";
+        protectMaskUrl: string;
+        hatColorScale: number;
       };
 };
 

@@ -54,11 +54,14 @@ function loadSnapshot(): MvpSnapshot {
           .map((toy) => normalizeStoredCollectible(toy))
           .filter((toy) => isColorAnimalCollectible(toy))
       : initialSnapshot.collection;
+    const storedModelIds = new Set(storedCollection.map((toy) => toy.modelId));
+    const missingStarterToys = starterCollectionToys.filter((toy) => !storedModelIds.has(toy.modelId));
+    const migratedCollection = [...storedCollection, ...missingStarterToys];
 
     return {
       ...initialSnapshot,
       ...parsed,
-      collection: storedCollection,
+      collection: migratedCollection,
       recentDraws: Array.isArray(parsed.recentDraws) ? parsed.recentDraws : []
     };
   } catch {

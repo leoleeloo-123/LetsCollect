@@ -79,9 +79,9 @@ export function DrawPage() {
       <details className="probability-panel">
         <summary><CircleHelp size={18} /> 查看 V3 配色规则</summary>
         <div className="probability-panel__grid">
-          <span>三种造型各约 33.3%</span><span>每种配色约 11.1%</span><span>柔雾表面固定</span><span>五官细节固定</span>
+          <span>六种造型各约 16.7%</span><span>每种配色约 11.1%</span><span>柔雾表面固定</span><span>五官细节固定</span>
         </div>
-        <p>五种软萌伙伴等概率出现，九种配色也等概率生成；表面始终保持柔雾树脂效果，模型各自的眼睛和面部细节保留原始设计。</p>
+        <p>六种软萌伙伴等概率出现，九种配色也等概率生成；表面始终保持柔雾树脂效果，模型各自的眼睛和面部细节保留原始设计。</p>
       </details>
 
       {recentDraws.length > 0 ? (

@@ -165,12 +165,30 @@ export const colorCatModel: ToyModelDefinition = {
   }
 };
 
+export const colorPandaModel: ToyModelDefinition = {
+  id: "color-panda",
+  slug: "color-panda",
+  name: "熊猫",
+  fallbackShape: "blob",
+  assets: {
+    modelUrl: "/models/toys/color-panda/model-mobile-v001.glb",
+    mobileModelUrl: "/models/toys/color-panda/model-mobile-v001.glb"
+  },
+  viewer: { scaleMultiplier: 0.94, yOffset: -0.02, rotationY: -0.24 },
+  rendering: {
+    mode: "color-panda-hat",
+    protectMaskUrl: "/models/toys/color-panda/hat-mask-mobile-v001.webp",
+    hatColorScale: 0.92
+  }
+};
+
 export const colorAnimalModels = [
   colorDogModel,
   colorBirdModel,
   colorTeddyModel,
   colorBunnyModel,
-  colorCatModel
+  colorCatModel,
+  colorPandaModel
 ] as const;
 export const toyPalettes: ToyPaletteDefinition[] = [
   { id: "rose", name: "樱花粉", color: "#ff789e", attenuation: "#8f2346", emissive: "#c83464", glow: "#ff7da5" },
@@ -248,6 +266,7 @@ export function getToyRenderingAssetKey(model: ToyModelDefinition) {
   if (model.rendering?.mode === "color-teddy-coat") return model.rendering.protectMaskUrl;
   if (model.rendering?.mode === "color-bunny-bag") return model.rendering.protectMaskUrl;
   if (model.rendering?.mode === "color-cat-coat") return model.rendering.protectMaskUrl;
+  if (model.rendering?.mode === "color-panda-hat") return model.rendering.protectMaskUrl;
   return "unmasked";
 }
 
