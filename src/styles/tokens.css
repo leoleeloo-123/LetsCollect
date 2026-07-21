@@ -82,5 +82,10 @@
   --ease-standard: cubic-bezier(0.22, 0.72, 0.28, 1);
   --space-page: 16px;
   --nav-height: 72px;
+  --safe-area-top: env(safe-area-inset-top, 0px);
+  --safe-area-right: env(safe-area-inset-right, 0px);
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-left: env(safe-area-inset-left, 0px);
+  --floating-nav-edge-gap: 10px;
   --font-body: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", Inter, ui-sans-serif, system-ui, sans-serif;
 }

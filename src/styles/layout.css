@@ -1,12 +1,15 @@
 .app-shell {
   min-height: 100vh;
-  padding-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom));
+  min-height: 100dvh;
+  padding-bottom: calc(var(--nav-height) + var(--safe-area-bottom));
 }
 
 .app-main {
   width: min(1120px, 100%);
   margin: 0 auto;
-  padding: 16px var(--space-page) 32px;
+  padding:
+    16px calc(var(--space-page) + var(--safe-area-right))
+    32px calc(var(--space-page) + var(--safe-area-left));
 }
 
 .page-stack {
@@ -19,11 +22,14 @@
   top: 0;
   z-index: 30;
   display: flex;
-  min-height: 58px;
+  min-height: calc(58px + var(--safe-area-top));
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 8px var(--space-page);
+  padding:
+    calc(8px + var(--safe-area-top))
+    calc(var(--space-page) + var(--safe-area-right))
+    8px calc(var(--space-page) + var(--safe-area-left));
   border-bottom: 1px solid rgba(219, 228, 223, 0.84);
   background: rgba(244, 247, 244, 0.91);
   backdrop-filter: blur(16px);
@@ -47,8 +53,8 @@
   z-index: 40;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  min-height: calc(var(--nav-height) + env(safe-area-inset-bottom));
-  padding: 8px 8px calc(7px + env(safe-area-inset-bottom));
+  min-height: calc(var(--nav-height) + var(--safe-area-bottom));
+  padding: 8px 8px calc(7px + var(--safe-area-bottom));
   border-top: 1px solid var(--color-border);
   background: rgba(255, 255, 255, 0.94);
   box-shadow: 0 -8px 28px rgba(22, 50, 41, 0.08);
@@ -166,7 +172,9 @@
     min-height: 66px;
     align-items: center;
     gap: 24px;
-    padding: 10px max(24px, calc((100% - 1120px) / 2));
+    padding:
+      10px max(24px, var(--safe-area-right), calc((100% - 1120px) / 2))
+      10px max(24px, var(--safe-area-left), calc((100% - 1120px) / 2));
     border-bottom: 1px solid var(--color-border);
     background: rgba(244, 247, 244, 0.92);
     backdrop-filter: blur(18px);
