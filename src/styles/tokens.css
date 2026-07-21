@@ -6,7 +6,7 @@
   --color-ink-soft: #5b414d;
   --color-muted: #7d6873;
   --color-on-brand: #ffffff;
-  --color-page: #fff6f9;
+  --color-page: #fff8fa;
   --color-surface: rgba(255, 255, 255, 0.72);
   --color-surface-strong: rgba(255, 250, 252, 0.9);
   --color-surface-solid: #fffafd;
@@ -49,9 +49,9 @@
   /* Reusable backgrounds and gradients */
   --background-page:
     radial-gradient(circle at 8% 7%, rgba(255, 255, 255, 0.98) 0, rgba(255, 255, 255, 0.42) 19%, transparent 36%),
-    radial-gradient(circle at 92% 13%, rgba(235, 157, 188, 0.176) 0, transparent 31%),
-    radial-gradient(circle at 18% 72%, rgba(250, 193, 216, 0.112) 0, transparent 30%),
-    linear-gradient(155deg, #fffbfd 0%, #fff6f9 53%, #fcf1f6 100%);
+    radial-gradient(circle at 92% 13%, rgba(235, 157, 188, 0.141) 0, transparent 31%),
+    radial-gradient(circle at 18% 72%, rgba(250, 193, 216, 0.09) 0, transparent 30%),
+    linear-gradient(155deg, #fffcfd 0%, #fff8fa 53%, #fdf4f8 100%);
   --background-stage:
     radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.76) 0, rgba(255, 255, 255, 0.16) 44%, transparent 65%),
     linear-gradient(155deg, rgba(255, 248, 251, 0.94), rgba(249, 229, 238, 0.68));
@@ -87,5 +87,7 @@
   --safe-area-bottom: env(safe-area-inset-bottom, 0px);
   --safe-area-left: env(safe-area-inset-left, 0px);
   --floating-nav-edge-gap: 10px;
+  --top-ribbon-edge-gap: 10px;
+  --top-ribbon-pill-height: 44px;
   --font-body: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", Inter, ui-sans-serif, system-ui, sans-serif;
 }

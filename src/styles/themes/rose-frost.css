@@ -15,13 +15,31 @@
 }
 
 /* Shared chrome */
-.mobile-header,
 .desktop-nav {
   border-color: var(--glass-border);
   background: var(--glass-surface-strong);
   box-shadow: var(--shadow-soft), var(--shadow-inset);
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+}
+
+.mobile-header__pill {
+  border-color: var(--glass-border-strong);
+  background: var(--glass-surface-strong);
+  box-shadow: var(--shadow-soft), var(--shadow-inset);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+}
+
+.mobile-header__account-pill .ticket-balance {
+  background: transparent;
+  box-shadow: none;
+}
+
+.mobile-header__profile-button {
+  color: var(--color-brand-deep);
+  background: var(--color-brand-soft);
+  box-shadow: var(--shadow-inset);
 }
 
 .brand-mark__gem {
@@ -440,8 +458,8 @@
 }
 
 @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
-  .mobile-header,
   .desktop-nav,
+  .mobile-header__pill,
   .bottom-nav,
   .collection-stage.collection-stage--compact,
   .ritual-strip,
@@ -481,6 +499,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .mobile-header,
   .bottom-nav,
   .bottom-nav__item,
   .bottom-nav__item span,
