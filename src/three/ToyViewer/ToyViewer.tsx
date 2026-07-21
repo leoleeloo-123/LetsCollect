@@ -50,6 +50,8 @@ type ToyViewerProps = {
 
 type ViewerStatus = "loading" | "ready" | "error";
 
+const TILE_MODEL_TARGET_HEIGHT = 3.52;
+
 export function ToyViewer({
   toy,
   variant = "stage",
@@ -241,10 +243,14 @@ export function ToyViewer({
           let tileMap = tileTextureCache.get(material.map);
           if (!tileMap) {
             tileMap = material.map.clone();
-            tileMap.generateMipmaps = true;
-            tileMap.minFilter = THREE.LinearMipmapLinearFilter;
+            // The mobile atlases have black gutters with very little UV padding.
+            // Mipmaps blend those gutters into the islands at thumbnail sizes,
+            // which reads as dark seams across the toy. Linear sampling keeps
+            // the homepage tiles clean without changing larger viewer variants.
+            tileMap.generateMipmaps = false;
+            tileMap.minFilter = THREE.LinearFilter;
             tileMap.magFilter = THREE.LinearFilter;
-            tileMap.anisotropy = Math.min(2, renderer.capabilities.getMaxAnisotropy());
+            tileMap.anisotropy = 1;
             tileMap.needsUpdate = true;
             tileTextureCache.set(material.map, tileMap);
             tileTextureCopies.push(tileMap);
@@ -451,7 +457,7 @@ export function ToyViewer({
       const box = new THREE.Box3().setFromObject(model);
       const center = box.getCenter(new THREE.Vector3());
       const size = box.getSize(new THREE.Vector3());
-      const targetHeight = variant === "inspect" ? 3.55 : variant === "tile" ? 3.12 : 3.34;
+      const targetHeight = variant === "inspect" ? 3.55 : variant === "tile" ? TILE_MODEL_TARGET_HEIGHT : 3.34;
       const scaleFactor = (targetHeight * modelDefinition.viewer.scaleMultiplier) / Math.max(size.y, 0.001);
       model.scale.setScalar(scaleFactor);
       model.position.set(-center.x * scaleFactor, -center.y * scaleFactor, -center.z * scaleFactor);

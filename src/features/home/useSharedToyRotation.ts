@@ -16,6 +16,9 @@ type DragSession = {
   dragging: boolean;
 };
 
+const INTRO_ROTATION_RADIANS = 0.24;
+const INTRO_ROTATION_DURATION_MS = 1650;
+
 function easeInOutCubic(value: number) {
   return value < 0.5
     ? 4 * value * value * value
@@ -61,11 +64,11 @@ export function useSharedToyRotation() {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const startedAt = performance.now();
-    const duration = 1150;
+    const duration = INTRO_ROTATION_DURATION_MS;
 
     const tick = (time: number) => {
       const progress = Math.min(1, (time - startedAt) / duration);
-      setRotation(Math.sin(progress * Math.PI) * 0.16);
+      setRotation(Math.sin(progress * Math.PI) * INTRO_ROTATION_RADIANS);
       if (progress < 1) animationFrameRef.current = window.requestAnimationFrame(tick);
     };
 
