@@ -137,8 +137,8 @@ export const colorBunnyModel: ToyModelDefinition = {
   name: "小兔",
   fallbackShape: "bunny",
   assets: {
-    modelUrl: "/models/toys/color-bunny/model-mobile-v001.glb",
-    mobileModelUrl: "/models/toys/color-bunny/model-mobile-v001.glb"
+    modelUrl: "/models/toys/color-bunny/model-mobile-v002.glb",
+    mobileModelUrl: "/models/toys/color-bunny/model-mobile-v002.glb"
   },
   viewer: { scaleMultiplier: 0.94, yOffset: -0.02, rotationY: -0.24 },
   rendering: {
@@ -171,8 +171,8 @@ export const colorPandaModel: ToyModelDefinition = {
   name: "熊猫",
   fallbackShape: "blob",
   assets: {
-    modelUrl: "/models/toys/color-panda/model-mobile-v001.glb",
-    mobileModelUrl: "/models/toys/color-panda/model-mobile-v001.glb"
+    modelUrl: "/models/toys/color-panda/model-mobile-v002.glb",
+    mobileModelUrl: "/models/toys/color-panda/model-mobile-v002.glb"
   },
   viewer: { scaleMultiplier: 0.94, yOffset: -0.02, rotationY: -0.24 },
   rendering: {

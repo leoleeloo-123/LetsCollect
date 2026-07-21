@@ -50,8 +50,9 @@ type ToyViewerProps = {
 
 type ViewerStatus = "loading" | "ready" | "error";
 
-const TILE_MODEL_TARGET_HEIGHT = 3.52;
-
+const TILE_MODEL_TARGET_HEIGHT = 3.70;
+const TILE_INITIAL_PIXEL_RATIO_CAP = 1.05;
+const TILE_SETTLED_PIXEL_RATIO_CAP = 1.75;
 export function ToyViewer({
   toy,
   variant = "stage",
@@ -131,8 +132,8 @@ export function ToyViewer({
         antialias: true,
         powerPreference: "high-performance"
       });
-      const initialPixelRatioCap = isTile ? 1.05 : useLightweightStage ? 1.15 : isCompactDevice ? 1.25 : 1.5;
-      const settledPixelRatioCap = isTile ? 1.15 : useLightweightStage ? 1.5 : isCompactDevice ? 1.6 : 1.75;
+      const initialPixelRatioCap = isTile ? TILE_INITIAL_PIXEL_RATIO_CAP : useLightweightStage ? 1.15 : isCompactDevice ? 1.25 : 1.5;
+      const settledPixelRatioCap = isTile ? TILE_SETTLED_PIXEL_RATIO_CAP : useLightweightStage ? 1.5 : isCompactDevice ? 1.6 : 1.75;
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, initialPixelRatioCap));
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       renderer.toneMapping = THREE.ACESFilmicToneMapping;

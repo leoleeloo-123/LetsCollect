@@ -22,9 +22,9 @@ The former jelly-jade and material-generation assets, catalogs, and generator re
 - Color Dog uses `model-mobile-v002.glb` and `protect-mask-mobile-v028.webp`.
 - Color Bird uses `model-mobile-v001.glb` and its production zone mask.
 - Color Teddy uses `model-mobile-v001.glb` and `protect-mask-mobile-v001.webp`.
-- Color Bunny uses `model-mobile-v001.glb`; only its suitcase is recolored through `protect-mask-mobile-v001.webp`.
+- Color Bunny uses `model-mobile-v002.glb`; only its suitcase is recolored through `protect-mask-mobile-v001.webp`.
 - Color Cat uses `model-mobile-v001.glb` and a three-channel `protect-mask-mobile-v001.webp`.
-- Color Panda uses `model-mobile-v001.glb`; only its hat is recolored through `hat-mask-mobile-v001.webp`.
+- Color Panda uses `model-mobile-v002.glb`; only its hat is recolored through `hat-mask-mobile-v001.webp`.
 - Draws select one of the six active models and one color palette independently with equal probability.
 - Material is fixed to soft matte resin; each model's eyes and authored facial details remain protected by its production shader.
 - The appearance signature includes the generation version, series, model, palette, rendering asset URL, traits, and seed.
@@ -39,10 +39,11 @@ The Color Animals demo uses a dedicated local-storage key. Earlier material-show
 - Color Dog mobile GLB: about 344 KB; protection mask: about 6 KB.
 - Color Bird mobile GLB remains below the 1 MB target and uses a compact zone mask.
 - Color Teddy mobile GLB: about 356 KB; protection mask: about 7 KB.
-- Color Bunny mobile GLB: about 377 KB; protection mask: about 52 KB.
+- Color Bunny mobile GLB: about 381 KB; protection mask: about 52 KB.
 - Color Cat mobile GLB: about 319 KB; protection mask: about 100 KB.
-- Color Panda mobile GLB: about 405 KB; hat mask: about 6 KB.
-- The home series grid uses six lightweight live viewers with reduced DPR, lighting, and frame rate; collection lists use cached WebP thumbnails.
+- Color Panda mobile GLB: about 431 KB; hat mask: about 6 KB.
+- Color Bunny and Color Panda v002 preserve the v001 geometry while padding the 1024 px base-color atlas borders to reduce UV seam bleeding at tile size.
+- The home series grid uses six lightweight live viewers with a conservative first-paint DPR and a settled DPR cap of 1.75; collection lists use cached WebP thumbnails.
 
 ## Validation
 
