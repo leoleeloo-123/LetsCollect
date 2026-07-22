@@ -1,5 +1,7 @@
 # Color Bird collection preview
 
+Status: historical preview, superseded by `docs/COLOR_ANIMALS_V3.md`.
+
 ## Scope
 
 Color Bird is available as a collection-only mobile preview in the Color Animals V3 series. Two seeded variants appear in a fresh demo collection, while random draws continue to use Color Dog until the bird is approved on real phones.

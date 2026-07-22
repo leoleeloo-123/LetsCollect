@@ -8,10 +8,6 @@ import {
   getCollectibleRenderTraits
 } from "../material/createToyMaterial";
 import {
-  cloneProtectedCoatMaterials,
-  prepareProtectedCoatTexture
-} from "../material/createProtectedCoatMaterial";
-import {
   cloneColorBirdMaterials,
   prepareColorBirdZoneTexture
 } from "../material/createColorBirdMaterials";
@@ -31,6 +27,7 @@ import {
   cloneColorPandaMaterials,
   prepareColorPandaProtectTexture
 } from "../material/createColorPandaMaterials";
+import { cloneColorOtterMaterials } from "../material/createColorOtterMaterials";
 import { loadRoomEnvironment, loadToyModel, loadToyViewerRuntime } from "./runtime";
 
 export type ToyRotationController = {
@@ -163,9 +160,6 @@ export function ToyViewer({
       scene.add(toyGroup);
 
       // Protected color models retain their authored facial texture and recolor only the coat.
-      const protectedCoat = modelDefinition.rendering?.mode === "protected-coat"
-        ? modelDefinition.rendering
-        : null;
       const colorBirdZones = modelDefinition.rendering?.mode === "color-bird-zones"
         ? modelDefinition.rendering
         : null;
@@ -181,17 +175,14 @@ export function ToyViewer({
       const colorPandaHat = modelDefinition.rendering?.mode === "color-panda-hat"
         ? modelDefinition.rendering
         : null;
-      const standardMaterialResult = protectedCoat || colorBirdZones || colorTeddyCoat || colorBunnyBag || colorCatCoat || colorPandaHat
+      const colorOtterLollipop = modelDefinition.rendering?.mode === "color-otter-lollipop"
+        ? modelDefinition.rendering
+        : null;
+      const standardMaterialResult = colorBirdZones || colorTeddyCoat || colorBunnyBag || colorCatCoat || colorPandaHat || colorOtterLollipop
         ? null
         : createToyMaterial(THREE, toy, { lightweight: useLightweightStage });
       const toyMaterial = standardMaterialResult?.material ?? null;
       const glowColor = standardMaterialResult?.glowColor ?? new THREE.Color(palette.glow);
-      const protectMap = protectedCoat
-        ? prepareProtectedCoatTexture(
-            THREE,
-            await new THREE.TextureLoader().loadAsync(protectedCoat.protectMaskUrl)
-          )
-        : null;
       const colorBirdZoneMap = colorBirdZones
         ? prepareColorBirdZoneTexture(
             THREE,
@@ -222,12 +213,12 @@ export function ToyViewer({
             await new THREE.TextureLoader().loadAsync(colorPandaHat.protectMaskUrl)
           )
         : null;
-      let protectedMaterials: import("three").Material[] = [];
       let colorBirdMaterials: import("three").Material[] = [];
       let colorTeddyMaterials: import("three").Material[] = [];
       let colorBunnyMaterials: import("three").Material[] = [];
       let colorCatMaterials: import("three").Material[] = [];
       let colorPandaMaterials: import("three").Material[] = [];
+      let colorOtterMaterials: import("three").Material[] = [];
       const tileTextureCopies: import("three").Texture[] = [];
       const tileTextureCache = new Map<import("three").Texture, import("three").Texture>();
       function applyTileMaterialProfile(materials: import("three").Material[]) {
@@ -340,14 +331,13 @@ export function ToyViewer({
         if (staticResourcesDisposed) return;
         staticResourcesDisposed = true;
         toyMaterial?.dispose();
-        protectedMaterials.forEach((material) => material.dispose());
         colorBirdMaterials.forEach((material) => material.dispose());
         colorTeddyMaterials.forEach((material) => material.dispose());
         colorBunnyMaterials.forEach((material) => material.dispose());
         colorCatMaterials.forEach((material) => material.dispose());
         colorPandaMaterials.forEach((material) => material.dispose());
+        colorOtterMaterials.forEach((material) => material.dispose());
         tileTextureCopies.forEach((texture) => texture.dispose());
-        protectMap?.dispose();
         colorBirdZoneMap?.dispose();
         colorTeddyProtectMap?.dispose();
         colorBunnyProtectMap?.dispose();
@@ -381,16 +371,7 @@ export function ToyViewer({
 
       const model = gltf.scene;
       model.rotation.y = modelDefinition.viewer.rotationY;
-      if (protectedCoat && protectMap) {
-        const coatColor = new THREE.Color(palette.color).multiplyScalar(protectedCoat.coatColorScale);
-        protectedMaterials = cloneProtectedCoatMaterials(
-          THREE,
-          model,
-          coatColor,
-          protectMap,
-          renderer.capabilities.getMaxAnisotropy()
-        );
-      } else if (colorBirdZones && colorBirdZoneMap) {
+      if (colorBirdZones && colorBirdZoneMap) {
         const accentPalette = getColorBirdAccentPalette(toy.paletteId, toy.appearanceSeed);
         colorBirdMaterials = cloneColorBirdMaterials(
           THREE,
@@ -436,6 +417,14 @@ export function ToyViewer({
           colorPandaProtectMap,
           renderer.capabilities.getMaxAnisotropy()
         );
+      } else if (colorOtterLollipop) {
+        colorOtterMaterials = cloneColorOtterMaterials(
+          THREE,
+          model,
+          new THREE.Color(palette.color).multiplyScalar(colorOtterLollipop.lollipopColorScale),
+          colorOtterLollipop.materialName,
+          renderer.capabilities.getMaxAnisotropy()
+        );
       } else {
         model.traverse((child) => {
           if (!(child instanceof THREE.Mesh) || !toyMaterial) return;
@@ -446,12 +435,12 @@ export function ToyViewer({
       }
 
       applyTileMaterialProfile([
-        ...protectedMaterials,
         ...colorBirdMaterials,
         ...colorTeddyMaterials,
         ...colorBunnyMaterials,
         ...colorCatMaterials,
         ...colorPandaMaterials,
+        ...colorOtterMaterials,
         ...(toyMaterial ? [toyMaterial] : [])
       ]);
 

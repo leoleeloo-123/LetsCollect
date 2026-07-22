@@ -4,7 +4,7 @@ import {
   featuredCat,
   featuredPanda,
   featuredTeddy,
-  featuredToy
+  featuredOtter
 } from "./toys";
 
-export const homeSeriesToys = [featuredBunny, featuredToy, featuredBird, featuredTeddy, featuredCat, featuredPanda];
+export const homeSeriesToys = [featuredBunny, featuredOtter, featuredBird, featuredTeddy, featuredCat, featuredPanda];

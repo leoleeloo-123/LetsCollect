@@ -28,12 +28,12 @@ export function ColorBirdLabPage() {
   }
 
   return (
-    <main className="color-dog-page color-bird-page">
-      <header className="color-dog-header">
-        <Link className="color-dog-header__back" to={routes.home}><ArrowLeft size={18} />返回首页</Link>
-        <span className="color-dog-header__mark">Let's Collect · 3D LAB</span>
+    <main className="color-animal-page color-bird-page">
+      <header className="color-animal-header">
+        <Link className="color-animal-header__back" to={routes.home}><ArrowLeft size={18} />返回首页</Link>
+        <span className="color-animal-header__mark">Let's Collect · 3D LAB</span>
       </header>
-      <section className="color-dog-intro color-bird-intro">
+      <section className="color-animal-intro color-bird-intro">
         <div>
           <p className="eyebrow">COLOR BIRD STUDY 01</p>
           <h1>三种颜色，一只会转圈的小鸟。</h1>
@@ -43,13 +43,13 @@ export function ColorBirdLabPage() {
           <button className="color-bird-zone-toggle" type="button" aria-pressed={showZones} onClick={() => setShowZones((value) => !value)}>
             <Palette size={18} />{showZones ? "查看成品" : "检查分区"}
           </button>
-          <button className="color-dog-randomize" type="button" onClick={randomize}>
+          <button className="color-animal-randomize" type="button" onClick={randomize}>
             <Dices size={18} />随机生成一只
           </button>
         </div>
       </section>
       <ColorBirdLabViewer variant={variant} showZones={showZones} />
-      <section className="color-dog-notes" aria-label="技术说明">
+      <section className="color-animal-notes" aria-label="技术说明">
         <Info size={19} />
         <p><strong>四区移动端方案：</strong> 加载约 310KB 的 Draco 模型和一张 512px 多通道 Mask。未遮罩区域是主体，绿色通道是头顶，蓝色通道是腮红，红色通道保护眼睛和嘴，脚部由解码后的几何分区保护；随机按钮只更新三组颜色，不会重新下载模型。</p>
       </section>

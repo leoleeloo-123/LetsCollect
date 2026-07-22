@@ -43,7 +43,7 @@ GitHub：
 
 当前默认 Hero 页面加载：
 
-`Color Dog / Color Bird / Color Teddy / Color Bunny / Color Cat / Color Panda` 六种移动端模型展示。
+`Color Otter / Color Bird / Color Teddy / Color Bunny / Color Cat / Color Panda` 六种移动端模型展示。
 
 ## 当前 React MVP
 

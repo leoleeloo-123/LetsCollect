@@ -14,7 +14,7 @@ export const mockActivities: SocialActivity[] = [
     id: "activity_002",
     userName: "阿澈",
     userInitial: "澈",
-    action: "点亮了第四种小狗配色",
+    action: "点亮了第四种棒棒糖配色",
     toyId: "toy_002",
     timeLabel: "32 分钟前",
     reward: 1

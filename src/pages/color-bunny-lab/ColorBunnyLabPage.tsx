@@ -28,12 +28,12 @@ export function ColorBunnyLabPage() {
   }
 
   return (
-    <main className="color-dog-page color-dog-page--single color-bunny-page">
-      <header className="color-dog-header">
-        <Link className="color-dog-header__back" to={routes.home}><ArrowLeft size={18} />返回首页</Link>
-        <span className="color-dog-header__mark">Let's Collect · 3D LAB</span>
+    <main className="color-animal-page color-animal-page--single color-bunny-page">
+      <header className="color-animal-header">
+        <Link className="color-animal-header__back" to={routes.home}><ArrowLeft size={18} />返回首页</Link>
+        <span className="color-animal-header__mark">Let's Collect · 3D LAB</span>
       </header>
-      <section className="color-dog-intro">
+      <section className="color-animal-intro">
         <div>
           <p className="eyebrow">COLOR BUNNY STUDY 01</p>
           <h1>白兔保持原色，只给手提包换一种颜色。</h1>
@@ -43,13 +43,13 @@ export function ColorBunnyLabPage() {
           <button className="color-lab-zone-toggle" type="button" aria-pressed={showZones} onClick={() => setShowZones((value) => !value)}>
             <Palette size={18} />{showZones ? "查看成品" : "检查保护区"}
           </button>
-          <button className="color-dog-randomize" type="button" onClick={randomize}>
+          <button className="color-animal-randomize" type="button" onClick={randomize}>
             <Dices size={18} />随机生成一只
           </button>
         </div>
       </section>
       <ColorBunnyLabViewer variant={variant} showZones={showZones} />
-      <section className="color-dog-notes" aria-label="技术说明">
+      <section className="color-animal-notes" aria-label="技术说明">
         <Info size={19} />
         <p><strong>包包专用着色：</strong> 约 377KB 的 Draco 模型搭配约 53KB、512px 的 WebP 蒙版。暖粉候选区与包包三维体积同时命中时才会变色；兔子身体、眼睛、鼻嘴、耳内粉和腮红始终使用原始贴图。</p>
       </section>

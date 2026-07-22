@@ -5,7 +5,7 @@ import { routes } from "../../app/routes";
 import { ToyThumbnail } from "../../components/toys/ToyThumbnail";
 import { ButtonLink } from "../../components/ui/ButtonLink";
 import { PageHeader } from "../../components/ui/PageHeader";
-import { featuredToy } from "../../data/mock/toys";
+import { featuredOtter } from "../../data/mock/toys";
 import { colorAnimalsSeries } from "../../features/toys/activeSeries";
 import { DrawReveal } from "../../features/draw/DrawReveal";
 import { ToyViewer } from "../../three/ToyViewer";
@@ -46,7 +46,7 @@ export function DrawPage() {
       <PageHeader
         eyebrow="抽取"
         title="软萌变色伙伴"
-        description="随机遇见一只新配色的小狗、小鸟、小熊、小兔或小猫。"
+        description="随机遇见一只新配色的水獭、小鸟、小熊、小兔、小猫或熊猫。"
       />
 
       <section className={`draw-stage draw-stage--compact${isDrawing ? " draw-stage--active" : ""}`}>
@@ -56,7 +56,7 @@ export function DrawPage() {
         </div>
         <div className="draw-stage__visual">
           <ToyViewer
-            toy={featuredToy}
+            toy={featuredOtter}
             variant="hero"
             interactive={false}
             autoRotate="continuous"

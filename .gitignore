@@ -13,6 +13,7 @@ temp-optimized.glb
 # Original uncompressed GLB (kept locally, not pushed)
 *-original.glb
 /assets/models/source/**/*.glb
+/assets/models/archive/**/source/**/*.glb
 /*.glb
 
 # OS files

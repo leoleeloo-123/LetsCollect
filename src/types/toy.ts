@@ -7,7 +7,7 @@ export type ToyModelId =
   | "bird"
   | "doggy"
   | "karpy"
-  | "color-dog"
+  | "color-otter"
   | "color-bird"
   | "color-teddy"
   | "color-bunny"
@@ -51,11 +51,6 @@ export type ToyModelDefinition = {
   };
   rendering?:
     | {
-        mode: "protected-coat";
-        protectMaskUrl: string;
-        coatColorScale: number;
-      }
-    | {
         mode: "color-bird-zones";
         zoneMaskUrl: string;
         bodyColorScale: number;
@@ -82,6 +77,11 @@ export type ToyModelDefinition = {
         mode: "color-panda-hat";
         protectMaskUrl: string;
         hatColorScale: number;
+      }
+    | {
+        mode: "color-otter-lollipop";
+        materialName: string;
+        lollipopColorScale: number;
       };
 };
 

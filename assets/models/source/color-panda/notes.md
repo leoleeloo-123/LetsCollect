@@ -3,6 +3,7 @@
 - Imported: 2026-07-20
 - Original filename: `color-panda.glb`
 - Source asset: `model-source-v001.glb`
+- Original drop copy: `model-original-drop.glb` (byte-identical, retained for provenance)
 - Original size: 75,009,800 bytes
 - Generator: THREE.GLTFExporter r178
 - Source structure: one mesh, one material, no animation
@@ -13,10 +14,11 @@
 
 ## Runtime assets
 
-- Mobile model: `public/models/toys/color-panda/model-mobile-v001.glb`
+- Active mobile model: `public/models/toys/color-panda/model-mobile-v002.glb`
+- Rollback mobile model: `public/models/toys/color-panda/model-mobile-v001.glb`
 - Hat mask: `public/models/toys/color-panda/hat-mask-mobile-v001.webp`
 - Hat mask size: 6,024 bytes (512x512 WebP)
-- Mobile model size: 415,160 bytes
+- Active mobile model size: 430,628 bytes
 - Mobile geometry: 60,000 triangles / 37,946 uploaded vertices
 - Mobile textures: two 1024x1024 WebP textures
 - Runtime extensions: `KHR_draco_mesh_compression`, `EXT_texture_webp`

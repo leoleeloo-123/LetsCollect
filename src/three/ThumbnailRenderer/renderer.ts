@@ -6,10 +6,6 @@ import {
   getCollectibleRenderTraits
 } from "../material/createToyMaterial";
 import {
-  cloneProtectedCoatMaterials,
-  prepareProtectedCoatTexture
-} from "../material/createProtectedCoatMaterial";
-import {
   cloneColorBirdMaterials,
   prepareColorBirdZoneTexture
 } from "../material/createColorBirdMaterials";
@@ -29,6 +25,7 @@ import {
   cloneColorPandaMaterials,
   prepareColorPandaProtectTexture
 } from "../material/createColorPandaMaterials";
+import { cloneColorOtterMaterials } from "../material/createColorOtterMaterials";
 import { loadRoomEnvironment, loadToyModel, loadToyViewerRuntime } from "../ToyViewer/runtime";
 import { readThumbnailBlob, writeThumbnailBlob } from "./storage";
 
@@ -140,9 +137,6 @@ async function renderThumbnail(toy: Collectible) {
   camera.position.set(0, 0.58, 7.15);
   camera.lookAt(0, 0.05, 0);
 
-  const protectedCoat = modelDefinition.rendering?.mode === "protected-coat"
-    ? modelDefinition.rendering
-    : null;
   const colorBirdZones = modelDefinition.rendering?.mode === "color-bird-zones"
     ? modelDefinition.rendering
     : null;
@@ -158,17 +152,14 @@ async function renderThumbnail(toy: Collectible) {
   const colorPandaHat = modelDefinition.rendering?.mode === "color-panda-hat"
     ? modelDefinition.rendering
     : null;
-  const standardMaterialResult = protectedCoat || colorBirdZones || colorTeddyCoat || colorBunnyBag || colorCatCoat || colorPandaHat
+  const colorOtterLollipop = modelDefinition.rendering?.mode === "color-otter-lollipop"
+    ? modelDefinition.rendering
+    : null;
+  const standardMaterialResult = colorBirdZones || colorTeddyCoat || colorBunnyBag || colorCatCoat || colorPandaHat || colorOtterLollipop
     ? null
     : createToyMaterial(THREE, toy);
   const material = standardMaterialResult?.material ?? null;
   const glowColor = standardMaterialResult?.glowColor ?? new THREE.Color(palette.glow);
-  const protectMap = protectedCoat
-    ? prepareProtectedCoatTexture(
-        THREE,
-        await new THREE.TextureLoader().loadAsync(protectedCoat.protectMaskUrl)
-      )
-    : null;
   const colorBirdZoneMap = colorBirdZones
     ? prepareColorBirdZoneTexture(
         THREE,
@@ -202,15 +193,6 @@ async function renderThumbnail(toy: Collectible) {
   const { glow } = getCollectibleRenderTraits(toy);
   const model = gltf.scene;
   model.rotation.y = modelDefinition.viewer.rotationY - 0.08;
-  const protectedMaterials = protectedCoat && protectMap
-    ? cloneProtectedCoatMaterials(
-        THREE,
-        model,
-        new THREE.Color(palette.color).multiplyScalar(protectedCoat.coatColorScale),
-        protectMap,
-        renderer.capabilities.getMaxAnisotropy()
-      )
-    : [];
   const accentPalette = colorBirdZones
     ? getColorBirdAccentPalette(toy.paletteId, toy.appearanceSeed)
     : null;
@@ -264,7 +246,16 @@ async function renderThumbnail(toy: Collectible) {
         renderer.capabilities.getMaxAnisotropy()
       )
     : [];
-  if (!protectedCoat && !colorBirdZones && !colorTeddyCoat && !colorBunnyBag && !colorCatCoat && !colorPandaHat) {
+  const colorOtterMaterials = colorOtterLollipop
+    ? cloneColorOtterMaterials(
+        THREE,
+        model,
+        new THREE.Color(palette.color).multiplyScalar(colorOtterLollipop.lollipopColorScale),
+        colorOtterLollipop.materialName,
+        renderer.capabilities.getMaxAnisotropy()
+      )
+    : [];
+  if (!colorBirdZones && !colorTeddyCoat && !colorBunnyBag && !colorCatCoat && !colorPandaHat && !colorOtterLollipop) {
     model.traverse((child) => {
       if (!(child instanceof THREE.Mesh) || !material) return;
       child.material = material;
@@ -308,13 +299,12 @@ async function renderThumbnail(toy: Collectible) {
   } finally {
     disposeModel(THREE, model);
     material?.dispose();
-    protectedMaterials.forEach((item) => item.dispose());
     colorBirdMaterials.forEach((item) => item.dispose());
     colorTeddyMaterials.forEach((item) => item.dispose());
     colorBunnyMaterials.forEach((item) => item.dispose());
     colorCatMaterials.forEach((item) => item.dispose());
     colorPandaMaterials.forEach((item) => item.dispose());
-    protectMap?.dispose();
+    colorOtterMaterials.forEach((item) => item.dispose());
     colorBirdZoneMap?.dispose();
     colorTeddyProtectMap?.dispose();
     colorBunnyProtectMap?.dispose();

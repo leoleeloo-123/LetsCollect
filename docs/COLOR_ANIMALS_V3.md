@@ -5,9 +5,11 @@ Date: 2026-07-19
 
 ## Decision
 
-The active React MVP moves from the eight-material crystal showcase to a mobile-first Color Animals series. The active draw models are Color Dog, Color Bird, Color Teddy, Color Bunny, Color Cat, and Color Panda. A collectible varies by animal model, body-color palette, quality, and seed while its material stays a fixed soft matte resin treatment.
+The active React MVP moves from the eight-material crystal showcase to a mobile-first Color Animals series. The active draw models are Color Otter, Color Bird, Color Teddy, Color Bunny, Color Cat, and Color Panda. A collectible varies by animal model, body-color palette, quality, and seed while its material stays a fixed soft matte resin treatment.
 
 The former jelly-jade and material-generation assets, catalogs, and generator remain in the repository as a legacy rollback path. They are not part of the active draw pool or seeded collection.
+
+Color Dog and Color Unicorn are retired but fully preserved under `assets/models/archive/`, including original sources, optimized GLBs, masks, builders, and former Lab/production code.
 
 ## Reason
 
@@ -19,7 +21,7 @@ The former jelly-jade and material-generation assets, catalogs, and generator re
 
 - `generationVersion = 3` identifies Color Animals collectibles.
 - Active model and palette choices live in a shared series configuration, never in page components.
-- Color Dog uses `model-mobile-v002.glb` and `protect-mask-mobile-v028.webp`.
+- Color Otter uses `model-mobile-v008.glb`; only the named `Lollipop_Color` material changes palette, with no additional mask request.
 - Color Bird uses `model-mobile-v001.glb` and its production zone mask.
 - Color Teddy uses `model-mobile-v001.glb` and `protect-mask-mobile-v001.webp`.
 - Color Bunny uses `model-mobile-v002.glb`; only its suitcase is recolored through `protect-mask-mobile-v001.webp`.
@@ -36,7 +38,7 @@ The Color Animals demo uses a dedicated local-storage key. Earlier material-show
 ## Mobile budget
 
 - Mobile GLB target: below 1 MB per active model.
-- Color Dog mobile GLB: about 344 KB; protection mask: about 6 KB.
+- Color Otter mobile GLB: about 360 KB; no protection mask is required.
 - Color Bird mobile GLB remains below the 1 MB target and uses a compact zone mask.
 - Color Teddy mobile GLB: about 356 KB; protection mask: about 7 KB.
 - Color Bunny mobile GLB: about 381 KB; protection mask: about 52 KB.

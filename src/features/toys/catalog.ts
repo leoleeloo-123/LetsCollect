@@ -75,20 +75,20 @@ export const toyModels: ToyModelDefinition[] = [
   }
 ];
 
-export const colorDogModel: ToyModelDefinition = {
-  id: "color-dog",
-  slug: "color-dog",
-  name: "小狗",
-  fallbackShape: "dog",
+export const colorOtterModel: ToyModelDefinition = {
+  id: "color-otter",
+  slug: "color-otter",
+  name: "水獭",
+  fallbackShape: "blob",
   assets: {
-    modelUrl: "/models/toys/color-dog/model-mobile-v002.glb",
-    mobileModelUrl: "/models/toys/color-dog/model-mobile-v002.glb"
+    modelUrl: "/models/toys/color-otter/model-mobile-v008.glb",
+    mobileModelUrl: "/models/toys/color-otter/model-mobile-v008.glb"
   },
-  viewer: { scaleMultiplier: 1, yOffset: 0, rotationY: 0 },
+  viewer: { scaleMultiplier: 0.94, yOffset: -0.02, rotationY: -0.24 },
   rendering: {
-    mode: "protected-coat",
-    protectMaskUrl: "/models/toys/color-dog/protect-mask-mobile-v028.webp",
-    coatColorScale: 0.86
+    mode: "color-otter-lollipop",
+    materialName: "Lollipop_Color",
+    lollipopColorScale: 0.92
   }
 };
 
@@ -183,7 +183,7 @@ export const colorPandaModel: ToyModelDefinition = {
 };
 
 export const colorAnimalModels = [
-  colorDogModel,
+  colorOtterModel,
   colorBirdModel,
   colorTeddyModel,
   colorBunnyModel,
@@ -261,12 +261,12 @@ export function getColorBirdAccentPalette(bodyPaletteId: ToyPaletteId, appearanc
 }
 
 export function getToyRenderingAssetKey(model: ToyModelDefinition) {
-  if (model.rendering?.mode === "protected-coat") return model.rendering.protectMaskUrl;
   if (model.rendering?.mode === "color-bird-zones") return model.rendering.zoneMaskUrl;
   if (model.rendering?.mode === "color-teddy-coat") return model.rendering.protectMaskUrl;
   if (model.rendering?.mode === "color-bunny-bag") return model.rendering.protectMaskUrl;
   if (model.rendering?.mode === "color-cat-coat") return model.rendering.protectMaskUrl;
   if (model.rendering?.mode === "color-panda-hat") return model.rendering.protectMaskUrl;
+  if (model.rendering?.mode === "color-otter-lollipop") return model.rendering.materialName;
   return "unmasked";
 }
 

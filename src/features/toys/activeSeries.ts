@@ -28,7 +28,8 @@ export const colorAnimalsSeries = {
 
 export function isColorAnimalCollectible(toy: Collectible) {
   return toy.generationVersion >= COLOR_ANIMALS_GENERATION_VERSION
-    && toy.seriesId === colorAnimalsSeries.id;
+    && toy.seriesId === colorAnimalsSeries.id
+    && colorAnimalsSeries.modelIds.includes(toy.modelId);
 }
 
 export function getColorAnimalGrade(rarity: RarityCode) {

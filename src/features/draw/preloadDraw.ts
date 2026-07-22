@@ -1,4 +1,4 @@
-import { featuredToy } from "../../data/mock/toys";
+import { featuredOtter } from "../../data/mock/toys";
 import { colorAnimalModels, getToyModel } from "../toys/catalog";
 import { preloadToyViewer } from "../../three/ToyViewer";
 
@@ -17,7 +17,7 @@ async function preloadDesktopModelPool() {
 
 export function preloadDrawExperience() {
   const isCompactDevice = window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 760;
-  const featuredModel = getToyModel(featuredToy.modelId);
+  const featuredModel = getToyModel(featuredOtter.modelId);
   const modelUrl = isCompactDevice
     ? featuredModel.assets.mobileModelUrl
     : featuredModel.assets.modelUrl;

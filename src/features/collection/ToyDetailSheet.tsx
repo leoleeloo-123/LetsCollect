@@ -5,7 +5,7 @@ import { ToyViewerPanel } from "../../components/three-viewer/ToyViewerPanel";
 import { getToyModel, getToyPalette, rarityLabels } from "../toys/catalog";
 import { isColorAnimalCollectible } from "../toys/activeSeries";
 import { getCollectibleGradeLabel } from "../toys/compatibility";
-import { getCollectibleMaterialLabel } from "../toys/presentation";
+import { getCollectibleMaterialLabel, getCollectiblePaletteLabel } from "../toys/presentation";
 import type { Collectible } from "../../types/toy";
 
 type ToyDetailSheetProps = {
@@ -17,6 +17,7 @@ export function ToyDetailSheet({ toy, onClose }: ToyDetailSheetProps) {
   const model = getToyModel(toy.modelId);
   const palette = getToyPalette(toy.paletteId);
   const materialLabel = getCollectibleMaterialLabel(toy);
+  const paletteFieldLabel = getCollectiblePaletteLabel(toy);
   const grade = getCollectibleGradeLabel(toy);
   const gradeFieldLabel = isColorAnimalCollectible(toy)
     ? "配色等级"
@@ -64,7 +65,7 @@ export function ToyDetailSheet({ toy, onClose }: ToyDetailSheetProps) {
             <dl className="metadata-list">
               <div><dt>造型</dt><dd>{model.name}</dd></div>
               <div><dt>表面</dt><dd>{materialLabel}</dd></div>
-              <div><dt>身体配色</dt><dd>{palette.name}</dd></div>
+              <div><dt>{paletteFieldLabel}</dt><dd>{palette.name}</dd></div>
               <div><dt>{gradeFieldLabel}</dt><dd>{toy.materialId === "jade" ? ["T", toy.transparencyGrade ?? "-", " · ", grade].join("") : grade}</dd></div>
               <div><dt>外观种子</dt><dd>{toy.appearanceSeed}</dd></div>
               <div><dt>生成规则</dt><dd>V{toy.generationVersion}</dd></div>

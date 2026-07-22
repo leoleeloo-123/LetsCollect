@@ -124,7 +124,10 @@ function getColorAnimalDescription(modelId: ToyModelId, paletteName: string) {
   if (modelId === "color-cat") {
     return `一只穿着${paletteName}外套的软萌小猫，面部、耳朵与胡须细节保持清晰。`;
   }
-  return `一只采用${paletteName}配色的软萌小狗，保留灵动眼睛、鼻嘴与粉色脚掌。`;
+  if (modelId === "color-otter") {
+    return `一只拿着${paletteName}棒棒糖的软萌水獭，身体、眼睛、鼻嘴与腮红保持原色。`;
+  }
+  return `一只采用${paletteName}配色的软萌伙伴，保留原始五官与角色细节。`;
 }
 
 /** Active V3 generator: fixed soft-matte material, random approved model and body color. */

@@ -28,12 +28,12 @@ export function ColorCatLabPage() {
   }
 
   return (
-    <main className="color-dog-page color-dog-page--single color-cat-page">
-      <header className="color-dog-header">
-        <Link className="color-dog-header__back" to={routes.home}><ArrowLeft size={18} />返回首页</Link>
-        <span className="color-dog-header__mark">Let's Collect · 3D LAB</span>
+    <main className="color-animal-page color-animal-page--single color-cat-page">
+      <header className="color-animal-header">
+        <Link className="color-animal-header__back" to={routes.home}><ArrowLeft size={18} />返回首页</Link>
+        <span className="color-animal-header__mark">Let's Collect · 3D LAB</span>
       </header>
-      <section className="color-dog-intro color-cat-intro">
+      <section className="color-animal-intro color-cat-intro">
         <div>
           <p className="eyebrow">COLOR CAT STUDY 01</p>
           <h1>给趴趴猫换一种毛色，再转一圈检查。</h1>
@@ -43,13 +43,13 @@ export function ColorCatLabPage() {
           <button className="color-lab-zone-toggle" type="button" aria-pressed={showZones} onClick={() => setShowZones((value) => !value)}>
             <Palette size={18} />{showZones ? "查看成品" : "检查保护区"}
           </button>
-          <button className="color-dog-randomize" type="button" onClick={randomize}>
+          <button className="color-animal-randomize" type="button" onClick={randomize}>
             <Dices size={18} />随机生成一只
           </button>
         </div>
       </section>
       <ColorCatLabViewer variant={variant} showZones={showZones} />
-      <section className="color-dog-notes" aria-label="技术说明">
+      <section className="color-animal-notes" aria-label="技术说明">
         <Info size={19} />
         <p><strong>蒙版与几何双重保护：</strong> 约 319KB 的 Draco 模型搭配一张约 100KB、1024px 的无损 WebP 蒙版。红色通道保存面部与基础耳内细节，绿色通道补充跨 UV 分片的粉色，蓝色通道修正耳内浅色三角面，再由模型坐标门控排除身体 UV 碎片；随机按钮只更新毛色，不会重新下载模型。</p>
       </section>

@@ -28,12 +28,12 @@ export function ColorPandaLabPage() {
   }
 
   return (
-    <main className="color-dog-page color-dog-page--single color-panda-page">
-      <header className="color-dog-header">
-        <Link className="color-dog-header__back" to={routes.home}><ArrowLeft size={18} />返回首页</Link>
-        <span className="color-dog-header__mark">Let's Collect · 3D LAB</span>
+    <main className="color-animal-page color-animal-page--single color-panda-page">
+      <header className="color-animal-header">
+        <Link className="color-animal-header__back" to={routes.home}><ArrowLeft size={18} />返回首页</Link>
+        <span className="color-animal-header__mark">Let's Collect · 3D LAB</span>
       </header>
-      <section className="color-dog-intro">
+      <section className="color-animal-intro">
         <div>
           <p className="eyebrow">COLOR PANDA STUDY 01</p>
           <h1>熊猫保持原色，只给头顶帽子换颜色。</h1>
@@ -43,13 +43,13 @@ export function ColorPandaLabPage() {
           <button className="color-lab-zone-toggle" type="button" aria-pressed={showZones} onClick={() => setShowZones((value) => !value)}>
             <Palette size={18} />{showZones ? "查看成品" : "检查保护区"}
           </button>
-          <button className="color-dog-randomize" type="button" onClick={randomize}>
+          <button className="color-animal-randomize" type="button" onClick={randomize}>
             <Dices size={18} />随机生成一只
           </button>
         </div>
       </section>
       <ColorPandaLabViewer variant={variant} showZones={showZones} />
-      <section className="color-dog-notes" aria-label="技术说明">
+      <section className="color-animal-notes" aria-label="技术说明">
         <Info size={19} />
         <p><strong>帽子专用着色：</strong> 约 415KB 的 Draco 模型搭配 512px WebP 帽子蒙版。只有灰蓝织物候选区与头顶三维范围同时命中时才会变色，熊猫其余部分始终使用原始贴图。</p>
       </section>

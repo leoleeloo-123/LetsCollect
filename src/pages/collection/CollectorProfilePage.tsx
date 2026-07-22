@@ -214,7 +214,7 @@ export function CollectorProfilePage() {
                 <span className="collector-set__icon collector-set__icon--unicorn"><Dog size={21} /></span>
                 <div className="collector-set__copy">
                   <div><strong>软萌伙伴系列</strong><span>{modelProgress}/{colorAnimalsSeries.modelIds.length}</span></div>
-                  <p>小狗、小鸟、小熊、小兔和小猫已经组成首发伙伴阵容。</p>
+                  <p>水獭、小鸟、小熊、小兔、小猫和熊猫组成首发伙伴阵容。</p>
                   <div className="collector-set__bar"><span style={{ width: `${modelProgress / colorAnimalsSeries.modelIds.length * 100}%` }} /></div>
                 </div>
               </article>

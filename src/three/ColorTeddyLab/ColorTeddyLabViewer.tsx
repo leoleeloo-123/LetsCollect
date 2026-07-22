@@ -138,7 +138,7 @@ export function ColorTeddyLabViewer({ variant, showZones }: Props) {
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
       renderer.toneMappingExposure = 1.0;
-      renderer.domElement.className = "color-dog-viewer__canvas";
+      renderer.domElement.className = "color-animal-viewer__canvas";
       renderer.domElement.setAttribute("aria-hidden", "true");
       renderer.domElement.style.touchAction = "none";
       renderer.domElement.dataset.modelUrl = MODEL_URL;
@@ -374,15 +374,15 @@ export function ColorTeddyLabViewer({ variant, showZones }: Props) {
   }, [retryKey]);
 
   return (
-    <div className="color-dog-viewer color-dog-viewer--single color-teddy-viewer" role="group" aria-label={`${variant.name} 3D 小熊`}>
-      <div ref={hostRef} className="color-dog-viewer__host" />
-      <div className="color-dog-single__palette" aria-label="当前随机毛色">
+    <div className="color-animal-viewer color-animal-viewer--single color-teddy-viewer" role="group" aria-label={`${variant.name} 3D 小熊`}>
+      <div ref={hostRef} className="color-animal-viewer__host" />
+      <div className="color-animal-single__palette" aria-label="当前随机毛色">
         <span style={{ background: variant.swatch }} /><strong>{showZones ? "保护区检查" : variant.name}</strong>
       </div>
-      {status === "ready" ? <div className="color-dog-single__hint"><Rotate3D size={15} />拖动 360° 查看 · 双指缩放</div> : null}
+      {status === "ready" ? <div className="color-animal-single__hint"><Rotate3D size={15} />拖动 360° 查看 · 双指缩放</div> : null}
       {status !== "ready" ? (
-        <div className={`color-dog-viewer__status color-dog-viewer__status--${status}`} role="status">
-          {status === "loading" ? <><span className="color-dog-viewer__spinner" /><strong>正在加载 Color Teddy</strong><span>{progress}%</span></> : <><strong>3D 加载失败</strong><button type="button" onClick={() => setRetryKey((value) => value + 1)}>重新尝试</button></>}
+        <div className={`color-animal-viewer__status color-animal-viewer__status--${status}`} role="status">
+          {status === "loading" ? <><span className="color-animal-viewer__spinner" /><strong>正在加载 Color Teddy</strong><span>{progress}%</span></> : <><strong>3D 加载失败</strong><button type="button" onClick={() => setRetryKey((value) => value + 1)}>重新尝试</button></>}
         </div>
       ) : null}
     </div>

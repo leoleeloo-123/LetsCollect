@@ -83,7 +83,7 @@ export function ColorBirdLabViewer({ variant, showZones }: Props) {
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
       renderer.toneMappingExposure = 1.02;
-      renderer.domElement.className = "color-dog-viewer__canvas";
+      renderer.domElement.className = "color-animal-viewer__canvas";
       renderer.domElement.setAttribute("aria-hidden", "true");
       renderer.domElement.style.touchAction = "none";
       renderer.domElement.dataset.modelUrl = MODEL_URL;
@@ -321,8 +321,8 @@ export function ColorBirdLabViewer({ variant, showZones }: Props) {
   }, [retryKey]);
 
   return (
-    <div className="color-dog-viewer color-bird-viewer" role="group" aria-label={`${variant.name} 3D 小鸟`}>
-      <div ref={hostRef} className="color-dog-viewer__host" />
+    <div className="color-animal-viewer color-bird-viewer" role="group" aria-label={`${variant.name} 3D 小鸟`}>
+      <div ref={hostRef} className="color-animal-viewer__host" />
       <div className="color-bird-viewer__palette" aria-label="当前随机配色">
         <span style={{ background: variant.bodySwatch }} title="主体色" />
         <span style={{ background: variant.capSwatch }} title="头顶色" />
@@ -331,8 +331,8 @@ export function ColorBirdLabViewer({ variant, showZones }: Props) {
       </div>
       {status === "ready" ? <div className="color-bird-viewer__hint"><Rotate3D size={15} />拖动 360° 查看 · 双指缩放</div> : null}
       {status !== "ready" ? (
-        <div className={`color-dog-viewer__status color-dog-viewer__status--${status}`} role="status">
-          {status === "loading" ? <><span className="color-dog-viewer__spinner" /><strong>正在加载 Color Bird</strong><span>{progress}%</span></> : <><strong>3D 加载失败</strong><button type="button" onClick={() => setRetryKey((value) => value + 1)}>重新尝试</button></>}
+        <div className={`color-animal-viewer__status color-animal-viewer__status--${status}`} role="status">
+          {status === "loading" ? <><span className="color-animal-viewer__spinner" /><strong>正在加载 Color Bird</strong><span>{progress}%</span></> : <><strong>3D 加载失败</strong><button type="button" onClick={() => setRetryKey((value) => value + 1)}>重新尝试</button></>}
         </div>
       ) : null}
     </div>
