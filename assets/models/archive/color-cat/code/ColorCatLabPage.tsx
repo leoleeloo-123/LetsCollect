@@ -2,18 +2,18 @@ import { ArrowLeft, Dices, Info, Palette } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { routes } from "../../app/routes";
-import { ColorCatLabViewer, type CatYarnVariant } from "../../three/ColorCatLab/ColorCatLabViewer";
+import { ColorCatLabViewer, type CatColorVariant } from "../../three/ColorCatLab/ColorCatLabViewer";
 
-const variantPool: CatYarnVariant[] = [
-  { id: "rose", name: "草莓毛线", swatch: "#d9829a" },
-  { id: "butter", name: "黄油毛线", swatch: "#d4b45f" },
-  { id: "mint", name: "薄荷毛线", swatch: "#6fb3a1" },
-  { id: "sky", name: "晴空毛线", swatch: "#6f9fc8" },
-  { id: "grape", name: "葡萄毛线", swatch: "#9478b7" },
-  { id: "coral", name: "珊瑚毛线", swatch: "#d77869" },
-  { id: "sage", name: "鼠尾草毛线", swatch: "#82a185" },
-  { id: "plum", name: "梅子毛线", swatch: "#915f79" },
-  { id: "cocoa", name: "可可毛线", swatch: "#9d6d55" }
+const variantPool: CatColorVariant[] = [
+  { id: "biscuit", name: "焦糖饼干", swatch: "#c58d62" },
+  { id: "butter", name: "黄油曲奇", swatch: "#d2b465" },
+  { id: "rose", name: "玫瑰奶霜", swatch: "#d7889b" },
+  { id: "mint", name: "薄荷奶糖", swatch: "#76b5a5" },
+  { id: "sky", name: "晴空棉花", swatch: "#78a7c8" },
+  { id: "grape", name: "葡萄软糖", swatch: "#9a82b9" },
+  { id: "coral", name: "珊瑚果冻", swatch: "#d77e6c" },
+  { id: "sage", name: "鼠尾草团子", swatch: "#8ca98b" },
+  { id: "plum", name: "梅子慕斯", swatch: "#95647e" }
 ];
 
 export function ColorCatLabPage() {
@@ -35,23 +35,23 @@ export function ColorCatLabPage() {
       </header>
       <section className="color-animal-intro color-cat-intro">
         <div>
-          <p className="eyebrow">COLOR CAT NEW · YARN STUDY</p>
-          <h1>给猫咪的毛线球换一种颜色，再转一圈检查。</h1>
-          <p>猫咪的毛色、五官、耳朵、爪子和腮红全部保持原样；随机按钮只更新毛线球及相连线团的颜色。拖动模型即可从正面、背面和接触位置检查材质边界。</p>
+          <p className="eyebrow">COLOR CAT STUDY 01</p>
+          <h1>给趴趴猫换一种毛色，再转一圈检查。</h1>
+          <p>头部、身体、前爪和尾巴共享随机主色；耳内粉色、粉鼻子、闭眼、胡须、嘴巴线条与两侧腮红保持原始颜色。拖动模型即可检查五官边缘和耳内接缝。</p>
         </div>
         <div className="color-lab-actions">
           <button className="color-lab-zone-toggle" type="button" aria-pressed={showZones} onClick={() => setShowZones((value) => !value)}>
-            <Palette size={18} />{showZones ? "查看成品" : "检查毛线球区域"}
+            <Palette size={18} />{showZones ? "查看成品" : "检查保护区"}
           </button>
           <button className="color-animal-randomize" type="button" onClick={randomize}>
-            <Dices size={18} />随机毛线球颜色
+            <Dices size={18} />随机生成一只
           </button>
         </div>
       </section>
       <ColorCatLabViewer variant={variant} showZones={showZones} />
       <section className="color-animal-notes" aria-label="技术说明">
         <Info size={19} />
-        <p><strong>拓扑级材质分离：</strong> 原始约 72.8MB、200 万三角面的模型已压缩为约 657KB、8 万三角面的移动端 GLB。毛线球与线头的 24 个独立几何组件被合并为专用材质，随机色不会触碰猫咪本体，也不需要额外蒙版。</p>
+        <p><strong>蒙版与几何双重保护：</strong> 约 319KB 的 Draco 模型搭配一张约 100KB、1024px 的无损 WebP 蒙版。红色通道保存面部与基础耳内细节，绿色通道补充跨 UV 分片的粉色，蓝色通道修正耳内浅色三角面，再由模型坐标门控排除身体 UV 碎片；随机按钮只更新毛色，不会重新下载模型。</p>
       </section>
     </main>
   );

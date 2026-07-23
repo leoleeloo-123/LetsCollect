@@ -122,7 +122,7 @@ function getColorAnimalDescription(modelId: ToyModelId, paletteName: string) {
     return `一只戴着${paletteName}帽子的软萌熊猫，身体、黑白花纹、眼睛、鼻嘴和腮红保持原色。`;
   }
   if (modelId === "color-cat") {
-    return `一只穿着${paletteName}外套的软萌小猫，面部、耳朵与胡须细节保持清晰。`;
+    return `一只抱着${paletteName}毛线球的软萌小猫，猫咪毛色、五官、耳朵、爪子和腮红保持原色。`;
   }
   if (modelId === "color-otter") {
     return `一只拿着${paletteName}棒棒糖的软萌水獭，身体、眼睛、鼻嘴与腮红保持原色。`;

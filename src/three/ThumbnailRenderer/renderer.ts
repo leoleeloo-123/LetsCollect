@@ -17,10 +17,7 @@ import {
   cloneColorBunnyMaterials,
   prepareColorBunnyProtectTexture
 } from "../material/createColorBunnyMaterials";
-import {
-  cloneColorCatMaterials,
-  prepareColorCatProtectTexture
-} from "../material/createColorCatMaterials";
+import { cloneColorCatYarnMaterials } from "../material/createColorCatYarnMaterials";
 import {
   cloneColorPandaMaterials,
   prepareColorPandaProtectTexture
@@ -30,7 +27,7 @@ import { loadRoomEnvironment, loadToyModel, loadToyViewerRuntime } from "../ToyV
 import { readThumbnailBlob, writeThumbnailBlob } from "./storage";
 
 const THUMBNAIL_SIZE = 320;
-const THUMBNAIL_RENDER_VERSION = 13;
+const THUMBNAIL_RENDER_VERSION = 14;
 const WEBP_QUALITY = 0.82;
 
 type ThumbnailContext = {
@@ -146,7 +143,7 @@ async function renderThumbnail(toy: Collectible) {
   const colorBunnyBag = modelDefinition.rendering?.mode === "color-bunny-bag"
     ? modelDefinition.rendering
     : null;
-  const colorCatCoat = modelDefinition.rendering?.mode === "color-cat-coat"
+  const colorCatYarn = modelDefinition.rendering?.mode === "color-cat-yarn"
     ? modelDefinition.rendering
     : null;
   const colorPandaHat = modelDefinition.rendering?.mode === "color-panda-hat"
@@ -155,7 +152,7 @@ async function renderThumbnail(toy: Collectible) {
   const colorOtterLollipop = modelDefinition.rendering?.mode === "color-otter-lollipop"
     ? modelDefinition.rendering
     : null;
-  const standardMaterialResult = colorBirdZones || colorTeddyCoat || colorBunnyBag || colorCatCoat || colorPandaHat || colorOtterLollipop
+  const standardMaterialResult = colorBirdZones || colorTeddyCoat || colorBunnyBag || colorCatYarn || colorPandaHat || colorOtterLollipop
     ? null
     : createToyMaterial(THREE, toy);
   const material = standardMaterialResult?.material ?? null;
@@ -176,12 +173,6 @@ async function renderThumbnail(toy: Collectible) {
     ? prepareColorBunnyProtectTexture(
         THREE,
         await new THREE.TextureLoader().loadAsync(colorBunnyBag.protectMaskUrl)
-      )
-    : null;
-  const colorCatProtectMap = colorCatCoat
-    ? prepareColorCatProtectTexture(
-        THREE,
-        await new THREE.TextureLoader().loadAsync(colorCatCoat.protectMaskUrl)
       )
     : null;
   const colorPandaProtectMap = colorPandaHat
@@ -228,12 +219,12 @@ async function renderThumbnail(toy: Collectible) {
         renderer.capabilities.getMaxAnisotropy()
       )
     : [];
-  const colorCatMaterials = colorCatCoat && colorCatProtectMap
-    ? cloneColorCatMaterials(
+  const colorCatMaterials = colorCatYarn
+    ? cloneColorCatYarnMaterials(
         THREE,
         model,
-        new THREE.Color(palette.color).multiplyScalar(colorCatCoat.coatColorScale),
-        colorCatProtectMap,
+        new THREE.Color(palette.color).multiplyScalar(colorCatYarn.yarnColorScale),
+        colorCatYarn.materialName,
         renderer.capabilities.getMaxAnisotropy()
       )
     : [];
@@ -255,7 +246,7 @@ async function renderThumbnail(toy: Collectible) {
         renderer.capabilities.getMaxAnisotropy()
       )
     : [];
-  if (!colorBirdZones && !colorTeddyCoat && !colorBunnyBag && !colorCatCoat && !colorPandaHat && !colorOtterLollipop) {
+  if (!colorBirdZones && !colorTeddyCoat && !colorBunnyBag && !colorCatYarn && !colorPandaHat && !colorOtterLollipop) {
     model.traverse((child) => {
       if (!(child instanceof THREE.Mesh) || !material) return;
       child.material = material;
@@ -308,7 +299,6 @@ async function renderThumbnail(toy: Collectible) {
     colorBirdZoneMap?.dispose();
     colorTeddyProtectMap?.dispose();
     colorBunnyProtectMap?.dispose();
-    colorCatProtectMap?.dispose();
     colorPandaProtectMap?.dispose();
     scene.clear();
   }

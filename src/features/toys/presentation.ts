@@ -9,6 +9,9 @@ export function getCollectibleMaterialLabel(toy: Collectible) {
 }
 
 export function getCollectibleMaterialDescription(toy: Collectible) {
+  if (toy.modelId === "color-cat") {
+    return "柔雾树脂保持低反光、柔和触感；换色只作用于毛线球，猫咪本体、五官、耳朵、爪子与腮红继续保留原色。";
+  }
   if (toy.modelId === "color-otter") {
     return "柔雾树脂保持低反光、柔和触感；换色只作用于棒棒糖，水獭身体、五官与腮红继续保留原色。";
   }
@@ -22,6 +25,7 @@ export function getCollectibleMaterialDescription(toy: Collectible) {
 }
 
 export function getCollectiblePaletteLabel(toy: Collectible) {
+  if (toy.modelId === "color-cat") return "毛线球配色";
   if (toy.modelId === "color-otter") return "棒棒糖配色";
   if (toy.modelId === "color-bunny") return "包包配色";
   if (toy.modelId === "color-panda") return "帽子配色";

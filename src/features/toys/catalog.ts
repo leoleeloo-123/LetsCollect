@@ -154,14 +154,14 @@ export const colorCatModel: ToyModelDefinition = {
   name: "小猫",
   fallbackShape: "cat",
   assets: {
-    modelUrl: "/models/toys/color-cat/model-mobile-v001.glb",
-    mobileModelUrl: "/models/toys/color-cat/model-mobile-v001.glb"
+    modelUrl: "/models/toys/color-cat/model-mobile-v002.glb",
+    mobileModelUrl: "/models/toys/color-cat/model-mobile-v002.glb"
   },
   viewer: { scaleMultiplier: 0.71, yOffset: -0.08, rotationY: -0.12 },
   rendering: {
-    mode: "color-cat-coat",
-    protectMaskUrl: "/models/toys/color-cat/protect-mask-mobile-v001.webp",
-    coatColorScale: 0.88
+    mode: "color-cat-yarn",
+    materialName: "color_cat_new_yarn",
+    yarnColorScale: 0.88
   }
 };
 
@@ -264,7 +264,7 @@ export function getToyRenderingAssetKey(model: ToyModelDefinition) {
   if (model.rendering?.mode === "color-bird-zones") return model.rendering.zoneMaskUrl;
   if (model.rendering?.mode === "color-teddy-coat") return model.rendering.protectMaskUrl;
   if (model.rendering?.mode === "color-bunny-bag") return model.rendering.protectMaskUrl;
-  if (model.rendering?.mode === "color-cat-coat") return model.rendering.protectMaskUrl;
+  if (model.rendering?.mode === "color-cat-yarn") return model.rendering.materialName;
   if (model.rendering?.mode === "color-panda-hat") return model.rendering.protectMaskUrl;
   if (model.rendering?.mode === "color-otter-lollipop") return model.rendering.materialName;
   return "unmasked";

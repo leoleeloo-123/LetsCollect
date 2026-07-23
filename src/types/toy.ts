@@ -69,9 +69,9 @@ export type ToyModelDefinition = {
         bagColorScale: number;
       }
     | {
-        mode: "color-cat-coat";
-        protectMaskUrl: string;
-        coatColorScale: number;
+        mode: "color-cat-yarn";
+        materialName: string;
+        yarnColorScale: number;
       }
     | {
         mode: "color-panda-hat";

@@ -1,38 +1,32 @@
-# Color Cat asset notes
+# Color Cat v002
 
-Status: validated and active in the Color Animals product catalog, home carousel, draw pool, collection, and atlas.
+- Active source: `assets/models/source/color-cat/model-source-v002.glb` (72,839,848 bytes; local only and Git-ignored)
+- Active runtime: `public/models/toys/color-cat/model-mobile-v002.glb` (656,900 bytes)
+- Runtime target: only the yarn ball and loose strand change color
+- Retired v001 source, runtime, mask, builders, and production code: `assets/models/archive/color-cat/`
 
-## Source
+## Geometry split
 
-- Imported source: `model-source-v001.glb`
-- Original filename: `color-cat.glb`
-- Original size: 69,930,520 bytes
-- Source geometry: 1,998,388 triangles
-- Source textures: two 4096 x 4096 PNG images
+The source GLB contains one mesh, one material, 1,016,609 upload vertices, and
+1,999,914 triangles. The yarn is not named separately, but it is made from 24
+disconnected topology components on the positive-X side of the model.
 
-## Mobile runtime
+`scripts/3d/build-color-cat-model-v002.mjs` finds connected components, selects
+the yarn ball and loose strand by seed coordinates, and writes two primitives:
 
-- Runtime model: `public/models/toys/color-cat/model-mobile-v001.glb`
-- Optimization: Draco geometry, WebP textures, 1024 texture limit
-- Simplification: 2.5% ratio, 0.003 error tolerance
-- Runtime geometry: 49,958 triangles
-- Runtime size after optimization: about 319 KB
-- Runtime textures: two 1024 x 1024 WebP images
+- `color_cat_new_body`
+- `color_cat_new_yarn`
 
-## Protection mask
+Production and the Lab recolor only `color_cat_new_yarn`; no screen-space
+overlay, UV protection mask, or extra mask request is used. The optimized runtime
+contains about 80,000 triangles and two 1024 px WebP textures.
 
-- Runtime mask: `public/models/toys/color-cat/protect-mask-mobile-v001.webp`
-- Active builder: `scripts/3d/build-color-cat-mask-v008.py`
-- Red channel: fixed authored face and ear details
-- Green channel: authored pink supplement
-- Blue channel: inner-ear patch supplement
-- Protected details: pink inner ears, pink nose, whiskers, closed eyes, mouth lines, and blush
-- Colorizable area: the remaining coat, paws, and tail
+## Rebuild
 
-The model is a single textured mesh and some inner-ear/facial UV fragments sit near coat atlas fragments. The Color Cat Lab material combines the red-channel mask with an object-space front-face/ear gate. This keeps all ear seams protected while preventing isolated mask texels from appearing on the body when the coat color changes.
+```powershell
+node scripts/3d/build-color-cat-model-v002.mjs
+pnpm dlx @gltf-transform/cli optimize color-cat-split-v002.glb public/models/toys/color-cat/model-mobile-v002.glb --compress draco --texture-compress webp --texture-size 1024 --palette false --simplify true --simplify-error 0.0005 --simplify-ratio 0.04
+```
 
-## Validation
-
-- Checked at high-contrast cyan coat color from the front and side.
-- Confirmed the main inner-ear surfaces, nose, eyes, whiskers, mouth, and both blush areas remain authored colors.
-- Confirmed the body, paws, and tail recolor uniformly under the active semantic geometry gate.
+The intermediate `color-cat-split-v002.glb` is a local rebuild artifact and
+should not be committed.

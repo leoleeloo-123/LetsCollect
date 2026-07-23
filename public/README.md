@@ -19,11 +19,12 @@ jelly-jade-karpy
 The active mobile-first Color Animals pool is:
 
 ```text
-color-dog
+color-otter
 color-bird
 color-teddy
 color-bunny
 color-cat
+color-panda
 ```
 
 ```text

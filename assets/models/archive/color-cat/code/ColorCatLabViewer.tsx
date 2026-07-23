@@ -1,15 +1,15 @@
 import { Rotate3D } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { loadRoomEnvironment, loadToyModel, loadToyViewerRuntime } from "../ToyViewer/runtime";
-import { cloneColorCatYarnMaterials } from "../material/createColorCatYarnMaterials";
+import { colorizeCatCoat } from "./shader";
 
-export type CatYarnVariant = {
+export type CatColorVariant = {
   id: string;
   name: string;
   swatch: string;
 };
 
-type Props = { variant: CatYarnVariant; showZones: boolean };
+type Props = { variant: CatColorVariant; showZones: boolean };
 type Status = "loading" | "ready" | "error";
 type CatControls = {
   color: import("three").Color;
@@ -17,7 +17,8 @@ type CatControls = {
   invalidate: () => void;
 };
 
-const MODEL_URL = "/models/toys/color-cat/model-mobile-v002.glb?v=1";
+const MODEL_URL = "/models/toys/color-cat/model-mobile-v001.glb";
+const PROTECT_MASK_URL = "/models/toys/color-cat/protect-mask-mobile-v001.webp";
 
 export function ColorCatLabViewer({ variant, showZones }: Props) {
   const hostRef = useRef<HTMLDivElement>(null);
@@ -57,6 +58,19 @@ export function ColorCatLabViewer({ variant, showZones }: Props) {
       ]);
       if (cancelled || !hostRef.current) return;
 
+      const protectMap = await new THREE.TextureLoader().loadAsync(PROTECT_MASK_URL);
+      protectMap.flipY = false;
+      protectMap.colorSpace = THREE.NoColorSpace;
+      protectMap.wrapS = THREE.RepeatWrapping;
+      protectMap.wrapT = THREE.RepeatWrapping;
+      protectMap.generateMipmaps = false;
+      protectMap.minFilter = THREE.LinearFilter;
+      protectMap.magFilter = THREE.LinearFilter;
+      protectMap.needsUpdate = true;
+      if (cancelled || !hostRef.current) {
+        protectMap.dispose();
+        return;
+      }
 
       const currentHost = hostRef.current;
       const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
@@ -103,14 +117,33 @@ export function ColorCatLabViewer({ variant, showZones }: Props) {
       controlsRef.current = controls;
 
       const model = gltf.scene;
-      const materials = cloneColorCatYarnMaterials(
-        THREE,
-        model,
-        controls.color,
-        "color_cat_new_yarn",
-        renderer.capabilities.getMaxAnisotropy(),
-        controls.debugMode
-      );
+      const materials: import("three").Material[] = [];
+      model.traverse((child) => {
+        if (!(child instanceof THREE.Mesh)) return;
+        const originals = Array.isArray(child.material) ? child.material : [child.material];
+        const clones = originals.map((item) => {
+          const clone = item.clone();
+          if (clone instanceof THREE.MeshStandardMaterial) {
+            clone.metalness = 0;
+            clone.roughness = 1;
+            clone.envMapIntensity = 0.12;
+            clone.metalnessMap = null;
+            clone.roughnessMap = null;
+            if (clone.normalMap) clone.normalScale.setScalar(0.42);
+            if (clone.map) {
+              clone.map.generateMipmaps = false;
+              clone.map.minFilter = THREE.LinearFilter;
+              clone.map.magFilter = THREE.LinearFilter;
+              clone.map.anisotropy = Math.min(4, renderer.capabilities.getMaxAnisotropy());
+              clone.map.needsUpdate = true;
+            }
+          }
+          colorizeCatCoat(clone, controls, protectMap);
+          materials.push(clone);
+          return clone;
+        });
+        child.material = Array.isArray(child.material) ? clones : clones[0];
+      });
 
       const box = new THREE.Box3().setFromObject(model);
       const center = box.getCenter(new THREE.Vector3());
@@ -265,6 +298,7 @@ export function ColorCatLabViewer({ variant, showZones }: Props) {
         materials.forEach((material) => material.dispose());
         shadow.geometry.dispose();
         (shadow.material as import("three").Material).dispose();
+        protectMap.dispose();
         environmentTexture.dispose();
         renderer.dispose();
         renderer.forceContextLoss();
@@ -273,22 +307,22 @@ export function ColorCatLabViewer({ variant, showZones }: Props) {
     }
 
     setup().catch((error) => {
-      console.error("[ColorCatLabViewer] color cat new load failed", error);
+      console.error("[ColorCatLabViewer] color cat load failed", error);
       if (!cancelled) setStatus("error");
     });
     return () => { cancelled = true; dispose(); };
   }, [retryKey]);
 
   return (
-    <div className="color-animal-viewer color-animal-viewer--single color-cat-viewer" role="group" aria-label={`${variant.name}毛线球 3D 小猫`}>
+    <div className="color-animal-viewer color-animal-viewer--single color-cat-viewer" role="group" aria-label={`${variant.name} 3D 小猫`}>
       <div ref={hostRef} className="color-animal-viewer__host" />
-      <div className="color-animal-single__palette" aria-label="当前毛线球颜色">
-        <span style={{ background: variant.swatch }} /><strong>{showZones ? "毛线球区域" : variant.name}</strong>
+      <div className="color-animal-single__palette" aria-label="当前随机毛色">
+        <span style={{ background: variant.swatch }} /><strong>{showZones ? "保护区检查" : variant.name}</strong>
       </div>
       {status === "ready" ? <div className="color-animal-single__hint"><Rotate3D size={15} />拖动 360° 查看 · 双指缩放</div> : null}
       {status !== "ready" ? (
         <div className={`color-animal-viewer__status color-animal-viewer__status--${status}`} role="status">
-          {status === "loading" ? <><span className="color-animal-viewer__spinner" /><strong>正在加载 Color Cat New</strong><span>{progress}%</span></> : <><strong>3D 加载失败</strong><button type="button" onClick={() => setRetryKey((value) => value + 1)}>重新尝试</button></>}
+          {status === "loading" ? <><span className="color-animal-viewer__spinner" /><strong>正在加载 Color Cat</strong><span>{progress}%</span></> : <><strong>3D 加载失败</strong><button type="button" onClick={() => setRetryKey((value) => value + 1)}>重新尝试</button></>}
         </div>
       ) : null}
     </div>

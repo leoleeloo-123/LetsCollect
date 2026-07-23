@@ -1,0 +1,7 @@
+.color-cat-page { max-width: 980px; }
+.color-cat-intro { align-items: end; }
+.color-cat-viewer { aspect-ratio: 4 / 5; background: radial-gradient(circle at 50% 38%, #fbf5f0 0, #f3eee9 68%, #ebe2dc 100%); }
+
+@media (min-width: 700px) {
+  .color-cat-viewer { aspect-ratio: 16 / 9; }
+}
