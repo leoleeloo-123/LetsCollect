@@ -27,7 +27,9 @@ import { loadRoomEnvironment, loadToyModel, loadToyViewerRuntime } from "../ToyV
 import { readThumbnailBlob, writeThumbnailBlob } from "./storage";
 
 const THUMBNAIL_SIZE = 320;
-const THUMBNAIL_RENDER_VERSION = 14;
+const THUMBNAIL_RENDER_VERSION = 17;
+const THUMBNAIL_TARGET_HEIGHT = 3.45;
+const THUMBNAIL_MAX_WIDTH = 3.62;
 const WEBP_QUALITY = 0.82;
 
 type ThumbnailContext = {
@@ -183,7 +185,8 @@ async function renderThumbnail(toy: Collectible) {
     : null;
   const { glow } = getCollectibleRenderTraits(toy);
   const model = gltf.scene;
-  model.rotation.y = modelDefinition.viewer.rotationY - 0.08;
+  const thumbnailRotationOffset = modelDefinition.id === "color-cat" ? -0.3 : 0;
+  model.rotation.y = modelDefinition.viewer.rotationY + thumbnailRotationOffset;
   const accentPalette = colorBirdZones
     ? getColorBirdAccentPalette(toy.paletteId, toy.appearanceSeed)
     : null;
@@ -258,7 +261,10 @@ async function renderThumbnail(toy: Collectible) {
   const box = new THREE.Box3().setFromObject(model);
   const center = box.getCenter(new THREE.Vector3());
   const size = box.getSize(new THREE.Vector3());
-  const scaleFactor = (3.45 * modelDefinition.viewer.scaleMultiplier) / Math.max(size.y, 0.001);
+  const scaleByHeight = (THUMBNAIL_TARGET_HEIGHT * modelDefinition.viewer.scaleMultiplier)
+    / Math.max(size.y, 0.001);
+  const scaleByWidth = THUMBNAIL_MAX_WIDTH / Math.max(size.x, 0.001);
+  const scaleFactor = Math.min(scaleByHeight, scaleByWidth);
   model.scale.setScalar(scaleFactor);
   model.position.set(
     -center.x * scaleFactor,
