@@ -14,13 +14,17 @@ Let's Collect 是一个围绕数字 Companion 展开的、手机优先的治愈�
 
 `codex/companion-echo-frontend` 分支已经实现第一版 Collect / Collection / Echo 前端和独立 Agent Console。`main` 与 Vercel Production 尚未被这个分支替换。
 
+2026-07-24 起，Collect 第一页进入“按系列选择、在当前页揭晓”的第二轮：
+默认复用六只 live 3D 玩偶舞台，系列可左右切换；首次注册依次收集昵称、
+伙伴、颜色和质感偏好。完整决定与回滚见 `docs/COLLECT_SERIES_V2.md`。
+
 改造前的 React MVP 已完整归档到：
 
 `archive/react-mvp-v1/`
 
 迁移原因、影响、验证与回滚见：
 
-`docs/COMPANION_ECHO_FRONTEND_V1.md`
+`docs/COMPANION_ECHO_FRONTEND_V1.md` 与 `docs/COLLECT_SERIES_V2.md`
 
 ## 阅读顺序
 
@@ -29,14 +33,15 @@ Let's Collect 是一个围绕数字 Companion 展开的、手机优先的治愈�
 1. `docs/PRODUCT_CONSTITUTION.md`：长期产品原则和不可越界事项；
 2. `docs/COMPANION_ECHO_PRODUCT_BASELINE.md`：Collect / Collection / Echo、Agent、数据与验收规格；
 3. `docs/COMPANION_ECHO_FRONTEND_V1.md`：当前实现、归档、验证和回滚；
-4. `docs/ASSET_CAPABILITY_REGISTRY.md`：当前真实资产、legacy / planned 边界与 feasibility；
-5. `docs/PRODUCT_OVERVIEW.md`：产品范围与核心循环；
-6. `docs/ROADMAP.md`：分阶段实施与服务端演进；
-7. `docs/ARCHITECTURE.md`：技术边界和 adapter / service；
-8. `docs/DATA_MODEL.md`：当前数据与目标领域合同；
-9. `docs/THEMING.md`：Rose Frost 到 Quiet Collectible 的视觉演进；
-10. `docs/THREE_MODEL_GUIDE.md`：GLB、Three.js、缩略图和回退规则；
-11. `docs/COLOR_ANIMALS_V3.md` 与 `docs/DIAMOND_UNICORN_SPECIAL_EXHIBIT.md`：active 系列和特殊展品。
+4. `docs/COLLECT_SERIES_V2.md`：系列盲盒、原地揭晓、注册偏好与回滚；
+5. `docs/ASSET_CAPABILITY_REGISTRY.md`：当前真实资产、legacy / planned 边界与 feasibility；
+6. `docs/PRODUCT_OVERVIEW.md`：产品范围与核心循环；
+7. `docs/ROADMAP.md`：分阶段实施与服务端演进；
+8. `docs/ARCHITECTURE.md`：技术边界和 adapter / service；
+9. `docs/DATA_MODEL.md`：当前数据与目标领域合同；
+10. `docs/THEMING.md`：Rose Frost 到 Quiet Collectible 的视觉演进；
+11. `docs/THREE_MODEL_GUIDE.md`：GLB、Three.js、缩略图和回退规则；
+12. `docs/COLOR_ANIMALS_V3.md` 与 `docs/DIAMOND_UNICORN_SPECIAL_EXHIBIT.md`：active 系列和特殊展品。
 
 `docs/SOCIAL_COLLECTING_V1.md` 是历史探索记录，不再作为新导航、好友 Feed 或八材质图鉴的实施依据。
 
@@ -80,11 +85,11 @@ GitHub：
 
 当前 C 端路由：
 
-- `/`：Collect，单一 live 3D Companion 主视觉与真实模型 / 颜色 mood / 材质偏好；
-- `/draw`：现有随机抽取与柔和揭晓，结果立即进入本地 Collection；
+- `/`：Collect，按系列左右切换 live 3D 成员，并在当前页扣券、揭晓和入柜；
+- `/draw`：旧随机抽取兼容入口，不再是 Collect 首页主流程；
 - `/collection`：最多三只 Representative、Favorite、真实 metadata 筛选、Collection Signature 和 3D 详情；
 - `/echo`：每日最多三条匿名 Echo、可解释共鸣和一个极简 Collect Together；
-- `/onboarding`：Supabase 匿名身份；
+- `/onboarding`：Supabase 匿名身份与四步 Taste 偏好注册；
 - `/friends -> /echo`；
 - `/profile -> /collection`。
 
@@ -111,9 +116,11 @@ Primary navigation 只有 Collect、Collection、Echo。Agent 入口被明确标
 ## 当前可以验证的流程
 
 ```text
-表达真实模型 / 颜色 / 材质偏好
--> Meet a Companion
--> 柔和揭晓并立即加入本地 Collection
+首次注册昵称 / 头像
+-> 依次选择伙伴 / 颜色 / 材质偏好
+-> 左右切换 Collect 系列
+-> 查看该系列 live 3D 成员
+-> 当前页抽取、柔和揭晓并立即加入本地 Collection
 -> Favorite / Representative
 -> 规则生成 Collection Signature
 -> 查看有限匿名 Echo

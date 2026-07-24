@@ -1,269 +1,142 @@
-import { useMemo } from "react";
 import {
-  ArrowRight,
-  Check,
-  Gem,
   LibraryBig,
-  SlidersHorizontal,
-  Sparkles
+  Sparkles,
+  Ticket,
+  Waypoints
 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { routes } from "../../app/routes";
 import { useMvpState } from "../../app/MvpState";
-import { productCopy } from "../../content/productCopy";
-import {
-  availableCompanionOptions,
-  colorMoods,
-  getMoodPreviewColors,
-  getPreferredPaletteId
-} from "../../features/collect/collectPreferences";
-import {
-  getToyModel,
-  getToyPalette
-} from "../../features/toys/catalog";
-import { generateCollectible } from "../../features/toys/generator";
-import { ToyViewer } from "../../three/ToyViewer";
-import type { ColorMoodId, MaterialPreference } from "../../types/taste";
-import type { ToyModelId, ToyPaletteId } from "../../types/toy";
+import { routes } from "../../app/routes";
+import { DrawReveal } from "../../features/draw/DrawReveal";
+import { CollectSeriesStage } from "../../features/collect/CollectSeriesStage";
+import { collectSeries } from "../../features/collect/collectSeries";
+import type { Collectible } from "../../types/toy";
 import "./collect-page.css";
 
-const modelSeeds: Partial<Record<ToyModelId, number>> = {
-  "color-otter": 101,
-  "color-bird": 211,
-  "color-teddy": 307,
-  "color-bunny": 401,
-  "color-cat": 503,
-  "color-panda": 601,
-  "diamond-unicorn": 701
-};
-
-const crystalPaletteByMood: Record<ColorMoodId, ToyPaletteId> = {
-  open: "diamond-clear",
-  calm: "diamond-ice",
-  warm: "diamond-champagne",
-  fresh: "diamond-mint",
-  dreamy: "diamond-rose",
-  bold: "diamond-rose"
-};
-
-const materialOptions: readonly {
-  id: MaterialPreference;
-  label: string;
-  description: string;
-}[] = [
-  { id: "open", label: "Open", description: "Let either finish appear" },
-  { id: "matte", label: "Matte", description: "Six soft companions" },
-  { id: "crystal", label: "Crystal curious", description: "One Unicorn exhibit" }
-];
+const DRAW_REVEAL_DELAY_MS = 720;
 
 export function CollectPage() {
   const {
     collection,
     representativeIds,
-    tastePreferences,
-    updateTastePreferences
+    tickets,
+    drawCollectibleFromSeries
   } = useMvpState();
+  const [seriesIndex, setSeriesIndex] = useState(0);
+  const [isDrawing, setIsDrawing] = useState(false);
+  const [result, setResult] = useState<Collectible | null>(null);
+  const [resultSeriesTitle, setResultSeriesTitle] = useState("");
+  const drawTimerRef = useRef<number | null>(null);
+  const currentSeries = collectSeries[seriesIndex];
 
-  const selectedModelId =
-    tastePreferences.modelIds.find((modelId) => modelId !== "diamond-unicorn")
-    ?? "color-bunny";
-  const heroModelId: ToyModelId =
-    tastePreferences.material === "crystal"
-      ? "diamond-unicorn"
-      : selectedModelId;
-  const heroPaletteId =
-    heroModelId === "diamond-unicorn"
-      ? crystalPaletteByMood[tastePreferences.colorMood]
-      : getPreferredPaletteId(tastePreferences.colorMood);
-
-  const heroToy = useMemo(
-    () => generateCollectible({
-      id: `preference-preview-${heroModelId}-${heroPaletteId}`,
-      publicCode: "LC-PREVIEW",
-      seed: (modelSeeds[heroModelId] ?? 701) + heroPaletteId.length * 17,
-      modelId: heroModelId,
-      paletteId: heroPaletteId,
-      createdAt: "2026-07-24T00:00:00.000Z"
-    }),
-    [heroModelId, heroPaletteId]
-  );
+  useEffect(() => () => {
+    if (drawTimerRef.current !== null) {
+      window.clearTimeout(drawTimerRef.current);
+    }
+  }, []);
 
   const representativeCount = representativeIds.filter((id) =>
     collection.some((toy) => toy.id === id)
   ).length;
 
-  const toggleModel = (modelId: ToyModelId) => {
-    const selected = tastePreferences.modelIds.includes(modelId);
-    const nextModelIds = selected
-      ? tastePreferences.modelIds.filter((id) => id !== modelId)
-      : [...tastePreferences.modelIds, modelId].slice(-3);
-    updateTastePreferences({ modelIds: nextModelIds });
+  const changeSeries = (direction: -1 | 1) => {
+    if (isDrawing) return;
+    setSeriesIndex((current) =>
+      (current + direction + collectSeries.length) % collectSeries.length
+    );
+  };
+
+  const handleDraw = () => {
+    if (isDrawing || currentSeries.availability !== "available") return;
+
+    setIsDrawing(true);
+    setResultSeriesTitle(currentSeries.title);
+    const seriesId = currentSeries.id;
+
+    drawTimerRef.current = window.setTimeout(() => {
+      const nextResult = drawCollectibleFromSeries(seriesId);
+      setResult(nextResult);
+      setIsDrawing(false);
+      drawTimerRef.current = null;
+    }, DRAW_REVEAL_DELAY_MS);
   };
 
   return (
     <div className="collect-page">
-      <section className="collect-hero" aria-labelledby="collect-title">
-        <div className="collect-hero__copy">
+      <header className="collect-page__intro">
+        <div>
           <p className="collect-kicker">
-            <Sparkles size={14} aria-hidden="true" />
-            {productCopy.collect.eyebrow}
+            <Waypoints size={14} aria-hidden="true" />
+            系列盲盒
           </p>
-          <p className="collect-signature">{productCopy.signature}</p>
-          <h1 id="collect-title">{productCopy.collect.title}</h1>
-          <p className="collect-hero__intro">{productCopy.collect.description}</p>
-
-          <div className="collect-hero__actions">
-            <Link className="collect-primary-action" to={routes.draw}>
-              {productCopy.collect.primaryAction}
-              <ArrowRight size={18} aria-hidden="true" />
-            </Link>
-            <Link className="collect-secondary-action" to={routes.collection}>
-              <LibraryBig size={17} aria-hidden="true" />
-              {productCopy.collect.secondaryAction}
-            </Link>
-          </div>
-
-          <dl className="collect-hero__facts">
-            <div>
-              <dt>Collection</dt>
-              <dd>{collection.length} companions</dd>
-            </div>
-            <div>
-              <dt>Representatives</dt>
-              <dd>{representativeCount} of 3 chosen</dd>
-            </div>
-          </dl>
+          <h1>今天，想从哪个系列里遇见新伙伴？</h1>
         </div>
+        <p>
+          左右切换不同系列，看看里面现在有哪些真实伙伴。
+          选定后直接在这一页抽取，不需要再跳去另一个页面。
+        </p>
+      </header>
 
-        <div className="collect-hero__stage">
-          <div className="collect-hero__aura" aria-hidden="true" />
-          <ToyViewer
-            toy={heroToy}
-            variant="hero"
-            autoRotate="continuous"
-            className="collect-hero__viewer"
-          />
-          <div className="collect-hero__identity">
-            <span>
-              {heroToy.materialId === "crystal" ? <Gem size={14} /> : <Sparkles size={14} />}
-              {heroToy.materialId === "crystal" ? "Crystal exhibit" : "Soft matte"}
-            </span>
-            <strong>{getToyModel(heroToy.modelId).name}</strong>
-            <small>{getToyPalette(heroToy.paletteId).name}</small>
-          </div>
+      <dl className="collect-page__summary" aria-label="当前收藏状态">
+        <div>
+          <dt><Ticket size={14} aria-hidden="true" /> 抽取券</dt>
+          <dd>{tickets}<small>张</small></dd>
         </div>
+        <div>
+          <dt><LibraryBig size={14} aria-hidden="true" /> 藏品</dt>
+          <dd>{collection.length}<small>只</small></dd>
+        </div>
+        <div>
+          <dt><Sparkles size={14} aria-hidden="true" /> 代表伙伴</dt>
+          <dd>{representativeCount}<small>/ 3</small></dd>
+        </div>
+      </dl>
+
+      <CollectSeriesStage
+        key={currentSeries.id}
+        series={currentSeries}
+        seriesIndex={seriesIndex}
+        seriesCount={collectSeries.length}
+        tickets={tickets}
+        isDrawing={isDrawing}
+        onPrevious={() => changeSeries(-1)}
+        onNext={() => changeSeries(1)}
+        onDraw={handleDraw}
+      />
+
+      <section className="collect-page__guide" aria-labelledby="collect-guide-title">
+        <div>
+          <p className="collect-kicker">怎么抽</p>
+          <h2 id="collect-guide-title">选系列，不用猜概率</h2>
+        </div>
+        <ol>
+          <li>
+            <span>01</span>
+            <div><strong>挑一个系列</strong><p>每个系列只展示当前真实存在的成员。</p></div>
+          </li>
+          <li>
+            <span>02</span>
+            <div><strong>原地打开盲盒</strong><p>扣除 3 张券，常规成员在主题池内均等出现。</p></div>
+          </li>
+          <li>
+            <span>03</span>
+            <div><strong>直接进入藏品柜</strong><p>揭晓结果会立即保存，也可以设为最爱。</p></div>
+          </li>
+        </ol>
+        <Link to={routes.collection}>
+          <LibraryBig size={17} aria-hidden="true" />
+          查看我的藏品柜
+        </Link>
       </section>
 
-      <section className="collect-preferences" aria-labelledby="collect-preferences-title">
-        <header className="collect-preferences__header">
-          <div>
-            <p className="collect-kicker">
-              <SlidersHorizontal size={14} aria-hidden="true" />
-              Taste signals
-            </p>
-            <h2 id="collect-preferences-title">
-              {productCopy.collect.preferenceTitle}
-            </h2>
-          </div>
-          <p>{productCopy.collect.preferenceDescription}</p>
-        </header>
-
-        <div className="collect-preferences__grid">
-          <fieldset className="preference-group preference-group--companions">
-            <legend>
-              <span>01</span>
-              Companions
-              <small>Choose up to three</small>
-            </legend>
-            <div className="preference-companion-list">
-              {availableCompanionOptions.map((option) => {
-                const selected = tastePreferences.modelIds.includes(option.id);
-                return (
-                  <button
-                    key={option.id}
-                    type="button"
-                    className={selected ? "is-selected" : ""}
-                    aria-pressed={selected}
-                    onClick={() => toggleModel(option.id)}
-                  >
-                    <span className="preference-companion-list__mark" aria-hidden="true">
-                      {selected ? <Check size={13} /> : null}
-                    </span>
-                    <strong>{option.name}</strong>
-                  </button>
-                );
-              })}
-            </div>
-          </fieldset>
-
-          <fieldset className="preference-group">
-            <legend>
-              <span>02</span>
-              Color mood
-              <small>Mapped to available colors</small>
-            </legend>
-            <div className="preference-mood-list">
-              {colorMoods.map((mood) => {
-                const selected = tastePreferences.colorMood === mood.id;
-                const previewColors = getMoodPreviewColors(mood.id);
-                return (
-                  <button
-                    key={mood.id}
-                    type="button"
-                    className={selected ? "is-selected" : ""}
-                    aria-pressed={selected}
-                    onClick={() => updateTastePreferences({ colorMood: mood.id })}
-                  >
-                    <span className="preference-mood-list__swatches" aria-hidden="true">
-                      {previewColors.map((color, index) => (
-                        <i key={`${mood.id}-${index}`} style={{ backgroundColor: color }} />
-                      ))}
-                    </span>
-                    <span>
-                      <strong>{mood.label}</strong>
-                      <small>{mood.description}</small>
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          </fieldset>
-
-          <fieldset className="preference-group">
-            <legend>
-              <span>03</span>
-              Finish
-              <small>Only current assets</small>
-            </legend>
-            <div className="preference-material-list">
-              {materialOptions.map((option) => {
-                const selected = tastePreferences.material === option.id;
-                return (
-                  <button
-                    key={option.id}
-                    type="button"
-                    className={selected ? "is-selected" : ""}
-                    aria-pressed={selected}
-                    onClick={() => updateTastePreferences({ material: option.id })}
-                  >
-                    <span aria-hidden="true">
-                      {option.id === "crystal" ? <Gem size={17} /> : <Sparkles size={17} />}
-                    </span>
-                    <span>
-                      <strong>{option.label}</strong>
-                      <small>{option.description}</small>
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-            <p className="preference-group__note">
-              Crystal currently means the single Diamond Unicorn exhibit.
-              No other crystal models are implied.
-            </p>
-          </fieldset>
-        </div>
-      </section>
+      {result ? (
+        <DrawReveal
+          toy={result}
+          encounterLabel={resultSeriesTitle}
+          onClose={() => setResult(null)}
+        />
+      ) : null}
     </div>
   );
 }

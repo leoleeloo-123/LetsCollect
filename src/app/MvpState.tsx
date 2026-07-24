@@ -7,6 +7,10 @@ import {
   useState,
   type ReactNode
 } from "react";
+import {
+  getAvailableCollectSeries,
+  type AvailableCollectSeriesId
+} from "../features/collect/collectSeries";
 import { initialFriendIds, initialPendingFriendIds } from "../data/mock/social";
 import { starterCollectionToys } from "../data/mock/toys";
 import {
@@ -62,6 +66,7 @@ type MvpSnapshot = {
 type MvpStateValue = MvpSnapshot & {
   interactAndEarn: (activityId: string, reward: number) => void;
   drawCollectible: () => Collectible | null;
+  drawCollectibleFromSeries: (seriesId: AvailableCollectSeriesId) => Collectible | null;
   toggleFavorite: (collectibleId: string) => void;
   toggleRepresentative: (collectibleId: string) => void;
   updateTastePreferences: (partial: Partial<TastePreferences>) => void;
@@ -157,11 +162,36 @@ function loadSnapshot(): MvpSnapshot {
   }
 }
 
-function createDrawRecord(collectible: Collectible): DrawRecord {
+function randomPoolModel(modelIds: readonly ToyModelId[]) {
+  const values = new Uint32Array(1);
+  globalThis.crypto.getRandomValues(values);
+  return (
+    modelIds[values[0] % modelIds.length]
+    ?? modelIds[0]
+    ?? "color-bunny"
+  );
+}
+
+function generateCollectibleFromModels(modelIds: readonly ToyModelId[]) {
+  const initialResult = generateCollectible();
+  if (
+    initialResult.modelId === "diamond-unicorn"
+    || modelIds.includes(initialResult.modelId)
+  ) {
+    return initialResult;
+  }
+  return generateCollectible({ modelId: randomPoolModel(modelIds) });
+}
+
+function createDrawRecord(
+  collectible: Collectible,
+  encounterSeriesId?: AvailableCollectSeriesId
+): DrawRecord {
   return {
     id: globalThis.crypto.randomUUID(),
     collectibleId: collectible.id,
-    createdAt: collectible.createdAt
+    createdAt: collectible.createdAt,
+    ...(encounterSeriesId ? { encounterSeriesId } : {})
   };
 }
 
@@ -207,6 +237,39 @@ export function MvpStateProvider({ children }: MvpStateProviderProps) {
       result = generateCollectible();
     }
     const draw = createDrawRecord(result);
+
+    setSnapshot((current) => {
+      if (current.tickets < DRAW_COST) return current;
+      return {
+        ...current,
+        tickets: current.tickets - DRAW_COST,
+        collection: [result, ...current.collection],
+        recentDraws: [draw, ...current.recentDraws].slice(0, 3)
+      };
+    });
+    return result;
+  }, [snapshot.collection, snapshot.tickets]);
+
+  const drawCollectibleFromSeries = useCallback((
+    seriesId: AvailableCollectSeriesId
+  ) => {
+    if (snapshot.tickets < DRAW_COST) return null;
+
+    const series = getAvailableCollectSeries(seriesId);
+    if (!series) return null;
+
+    const usedSeeds = new Set(
+      snapshot.collection.map((item) => item.appearanceSeed)
+    );
+    let result = generateCollectibleFromModels(series.modelIds);
+    for (
+      let attempt = 0;
+      attempt < 4 && usedSeeds.has(result.appearanceSeed);
+      attempt += 1
+    ) {
+      result = generateCollectibleFromModels(series.modelIds);
+    }
+    const draw = createDrawRecord(result, series.id);
 
     setSnapshot((current) => {
       if (current.tickets < DRAW_COST) return current;
@@ -293,6 +356,7 @@ export function MvpStateProvider({ children }: MvpStateProviderProps) {
       ...snapshot,
       interactAndEarn,
       drawCollectible,
+      drawCollectibleFromSeries,
       toggleFavorite,
       toggleRepresentative,
       updateTastePreferences,
@@ -304,6 +368,7 @@ export function MvpStateProvider({ children }: MvpStateProviderProps) {
       snapshot,
       interactAndEarn,
       drawCollectible,
+      drawCollectibleFromSeries,
       toggleFavorite,
       toggleRepresentative,
       updateTastePreferences,

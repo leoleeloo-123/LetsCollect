@@ -11,10 +11,15 @@ import { getCollectibleMaterialLabel } from "../toys/presentation";
 
 type DrawRevealProps = {
   toy: Collectible;
+  encounterLabel?: string;
   onClose: () => void;
 };
 
-export function DrawReveal({ toy, onClose }: DrawRevealProps) {
+export function DrawReveal({
+  toy,
+  encounterLabel,
+  onClose
+}: DrawRevealProps) {
   const { favoriteIds, toggleFavorite } = useMvpState();
   const model = getToyModel(toy.modelId);
   const palette = getToyPalette(toy.paletteId);
@@ -47,14 +52,14 @@ export function DrawReveal({ toy, onClose }: DrawRevealProps) {
           className="icon-button reveal-sheet__close"
           type="button"
           onClick={onClose}
-          aria-label="Close encounter"
+          aria-label="关闭揭晓"
         >
           <X size={20} />
         </button>
         <p className="eyebrow">
           {isSpecialExhibitCollectible(toy)
-            ? "A crystal encounter"
-            : "A new Companion found you"}
+            ? "钻石独角兽彩蛋"
+            : "新的伙伴出现了"}
         </p>
         <div className="reveal-sheet__stage">
           <ToyViewer toy={toy} variant="inspect" />
@@ -62,21 +67,24 @@ export function DrawReveal({ toy, onClose }: DrawRevealProps) {
         <div className="reveal-sheet__copy">
           <p className="reveal-sheet__arrival-note">
             <CheckCircle2 size={15} aria-hidden="true" />
-            Added to your Collection
+            已加入你的藏品柜
           </p>
           <h2 id="reveal-title">{toy.name}</h2>
           <p className="reveal-sheet__description">{toy.shortDescription}</p>
           <dl className="reveal-sheet__facts">
-            <div><dt>Companion</dt><dd>{model.name}</dd></div>
-            <div><dt>Color</dt><dd>{palette.name}</dd></div>
-            <div><dt>Finish</dt><dd>{materialLabel}</dd></div>
-            <div><dt>Collection</dt><dd>{toy.seriesName}</dd></div>
+            <div><dt>伙伴</dt><dd>{model.name}</dd></div>
+            <div><dt>配色</dt><dd>{palette.name}</dd></div>
+            <div><dt>质感</dt><dd>{materialLabel}</dd></div>
+            <div>
+              <dt>{encounterLabel ? "本次主题" : "系列"}</dt>
+              <dd>{encounterLabel ?? toy.seriesName}</dd>
+            </div>
           </dl>
         </div>
         <div className="reveal-sheet__actions">
           <Link className="primary-button" to={routes.collection} onClick={onClose}>
             <LibraryBig size={18} />
-            View Collection
+            查看藏品柜
           </Link>
           <button
             className={`secondary-button favorite-button${isFavorite ? " is-favorite" : ""}`}
@@ -85,11 +93,11 @@ export function DrawReveal({ toy, onClose }: DrawRevealProps) {
             onClick={() => toggleFavorite(toy.id)}
           >
             <Heart size={18} fill={isFavorite ? "currentColor" : "none"} />
-            {isFavorite ? "Favorite saved" : "Set as Favorite"}
+            {isFavorite ? "已设为最爱" : "设为最爱"}
           </button>
           <button className="secondary-button" type="button" onClick={onClose}>
             <Sparkles size={17} />
-            Meet another
+            继续选系列
           </button>
         </div>
       </section>

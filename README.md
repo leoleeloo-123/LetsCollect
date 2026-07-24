@@ -58,7 +58,9 @@ Start with [`docs/START_HERE.md`](docs/START_HERE.md). The approved product
 baseline lives in
 [`docs/COMPANION_ECHO_PRODUCT_BASELINE.md`](docs/COMPANION_ECHO_PRODUCT_BASELINE.md),
 the implemented frontend migration is recorded in
-[`docs/COMPANION_ECHO_FRONTEND_V1.md`](docs/COMPANION_ECHO_FRONTEND_V1.md), and
+[`docs/COMPANION_ECHO_FRONTEND_V1.md`](docs/COMPANION_ECHO_FRONTEND_V1.md),
+the current series-first Collect decision is recorded in
+[`docs/COLLECT_SERIES_V2.md`](docs/COLLECT_SERIES_V2.md), and
 [`docs/ASSET_CAPABILITY_REGISTRY.md`](docs/ASSET_CAPABILITY_REGISTRY.md)
 separates available capabilities from planned or unavailable ideas.
 

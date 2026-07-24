@@ -4,9 +4,9 @@ import { NavLink, useLocation } from "react-router-dom";
 import { routes } from "../../app/routes";
 
 const navItems = [
-  { to: routes.home, label: "Collect", icon: Sparkles },
-  { to: routes.collection, label: "Collection", icon: LibraryBig },
-  { to: routes.echo, label: "Echo", icon: Waves }
+  { to: routes.home, label: "收藏", icon: Sparkles },
+  { to: routes.collection, label: "藏品柜", icon: LibraryBig },
+  { to: routes.echo, label: "回声", icon: Waves }
 ];
 
 const COLLAPSE_SCROLL_Y = 36;

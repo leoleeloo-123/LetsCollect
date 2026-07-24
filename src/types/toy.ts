@@ -143,6 +143,7 @@ export type DrawRecord = {
   id: string;
   collectibleId: string;
   createdAt: string;
+  encounterSeriesId?: string;
 };
 
 export type SocialActivity = {
