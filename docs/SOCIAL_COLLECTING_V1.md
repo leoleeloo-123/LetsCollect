@@ -1,5 +1,33 @@
 # Social Collecting V1
 
+> **状态：Superseded / Historical。**
+>
+> 本文件保留 2026-07-17 的产品探索记录，已被 `docs/PRODUCT_CONSTITUTION.md` 与 `docs/COMPANION_ECHO_PRODUCT_BASELINE.md` 的 Collect / Collection / Echo 方向取代。下方原始正文冻结保存，不再作为新增导航、好友关系、社区 Feed、图鉴或奖励系统的实施依据。
+
+## 迁移决策
+
+继续保留的原则：
+
+- 3D Companion 是最高视觉焦点，列表使用缓存缩略图；
+- 收藏承担审美表达和收藏身份，而不是只显示资产数量；
+- 任何轻社交信号都应引用真实藏品或收藏行为；
+- 社交表面必须有限、可读完，不建设无限信息流；
+- 不建设私信或自由文本 Chat；
+- Mock 数据、领域对象和未来 repository / service 边界保持分离。
+
+不再延续的产品决策：
+
+- 首页、抽取、收藏、好友四个一级入口；
+- 以好友动态互动作为抽取券和核心循环的起点；
+- 好友申请、好友列表、收藏比较、反应数量和排名作为主要 C 端体验；
+- “一件代表藏品 + 三件置顶藏品”的展柜规则；新方向使用最多三只 Representative Companions；
+- 基于“六种造型 × 八种材质”的当前图鉴假设；真实可用资产以 `docs/ASSET_CAPABILITY_REGISTRY.md` 为准；
+- 真人头像、公开身份或社交认可作为收藏表达的必要条件。
+
+新产品中的轻连接统一通过有限匿名 Echo、可解释 resonance reasons 和极简共同收藏任务表达。Social Collecting V1 中的历史字段、验收标准与后续顺序不得直接迁入新实现。
+
+---
+
 状态：产品原型基线
 日期：2026-07-17
 范围：首页社区流、收藏家主页、轻量互动、图鉴与成就表达

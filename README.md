@@ -1,13 +1,13 @@
 # Let's Collect
 
-Let's Collect is an early-stage mobile-first 3D collectible toy platform. The current product shell uses React, Vite, TypeScript, Three.js, and Supabase:
+Let's Collect is a mobile-first, healing digital collectible experience built around 3D Companions. The current product shell uses React, Vite, TypeScript, Three.js, and Supabase:
 
 - Local repo: `C:\Users\licunhongyu\Desktop\LetsCollect`
 - GitHub repo: `https://github.com/leoleeloo-123/LetsCollect`
 - Production URL: `https://lets-collect.vercel.app/`
 - Current entry: React + Vite application in `src/`
 - Legacy prototype: `legacy/hero-prototype/hero-jelly-jade-toy.html`
-- Active models: five mobile Color Animals registered in `src/features/toys/catalog.ts`
+- Active collectible assets: six mobile matte Color Animals plus one Diamond Unicorn special exhibit, all registered in `src/features/toys/catalog.ts`
 - Source model assets: `assets/models/source/`
 - Model pipeline playbook: `playbooks/model-asset-pipeline.md`
 - Supabase project: `fpfmtmykncuknwlnakiv`
@@ -24,7 +24,7 @@ Copy `.env.example` to `.env.local` when switching Supabase projects. The checke
 
 Anonymous Auth must remain enabled in Supabase under **Authentication > Sign In / Providers > Allow anonymous sign-ins**. First-time visitors create a repeatable display name and a fixed avatar; Supabase Auth supplies the internal UUID and `profiles.public_code` supplies the unique shareable identity.
 
-Start with [`docs/START_HERE.md`](docs/START_HERE.md) before larger architecture changes. The old HTML remains a visual and 3D behavior reference only; product work belongs in `src/`.
+Start with [`docs/START_HERE.md`](docs/START_HERE.md) before larger architecture changes. The approved Collect / Collection / Echo direction is recorded in [`docs/COMPANION_ECHO_PRODUCT_BASELINE.md`](docs/COMPANION_ECHO_PRODUCT_BASELINE.md), while [`docs/ASSET_CAPABILITY_REGISTRY.md`](docs/ASSET_CAPABILITY_REGISTRY.md) separates capabilities available now from planned or unavailable ideas. The old HTML remains a visual and 3D behavior reference only; product work belongs in `src/`.
 
 For new toy GLB assets, keep source files in `assets/models/source/{toy-slug}/`
 and export compressed frontend files into `public/models/toys/{toy-slug}/`.
