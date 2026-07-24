@@ -1,0 +1,50 @@
+.toy-visual--material-wood {
+  --toy-deep: #5c2f19;
+  --toy-mid: #a96337;
+  --toy-light: #e7b77f;
+  --toy-saturation: 0.88;
+}
+
+.toy-visual--material-iron {
+  --toy-deep: #2f383a;
+  --toy-mid: #697376;
+  --toy-light: #c0c8ca;
+  --toy-saturation: 0.18;
+}
+
+.toy-visual--material-copper {
+  --toy-deep: #5f2d1e;
+  --toy-mid: #b66a3c;
+  --toy-light: #f0b283;
+  --toy-saturation: 0.9;
+}
+
+.toy-visual--material-silver {
+  --toy-deep: #606b70;
+  --toy-mid: #adb8bc;
+  --toy-light: #f4f7f8;
+  --toy-saturation: 0.08;
+}
+
+.toy-visual--material-gold {
+  --toy-deep: #75510a;
+  --toy-mid: #d8a72d;
+  --toy-light: #ffe89a;
+  --toy-saturation: 0.9;
+}
+
+.toy-visual--material-glass {
+  --toy-deep: #b7cbd0;
+  --toy-mid: #e4f1f3;
+  --toy-light: #ffffff;
+  --toy-saturation: 0.08;
+  --toy-brightness: 1.02;
+}
+
+.toy-visual--material-crystal {
+  --toy-deep: #7fa9b8;
+  --toy-mid: #d5eef6;
+  --toy-light: #ffffff;
+  --toy-saturation: 0.22;
+  --toy-brightness: 1.04;
+}

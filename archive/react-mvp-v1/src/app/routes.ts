@@ -1,0 +1,18 @@
+export const routes = {
+  home: "/",
+  draw: "/draw",
+  collection: "/collection",
+  friends: "/friends",
+  profile: "/profile",
+  onboarding: "/onboarding",
+  login: "/login",
+  register: "/register",
+  materialLab: "/material-lab",
+  colorBunnyLab: "/color-bunny-lab",
+  colorPandaLab: "/color-panda-lab",
+  colorOtterLab: "/color-otter-lab",
+  colorBirdLab: "/color-bird-lab",
+  colorCatLab: "/color-cat-lab",
+  colorTeddyLab: "/color-teddy-lab",
+  diamondUnicornLab: "/diamond-unicorn-lab",
+} as const;

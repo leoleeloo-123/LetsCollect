@@ -1,0 +1,111 @@
+.draw-page--compact {
+  gap: 14px;
+}
+
+.draw-page--compact .page-header h1 {
+  margin-bottom: 5px;
+}
+
+.draw-page--compact .page-header > p:last-child {
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.draw-stage.draw-stage--compact {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 10px 28px rgba(22, 50, 41, 0.05);
+}
+
+.draw-stage--compact .draw-stage__status {
+  position: absolute;
+  z-index: 4;
+  top: 11px;
+  right: 12px;
+  left: 12px;
+  color: #80505d;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.draw-stage--compact .draw-stage__status strong {
+  color: #80505d;
+  font-size: 9px;
+}
+
+.draw-stage--compact .draw-stage__visual {
+  min-height: 270px;
+  height: 270px;
+  background: #f8eeee;
+}
+
+.draw-stage--compact .draw-stage__visual .toy-viewer,
+.draw-stage--compact .draw-stage__visual .toy-viewer--hero {
+  height: 100%;
+  min-height: 0;
+}
+
+.draw-stage--compact .draw-stage__visual .toy-viewer__canvas {
+  cursor: default;
+  pointer-events: none;
+}
+
+.draw-stage--compact .draw-button {
+  margin: 12px;
+  min-height: 48px;
+  border-radius: 8px;
+}
+
+.draw-stage--compact .draw-message {
+  margin: 0 12px 12px;
+}
+
+.draw-page--compact .probability-panel {
+  margin-top: 0;
+}
+
+@media (min-width: 760px) {
+  .draw-page--compact {
+    gap: 20px;
+  }
+
+  .draw-page--compact .page-header h1 {
+    font-size: 36px;
+  }
+
+  .draw-page--compact .page-header > p:last-child {
+    font-size: 14px;
+  }
+
+  .draw-stage.draw-stage--compact {
+    width: min(820px, 100%);
+    margin-inline: auto;
+  }
+
+  .draw-stage--compact .draw-stage__visual {
+    min-height: 390px;
+    height: 390px;
+  }
+
+  .draw-stage--compact .draw-button {
+    margin: 14px;
+  }
+
+  .draw-stage--compact .draw-message {
+    margin: 0 14px 14px;
+    text-align: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .draw-stage--compact.draw-stage--active .toy-viewer {
+    animation: none;
+  }
+}
