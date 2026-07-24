@@ -15,10 +15,11 @@ Let's Collect 是一个围绕数字 Companion 展开的、手机优先的治愈�
 `codex/companion-echo-frontend` 分支已经实现第一版 Collect / Collection / Echo 前端和独立 Agent Console。`main` 与 Vercel Production 尚未被这个分支替换。
 
 2026-07-24 起，Collect 第一页进入“按系列选择、在当前页揭晓”的第三轮：
-首页改为一张可切 9 色的 12 模型「色彩系列」卡，以及熊猫、艺术家、狗狗、
-水晶等独立特殊系列卡。每张系列卡使用一个受控 WebGL 舞台，让卡内模型同步
-原地旋转；特殊系列卡统一为上方一排模型、下方信息。首次注册依次收集昵称、
-伙伴、颜色和质感偏好。
+首页是一张可切 9 色、只包含 12 个柔雾模型的「色彩系列」卡，以及熊猫、
+艺术家、汪汪队、ZZZ、吃货系列五张独立特殊系列卡。所有特殊系列统一为 6 张券，
+每张系列卡使用一个受控 WebGL 舞台，让卡内模型同步原地旋转；特殊系列卡
+统一为上方一排模型、下方信息。水晶卡暂时下架，但两只水晶资产和旧 `/draw`
+兼容分支继续保留。首次注册依次收集昵称、伙伴、颜色和质感偏好。
 完整决定与回滚见 `docs/COLLECT_SERIES_V2.md`。
 
 改造前的 React MVP 已完整归档到：
@@ -105,15 +106,15 @@ Primary navigation 只有 Collect、Collection、Echo。Agent 入口被明确标
 
 ## 当前真实资产
 
-- 十个 active matte Color Animals；
+- 十二个 active matte Color Animals，包括新增的饭团 Karpy 与睡觉 Koala；
 - 九个常规 colorway；
 - Diamond Unicorn 与 Diamond Dog 两只水晶 Companion；
 - 两只水晶 Companion 的五个晶体 tint；
-- 色彩系列允许全部十二款模型复用九个常规色值；
-- 常规抽取分支 95%；
-- 两只水晶 Companion 共享特殊分支 5%。
+- 色彩系列只包含十二个柔雾模型，每个色系严格 `1 / 12`；
+- 特殊系列为熊猫、艺术家、汪汪队、ZZZ 与吃货系列，全部使用 6 张券；
+- 水晶系列卡暂时下架；旧 `/draw` 仍保留 95% 柔雾 / 5% 水晶兼容规则。
 
-十个普通模型的换色目标不同；完整路径、大小、palette 与实现见 `docs/ASSET_CAPABILITY_REGISTRY.md`。
+十二个普通模型的换色目标不同；完整路径、大小、palette 与实现见 `docs/ASSET_CAPABILITY_REGISTRY.md`。
 
 本轮把已验证的新模型与 shader 接入产品 catalog，但不重建 GLB。
 
@@ -145,7 +146,8 @@ Observe
 ```
 
 - Calm Green Week 只引用当前真实 matte 模型与颜色；
-- Sleepy Crystal Night 明确显示 `requires_asset_creation`；
+- Sleepy Crystal Night 仍显示 `requires_asset_creation`，因为当前只有柔雾猫咪、
+  海豹和考拉睡姿，没有对应水晶睡姿资产；
 - 依赖不存在资产的提案不可批准或发布。
 
 ## 状态与 adapter 边界
@@ -165,7 +167,7 @@ Observe
 - 生产多用户 Resonance；
 - 生产 Campaign 应用、发布与测量；
 - 自由文本 Chat、私信、关注 / 粉丝与实时多人；
-- 新的 Sleepy / Quirky / Cool 模型；
+- 已注册三只睡姿伙伴之外的更多 Sleepy / Quirky / Cool 模型；
 - 新的 fuzzy / metallic / porcelain 材质；
 - pending draw-result transaction；
 - lint 与自动化 test 工具链；

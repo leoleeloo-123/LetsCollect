@@ -1,7 +1,4 @@
-import {
-  colorAnimalPalettes,
-  diamondUnicornPalettes
-} from "../toys/catalog";
+import { colorAnimalPalettes } from "../toys/catalog";
 import { generateCollectible } from "../toys/generator";
 import type {
   Collectible,
@@ -14,7 +11,8 @@ export type AvailableCollectSeriesId =
   | "panda-pun"
   | "artists"
   | "dogs"
-  | "crystal";
+  | "zzz"
+  | "foodies";
 
 type CollectSeriesBase = {
   id: AvailableCollectSeriesId;
@@ -51,9 +49,6 @@ export type CollectSeriesDrawRequest = {
 const regularPaletteIds = colorAnimalPalettes.map(
   (palette) => palette.id
 ) as readonly ToyPaletteId[];
-const crystalPaletteIds = diamondUnicornPalettes.map(
-  (palette) => palette.id
-) as readonly ToyPaletteId[];
 
 const regularModelIds = [
   "color-bunny",
@@ -65,7 +60,9 @@ const regularModelIds = [
   "color-bear-singer",
   "color-dog-camera",
   "color-dog-drum",
-  "color-seal"
+  "color-seal",
+  "color-karpy",
+  "color-koala"
 ] as const satisfies readonly [ToyModelId, ...ToyModelId[]];
 
 export const colorSpectrumSeries = {
@@ -78,11 +75,7 @@ export const colorSpectrumSeries = {
     "十二款伙伴共享九种代表色。先选定喜欢的色系，再从全部伙伴中均等抽取一款。",
   memberSummary: "12 款伙伴 · 每款 1 / 12",
   ticketCost: 3,
-  modelIds: [
-    ...regularModelIds,
-    "diamond-unicorn",
-    "diamond-dog"
-  ],
+  modelIds: regularModelIds,
   palettePolicy: {
     mode: "selected",
     paletteIds: regularPaletteIds,
@@ -100,7 +93,7 @@ export const specialCollectSeries = [
     description:
       "熊猫，也可以是熊加猫。熊猫、小熊、小猫和爆炸头小熊组成四款主题阵容。",
     memberSummary: "4 款伙伴 · 每款 1 / 4",
-    ticketCost: 3,
+    ticketCost: 6,
     modelIds: [
       "color-panda",
       "color-teddy",
@@ -121,7 +114,7 @@ export const specialCollectSeries = [
     description:
       "歌手小熊、鼓手小狗和摄影小狗集合。每次随机遇见一位正在创作的伙伴。",
     memberSummary: "3 款伙伴 · 每款 1 / 3",
-    ticketCost: 3,
+    ticketCost: 6,
     modelIds: [
       "color-bear-singer",
       "color-dog-drum",
@@ -137,11 +130,11 @@ export const specialCollectSeries = [
     availability: "available",
     category: "special",
     eyebrow: "狗狗主题",
-    title: "狗狗",
+    title: "汪汪队",
     description:
       "摄影小狗和鼓手小狗组成双人小队。颜色随机，两款伙伴出现机会相同。",
     memberSummary: "2 款伙伴 · 每款 1 / 2",
-    ticketCost: 3,
+    ticketCost: 6,
     modelIds: [
       "color-dog-camera",
       "color-dog-drum"
@@ -152,22 +145,42 @@ export const specialCollectSeries = [
     }
   },
   {
-    id: "crystal",
+    id: "zzz",
     availability: "available",
     category: "special",
-    eyebrow: "珍稀主题",
-    title: "水晶",
+    eyebrow: "睡觉主题",
+    title: "ZZZ",
     description:
-      "水晶独角兽和水晶小狗共享五种随机晶体色。更稀有的材质，需要更多抽取券。",
-    memberSummary: "2 款伙伴 · 每款 1 / 2",
+      "抱着毛线球的小猫、睡觉海豹和戴睡帽的考拉，组成一组安静打盹的伙伴。",
+    memberSummary: "3 款伙伴 · 每款 1 / 3",
     ticketCost: 6,
     modelIds: [
-      "diamond-unicorn",
-      "diamond-dog"
+      "color-cat",
+      "color-seal",
+      "color-koala"
     ],
     palettePolicy: {
       mode: "random",
-      paletteIds: crystalPaletteIds
+      paletteIds: regularPaletteIds
+    }
+  },
+  {
+    id: "foodies",
+    availability: "available",
+    category: "special",
+    eyebrow: "吃货主题",
+    title: "吃货系列",
+    description:
+      "吃棒棒糖的水獭和吃饭团的 Karpy 集合。颜色随机，两款伙伴出现机会相同。",
+    memberSummary: "2 款伙伴 · 每款 1 / 2",
+    ticketCost: 6,
+    modelIds: [
+      "color-otter",
+      "color-karpy"
+    ],
+    palettePolicy: {
+      mode: "random",
+      paletteIds: regularPaletteIds
     }
   }
 ] as const satisfies readonly AvailableCollectSeries[];

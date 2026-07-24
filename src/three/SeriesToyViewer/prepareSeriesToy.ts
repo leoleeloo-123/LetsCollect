@@ -38,6 +38,14 @@ import {
   prepareColorSealMaskTexture,
   prepareColorSealObjectMaskTexture
 } from "../material/createColorSealMaterials";
+import {
+  cloneColorKarpyMaterials,
+  prepareColorKarpyMaskTexture
+} from "../material/createColorKarpyMaterials";
+import {
+  cloneColorKoalaMaterials,
+  prepareColorKoalaMaskTexture
+} from "../material/createColorKoalaMaterials";
 import { applyDiamondUnicornTint } from "../material/createDiamondUnicornMaterial";
 import { loadToyModel } from "../ToyViewer/runtime";
 
@@ -122,6 +130,8 @@ export async function prepareSeriesToy(
     : null;
   const colorDogDrum = rendering?.mode === "color-dog-drum" ? rendering : null;
   const colorSealStarfish = rendering?.mode === "color-seal-starfish" ? rendering : null;
+  const colorKarpyHat = rendering?.mode === "color-karpy-hat" ? rendering : null;
+  const colorKoalaHat = rendering?.mode === "color-koala-hat" ? rendering : null;
 
   const [
     gltf,
@@ -132,7 +142,9 @@ export async function prepareSeriesToy(
     colorBearSingerMask,
     colorDogCameraMask,
     colorSealMask,
-    colorSealObjectMask
+    colorSealObjectMask,
+    colorKarpyMask,
+    colorKoalaMask
   ] = await Promise.all([
     loadToyModel(modelUrl),
     nullableTexture(THREE, colorBirdZones?.zoneMaskUrl ?? null),
@@ -142,7 +154,9 @@ export async function prepareSeriesToy(
     nullableTexture(THREE, colorBearSingerAfro?.maskUrl ?? null),
     nullableTexture(THREE, colorDogCameraAccessories?.maskUrl ?? null),
     nullableTexture(THREE, colorSealStarfish?.maskUrl ?? null),
-    nullableTexture(THREE, colorSealStarfish?.objectMaskUrl ?? null)
+    nullableTexture(THREE, colorSealStarfish?.objectMaskUrl ?? null),
+    nullableTexture(THREE, colorKarpyHat?.maskUrl ?? null),
+    nullableTexture(THREE, colorKoalaHat?.maskUrl ?? null)
   ]);
 
   if (colorBirdZoneMap) prepareColorBirdZoneTexture(THREE, colorBirdZoneMap);
@@ -155,6 +169,8 @@ export async function prepareSeriesToy(
   if (colorSealObjectMask) {
     prepareColorSealObjectMaskTexture(THREE, colorSealObjectMask);
   }
+  if (colorKarpyMask) prepareColorKarpyMaskTexture(THREE, colorKarpyMask);
+  if (colorKoalaMask) prepareColorKoalaMaskTexture(THREE, colorKoalaMask);
 
   const root = gltf.scene;
   root.rotation.y = modelDefinition.viewer.rotationY;
@@ -167,7 +183,9 @@ export async function prepareSeriesToy(
     colorBearSingerMask,
     colorDogCameraMask,
     colorSealMask,
-    colorSealObjectMask
+    colorSealObjectMask,
+    colorKarpyMask,
+    colorKoalaMask
   ].filter((texture): texture is Three.Texture => texture !== null);
 
   let updateAppearance: (nextToy: Collectible) => void;
@@ -226,25 +244,18 @@ export async function prepareSeriesToy(
         .multiplyScalar(colorBunnyBag.bagColorScale);
     };
   } else if (colorCatYarn) {
+    const yarnColor = new THREE.Color();
     materials.push(...cloneColorCatYarnMaterials(
       THREE,
       root,
-      new THREE.Color(getToyPalette(toy.paletteId).color)
-        .multiplyScalar(colorCatYarn.yarnColorScale),
+      yarnColor,
       colorCatYarn.materialName,
       maxAnisotropy
     ));
     updateAppearance = (nextToy) => {
-      const color = new THREE.Color(getToyPalette(nextToy.paletteId).color)
+      yarnColor
+        .set(getToyPalette(nextToy.paletteId).color)
         .multiplyScalar(colorCatYarn.yarnColorScale);
-      materials.forEach((material) => {
-        if (
-          material instanceof THREE.MeshStandardMaterial
-          && material.name === colorCatYarn.materialName
-        ) {
-          material.color.copy(color);
-        }
-      });
     };
   } else if (colorPandaHat && colorPandaProtectMap) {
     const hatColor = new THREE.Color();
@@ -336,6 +347,34 @@ export async function prepareSeriesToy(
       starfishColor
         .set(getToyPalette(nextToy.paletteId).color)
         .multiplyScalar(colorSealStarfish.colorScale);
+    };
+  } else if (colorKarpyHat && colorKarpyMask) {
+    const hatColor = new THREE.Color();
+    materials.push(...cloneColorKarpyMaterials(
+      THREE,
+      root,
+      hatColor,
+      colorKarpyMask,
+      maxAnisotropy
+    ));
+    updateAppearance = (nextToy) => {
+      hatColor
+        .set(getToyPalette(nextToy.paletteId).color)
+        .multiplyScalar(colorKarpyHat.colorScale);
+    };
+  } else if (colorKoalaHat && colorKoalaMask) {
+    const hatColor = new THREE.Color();
+    materials.push(...cloneColorKoalaMaterials(
+      THREE,
+      root,
+      hatColor,
+      colorKoalaMask,
+      maxAnisotropy
+    ));
+    updateAppearance = (nextToy) => {
+      hatColor
+        .set(getToyPalette(nextToy.paletteId).color)
+        .multiplyScalar(colorKoalaHat.hatColorScale);
     };
   } else {
     const material = createToyMaterial(THREE, toy, { lightweight: true }).material;

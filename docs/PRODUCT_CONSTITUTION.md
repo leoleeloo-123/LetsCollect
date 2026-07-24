@@ -127,17 +127,21 @@ Echo 不依赖并且不应展示：
 
 当前可用资产以 `docs/ASSET_CAPABILITY_REGISTRY.md` 为准。当前 C 端只可使用：
 
-- 十个 active Color Animals；
+- 十二个 active Color Animals；
 - 九个注册的常规 colorway；
 - 固定的柔雾树脂表现；
-- Diamond Unicorn 与 Diamond Dog 两只水晶 Companion；
-- 两只水晶 Companion 的五个运行时 tint；
-- 色彩系列允许十二款模型共同使用九个常规色值；
+- 色彩系列中的十二款 matte 模型与九个常规色值；
+- 熊猫、艺术家、汪汪队、ZZZ 与吃货系列五个特殊池，全部每次消耗六张券；
+- Diamond Unicorn 与 Diamond Dog 两只水晶 Companion 及五个运行时 tint，
+  仅保留给已有藏品、详情、Lab 与旧 `/draw` 兼容入口，当前 Collect 货架
+  不展示水晶卡，也不把它们放入色彩系列；
 - 当前抽取、收藏、缩略图与 3D 详情能力。
 
-十个普通模型的换色目标不同；“colorway”不等于每只模型都改变完整身体颜色。
+十二个普通模型的换色目标不同；“colorway”不等于每只模型都改变完整身体颜色。
 
-旧 Jelly Jade、八材质、Color Dog、Color Unicorn 实验、归档模型与 Lab 路由不是当前可抽取能力。Sleepy、Quirky、Bold、Cool、新动物、新水晶、新金属、毛绒和陶瓷只能作为 planned capability。
+ZZZ 已复用小猫、海豹和考拉三款现有睡姿。除此之外的新 Sleepy、Quirky、
+Bold、Cool、新动物、新水晶、新金属、毛绒和陶瓷仍只能作为 planned capability。
+旧 Jelly Jade、八材质、Color Dog、Color Unicorn 实验、归档模型与 Lab 路由不是当前可抽取能力。
 
 文件存在于仓库不等于产品可用。代码 active registry 与人类可读资产注册表必须同时明确 availability。
 
@@ -177,7 +181,9 @@ Agent 可以提出使用当前模型、颜色、权重、活动时长、任务�
 - 页面不创建自己的 GLTFLoader；
 - `ToyViewer` 统一管理加载、相机、灯光、材质、交互、状态、清理与性能档位；
 - 普通列表、Collection、Representative 和 Echo 卡片使用缩略图；
-- Collect 系列货架是受控例外：每个系列最多一个 canvas / renderer，卡内模型共享旋转；当前约五张系列卡合计约五个 WebGL context，不得为每个模型各建 canvas；
+- Collect 系列货架是受控例外：每个系列最多一个 canvas / renderer，卡内模型共享旋转；
+  当前一张色彩卡与五张特殊卡合计约六个 WebGL context；若逐模型创建会接近
+  二十六个 context，因此严禁为每个模型各建 canvas；
 - 除该系列货架外，同一主要页面默认只保留一个活跃 live Viewer；
 - GLB 保持移动端优化并使用版本化路径；
 - 必须有 loading、error、retry 和首次访问可用的静态 fallback；

@@ -6,11 +6,14 @@ Last updated: 2026-07-24
 
 ## Decision
 
-The active React MVP moves from the eight-material crystal showcase to a mobile-first Color Animals series. The active matte models are Color Otter, Color Bird, Color Teddy, Color Bunny, Color Cat, Color Panda, Color Bear Singer, Color Dog Camera, Color Dog Drum, and Color Seal. A collectible varies by animal model, model-specific colorway, quality, and seed while its material stays a fixed soft matte resin treatment. A selected colorway changes only the approved recolor target for that model; it does not imply that every model changes its full body color.
+The active React MVP moves from the eight-material crystal showcase to a mobile-first Color Animals series. The active matte models are Color Otter, Color Bird, Color Teddy, Color Bunny, Color Cat, Color Panda, Color Bear Singer, Color Dog Camera, Color Dog Drum, Color Seal, Color Karpy, and Color Koala. A collectible varies by animal model, model-specific colorway, quality, and seed while its material stays a fixed soft matte resin treatment. A selected colorway changes only the approved recolor target for that model; it does not imply that every model changes its full body color.
 
 The former jelly-jade and material-generation assets, catalogs, and generator remain in the repository as a legacy rollback path. They are not part of the active draw pool or seeded collection.
 
-Diamond Unicorn and Diamond Dog share a separate 5% special-exhibit branch. Their full contract is recorded in `docs/DIAMOND_UNICORN_SPECIAL_EXHIBIT.md`.
+Diamond Unicorn and Diamond Dog remain in the separate 5% legacy `/draw`
+special-exhibit branch. Their Collect shelf card is temporarily removed, while
+their historical rendering and compatibility contract remains recorded in
+`docs/DIAMOND_UNICORN_SPECIAL_EXHIBIT.md`.
 
 The former generic Color Dog, Color Unicorn, and the retired Color Cat v001 remain rollback history. Color Dog Camera and Color Dog Drum are distinct active product models.
 
@@ -36,9 +39,18 @@ The authoritative human-readable inventory, exact runtime sizes, recolor targets
 - Color Dog Camera uses `model-mobile-v001.glb`; its hat and bag use `accessory-mask-mobile-v001.webp`.
 - Color Dog Drum uses `model-mobile-v001.glb`; its validated drum region accepts the selected palette.
 - Color Seal uses `model-mobile-v001.glb`; two compact masks isolate the starfish prop.
-- The regular 95% compatibility draw branch selects one of the ten matte models and one of the nine shared primary colorway IDs independently with equal probability.
+- Color Karpy uses `model-mobile-v001.glb`; a compact hat mask plus a local
+  upper-head gate recolors only the beret, preserving the rice ball, Karpy,
+  clothing, face, paws, and blush.
+- Color Koala uses `model-mobile-v001.glb`; a compact mask and local height
+  gate recolors only the sleeping-hat body, preserving its pom-pom, koala,
+  branch, leaves, and other props.
+- The regular 95% compatibility draw branch selects one of the twelve matte models and one of the nine shared primary colorway IDs independently with equal probability.
 - A separate 5% compatibility branch selects Diamond Unicorn or Diamond Dog and one of five diamond colors.
-- The normal ten use fixed soft matte resin; the two special exhibits use the shared faceted diamond material.
+- The normal twelve use fixed soft matte resin; the two compatibility exhibits use the shared faceted diamond material.
+- The current Collect Color card contains only the twelve matte models. Its
+  explicit series draw is `1 / 12` and does not use the compatibility crystal
+  branch.
 - The appearance signature includes the generation version, series, model, palette, material, rendering asset key, traits, and seed.
 
 ## Local data migration
@@ -58,10 +70,14 @@ The Color Animals demo uses a dedicated local-storage key. Earlier material-show
 - Color Dog Camera: about 373 KB; accessory mask: about 14 KB.
 - Color Dog Drum: about 374 KB; no mask request.
 - Color Seal: about 320 KB; its two masks total about 25 KB.
+- Color Karpy: about 315 KB; hat mask: about 18 KB.
+- Color Koala: about 335 KB; sleeping-hat mask: about 9 KB.
 - Diamond Unicorn special-exhibit GLB: about 175 KB; no textures or masks.
 - Diamond Dog special-exhibit GLB: about 344 KB; no textures or masks.
 - Color Bunny and Color Panda v002 preserve the v001 geometry while padding the 1024 px base-color atlas borders to reduce UV seam bleeding at tile size.
-- Collect series cards and collection lists use cached WebP thumbnails; only reveal and selected detail mount a live viewer.
+- Collect series cards use one live canvas per series and synchronize rotation
+  across their model roots. Collection, feed, friend, and history lists keep
+  using cached WebP thumbnails; reveal and selected detail use a live viewer.
 
 ## Validation
 
@@ -70,10 +86,12 @@ Before release:
 1. Type-check and production-build the exact intended change set.
 2. Verify home, draw, reveal, collection, detail, and friends routes at a narrow mobile viewport.
 3. Confirm the compatibility draw retains a 95% matte branch and a 5% two-model crystal branch.
-4. Confirm all ten active Color Animals models can appear with registered colorways, change only their approved recolor targets, and add to the collection.
-5. Confirm all ten matte models preserve their validated authored details in the live viewer and cached thumbnails.
+4. Confirm all twelve active Color Animals models can appear with registered colorways, change only their approved recolor targets, and add to the collection.
+5. Confirm all twelve matte models preserve their validated authored details in the series viewer, live viewer, and cached thumbnails.
 6. Confirm both crystal models reveal, persist, render thumbnails, and open in the 3D detail view.
-7. Confirm the previous storage entry and all legacy models remain available.
+7. Confirm the Collect Color card contains no crystal model and that the five
+   special cards charge six tickets.
+8. Confirm the previous storage entry and all legacy models remain available.
 
 ## Rollback
 

@@ -37,11 +37,19 @@ import {
   prepareColorSealMaskTexture,
   prepareColorSealObjectMaskTexture
 } from "../material/createColorSealMaterials";
+import {
+  cloneColorKarpyMaterials,
+  prepareColorKarpyMaskTexture
+} from "../material/createColorKarpyMaterials";
+import {
+  cloneColorKoalaMaterials,
+  prepareColorKoalaMaskTexture
+} from "../material/createColorKoalaMaterials";
 import { loadRoomEnvironment, loadToyModel, loadToyViewerRuntime } from "../ToyViewer/runtime";
 import { readThumbnailBlob, writeThumbnailBlob } from "./storage";
 
 const THUMBNAIL_SIZE = 320;
-const THUMBNAIL_RENDER_VERSION = 17;
+const THUMBNAIL_RENDER_VERSION = 18;
 const THUMBNAIL_TARGET_HEIGHT = 3.45;
 const THUMBNAIL_MAX_WIDTH = 3.62;
 const WEBP_QUALITY = 0.82;
@@ -180,6 +188,12 @@ async function renderThumbnail(toy: Collectible) {
   const colorSealStarfish = modelDefinition.rendering?.mode === "color-seal-starfish"
     ? modelDefinition.rendering
     : null;
+  const colorKarpyHat = modelDefinition.rendering?.mode === "color-karpy-hat"
+    ? modelDefinition.rendering
+    : null;
+  const colorKoalaHat = modelDefinition.rendering?.mode === "color-koala-hat"
+    ? modelDefinition.rendering
+    : null;
   const standardMaterialResult = colorBirdZones
     || colorTeddyCoat
     || colorBunnyBag
@@ -190,6 +204,8 @@ async function renderThumbnail(toy: Collectible) {
     || colorDogCameraAccessories
     || colorDogDrum
     || colorSealStarfish
+    || colorKarpyHat
+    || colorKoalaHat
     ? null
     : createToyMaterial(THREE, toy);
   const material = standardMaterialResult?.material ?? null;
@@ -241,6 +257,18 @@ async function renderThumbnail(toy: Collectible) {
   if (colorSealMask && colorSealObjectMask) {
     prepareColorSealMaskTexture(THREE, colorSealMask);
     prepareColorSealObjectMaskTexture(THREE, colorSealObjectMask);
+  }
+  const colorKarpyMask = colorKarpyHat
+    ? await new THREE.TextureLoader().loadAsync(colorKarpyHat.maskUrl)
+    : null;
+  if (colorKarpyMask) {
+    prepareColorKarpyMaskTexture(THREE, colorKarpyMask);
+  }
+  const colorKoalaMask = colorKoalaHat
+    ? await new THREE.TextureLoader().loadAsync(colorKoalaHat.maskUrl)
+    : null;
+  if (colorKoalaMask) {
+    prepareColorKoalaMaskTexture(THREE, colorKoalaMask);
   }
   const { glow } = getCollectibleRenderTraits(toy);
   const model = gltf.scene;
@@ -344,6 +372,24 @@ async function renderThumbnail(toy: Collectible) {
         renderer.capabilities.getMaxAnisotropy()
       )
     : [];
+  const colorKarpyMaterials = colorKarpyHat && colorKarpyMask
+    ? cloneColorKarpyMaterials(
+        THREE,
+        model,
+        new THREE.Color(palette.color).multiplyScalar(colorKarpyHat.colorScale),
+        colorKarpyMask,
+        renderer.capabilities.getMaxAnisotropy()
+      )
+    : [];
+  const colorKoalaMaterials = colorKoalaHat && colorKoalaMask
+    ? cloneColorKoalaMaterials(
+        THREE,
+        model,
+        new THREE.Color(palette.color).multiplyScalar(colorKoalaHat.hatColorScale),
+        colorKoalaMask,
+        renderer.capabilities.getMaxAnisotropy()
+      )
+    : [];
   if (
     !colorBirdZones
     && !colorTeddyCoat
@@ -355,6 +401,8 @@ async function renderThumbnail(toy: Collectible) {
     && !colorDogCameraAccessories
     && !colorDogDrum
     && !colorSealStarfish
+    && !colorKarpyHat
+    && !colorKoalaHat
   ) {
     model.traverse((child) => {
       if (!(child instanceof THREE.Mesh) || !material) return;
@@ -412,6 +460,8 @@ async function renderThumbnail(toy: Collectible) {
     colorDogCameraMaterials.forEach((item) => item.dispose());
     colorDogDrumMaterials.forEach((item) => item.dispose());
     colorSealMaterials.forEach((item) => item.dispose());
+    colorKarpyMaterials.forEach((item) => item.dispose());
+    colorKoalaMaterials.forEach((item) => item.dispose());
     colorBirdZoneMap?.dispose();
     colorTeddyProtectMap?.dispose();
     colorBunnyProtectMap?.dispose();
@@ -420,6 +470,8 @@ async function renderThumbnail(toy: Collectible) {
     colorDogCameraMask?.dispose();
     colorSealMask?.dispose();
     colorSealObjectMask?.dispose();
+    colorKarpyMask?.dispose();
+    colorKoalaMask?.dispose();
     scene.clear();
   }
 }

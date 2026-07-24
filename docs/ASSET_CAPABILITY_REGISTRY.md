@@ -21,7 +21,10 @@ The executable sources of truth are:
 - `src/features/toys/catalog.ts`: model IDs, runtime paths, palette IDs,
   framing, recolor mode, masks, and named material targets;
 - `src/features/toys/activeSeries.ts`: active series membership, material
-  labels, palette membership, and the Diamond Unicorn branch probability;
+  labels, palette membership, and the legacy `/draw` Diamond branch
+  probability;
+- `src/features/collect/collectSeries.ts`: the current Collect shelf,
+  explicit theme membership, palette policy, and ticket cost;
 - `src/features/toys/generator.ts`: draw selection, generated metadata, and
   appearance signatures;
 - `src/three/ToyViewer/ToyViewer.tsx`: product 3D loading and application of
@@ -50,14 +53,14 @@ and documentation together. Do not infer availability by scanning
 
 ## Available now: Color Animals V3
 
-The active regular series is `series_color_animals`. It contains exactly ten
+The active regular series is `series_color_animals`. It contains exactly twelve
 mobile-first matte models. The internal material ID is `plastic`; the product label
 is `柔雾树脂` / soft matte resin. The series has one shared nine-color palette,
 but each model applies a selected colorway only to its approved recolor target.
 “Colorway” does not always mean body color.
 
 Both `modelUrl` and `mobileModelUrl` currently resolve to the runtime GLB shown
-below for these ten entries.
+below for these twelve entries.
 
 | Product name | Model ID | Runtime GLB | GLB bytes | Approved recolor target | Runtime implementation |
 | --- | --- | --- | ---: | --- | --- |
@@ -71,9 +74,11 @@ below for these ten entries.
 | Color Dog Camera / 摄像小狗 | `color-dog-camera` | `/models/toys/color-dog-camera/model-mobile-v001.glb` | 372,848 | Hat and camera bag | `onBeforeCompile` accessory shader plus `/models/toys/color-dog-camera/accessory-mask-mobile-v001.webp` (13,820 bytes) |
 | Color Dog Drum / 鼓手小狗 | `color-dog-drum` | `/models/toys/color-dog-drum/model-mobile-v001.glb` | 373,540 | Validated drum region | `onBeforeCompile` semantic texture/position shader; no extra mask |
 | Color Seal / 海豹 | `color-seal` | `/models/toys/color-seal/model-mobile-v001.glb` | 319,576 | Starfish prop only | `onBeforeCompile` starfish shader plus two compact masks totaling 21,658 bytes |
+| Color Karpy / 饭团 Karpy | `color-karpy` | `/models/toys/color-karpy/model-mobile-v001.glb` | 315,240 | Red beret only; Karpy, rice ball, clothing, face, paws, and blush stay authored | `onBeforeCompile` hat shader plus `/models/toys/color-karpy/hat-mask-mobile-v001.webp` (18,474 bytes), red-UV selection, and a local upper-head gate |
+| Color Koala / 睡觉考拉 | `color-koala` | `/models/toys/color-koala/model-mobile-v001.glb` | 335,136 | Sleeping-hat body only; pom-pom, koala, branch, leaves, and other props stay authored | `onBeforeCompile` hat shader plus `/models/toys/color-koala/hat-mask-mobile-v001.webp` (9,014 bytes), targeted UV protection, and a local hat-height gate |
 
-The ten regular GLBs total 4,936,452 bytes. Their runtime masks total
-130,658 bytes. Color Bear Singer v006 is a documented 1.376 MB exception to
+The twelve regular GLBs total 5,586,828 bytes. Their runtime masks total
+158,146 bytes. Color Bear Singer v006 is a documented 1.376 MB exception to
 the normal 1 MB mobile target and remains an optimization follow-up.
 
 ### Shared regular colorways
@@ -94,16 +99,18 @@ The visible target differs by model as recorded above.
 | `sky` | 晴空棉花 | `#69a9c8` |
 
 The regular draw branch has an absolute probability of 95%. Within that
-branch, the ten models are uniform and the nine primary palette IDs are
+legacy `/draw` compatibility branch, the twelve models are uniform and the
+nine primary palette IDs are
 selected independently and uniformly:
 
-- each regular model has an absolute probability of `95% / 10`, or 9.5%;
+- each regular model has an absolute probability of `95% / 12`, approximately
+  7.9167%;
 - each regular model-and-primary-palette combination has an absolute
-  probability of `95% / 90`, approximately 1.0556%.
+  probability of `95% / 108`, approximately 0.8796%.
 
-## Available now: two crystal special exhibits
+## Available compatibility assets: two crystal special exhibits
 
-There are exactly two active crystal-family Companions:
+There are exactly two registered crystal-family Companions:
 
 | Product name | Model ID | Series | Runtime GLB | GLB bytes | Material and recolor |
 | --- | --- | --- | --- | ---: | --- |
@@ -111,8 +118,10 @@ There are exactly two active crystal-family Companions:
 | Diamond Dog / 水晶小狗 | `diamond-dog` | `series_special_exhibits` | `/models/toys/diamond-dog/model-mobile-v001.glb` | 344,052 | Reuses the shared faceted material and runtime tint; no texture or mask |
 
 The internal material ID is `crystal`; the current product label is
-`切面钻石`. The two assets form the explicit Crystal series. They are not
-members of the ten-model matte series or matte atlas.
+`切面钻石`. The explicit Crystal card is temporarily removed from the Collect
+shelf. The assets remain available for historical collection rendering and the
+legacy `/draw` compatibility branch. They are not members of the twelve-model
+matte series or matte atlas.
 
 The special-exhibit branch has an absolute draw probability of 5%. It selects
 one of the two crystal models uniformly and one of five uniform runtime tints.
@@ -126,26 +135,26 @@ Each model/tint pair therefore has an absolute compatibility-draw probability of
 | `diamond-champagne` | 香槟钻 | `#d7c18c` | 1% across both models |
 | `diamond-mint` | 薄荷钻 | `#a5cfbe` | 1% across both models |
 
-The Collect Color series additionally allows both crystal models to consume
-one of the nine regular palette values as a runtime tint. This is a configured
-use of the same material, not a new texture, GLB, or material family.
+The renderer can still consume the earlier nine regular tint values for
+backward compatibility, but no current Collect series references that path.
 
 ## Current runtime capabilities
 
 | Capability | Availability | Boundary |
 | --- | --- | --- |
-| Load and inspect the ten active matte-series GLBs | `available` | Shared `ToyViewer`; local Draco decoder |
+| Load and inspect the twelve active matte-series GLBs | `available` | Shared `ToyViewer`; local Draco decoder |
 | Apply the nine registered model-specific colorways | `available` | Only the approved target for each model may change |
-| Load and inspect Diamond Unicorn and Diamond Dog | `available` | Shared crystal material; series cards use thumbnails |
-| Apply five native crystal tints | `available` | Same material contract on both crystal models |
-| Apply nine Color-series tints to crystal models | `available` | Runtime tint only; used by the explicit 12-model Color pool |
-| Client-side V3 mock draw | `available` | 95% regular / 5% special; not an authoritative server draw |
+| Load and inspect Diamond Unicorn and Diamond Dog | `available` | Shared crystal material; historical collection and old `/draw` compatibility only |
+| Apply five native crystal tints | `available` | Same compatibility material contract on both crystal models |
+| Apply nine regular tints to crystal models | `legacy` | Preserved rendering compatibility; no active Collect pool references it |
+| Draw from 熊猫、艺术家、汪汪队、ZZZ、吃货系列 | `available` | Explicit members, random registered matte colorway, six tickets per draw |
+| Client-side V3 mock draw | `available` | Old `/draw` keeps 95% regular / 5% special; not an authoritative server draw |
 | Persist the demo collection and recent draws | `available` | Browser local storage; not cloud ownership |
 | Render cached collection thumbnails from real GLBs | `available` | 320 px WebP, serialized render queue, IndexedDB cache |
 | Live 3D collection detail | `available` | One selected item at a time |
-| Favorite and representative selection | `planned` | No current state or ownership metadata |
-| Collection Signature | `planned` | Must be derived from real collection signals |
-| Echo recommendations and shared collection tasks | `planned` | Must use available assets and explainable signals |
+| Favorite and representative selection | `available` | Browser-local demo state; up to three Representatives |
+| Collection Signature | `available` | Deterministic local derivation from real collection and preference signals |
+| Echo recommendations and shared collection tasks | `available` | Finite, explainable local Demo; not production multi-user matching |
 | Server-authoritative draw, tickets, and collection | `planned` | Current Supabase use covers anonymous Auth/Profile only |
 
 ## Legacy, experimental, and planned boundaries
@@ -176,7 +185,8 @@ use of the same material, not a new texture, GLB, or material family.
 The following are roadmap capabilities only until separately approved assets,
 metadata, rendering contracts, and validation exist:
 
-- Sleepy, Quirky, Bold, and Cool archetypes;
+- Sleepy assets beyond the registered Cat, Seal, and Koala poses, plus Quirky,
+  Bold, and Cool archetypes;
 - expansion of Cute and other animal shapes;
 - crystal Companions beyond the registered Unicorn and Dog;
 - fuzzy, metallic, and porcelain material families;
@@ -206,13 +216,14 @@ Additional enforcement rules:
    and palette IDs marked `available` in this registry and active runtime code.
 2. Any `legacy`, `experimental`, `planned`, or `unavailable` dependency blocks
    publishing and must be named in `blockingReasons`.
-3. A proposal involving Sleepy, Quirky, metallic, fuzzy, porcelain, a crystal
-   Companion beyond the registered pair, or a new color is at least
-   `requires_asset_creation`.
-4. A proposal involving Favorite, Representative Companions, Echo, Collection
-   Signature, cloud ownership, or server-authoritative draws remains
-   `requires_engineering` until the corresponding capability is implemented
-   and this registry is updated.
+3. A proposal involving an unregistered Sleepy pose, Quirky, metallic, fuzzy,
+   porcelain, a crystal Companion beyond the registered pair, or a new color
+   is at least `requires_asset_creation`. The registered sleeping Cat, Seal,
+   and Koala may be used without creating a new asset.
+4. The current local Favorite, Representative, Collection Signature, and Echo
+   Demo may be referenced as implemented. Cloud ownership, production
+   multi-user Echo, or server-authoritative draws remain
+   `requires_engineering` until implemented and registered.
 5. Changing draw weights is never an implicit UI action. It requires explicit
    configuration, versioned probability disclosure, human approval, and, for
    authoritative operation, trusted server-side execution.

@@ -4,9 +4,16 @@
 
 The active mobile-first matte pool contains Color Otter, Color Bird, Color Teddy,
 Color Bunny, Color Cat, Color Panda, Color Bear Singer, Color Dog Camera,
-Color Dog Drum, and Color Seal. The crystal pool contains Diamond Unicorn and
-Diamond Dog. Runtime GLBs and their protection masks live under
+Color Dog Drum, Color Seal, Color Karpy, and Color Koala. Diamond Unicorn and
+Diamond Dog remain compatibility assets, but their Collect shelf card is
+temporarily removed. Runtime GLBs and their protection masks live under
 `public/models/toys/{toy-slug}/`.
+
+Color Karpy's 315,240-byte Draco GLB uses an 18,474-byte mask and a local
+upper-head gate so only its beret changes color; the rice ball and character
+stay authored. Color Koala's 335,136-byte Draco GLB uses a 9,014-byte mask and
+height gate so only the sleeping-hat body changes; the pom-pom, koala, branch,
+leaves, and props stay authored.
 
 Original high-resolution GLBs for active models live under `assets/models/source/{toy-slug}/` and are never requested by the browser. Superseded experiments, retired model families, rebuild history, and rollback code belong under `assets/models/archive/{toy-slug}/`. Color Unicorn and the retired Color Cat v001 remain archived; the earlier Unicorn, Kitty, Bunny, Bird, Doggy, and Karpy crystal pool remains a separate rollback path.
 
@@ -72,7 +79,7 @@ drag and keyboard input rotate the full row in place.
 This is a narrow exception to the thumbnail strategy:
 
 - never mount one `ToyViewer` or canvas per series member; the current shelf should
-  stay near five WebGL contexts rather than about twenty-three;
+  stay near six WebGL contexts rather than about twenty-six;
 - initialize the first color-series stage first and lazy-initialize special-series
   stages near the viewport;
 - request mobile GLBs through `loadToyModel`, whose promise cache deduplicates

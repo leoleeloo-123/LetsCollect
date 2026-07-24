@@ -60,10 +60,11 @@ Let's Collect 是一个围绕数字 Companion 展开的治愈系收藏体验。�
 - React 18、Vite、TypeScript、React Router；
 - Supabase 匿名 Auth 与 `profiles`；
 - React Context + `localStorage` 的票券、收藏、好友和最近抽取状态；
-- 十个 active Color Animals matte 模型；
+- 十二个 active Color Animals matte 模型；
 - 九个常规 colorway；
-- Diamond Unicorn 与 Diamond Dog，两者共享五种原生 Crystal tint；
-- 首页色彩系列的十二模型 × 九色显式组合，以及四个独立特殊系列池；
+- 首页色彩系列的十二个 matte 模型 × 九色显式组合；
+- 熊猫、艺术家、汪汪队、ZZZ 与吃货系列五个独立特殊系列池，全部六券一次；
+- Diamond Unicorn 与 Diamond Dog 及五种原生 Crystal tint 只保留给旧 `/draw`、已有藏品与内部验证；
 - 共享 `ToyViewer`、本地 Draco、按 URL 的模型解码缓存；
 - IndexedDB WebP 缩略图缓存；
 - Collect / Collection / Echo 三个 C 端入口，以及独立 Agent Console；
@@ -101,8 +102,10 @@ Let's Collect 是一个围绕数字 Companion 展开的治愈系收藏体验。�
 ## 6. Collect 页面
 
 Collect 是产品最重要的页面，真实 3D Companion 资产是唯一主视觉焦点。
-系列卡使用由同一 GLB 管线生成的缓存缩略图，以避免为每张卡同时创建
-多个 WebGL context；揭晓和详情继续使用 live `ToyViewer`。
+Collect 系列货架是受控 live 3D 例外：每张系列卡只创建一个 canvas /
+renderer，卡内模型共享旋转，并在接近 viewport 时懒初始化。当前六张卡
+最多约六个 WebGL context；如果逐模型创建则会接近二十六个。普通列表仍
+使用缓存缩略图，揭晓和详情继续使用单模型 live `ToyViewer`。
 
 ### 6.1 页面层级
 
@@ -116,34 +119,36 @@ Collect 是产品最重要的页面，真实 3D Companion 资产是唯一主视�
 主体使用：
 
 - 一个可扩展的系列卡片架，不使用卡片右上角的全局分页器；
-- 第一张色彩系列卡同时展示十二个真实模型；
+- 第一张色彩系列卡同时展示十二个真实 matte 模型；
 - 卡内九个色点切换全部模型的同一 colorway；
-- 熊猫、艺术家、狗狗与水晶各自一张扁平特殊系列卡；
+- 熊猫、艺术家、汪汪队、ZZZ 与吃货系列各自一张纵向特殊系列卡；
+- 五个特殊系列全部消耗六张券，且只在自己的严格模型池中均等抽取；
 - 每张卡一个主要抽取 CTA，并准确展示 `1 / N` 与票券成本；
-- 揭晓阶段一个 live `ToyViewer`，卡片预览全部使用缓存缩略图。
+- 系列卡预览使用单卡单 canvas 的共享旋转舞台；揭晓阶段使用一个 live `ToyViewer`。
 
 不得新增房间、森林、花园或其他复杂 3D 场景。新增特殊系列应只扩展
-集中配置与一张复用卡片，不复制抽取逻辑或新增并行 Canvas。
+集中配置与一张复用卡片，不复制抽取逻辑，也不为每个模型新增 canvas。
 
 ### 6.2 偏好
 
 用户当前只能表达真实存在的偏好：
 
-- 十个 active matte 与两只 active Crystal Companion；
+- 十二个 active matte Companion；
 - 九个真实 colorway 或它们的情绪分组；
-- Matte 倾向或对 Crystal 系列的兴趣；
+- Matte 倾向，以及为未来保留但不会改变当前抽取的 Crystal 兴趣信号；
 - 明确选择的系列与该系列真实存在的模型池。
 
 `Calm / Warm / Fresh / Dreamy / Bold / Monochrome` 只能作为九个真实 colorway 的 UI 分组，不是新增资产。映射必须集中配置并可解释。
 
-需要注意：十个普通模型不是全部“身体整体换色”。不同模型改变主体、
-帽子、行李箱、毛线球、棒棒糖、爆炸头、相机配件、鼓或海星。用户界面
+需要注意：十二个普通模型不是全部“身体整体换色”。不同模型改变主体、
+帽子、行李箱、毛线球、棒棒糖、爆炸头、相机配件、鼓、海星或睡帽。用户界面
 优先使用 `colorway / 配色 / color accent`，详情使用真实部位名称。
 
 色彩系列的九个色点是显式选择：十二个模型在该色系下严格等概率
-`1 / 12`。熊猫、艺术家、狗狗与水晶系列分别使用自己的模型池；水晶
-系列颜色随机、票券成本更高。所有系列概率都从集中配置派生，不允许
-额外混入隐藏彩蛋概率。
+`1 / 12`。熊猫、艺术家、汪汪队、ZZZ 与吃货系列分别使用自己的模型池，
+全部六券一次。水晶卡暂时下架，且水晶模型不进入色彩系列；旧 `/draw`
+仍保留 95% matte / 5% Crystal 兼容分支。所有系列概率都从集中配置派生，
+不允许额外混入隐藏彩蛋概率。
 
 ### 6.3 抽取叙事
 
@@ -323,7 +328,9 @@ Proposal 必须包含：
 - feasibility 与 blocking reasons；
 - Approve / Edit / Archive。
 
-只允许 `available_now` 或人工确认后的 `requires_configuration` 进入发布动作。依赖 Sleepy、Quirky、新材质或新 3D 资产的提案必须标为 Roadmap Proposal，并禁用发布。
+只允许 `available_now` 或人工确认后的 `requires_configuration` 进入发布动作。
+ZZZ 已有小猫、海豹和考拉三款现成睡姿；依赖新的 Sleepy 资产、睡眠水晶
+变体、Quirky、新材质或其他新 3D 资产的提案仍必须标为 Roadmap Proposal 并禁用发布。
 
 ## 11. Capability 与资产真实性
 
@@ -432,11 +439,12 @@ campaign_completed
 
 ## 15. 性能、状态与可访问性
 
-- 同一主要页面默认只保留一个 active live Viewer；
+- 除 Collect 系列货架外，同一主要页面默认只保留一个 active live Viewer；
+- Collect 货架每张卡最多一个 canvas，当前最多约六个 context，并对下方卡片懒初始化；
 - 列表、Representative 与 Echo 卡片使用缩略图；
 - 保留模型 URL 解码缓存与 IndexedDB WebP；
 - 为首次访问增加静态 poster 或 CSS fallback，不能只依赖已经生成过的缓存缩略图；
-- Diamond Unicorn 揭晓前应预载结果资产；
+- 旧 `/draw` 若命中 Diamond Unicorn，应在揭晓前预载结果资产；
 - 高频 colorway 切换应优先原位更新材质，避免销毁整个 renderer；
 - 所有页面具备 loading、empty、error、retry；
 - 所有交互可键盘操作，有可见 focus；
@@ -493,10 +501,10 @@ campaign_completed
 -> Roadmap Proposal 明确阻塞且不可发布
 ```
 
-完整实现必须保证十个 matte 模型、两只 Crystal 模型、九个常规
-colorway、五个原生 Crystal tint、色彩系列 `1 / 12`、各特殊系列的
-严格模型池与票券成本、兼容 `/draw` 的 95% / 5% 分支，以及现有详情
-渲染不被破坏。
+完整实现必须保证十二个 matte 模型、九个常规 colorway、色彩系列
+`1 / 12`，以及熊猫、艺术家、汪汪队、ZZZ、吃货系列五个六券特殊池的
+严格模型与概率。两只 Crystal 模型及五个原生 tint 不出现在当前 Collect
+货架，但兼容 `/draw` 的 95% / 5% 分支、已有藏品和现有详情渲染不得被破坏。
 
 ## 18. 实施原则
 

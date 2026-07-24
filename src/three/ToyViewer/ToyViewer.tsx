@@ -39,6 +39,14 @@ import {
   prepareColorSealMaskTexture,
   prepareColorSealObjectMaskTexture
 } from "../material/createColorSealMaterials";
+import {
+  cloneColorKarpyMaterials,
+  prepareColorKarpyMaskTexture
+} from "../material/createColorKarpyMaterials";
+import {
+  cloneColorKoalaMaterials,
+  prepareColorKoalaMaskTexture
+} from "../material/createColorKoalaMaterials";
 import { loadRoomEnvironment, loadToyModel, loadToyViewerRuntime } from "./runtime";
 
 export type ToyRotationController = {
@@ -201,6 +209,12 @@ export function ToyViewer({
       const colorSealStarfish = modelDefinition.rendering?.mode === "color-seal-starfish"
         ? modelDefinition.rendering
         : null;
+      const colorKarpyHat = modelDefinition.rendering?.mode === "color-karpy-hat"
+        ? modelDefinition.rendering
+        : null;
+      const colorKoalaHat = modelDefinition.rendering?.mode === "color-koala-hat"
+        ? modelDefinition.rendering
+        : null;
       const standardMaterialResult = colorBirdZones
         || colorTeddyCoat
         || colorBunnyBag
@@ -211,6 +225,8 @@ export function ToyViewer({
         || colorDogCameraAccessories
         || colorDogDrum
         || colorSealStarfish
+        || colorKarpyHat
+        || colorKoalaHat
         ? null
         : createToyMaterial(THREE, toy, { lightweight: useLightweightStage });
       const toyMaterial = standardMaterialResult?.material ?? null;
@@ -263,6 +279,18 @@ export function ToyViewer({
         prepareColorSealMaskTexture(THREE, colorSealMask);
         prepareColorSealObjectMaskTexture(THREE, colorSealObjectMask);
       }
+      const colorKarpyMask = colorKarpyHat
+        ? await new THREE.TextureLoader().loadAsync(colorKarpyHat.maskUrl)
+        : null;
+      if (colorKarpyMask) {
+        prepareColorKarpyMaskTexture(THREE, colorKarpyMask);
+      }
+      const colorKoalaMask = colorKoalaHat
+        ? await new THREE.TextureLoader().loadAsync(colorKoalaHat.maskUrl)
+        : null;
+      if (colorKoalaMask) {
+        prepareColorKoalaMaskTexture(THREE, colorKoalaMask);
+      }
       let colorBirdMaterials: import("three").Material[] = [];
       let colorTeddyMaterials: import("three").Material[] = [];
       let colorBunnyMaterials: import("three").Material[] = [];
@@ -273,6 +301,8 @@ export function ToyViewer({
       let colorDogCameraMaterials: import("three").Material[] = [];
       let colorDogDrumMaterials: import("three").Material[] = [];
       let colorSealMaterials: import("three").Material[] = [];
+      let colorKarpyMaterials: import("three").Material[] = [];
+      let colorKoalaMaterials: import("three").Material[] = [];
       const tileTextureCopies: import("three").Texture[] = [];
       const tileTextureCache = new Map<import("three").Texture, import("three").Texture>();
       function applyTileMaterialProfile(materials: import("three").Material[]) {
@@ -395,6 +425,8 @@ export function ToyViewer({
         colorDogCameraMaterials.forEach((material) => material.dispose());
         colorDogDrumMaterials.forEach((material) => material.dispose());
         colorSealMaterials.forEach((material) => material.dispose());
+        colorKarpyMaterials.forEach((material) => material.dispose());
+        colorKoalaMaterials.forEach((material) => material.dispose());
         tileTextureCopies.forEach((texture) => texture.dispose());
         colorBirdZoneMap?.dispose();
         colorTeddyProtectMap?.dispose();
@@ -404,6 +436,8 @@ export function ToyViewer({
         colorDogCameraMask?.dispose();
         colorSealMask?.dispose();
         colorSealObjectMask?.dispose();
+        colorKarpyMask?.dispose();
+        colorKoalaMask?.dispose();
         environmentTexture?.dispose();
         pedestal.geometry.dispose();
         (pedestal.material as import("three").Material).dispose();
@@ -518,6 +552,22 @@ export function ToyViewer({
           colorSealObjectMask,
           renderer.capabilities.getMaxAnisotropy()
         );
+      } else if (colorKarpyHat && colorKarpyMask) {
+        colorKarpyMaterials = cloneColorKarpyMaterials(
+          THREE,
+          model,
+          new THREE.Color(palette.color).multiplyScalar(colorKarpyHat.colorScale),
+          colorKarpyMask,
+          renderer.capabilities.getMaxAnisotropy()
+        );
+      } else if (colorKoalaHat && colorKoalaMask) {
+        colorKoalaMaterials = cloneColorKoalaMaterials(
+          THREE,
+          model,
+          new THREE.Color(palette.color).multiplyScalar(colorKoalaHat.hatColorScale),
+          colorKoalaMask,
+          renderer.capabilities.getMaxAnisotropy()
+        );
       } else {
         model.traverse((child) => {
           if (!(child instanceof THREE.Mesh) || !toyMaterial) return;
@@ -538,6 +588,8 @@ export function ToyViewer({
         ...colorDogCameraMaterials,
         ...colorDogDrumMaterials,
         ...colorSealMaterials,
+        ...colorKarpyMaterials,
+        ...colorKoalaMaterials,
         ...(toyMaterial ? [toyMaterial] : [])
       ]);
 

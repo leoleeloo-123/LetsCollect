@@ -250,6 +250,40 @@ export const colorSealModel: ToyModelDefinition = {
   }
 };
 
+export const colorKarpyModel: ToyModelDefinition = {
+  id: "color-karpy",
+  slug: "color-karpy",
+  name: "饭团卡皮",
+  fallbackShape: "blob",
+  assets: {
+    modelUrl: "/models/toys/color-karpy/model-mobile-v001.glb",
+    mobileModelUrl: "/models/toys/color-karpy/model-mobile-v001.glb"
+  },
+  viewer: { scaleMultiplier: 0.94, yOffset: -0.02, rotationY: -0.24 },
+  rendering: {
+    mode: "color-karpy-hat",
+    maskUrl: "/models/toys/color-karpy/hat-mask-mobile-v001.webp",
+    colorScale: 0.92
+  }
+};
+
+export const colorKoalaModel: ToyModelDefinition = {
+  id: "color-koala",
+  slug: "color-koala",
+  name: "睡觉考拉",
+  fallbackShape: "blob",
+  assets: {
+    modelUrl: "/models/toys/color-koala/model-mobile-v001.glb",
+    mobileModelUrl: "/models/toys/color-koala/model-mobile-v001.glb"
+  },
+  viewer: { scaleMultiplier: 0.94, yOffset: -0.02, rotationY: -0.24 },
+  rendering: {
+    mode: "color-koala-hat",
+    maskUrl: "/models/toys/color-koala/hat-mask-mobile-v001.webp",
+    hatColorScale: 0.92
+  }
+};
+
 export const diamondUnicornModel: ToyModelDefinition = {
   id: "diamond-unicorn",
   slug: "diamond-unicorn",
@@ -289,7 +323,9 @@ export const colorAnimalModels = [
   colorBearSingerModel,
   colorDogCameraModel,
   colorDogDrumModel,
-  colorSealModel
+  colorSealModel,
+  colorKarpyModel,
+  colorKoalaModel
 ] as const;
 export const toyPalettes: ToyPaletteDefinition[] = [
   { id: "rose", name: "樱花粉", color: "#ff789e", attenuation: "#8f2346", emissive: "#c83464", glow: "#ff7da5" },
@@ -385,6 +421,8 @@ export function getToyRenderingAssetKey(model: ToyModelDefinition) {
   if (model.rendering?.mode === "color-seal-starfish") {
     return `${model.rendering.maskUrl}:${model.rendering.objectMaskUrl}`;
   }
+  if (model.rendering?.mode === "color-karpy-hat") return model.rendering.maskUrl;
+  if (model.rendering?.mode === "color-koala-hat") return model.rendering.maskUrl;
   return "unmasked";
 }
 

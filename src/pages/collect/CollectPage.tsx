@@ -137,7 +137,7 @@ export function CollectPage() {
             <p className="collect-kicker">SPECIAL SERIES</p>
             <h2 id="special-series-heading">特殊系列</h2>
           </div>
-          <p>按角色、兴趣和材质组成的小型主题池。</p>
+          <p>按角色、状态和兴趣组成的小型主题池。</p>
         </div>
 
         <div className="collect-page__special-grid">

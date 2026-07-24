@@ -17,6 +17,8 @@ export type ToyModelId =
   | "color-dog-camera"
   | "color-dog-drum"
   | "color-seal"
+  | "color-karpy"
+  | "color-koala"
   | "diamond-unicorn"
   | "diamond-dog";
 
@@ -113,6 +115,16 @@ export type ToyModelDefinition = {
         maskUrl: string;
         objectMaskUrl: string;
         colorScale: number;
+      }
+    | {
+        mode: "color-karpy-hat";
+        maskUrl: string;
+        colorScale: number;
+      }
+    | {
+        mode: "color-koala-hat";
+        maskUrl: string;
+        hatColorScale: number;
       };
 };
 

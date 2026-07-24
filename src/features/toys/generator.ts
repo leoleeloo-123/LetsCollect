@@ -157,6 +157,12 @@ function getCollectibleDescription(modelId: ToyModelId, paletteName: string) {
   if (modelId === "color-seal") {
     return `一只抱着${paletteName}海星的软萌海豹，身体、五官与尾部保持原色。`;
   }
+  if (modelId === "color-karpy") {
+    return `一只吃着饭团、戴着${paletteName}帽子的软萌卡皮，身体、白色衣服、五官、爪子与腮红保持原色。`;
+  }
+  if (modelId === "color-koala") {
+    return `一只戴着${paletteName}睡帽的软萌考拉，身体、五官、帽顶绒球、树枝与叶片保持原色。`;
+  }
   return `一只采用${paletteName}配色的软萌伙伴，保留原始五官与角色细节。`;
 }
 

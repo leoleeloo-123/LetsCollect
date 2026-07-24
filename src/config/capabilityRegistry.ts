@@ -40,6 +40,8 @@ const currentAssetIds = [
   "color-dog-camera",
   "color-dog-drum",
   "color-seal",
+  "color-karpy",
+  "color-koala",
   "diamond-unicorn",
   "diamond-dog"
 ] as const satisfies readonly ToyModelId[];
@@ -148,6 +150,24 @@ export const currentAssetRegistry = [
     drawRole: "regular"
   },
   {
+    id: "color-karpy",
+    name: "Color Karpy",
+    material: "matte",
+    availability: "available",
+    availableColorIds: matteColorIds,
+    defaultDrawColorIds: matteColorIds,
+    drawRole: "regular"
+  },
+  {
+    id: "color-koala",
+    name: "Color Koala",
+    material: "matte",
+    availability: "available",
+    availableColorIds: matteColorIds,
+    defaultDrawColorIds: matteColorIds,
+    drawRole: "regular"
+  },
+  {
     id: "diamond-unicorn",
     name: "Diamond Unicorn",
     material: "crystal",
@@ -179,17 +199,17 @@ export type CapabilityRegistryEntry = {
 export const capabilityRegistry = [
   {
     id: "matte_companion_models",
-    label: "Ten matte Companion models",
+    label: "Twelve matte Companion models",
     availability: "available",
     category: "asset",
-    description: "Ten matte Companions share the approved nine-color palette."
+    description: "Twelve matte Companions share the approved nine-color palette."
   },
   {
     id: "matte_color_variants",
     label: "Configurable matte colors",
     availability: "available",
     category: "asset",
-    description: "Nine approved palettes rendered on the ten current matte models."
+    description: "Nine approved palettes rendered on the twelve current matte models."
   },
   {
     id: "crystal_unicorn_exhibit",

@@ -62,15 +62,19 @@ Console remains a separately marked internal route.
 
 The redesign does not replace the proven rendering stack.
 
-- `ToyViewer` remains the only live C-end 3D renderer.
-- Collect series cards use cached thumbnails from the real GLBs; only reveal
-  and detail surfaces mount a live viewer.
+- `ToyViewer` remains the reusable single-model renderer for reveal and detail.
+- Collect series cards use one `SeriesToyViewer` canvas per card, with all model
+  roots sharing rotation; the current shelf is about six contexts rather than
+  about twenty-six per-model contexts.
 - Collection and Echo lists use the existing cached thumbnail renderer.
 - Collection and draw detail surfaces continue to open the existing interactive
   3D viewer.
-- All ten matte models retain their verified per-model recolor semantics.
-- Diamond Unicorn and Diamond Dog share five native crystal tints and can also
-  consume an explicitly selected regular tint in the Collect Color series.
+- All twelve matte models retain their verified per-model recolor semantics.
+- The Color series contains those twelve matte models only. Its five special
+  cards are Panda, Artists, Wangwang Team (汪汪队), ZZZ, and Foodies; each draw
+  costs six tickets.
+- Diamond Unicorn and Diamond Dog retain five native crystal tints for existing
+  collections, Labs, and the legacy draw, but the Collect Crystal card is paused.
 
 The initial frontend migration did not change a GLB, material shader, mask
 texture, or probability constant. The subsequent Collect series iteration adds
@@ -111,7 +115,7 @@ Collection Signature is deterministic and explainable. It weights:
 - Favorites;
 - Representative Companions;
 - real palette groups;
-- matte versus the single crystal exhibit.
+- matte versus the retained crystal exhibit family.
 
 It returns two to four lightweight tendency tags, a non-diagnostic description,
 and visible evidence. It does not infer personality.
@@ -144,8 +148,9 @@ Observe → Reason → Propose → Human Approve → Measure
 Every proposal is checked against the centralized capability registry.
 
 - A current-asset campaign can advance through human approval.
-- A Sleepy Crystal proposal is marked as a Roadmap Proposal because Sleepy
-  assets and additional crystal models do not exist.
+- ZZZ can use the existing sleeping Cat, Seal, and Koala. A Sleepy Crystal
+  proposal remains a Roadmap Proposal because no sleeping crystal variant
+  exists.
 - Proposals requiring new assets cannot be approved or published.
 - Approval records configuration intent; the Agent never changes source code or
   bypasses a human release step.
@@ -188,8 +193,10 @@ Before publishing the branch:
 6. check browser console errors and `prefers-reduced-motion`;
 7. run `git diff --check`.
 
-## Validation record
+## Historical V1 validation record
 
+The following results describe the original V1 implementation before the
+single-canvas-per-series Collect shelf replaced its first-viewport layout.
 Validated locally on 2026-07-24:
 
 - TypeScript `--noEmit` check passed.

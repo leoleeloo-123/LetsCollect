@@ -51,20 +51,21 @@ Agent Console 已有本地演示实现，但票券、所有权、Echo 和 Agent 
 
 当前 active 内容为：
 
-- 十个 Color Animals matte / 柔雾树脂 Companion；
-- Diamond Unicorn 与 Diamond Dog 两只 Crystal Companion；
+- 十二个 Color Animals matte / 柔雾树脂 Companion；
 - 九个注册常规 colorway，以及五个原生 Crystal tint；
-- Collect 首页的色彩系列：选择九色之一后，在十二个模型中严格等概率
+- Collect 首页的色彩系列：选择九色之一后，在十二个 matte 模型中严格等概率
   `1 / 12` 抽取；
-- Collect 首页的特殊系列：熊猫、艺术家、狗狗与水晶各自使用独立、
-  可审计的模型池；水晶系列使用更多票券；
+- Collect 首页的特殊系列：熊猫、艺术家、汪汪队、ZZZ 与吃货系列各自
+  使用独立、可审计的模型池，全部每次六张券；
+- Diamond Unicorn 与 Diamond Dog 两只 Crystal Companion 暂时不在
+  Collect 货架或色彩系列中，但资产、已有藏品、详情与 Lab 继续保留；
 - 兼容 `/draw` 仍保留常规分支 95%、Crystal 分支 5%，Crystal 分支在
   Unicorn 与 Dog 之间等概率选择。
 
-十个普通模型使用不同的真实换色目标，不能统一描述为“全身换色”。
-色彩系列中的两只 Crystal 模型会消费用户选择的常规色作为运行时 tint；
-独立水晶系列则从五个原生 Crystal tint 中随机。完整路径、大小、palette、
-实现方式和 availability 见 `docs/ASSET_CAPABILITY_REGISTRY.md`。
+十二个普通模型使用不同的真实换色目标，不能统一描述为“全身换色”。
+ZZZ 复用小猫、海豹和考拉三款现有睡姿。水晶模型当前只在旧 `/draw`
+兼容分支中从五个原生 tint 随机；完整路径、大小、palette、实现方式和
+availability 见 `docs/ASSET_CAPABILITY_REGISTRY.md`。
 
 旧 Jelly Jade、八材质、归档模型和 Lab 实验是 legacy / experimental，不是当前可抽取内容。
 
@@ -101,11 +102,12 @@ Agent Console 使用独立 Internal / Demo route，不进入 C 端主导航。
 ### Collect
 
 - 一个可扩展的系列卡片架，而不是卡片内部的全局分页器；
-- 第一张色彩系列卡展示十二个真实模型，并用九个色点切换全卡配色；
+- 第一张色彩系列卡展示十二个真实 matte 模型，并用九个色点切换全卡配色；
 - 每个特殊系列独立成卡，模型池、配色策略、概率与票券成本集中配置；
-- 卡片使用真实 GLB 生成并缓存的缩略图，揭晓与详情继续使用 live 3D；
+- 每张卡使用一个 live canvas 让卡内模型同步旋转，下方卡片临近 viewport 才初始化；
+- 当前一张色彩卡与五张特殊卡最多约六个 canvas，而不是逐模型约二十六个；
 - 柔和、非老虎机式揭晓；
-- 以 Companion、colorway、Matte / Crystal 和简短描述为主要信息。
+- 以 Companion、colorway、当前 matte 主题和简短描述为主要信息。
 
 ### Collection
 
