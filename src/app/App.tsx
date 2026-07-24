@@ -7,7 +7,8 @@ const CollectionPage = lazy(() => import("../pages/collection/CollectionPage").t
 const DrawPage = lazy(() => import("../pages/draw/DrawPage").then((module) => ({ default: module.DrawPage })));
 const HomePage = lazy(() => import("../pages/home/HomePage").then((module) => ({ default: module.HomePage })));
 const OnboardingPage = lazy(() => import("../pages/auth/OnboardingPage").then((module) => ({ default: module.OnboardingPage })));
-const FriendsPage = lazy(() => import("../pages/friends/FriendsPage").then((module) => ({ default: module.FriendsPage })));
+const EchoPage = lazy(() => import("../pages/echo/EchoPage").then((module) => ({ default: module.EchoPage })));
+const AgentConsolePage = lazy(() => import("../pages/agent/AgentConsolePage").then((module) => ({ default: module.AgentConsolePage })));
 const MaterialLabPage = lazy(() => import("../pages/material-lab/MaterialLabPage").then((module) => ({ default: module.MaterialLabPage })));
 const ColorBunnyLabPage = lazy(() => import("../pages/color-bunny-lab/ColorBunnyLabPage").then((module) => ({ default: module.ColorBunnyLabPage })));
 const ColorPandaLabPage = lazy(() => import("../pages/color-panda-lab/ColorPandaLabPage").then((module) => ({ default: module.ColorPandaLabPage })));
@@ -31,6 +32,8 @@ export function App() {
         <Route path="register" element={<Navigate to="/onboarding" replace />} />
         <Route path="auth/login" element={<Navigate to="/onboarding" replace />} />
         <Route path="auth/register" element={<Navigate to="/onboarding" replace />} />
+        <Route path="agent" element={<AgentConsolePage />} />
+        <Route path="agent-console" element={<Navigate to="/agent" replace />} />
         <Route path="material-lab" element={<MaterialLabPage />} />
         <Route path="color-bunny-lab" element={<ColorBunnyLabPage />} />
         <Route path="color-panda-lab" element={<ColorPandaLabPage />} />
@@ -44,9 +47,10 @@ export function App() {
             <Route index element={<HomePage />} />
             <Route path="draw" element={<DrawPage />} />
             <Route path="collection" element={<CollectionPage />} />
-            <Route path="friends" element={<FriendsPage />} />
+            <Route path="echo" element={<EchoPage />} />
+            <Route path="friends" element={<Navigate to="/echo" replace />} />
             <Route path="explore" element={<Navigate to="/" replace />} />
-            <Route path="profile" element={<Navigate to="/friends" replace />} />
+            <Route path="profile" element={<Navigate to="/collection" replace />} />
             <Route path="*" element={<NotFoundPage />} />
           </Route>
         </Route>

@@ -1,258 +1,559 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
-  Award,
-  BookOpenCheck,
   CalendarDays,
-  Dog,
-  LayoutGrid,
-  Medal,
-  Palette,
-  Trophy
+  Heart,
+  Rotate3D,
+  SlidersHorizontal,
+  Sparkles,
+  Star,
+  X
 } from "lucide-react";
 import { useMvpState } from "../../app/MvpState";
 import { ToyThumbnail } from "../../components/toys/ToyThumbnail";
-import { collectorProfile } from "../../data/mock/community";
-import { homeSeriesToys } from "../../data/mock/homeSeries";
+import { productCopy } from "../../content/productCopy";
 import { ToyDetailSheet } from "../../features/collection/ToyDetailSheet";
-import { colorAnimalsSeries, isColorAnimalCollectible } from "../../features/toys/activeSeries";
-import { colorAnimalModels, colorAnimalPalettes, rarityLabels } from "../../features/toys/catalog";
-import type { Collectible } from "../../types/toy";
+import {
+  deriveCollectionSignature
+} from "../../features/collection/collectionSignature";
+import { isSpecialExhibitCollectible } from "../../features/toys/activeSeries";
+import {
+  getToyModel,
+  getToyPalette
+} from "../../features/toys/catalog";
+import {
+  getCollectibleMaterialLabel,
+  getCollectiblePaletteLabel
+} from "../../features/toys/presentation";
+import type {
+  Collectible,
+  ToyModelId,
+  ToyPaletteId
+} from "../../types/toy";
+import "./collection-v2.css";
 
-type ProfileSection = "showcase" | "atlas" | "achievements";
+type ModelFilter = "all" | ToyModelId;
+type ColorFilter = "all" | ToyPaletteId;
+type MaterialFilter = "all" | "matte" | "crystal";
+type AcquisitionFilter = "all" | "last-7" | "last-30";
+type AcquisitionOrder = "newest" | "oldest";
+
+const REPRESENTATIVE_SLOT_KEYS = [
+  "representative-slot-1",
+  "representative-slot-2",
+  "representative-slot-3"
+] as const;
+const ACQUISITION_FILTER_DAYS: Record<
+  Exclude<AcquisitionFilter, "all">,
+  number
+> = {
+  "last-7": 7,
+  "last-30": 30
+};
+const acquiredDateFormatter = new Intl.DateTimeFormat("zh-CN", {
+  year: "numeric",
+  month: "short",
+  day: "numeric"
+});
+
+function getTimestamp(value: string) {
+  const timestamp = Date.parse(value);
+  return Number.isFinite(timestamp) ? timestamp : 0;
+}
+
+function formatAcquisitionDate(value: string) {
+  const timestamp = getTimestamp(value);
+  return timestamp > 0
+    ? acquiredDateFormatter.format(new Date(timestamp))
+    : "日期未知";
+}
+
+function getMaterialCategory(toy: Collectible): Exclude<
+  MaterialFilter,
+  "all"
+> {
+  return isSpecialExhibitCollectible(toy) ? "crystal" : "matte";
+}
 
 export function CollectorProfilePage() {
-  const { collection } = useMvpState();
-  const [activeSection, setActiveSection] = useState<ProfileSection>("showcase");
+  const {
+    collection,
+    favoriteIds,
+    representativeIds,
+    toggleFavorite,
+    toggleRepresentative
+  } = useMvpState();
   const [selectedToy, setSelectedToy] = useState<Collectible | null>(null);
+  const [modelFilter, setModelFilter] = useState<ModelFilter>("all");
+  const [colorFilter, setColorFilter] = useState<ColorFilter>("all");
+  const [materialFilter, setMaterialFilter] =
+    useState<MaterialFilter>("all");
+  const [favoriteOnly, setFavoriteOnly] = useState(false);
+  const [acquisitionFilter, setAcquisitionFilter] =
+    useState<AcquisitionFilter>("all");
+  const [acquisitionOrder, setAcquisitionOrder] =
+    useState<AcquisitionOrder>("newest");
 
-  const colorAnimalCollection = collection.filter(isColorAnimalCollectible);
-  const distinctPalettes = new Set(colorAnimalCollection.map((toy) => toy.paletteId));
-  const colorProgress = distinctPalettes.size;
-  const colorCompletion = Math.round((colorProgress / colorAnimalPalettes.length) * 100);
-  const distinctModels = new Set(colorAnimalCollection.map((toy) => toy.modelId));
-  const modelProgress = distinctModels.size;
-  const collectorLevel = Math.max(1, Math.floor(collection.length / 4) + 1);
-  const completedSetCount = Number(colorProgress >= colorAnimalPalettes.length);
-  const achievementCount = 1
-    + Number(colorProgress >= 4)
-    + Number(completedSetCount > 0);
+  const collectionById = useMemo(
+    () => new Map(collection.map((toy) => [toy.id, toy])),
+    [collection]
+  );
+  const favoriteIdSet = useMemo(
+    () => new Set(favoriteIds),
+    [favoriteIds]
+  );
+  const representativeIdSet = useMemo(
+    () => new Set(representativeIds),
+    [representativeIds]
+  );
+  const representativeToys = useMemo(
+    () => representativeIds
+      .map((id) => collectionById.get(id))
+      .filter((toy): toy is Collectible => toy !== undefined),
+    [collectionById, representativeIds]
+  );
+  const modelOptions = useMemo(
+    () => [...new Set(collection.map((toy) => toy.modelId))]
+      .map((modelId) => getToyModel(modelId))
+      .sort((left, right) => left.name.localeCompare(right.name, "zh-CN")),
+    [collection]
+  );
+  const colorOptions = useMemo(
+    () => [...new Set(collection.map((toy) => toy.paletteId))]
+      .map((paletteId) => getToyPalette(paletteId))
+      .sort((left, right) => left.name.localeCompare(right.name, "zh-CN")),
+    [collection]
+  );
+  const signature = useMemo(
+    () => deriveCollectionSignature({
+      collection,
+      favoriteIds,
+      representativeIds
+    }),
+    [collection, favoriteIds, representativeIds]
+  );
+  const filteredCollection = useMemo(() => {
+    const cutoff = acquisitionFilter === "all"
+      ? null
+      : Date.now()
+        - ACQUISITION_FILTER_DAYS[acquisitionFilter] * 24 * 60 * 60 * 1000;
+
+    return collection
+      .filter((toy) => modelFilter === "all" || toy.modelId === modelFilter)
+      .filter((toy) => colorFilter === "all" || toy.paletteId === colorFilter)
+      .filter((toy) =>
+        materialFilter === "all"
+        || getMaterialCategory(toy) === materialFilter
+      )
+      .filter((toy) => !favoriteOnly || favoriteIdSet.has(toy.id))
+      .filter((toy) => cutoff === null || getTimestamp(toy.createdAt) >= cutoff)
+      .sort((left, right) => {
+        const difference =
+          getTimestamp(right.createdAt) - getTimestamp(left.createdAt);
+        return acquisitionOrder === "newest" ? difference : -difference;
+      });
+  }, [
+    acquisitionFilter,
+    acquisitionOrder,
+    collection,
+    colorFilter,
+    favoriteIdSet,
+    favoriteOnly,
+    materialFilter,
+    modelFilter
+  ]);
+  const activeFilterCount =
+    Number(modelFilter !== "all")
+    + Number(colorFilter !== "all")
+    + Number(materialFilter !== "all")
+    + Number(favoriteOnly)
+    + Number(acquisitionFilter !== "all");
+  const representativeSelectionFull = representativeIds.length >= 3;
+
+  function resetFilters() {
+    setModelFilter("all");
+    setColorFilter("all");
+    setMaterialFilter("all");
+    setFavoriteOnly(false);
+    setAcquisitionFilter("all");
+    setAcquisitionOrder("newest");
+  }
 
   return (
-    <div className="page-stack collection-page profile-hub-page">
-      <section className="profile-overview-card" aria-labelledby="collector-name">
-        <div className="profile-overview-card__topline">
-          <div className="profile-overview-card__avatar" aria-hidden="true">
-            {collectorProfile.initial}
-          </div>
-          <div className="profile-overview-card__identity">
-            <div className="profile-overview-card__name-row">
-              <h1 id="collector-name">{collectorProfile.name}</h1>
-              <span>{collectorProfile.handle}</span>
-            </div>
-            <p>{collectorProfile.bio}</p>
-            <small><CalendarDays size={14} /> {collectorProfile.joinedLabel}</small>
-          </div>
-          <div className="profile-overview-card__rank" aria-label={`收藏等级 ${collectorLevel}`}>
-            <Medal size={18} aria-hidden="true" />
-            <span>等级</span>
-            <strong>{collectorLevel}</strong>
-          </div>
+    <div className="page-stack collection-page collection-v2">
+      <header className="collection-v2__hero">
+        <div className="collection-v2__hero-copy">
+          <p className="eyebrow">{productCopy.collection.eyebrow}</p>
+          <h1>{productCopy.collection.title}</h1>
+          <p>
+            选择最能代表你的 Companion，也看看颜色与材质如何在一次次相遇中，
+            慢慢形成属于当前收藏的气质。
+          </p>
         </div>
-
-        <div className="profile-overview-card__title">
-          <span>{collectorProfile.title}</span>
-          <span>Color Animals · V3</span>
-        </div>
-
-        <dl className="profile-overview-card__stats">
-          <div><dt>藏品数量</dt><dd>{collection.length}<span>件</span></dd></div>
-          <div><dt>图鉴完成度</dt><dd>{colorCompletion}<span>%</span></dd></div>
-          <div><dt>已获成就</dt><dd>{achievementCount}<span>/3</span></dd></div>
+        <dl className="collection-v2__stats">
+          <div>
+            <dt>Companions</dt>
+            <dd>{collection.length}<span>件</span></dd>
+          </div>
+          <div>
+            <dt>Favorites</dt>
+            <dd>{favoriteIds.length}<span>件</span></dd>
+          </div>
+          <div>
+            <dt>Representatives</dt>
+            <dd>{representativeToys.length}<span>/ 3</span></dd>
+          </div>
         </dl>
+      </header>
+
+      <section
+        className="collection-v2__panel collection-v2__signature"
+        aria-labelledby="collection-signature-title"
+      >
+        <div className="collection-v2__section-heading">
+          <div>
+            <p className="eyebrow">Collection Signature</p>
+            <h2 id="collection-signature-title">最近的收藏倾向</h2>
+          </div>
+          <Sparkles size={22} aria-hidden="true" />
+        </div>
+        <div className="collection-v2__signature-layout">
+          <div>
+            <div
+              className="collection-v2__signature-tags"
+              aria-label="收藏倾向标签"
+            >
+              {signature.tags.map((tag) => <span key={tag}>{tag}</span>)}
+            </div>
+            <p className="collection-v2__signature-description">
+              {signature.description}
+            </p>
+          </div>
+          <ul
+            className="collection-v2__signature-evidence"
+            aria-label="标签生成依据"
+          >
+            {signature.evidence.map((item) => <li key={item}>{item}</li>)}
+          </ul>
+        </div>
       </section>
 
-      <nav className="profile-section-switch" aria-label="个人主页内容切换">
-        <button
-          type="button"
-          className={activeSection === "showcase" ? "is-active" : ""}
-          aria-pressed={activeSection === "showcase"}
-          onClick={() => setActiveSection("showcase")}
-        >
-          <LayoutGrid size={17} aria-hidden="true" /> 展柜 <span>{collection.length}</span>
-        </button>
-        <button
-          type="button"
-          className={activeSection === "atlas" ? "is-active" : ""}
-          aria-pressed={activeSection === "atlas"}
-          onClick={() => setActiveSection("atlas")}
-        >
-          <BookOpenCheck size={17} aria-hidden="true" /> 图鉴 <span>{colorProgress}/{colorAnimalPalettes.length}</span>
-        </button>
-        <button
-          type="button"
-          className={activeSection === "achievements" ? "is-active" : ""}
-          aria-pressed={activeSection === "achievements"}
-          onClick={() => setActiveSection("achievements")}
-        >
-          <Trophy size={17} aria-hidden="true" /> 成就 <span>{achievementCount}/3</span>
-        </button>
-      </nav>
+      <section
+        className="collection-v2__panel"
+        aria-labelledby="representative-companions-title"
+      >
+        <div className="collection-v2__section-heading">
+          <div>
+            <p className="eyebrow">Representative Companions</p>
+            <h2 id="representative-companions-title">最能代表你的三次相遇</h2>
+          </div>
+          <small aria-live="polite">
+            {representativeToys.length} / 3 已选择
+          </small>
+        </div>
+        <div className="collection-v2__representative-grid">
+          {REPRESENTATIVE_SLOT_KEYS.map((slotKey, index) => {
+            const toy = representativeToys[index];
+            if (!toy) {
+              return (
+                <a
+                  className="collection-v2__representative-empty"
+                  href="#collection-library"
+                  key={slotKey}
+                  aria-label={`选择第 ${index + 1} 只代表 Companion`}
+                >
+                  <Star size={20} aria-hidden="true" />
+                  <strong>Choose a Companion</strong>
+                </a>
+              );
+            }
 
-      {activeSection === "showcase" ? (
-        <section className="profile-section-panel profile-showcase-panel" aria-labelledby="profile-showcase-title">
-          <header className="profile-section-panel__heading profile-subsection__heading">
-            <div>
-              <p className="eyebrow">COLLECTION</p>
-              <h2 id="profile-showcase-title">全部藏品</h2>
-            </div>
-            <small>{collection.length} 件</small>
-          </header>
-
-          {collection.length > 0 ? (
-            <div className="collection-figures profile-showcase-grid" aria-label="我的玩偶收藏">
-              {collection.map((toy) => (
+            return (
+              <article
+                className="collection-v2__representative"
+                key={slotKey}
+              >
                 <button
-                  key={toy.id}
-                  className="collection-figure"
+                  className="collection-v2__representative-visual"
                   type="button"
                   onClick={() => setSelectedToy(toy)}
-                  aria-label={`查看 ${toy.name} 的 3D 详情`}
+                  aria-label={`查看代表藏品 ${toy.name} 的 3D 详情`}
                 >
-                  <span className="collection-figure__visual">
-                    <ToyThumbnail toy={toy} className="collection-figure__thumbnail" />
-                  </span>
-                  <span className="collection-figure__caption">
-                    <strong>{toy.name}</strong>
-                    <small>
-                      <span className={`collection-figure__rarity collection-figure__rarity--${toy.rarity}`} />
-                      {rarityLabels[toy.rarity]} · {toy.qualityScore}
-                    </small>
+                  <ToyThumbnail toy={toy} size="card" />
+                  <span
+                    className="collection-v2__representative-rank"
+                    aria-hidden="true"
+                  >
+                    {index + 1}
                   </span>
                 </button>
-              ))}
-            </div>
-          ) : (
-            <p className="profile-empty-state">你的第一只收藏小动物会出现在这里。</p>
-          )}
-        </section>
-      ) : null}
-
-      {activeSection === "atlas" ? (
-        <section className="profile-section-panel" aria-labelledby="profile-atlas-title">
-          <header className="profile-section-panel__heading">
-            <div><p className="eyebrow">ATLAS</p><h2 id="profile-atlas-title">收藏图鉴</h2></div>
-            <BookOpenCheck size={21} aria-hidden="true" />
-          </header>
-
-          <section className="profile-atlas-progress" aria-label={`系列配色图鉴完成 ${colorCompletion}%`}>
-            <div>
-              <span>九色配色图鉴</span>
-              <strong>{colorProgress}<small> / {colorAnimalPalettes.length}</small></strong>
-              <p>再收集 {Math.max(colorAnimalPalettes.length - colorProgress, 0)} 种配色即可完成整套色卡。</p>
-            </div>
-            <div className="profile-atlas-progress__bar" aria-hidden="true">
-              <span style={{ width: `${colorCompletion}%` }} />
-            </div>
-          </section>
-
-          <section className="profile-subsection" aria-labelledby="palette-atlas-title">
-            <div className="profile-subsection__heading">
-              <div><span>COLOR MAP</span><h3 id="palette-atlas-title">九色收藏进度</h3></div>
-              <small>{colorCompletion}% 完成</small>
-            </div>
-            <div className="profile-palette-grid">
-              {colorAnimalPalettes.map((palette) => {
-                const collected = distinctPalettes.has(palette.id);
-                return (
-                  <article key={palette.id} className={collected ? "is-collected" : ""}>
-                    <span style={{ backgroundColor: palette.color }} aria-hidden="true" />
-                    <strong>{palette.name}</strong>
-                    <small>{collected ? "已收藏" : "待发现"}</small>
-                  </article>
-                );
-              })}
-            </div>
-          </section>
-
-          <section className="profile-subsection" aria-labelledby="model-atlas-title">
-            <div className="profile-subsection__heading">
-              <div><span>MODELS</span><h3 id="model-atlas-title">伙伴造型图鉴</h3></div>
-              <small>{modelProgress}/{colorAnimalModels.length} 已解锁</small>
-            </div>
-            <div className="profile-model-grid">
-              {colorAnimalModels.map((model) => {
-                const collected = distinctModels.has(model.id);
-                const representative = homeSeriesToys.find((toy) => toy.modelId === model.id);
-                return (
-                  <article key={model.id} className={collected ? "is-collected" : ""}>
-                    <div className="profile-model-grid__visual">
-                      {representative ? <ToyThumbnail toy={representative} size="small" /> : null}
-                    </div>
-                    <div>
-                      <strong>{model.name}</strong>
-                      <small>{collected ? "已收藏" : "待发现"}</small>
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
-          </section>
-
-          <section className="profile-subsection" aria-labelledby="series-atlas-title">
-            <div className="profile-subsection__heading">
-              <div><span>SERIES</span><h3 id="series-atlas-title">系列图鉴</h3></div>
-            </div>
-            <div className="collector-set-list">
-              <article className="collector-set">
-                <span className="collector-set__icon collector-set__icon--crystal"><Palette size={21} /></span>
-                <div className="collector-set__copy">
-                  <div><strong>九色配色图鉴</strong><span>{colorProgress}/{colorAnimalPalettes.length}</span></div>
-                  <p>收集九种配色，并应用在不同的软萌伙伴上。</p>
-                  <div className="collector-set__bar"><span style={{ width: `${colorCompletion}%` }} /></div>
+                <div className="collection-v2__representative-copy">
+                  <strong>{toy.name}</strong>
+                  <small>
+                    {getToyModel(toy.modelId).name}
+                    {" · "}
+                    {getToyPalette(toy.paletteId).name}
+                  </small>
                 </div>
+                <button
+                  className="collection-v2__remove-representative"
+                  type="button"
+                  onClick={() => toggleRepresentative(toy.id)}
+                  aria-label={`不再将 ${toy.name} 设为代表藏品`}
+                >
+                  <X size={13} aria-hidden="true" />
+                  Remove
+                </button>
               </article>
-              <article className="collector-set">
-                <span className="collector-set__icon collector-set__icon--unicorn"><Dog size={21} /></span>
-                <div className="collector-set__copy">
-                  <div><strong>软萌伙伴系列</strong><span>{modelProgress}/{colorAnimalsSeries.modelIds.length}</span></div>
-                  <p>水獭、小鸟、小熊、小兔、小猫和熊猫组成首发伙伴阵容。</p>
-                  <div className="collector-set__bar"><span style={{ width: `${modelProgress / colorAnimalsSeries.modelIds.length * 100}%` }} /></div>
-                </div>
-              </article>
-            </div>
-          </section>
-        </section>
-      ) : null}
+            );
+          })}
+        </div>
+        <p className="collection-v2__representative-note">
+          这三只 Companion 会成为未来 Echo 首先看到的收藏表达；你可以随时更换，
+          不需要上传真人头像。
+        </p>
+      </section>
 
-      {activeSection === "achievements" ? (
-        <section className="profile-section-panel" aria-labelledby="profile-achievements-title">
-          <header className="profile-section-panel__heading">
-            <div><p className="eyebrow">ACHIEVEMENTS</p><h2 id="profile-achievements-title">收藏成就</h2></div>
-            <Trophy size={21} aria-hidden="true" />
-          </header>
-
-          <section className="profile-achievement-summary">
-            <div><span>已点亮</span><strong>{achievementCount}<small> / 3</small></strong></div>
-            <p>每一次相遇都会沉淀成个人主页上的收藏印记。</p>
-          </section>
-
-          <div className="achievement-list profile-achievement-list">
-            <article className="is-unlocked">
-              <span><Award size={22} /></span><strong>初次相遇</strong><small>拥有第一件藏品</small><em>已获得</em>
-            </article>
-            <article className={colorProgress >= 4 ? "is-unlocked" : ""}>
-              <span><Palette size={22} /></span><strong>配色收藏家</strong><small>拥有四种身体配色</small>
-              <em>{colorProgress >= 4 ? "已获得" : `${colorProgress}/4`}</em>
-            </article>
-            <article className={completedSetCount > 0 ? "is-unlocked" : ""}>
-              <span><Trophy size={22} /></span><strong>完整色卡</strong><small>集齐九种系列配色</small>
-              <em>{completedSetCount > 0 ? "已获得" : `${colorProgress}/${colorAnimalPalettes.length}`}</em>
-            </article>
+      <section
+        className="collection-v2__panel"
+        id="collection-library"
+        aria-labelledby="collection-library-title"
+      >
+        <div className="collection-v2__section-heading">
+          <div>
+            <p className="eyebrow">Collection Grid</p>
+            <h2 id="collection-library-title">全部藏品</h2>
           </div>
-        </section>
-      ) : null}
+          <small aria-live="polite">
+            显示 {filteredCollection.length} / {collection.length} 件
+          </small>
+        </div>
 
-      {selectedToy ? <ToyDetailSheet toy={selectedToy} onClose={() => setSelectedToy(null)} /> : null}
+        <div className="collection-v2__filters" aria-label="收藏筛选">
+          <div className="collection-v2__filters-heading">
+            <strong>
+              <SlidersHorizontal size={15} aria-hidden="true" />
+              Filters
+              {activeFilterCount > 0 ? ` · ${activeFilterCount}` : ""}
+            </strong>
+            <button
+              type="button"
+              onClick={resetFilters}
+              disabled={activeFilterCount === 0 && acquisitionOrder === "newest"}
+            >
+              Clear
+            </button>
+          </div>
+          <div className="collection-v2__filter-grid">
+            <label className="collection-v2__filter">
+              <span>Model</span>
+              <select
+                value={modelFilter}
+                onChange={(event) =>
+                  setModelFilter(event.target.value as ModelFilter)
+                }
+              >
+                <option value="all">All models</option>
+                {modelOptions.map((model) => (
+                  <option key={model.id} value={model.id}>{model.name}</option>
+                ))}
+              </select>
+            </label>
+            <label className="collection-v2__filter">
+              <span>Color</span>
+              <select
+                value={colorFilter}
+                onChange={(event) =>
+                  setColorFilter(event.target.value as ColorFilter)
+                }
+              >
+                <option value="all">All colorways</option>
+                {colorOptions.map((palette) => (
+                  <option key={palette.id} value={palette.id}>
+                    {palette.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="collection-v2__filter">
+              <span>Material</span>
+              <select
+                value={materialFilter}
+                onChange={(event) =>
+                  setMaterialFilter(event.target.value as MaterialFilter)
+                }
+              >
+                <option value="all">All materials</option>
+                <option value="matte">Soft matte resin</option>
+                <option value="crystal">Faceted crystal</option>
+              </select>
+            </label>
+            <div className="collection-v2__filter">
+              <span>Favorite</span>
+              <button
+                className="collection-v2__favorite-filter"
+                type="button"
+                aria-pressed={favoriteOnly}
+                onClick={() => setFavoriteOnly((value) => !value)}
+              >
+                <Heart
+                  size={14}
+                  fill={favoriteOnly ? "currentColor" : "none"}
+                  aria-hidden="true"
+                />
+                Favorites only
+              </button>
+            </div>
+            <label className="collection-v2__filter">
+              <span>Acquired</span>
+              <select
+                value={acquisitionFilter}
+                onChange={(event) =>
+                  setAcquisitionFilter(
+                    event.target.value as AcquisitionFilter
+                  )
+                }
+              >
+                <option value="all">Any time</option>
+                <option value="last-7">Last 7 days</option>
+                <option value="last-30">Last 30 days</option>
+              </select>
+            </label>
+            <label className="collection-v2__filter">
+              <span>Date order</span>
+              <select
+                value={acquisitionOrder}
+                onChange={(event) =>
+                  setAcquisitionOrder(event.target.value as AcquisitionOrder)
+                }
+              >
+                <option value="newest">Newest first</option>
+                <option value="oldest">Oldest first</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
+        {filteredCollection.length > 0 ? (
+          <div className="collection-v2__grid" aria-label="筛选后的收藏">
+            {filteredCollection.map((toy) => {
+              const isFavorite = favoriteIdSet.has(toy.id);
+              const isRepresentative = representativeIdSet.has(toy.id);
+              const representativeDisabled =
+                representativeSelectionFull && !isRepresentative;
+              const model = getToyModel(toy.modelId);
+              const palette = getToyPalette(toy.paletteId);
+
+              return (
+                <article
+                  className={
+                    `collection-v2__card`
+                    + (isRepresentative ? " is-representative" : "")
+                  }
+                  key={toy.id}
+                >
+                  <button
+                    className="collection-v2__card-visual"
+                    type="button"
+                    onClick={() => setSelectedToy(toy)}
+                    aria-label={`查看 ${toy.name} 的 3D 详情`}
+                  >
+                    <ToyThumbnail toy={toy} size="card" />
+                    <span className="collection-v2__card-material">
+                      {getCollectibleMaterialLabel(toy)}
+                    </span>
+                  </button>
+                  <div className="collection-v2__card-body">
+                    <div className="collection-v2__card-title">
+                      <h3>{toy.name}</h3>
+                      <p>{toy.publicCode}</p>
+                    </div>
+                    <div
+                      className="collection-v2__card-meta"
+                      aria-label={`${toy.name} 的真实元数据`}
+                    >
+                      <span>{model.name}</span>
+                      <span>
+                        {getCollectiblePaletteLabel(toy)} · {palette.name}
+                      </span>
+                      <span>{getCollectibleMaterialLabel(toy)}</span>
+                    </div>
+                    <time
+                      className="collection-v2__card-date"
+                      dateTime={toy.createdAt}
+                    >
+                      <CalendarDays size={12} aria-hidden="true" />
+                      获得于 {formatAcquisitionDate(toy.createdAt)}
+                    </time>
+                    <div className="collection-v2__card-actions">
+                      <button
+                        type="button"
+                        aria-pressed={isFavorite}
+                        onClick={() => toggleFavorite(toy.id)}
+                        aria-label={
+                          isFavorite
+                            ? `取消收藏 ${toy.name}`
+                            : `将 ${toy.name} 设为 Favorite`
+                        }
+                      >
+                        <Heart
+                          size={13}
+                          fill={isFavorite ? "currentColor" : "none"}
+                          aria-hidden="true"
+                        />
+                        Favorite
+                      </button>
+                      <button
+                        type="button"
+                        aria-pressed={isRepresentative}
+                        disabled={representativeDisabled}
+                        onClick={() => toggleRepresentative(toy.id)}
+                        aria-label={
+                          isRepresentative
+                            ? `不再将 ${toy.name} 设为代表藏品`
+                            : `将 ${toy.name} 设为代表藏品`
+                        }
+                        title={
+                          representativeDisabled
+                            ? "最多可以选择 3 只代表 Companion"
+                            : undefined
+                        }
+                      >
+                        <Star
+                          size={13}
+                          fill={isRepresentative ? "currentColor" : "none"}
+                          aria-hidden="true"
+                        />
+                        Representative
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setSelectedToy(toy)}
+                        aria-label={`打开 ${toy.name} 的 3D 查看器`}
+                      >
+                        <Rotate3D size={13} aria-hidden="true" />
+                        View 3D
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="collection-v2__empty" role="status">
+            <strong>没有符合这些条件的藏品</strong>
+            <p>试着放宽 Model、Color、Material、Favorite 或获得时间筛选。</p>
+            <button type="button" onClick={resetFilters}>Clear filters</button>
+          </div>
+        )}
+      </section>
+
+      {selectedToy ? (
+        <ToyDetailSheet
+          toy={selectedToy}
+          onClose={() => setSelectedToy(null)}
+        />
+      ) : null}
     </div>
   );
 }

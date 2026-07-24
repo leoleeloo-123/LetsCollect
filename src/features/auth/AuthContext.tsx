@@ -24,6 +24,18 @@ type AuthContextValue = {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
+const LOCAL_DEMO_MODE =
+  import.meta.env.DEV && import.meta.env.VITE_DEMO_PROFILE === "true";
+
+const LOCAL_DEMO_PROFILE = {
+  id: "local-demo-profile",
+  display_name: "Quiet Collector",
+  public_code: "LC-DEMO",
+  avatar_key: "mint-unicorn",
+  created_at: "2026-07-24T00:00:00.000Z",
+  updated_at: "2026-07-24T00:00:00.000Z"
+} satisfies Profile;
+
 function friendlyAuthError(error: unknown) {
   const message = error instanceof Error ? error.message : String(error ?? "");
 
@@ -77,6 +89,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     let active = true;
+
+    if (LOCAL_DEMO_MODE) {
+      setProfile(LOCAL_DEMO_PROFILE);
+      setError("");
+      setStatus("ready");
+      return () => {
+        active = false;
+      };
+    }
 
     if (!isSupabaseConfigured || !supabase) {
       setError("Supabase 环境变量尚未配置。");

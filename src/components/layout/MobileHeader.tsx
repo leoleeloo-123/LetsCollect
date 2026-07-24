@@ -61,7 +61,7 @@ export function MobileHeader() {
         <TicketBalance compact />
         <Link
           className="mobile-header__profile-button"
-          to={routes.profile}
+          to={routes.collection}
           aria-label="打开收藏身份"
         >
           <UserRound size={19} strokeWidth={2.2} />

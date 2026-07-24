@@ -22,3 +22,6 @@
 
 /* 4. Active visual theme; keep last so it can map tokens consistently */
 @import "./themes/rose-frost.css";
+
+/* 5. Companion + Echo product layer */
+@import "./companion-echo.css";

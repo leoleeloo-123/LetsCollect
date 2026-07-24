@@ -6,10 +6,14 @@ import { ToyThumbnail } from "../../components/toys/ToyThumbnail";
 import { ButtonLink } from "../../components/ui/ButtonLink";
 import { PageHeader } from "../../components/ui/PageHeader";
 import { featuredOtter } from "../../data/mock/toys";
-import { colorAnimalsSeries, specialExhibitsSeries } from "../../features/toys/activeSeries";
+import {
+  colorAnimalsSeries,
+  specialExhibitsSeries
+} from "../../features/toys/activeSeries";
 import { DrawReveal } from "../../features/draw/DrawReveal";
 import { ToyViewer } from "../../three/ToyViewer";
 import type { Collectible } from "../../types/toy";
+import "./draw-companion.css";
 
 export function DrawPage() {
   const { collection, drawCollectible, recentDraws } = useMvpState();
@@ -29,7 +33,7 @@ export function DrawPage() {
   function handleDraw() {
     const collectible = drawCollectible();
     if (!collectible) {
-      setMessage("抽取券不够了，回首页完成一次好友互动即可继续。");
+      setMessage("抽取券暂时不够。回到 Collect，稍后再来遇见新的 Companion。");
       return;
     }
 
@@ -42,17 +46,17 @@ export function DrawPage() {
   }
 
   return (
-    <div className="page-stack draw-page draw-page--compact">
+    <div className="page-stack draw-page draw-page--compact draw-page--companion">
       <PageHeader
-        eyebrow="抽取"
-        title="软萌变色伙伴"
-        description="随机遇见六款软萌变色伙伴，并有 5% 概率发现 Diamond Unicorn 特殊展品。"
+        eyebrow="Encounter"
+        title="Meet a Companion"
+        description="一次安静的相遇：六只 matte Companion 均等出现，Diamond Unicorn 仍保持 5% 的特殊展品概率。"
       />
 
       <section className={`draw-stage draw-stage--compact${isDrawing ? " draw-stage--active" : ""}`}>
         <div className="draw-stage__status">
-          <span>本期收藏池</span>
-          <strong>{colorAnimalsSeries.drawModelIds.length} 种常规造型 + 1 件特殊展品</strong>
+          <span>Today’s encounter pool</span>
+          <strong>{colorAnimalsSeries.drawModelIds.length} matte companions · 1 crystal exhibit</strong>
         </div>
         <div className="draw-stage__visual">
           <ToyViewer
@@ -65,32 +69,43 @@ export function DrawPage() {
         </div>
         <button className="draw-button" type="button" onClick={handleDraw} disabled={isDrawing}>
           <Sparkles size={20} />
-          {isDrawing ? "正在挑选新伙伴..." : "随机抽取一只玩偶"}
+          {isDrawing ? "A Companion is finding its way…" : "Who will you meet today?"}
           <span><Ticket size={16} /> {DRAW_COST}</span>
         </button>
         {message ? (
           <div className="draw-message" role="status">
             <span>{message}</span>
-            <ButtonLink to={routes.home} variant="secondary">去互动</ButtonLink>
+            <ButtonLink to={routes.home} variant="secondary">Back to Collect</ButtonLink>
           </div>
         ) : null}
       </section>
 
       <details className="probability-panel">
-        <summary><CircleHelp size={18} /> 查看本期抽取规则</summary>
+        <summary><CircleHelp size={18} /> Encounter details</summary>
         <div className="probability-panel__grid">
-          <span>常规伙伴 95%</span><span>Diamond Unicorn {specialExhibitsSeries.drawProbability * 100}%</span><span>常规九种配色</span><span>钻石五种色泽</span>
+          <span>Matte companions 95%</span>
+          <span>Diamond Unicorn {specialExhibitsSeries.drawProbability * 100}%</span>
+          <span>9 available matte colors</span>
+          <span>5 available crystal tints</span>
         </div>
-        <p>95% 概率抽到六款常规伙伴，六种造型与九种配色均匀随机；另有 5% 概率发现 Diamond Unicorn，随机呈现五种钻石色泽。</p>
+        <p>
+          The six matte models and their nine verified colors share the regular
+          pool. The only crystal result is the current Diamond Unicorn exhibit.
+        </p>
       </details>
 
       {recentDraws.length > 0 ? (
         <section className="content-section">
-          <div className="section-heading"><p className="eyebrow">最近相遇</p><h2>刚加入收藏</h2></div>
+          <div className="section-heading">
+            <p className="eyebrow">Recent encounters</p>
+            <h2>Already resting in your Collection</h2>
+          </div>
           <div className="recent-draws">
             {recentDraws.map((draw) => {
               const collectible = collectionById.get(draw.collectibleId);
-              return collectible ? <ToyThumbnail key={draw.id} toy={collectible} size="small" /> : null;
+              return collectible ? (
+                <ToyThumbnail key={draw.id} toy={collectible} size="small" />
+              ) : null;
             })}
           </div>
         </section>

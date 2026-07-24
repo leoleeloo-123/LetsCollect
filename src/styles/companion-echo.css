@@ -1,0 +1,201 @@
+/*
+ * Companion + Echo product skin.
+ *
+ * This layer intentionally sits after the historical Rose Frost theme. It
+ * preserves the existing component contracts while shifting the active product
+ * toward a quieter collectible space.
+ */
+
+:root {
+  --lc-background: #f5f4ee;
+  --lc-surface: rgba(253, 252, 248, 0.82);
+  --lc-surface-elevated: rgba(255, 255, 253, 0.94);
+  --lc-surface-muted: rgba(232, 238, 234, 0.66);
+  --lc-text: #29352f;
+  --lc-text-soft: #52625a;
+  --lc-text-muted: #77837d;
+  --lc-border: rgba(74, 96, 85, 0.14);
+  --lc-border-strong: rgba(74, 96, 85, 0.24);
+  --lc-accent: #c55d83;
+  --lc-accent-deep: #93445f;
+  --lc-accent-soft: rgba(197, 93, 131, 0.12);
+  --lc-echo: #728f86;
+  --lc-echo-soft: rgba(114, 143, 134, 0.14);
+  --lc-crystal: #8ba6b5;
+  --lc-success: #5f856f;
+  --lc-warning: #a47a42;
+  --lc-radius-md: 16px;
+  --lc-radius-lg: 22px;
+  --lc-radius-xl: 30px;
+  --lc-shadow-small: 0 12px 34px rgba(63, 77, 69, 0.06);
+  --lc-shadow-large: 0 28px 80px rgba(69, 81, 75, 0.1);
+
+  --color-ink: var(--lc-text);
+  --color-ink-soft: var(--lc-text-soft);
+  --color-muted: var(--lc-text-muted);
+  --color-page: var(--lc-background);
+  --color-surface: var(--lc-surface);
+  --color-surface-strong: var(--lc-surface-elevated);
+  --color-surface-solid: #fffefb;
+  --color-surface-soft: var(--lc-surface-muted);
+  --color-surface-muted: rgba(231, 236, 232, 0.62);
+  --color-border: var(--lc-border);
+  --color-border-strong: var(--lc-border-strong);
+  --color-focus: rgba(197, 93, 131, 0.28);
+  --color-brand: var(--lc-accent);
+  --color-brand-deep: var(--lc-accent-deep);
+  --color-brand-soft: var(--lc-accent-soft);
+  --color-brand-subtle: rgba(197, 93, 131, 0.07);
+  --glass-surface: rgba(253, 252, 248, 0.68);
+  --glass-surface-strong: rgba(253, 252, 248, 0.84);
+  --glass-surface-muted: rgba(236, 240, 237, 0.58);
+  --glass-border: rgba(255, 255, 255, 0.78);
+  --glass-border-strong: rgba(255, 255, 255, 0.9);
+  --background-page:
+    radial-gradient(circle at 7% 4%, rgba(255, 255, 255, 0.94), transparent 30%),
+    radial-gradient(circle at 93% 10%, rgba(184, 207, 198, 0.16), transparent 32%),
+    radial-gradient(circle at 22% 85%, rgba(216, 201, 220, 0.13), transparent 30%),
+    linear-gradient(150deg, #f8f7f2 0%, #f3f4ef 54%, #f4f1eb 100%);
+  --background-stage:
+    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.82), rgba(233, 240, 236, 0.42) 48%, transparent 70%),
+    linear-gradient(155deg, rgba(248, 247, 242, 0.92), rgba(229, 237, 233, 0.72));
+  --background-brand: linear-gradient(145deg, #cc668b, #a74869);
+  --background-brand-deep: linear-gradient(145deg, #a85170, #76394f);
+  --shadow-soft: var(--lc-shadow-small);
+  --shadow-card: 0 18px 46px rgba(63, 77, 69, 0.08);
+  --shadow-raised: 0 24px 64px rgba(52, 66, 59, 0.13);
+  --shadow-nav: 0 18px 48px rgba(52, 65, 59, 0.12);
+  --shadow-brand: 0 10px 24px rgba(166, 67, 104, 0.19);
+  --radius-card: var(--lc-radius-md);
+  --radius-panel: var(--lc-radius-lg);
+}
+
+html {
+  background: var(--lc-background);
+}
+
+body {
+  background: var(--background-page);
+}
+
+::selection {
+  color: var(--lc-text);
+  background: rgba(197, 93, 131, 0.19);
+}
+
+.app-shell {
+  background: transparent;
+}
+
+.app-main {
+  width: min(1240px, 100%);
+}
+
+.desktop-nav {
+  min-height: 72px;
+  border-bottom: 1px solid var(--lc-border);
+  background: rgba(247, 247, 242, 0.82);
+  box-shadow: 0 10px 40px rgba(55, 67, 61, 0.04);
+}
+
+.desktop-nav__links {
+  gap: 8px;
+}
+
+.desktop-nav__links a {
+  min-height: 38px;
+  padding: 0 14px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  letter-spacing: 0.01em;
+}
+
+.desktop-nav__links a.active {
+  color: var(--lc-text);
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: inset 0 0 0 1px var(--lc-border), 0 7px 20px rgba(53, 68, 60, 0.06);
+}
+
+.desktop-nav__tools {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.desktop-nav__agent-link {
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px;
+  border: 1px solid var(--lc-border);
+  border-radius: 999px;
+  color: var(--lc-text-muted);
+  background: rgba(255, 255, 255, 0.42);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.desktop-nav__agent-link span {
+  color: var(--lc-echo);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.brand-mark {
+  color: var(--lc-text);
+  letter-spacing: -0.01em;
+}
+
+.brand-mark__gem {
+  background: var(--background-brand);
+}
+
+.bottom-nav {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  max-width: 430px;
+}
+
+.bottom-nav__item.active {
+  border-color: rgba(197, 93, 131, 0.12);
+  color: var(--lc-accent-deep);
+  background: var(--lc-accent-soft);
+}
+
+.mobile-header__profile-button {
+  color: var(--lc-text);
+  background: var(--lc-echo-soft);
+}
+
+.ticket-balance {
+  border-color: rgba(164, 122, 66, 0.2);
+  color: #796039;
+  background: rgba(255, 250, 235, 0.7);
+}
+
+:where(
+  button,
+  a,
+  input,
+  select,
+  [tabindex]:not([tabindex="-1"])
+):focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+@media (min-width: 760px) {
+  .desktop-nav {
+    padding-right: max(24px, var(--safe-area-right), calc((100% - 1240px) / 2));
+    padding-left: max(24px, var(--safe-area-left), calc((100% - 1240px) / 2));
+  }
+}
+
+@media (max-width: 900px) and (min-width: 760px) {
+  .desktop-nav__agent-link span,
+  .ticket-balance span {
+    display: none;
+  }
+}

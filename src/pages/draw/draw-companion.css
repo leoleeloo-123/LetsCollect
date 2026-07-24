@@ -1,0 +1,173 @@
+.draw-page--companion {
+  gap: 22px;
+}
+
+.draw-page--companion .page-header {
+  max-width: 720px;
+}
+
+.draw-page--companion .page-header .eyebrow {
+  color: var(--lc-accent-deep, var(--color-brand-deep));
+  letter-spacing: 0.12em;
+}
+
+.draw-page--companion .page-header h1 {
+  font-size: clamp(36px, 7vw, 62px);
+  font-weight: 640;
+  letter-spacing: -0.04em;
+}
+
+.draw-page--companion .draw-stage--compact {
+  overflow: hidden;
+  border-color: var(--lc-border, var(--color-border));
+  border-radius: var(--lc-radius-xl, 30px);
+  background: var(--lc-surface, var(--color-surface));
+  box-shadow: var(--lc-shadow-large, var(--shadow-card));
+}
+
+.draw-page--companion .draw-stage--compact .draw-stage__visual {
+  min-height: 380px;
+  height: min(56vh, 560px);
+  background:
+    radial-gradient(circle at 50% 66%, rgba(160, 193, 178, 0.24), transparent 34%),
+    var(--background-stage);
+}
+
+.draw-page--companion .draw-stage__status {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 2px 4px;
+  color: var(--lc-text-muted, var(--color-muted));
+}
+
+.draw-page--companion .draw-stage__status strong {
+  color: var(--lc-text-soft, var(--color-ink-soft));
+}
+
+.draw-page--companion .draw-button {
+  min-height: 54px;
+  border-radius: 999px;
+  background: var(--background-brand);
+}
+
+.draw-page--companion .probability-panel {
+  border-radius: var(--lc-radius-lg, 22px);
+  background: var(--lc-surface, var(--color-surface));
+}
+
+.draw-page--companion .recent-draws .toy-thumbnail {
+  border-radius: 18px;
+  background: var(--background-stage);
+}
+
+.reveal-sheet--companion {
+  overflow: hidden;
+  border-radius: var(--lc-radius-xl, 30px);
+}
+
+.reveal-sheet--companion .reveal-sheet__stage {
+  background:
+    radial-gradient(circle at 50% 68%, rgba(157, 190, 176, 0.24), transparent 34%),
+    var(--background-stage);
+}
+
+.reveal-sheet--companion .reveal-sheet__copy {
+  display: grid;
+  gap: 10px;
+}
+
+.reveal-sheet--companion .reveal-sheet__copy h2 {
+  margin: 0;
+  font-size: clamp(28px, 6vw, 44px);
+  font-weight: 650;
+  letter-spacing: -0.035em;
+}
+
+.reveal-sheet__description {
+  max-width: 620px;
+  margin: 0;
+  color: var(--lc-text-soft, var(--color-muted));
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.reveal-sheet__arrival-note {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  color: var(--lc-success, #5f856f);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.reveal-sheet__facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 4px 0 0;
+}
+
+.reveal-sheet__facts div {
+  display: grid;
+  gap: 3px;
+  padding: 10px 11px;
+  border: 1px solid var(--lc-border, var(--color-border));
+  border-radius: 14px;
+  background: var(--lc-surface-muted, var(--color-surface-soft));
+}
+
+.reveal-sheet__facts dt {
+  color: var(--lc-text-muted, var(--color-muted));
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.reveal-sheet__facts dd {
+  overflow: hidden;
+  margin: 0;
+  color: var(--lc-text, var(--color-ink));
+  font-size: 12px;
+  font-weight: 750;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reveal-sheet--companion .reveal-sheet__actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.reveal-sheet--companion .reveal-sheet__actions > :last-child {
+  grid-column: 1 / -1;
+}
+
+.reveal-sheet--companion .favorite-button.is-favorite {
+  border-color: var(--lc-accent, var(--color-brand));
+  color: var(--lc-accent-deep, var(--color-brand-deep));
+  background: var(--lc-accent-soft, var(--color-brand-soft));
+}
+
+@media (min-width: 760px) {
+  .draw-page--companion .draw-stage.draw-stage--compact {
+    width: min(920px, 100%);
+  }
+
+  .reveal-sheet__facts {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .reveal-sheet--companion .reveal-sheet__actions {
+    grid-template-columns: auto auto 1fr;
+  }
+
+  .reveal-sheet--companion .reveal-sheet__actions > :last-child {
+    grid-column: auto;
+    justify-self: end;
+  }
+}
