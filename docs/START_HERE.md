@@ -14,10 +14,11 @@ Let's Collect 是一个围绕数字 Companion 展开的、手机优先的治愈�
 
 `codex/companion-echo-frontend` 分支已经实现第一版 Collect / Collection / Echo 前端和独立 Agent Console。`main` 与 Vercel Production 尚未被这个分支替换。
 
-2026-07-24 起，Collect 第一页进入“按系列选择、在当前页揭晓”的第二轮：
+2026-07-24 起，Collect 第一页进入“按系列选择、在当前页揭晓”的第三轮：
 首页改为一张可切 9 色的 12 模型「色彩系列」卡，以及熊猫、艺术家、狗狗、
-水晶等独立特殊系列卡；系列列表使用真实 GLB 缩略图，揭晓继续使用唯一的
-live 3D Viewer。首次注册依次收集昵称、伙伴、颜色和质感偏好。
+水晶等独立特殊系列卡。每张系列卡使用一个受控 WebGL 舞台，让卡内模型同步
+原地旋转；特殊系列卡统一为上方一排模型、下方信息。首次注册依次收集昵称、
+伙伴、颜色和质感偏好。
 完整决定与回滚见 `docs/COLLECT_SERIES_V2.md`。
 
 改造前的 React MVP 已完整归档到：
@@ -122,7 +123,7 @@ Primary navigation 只有 Collect、Collection、Echo。Agent 入口被明确标
 首次注册昵称 / 头像
 -> 依次选择伙伴 / 颜色 / 材质偏好
 -> 选择色彩系列或一张特殊系列卡
--> 查看该系列真实模型缩略图
+-> 拖动查看该系列可同步旋转的真实 3D 模型
 -> 当前页抽取、柔和揭晓并立即加入本地 Collection
 -> Favorite / Representative
 -> 规则生成 Collection Signature
@@ -186,7 +187,8 @@ pnpm run build
 ## 修改规则
 
 1. 修改一级导航、核心循环、active asset、3D 加载策略或首期非目标前，先更新产品宪法；
-2. 列表使用缩略图，不为每张卡片加载 GLB；
+2. 普通藏品、Feed 与历史列表使用缩略图；Collect 系列展示是受控例外，每张
+   系列卡最多一个 WebGL canvas，不得为每只模型创建一个 canvas；
 3. 页面不直接创建自己的 GLTFLoader；
 4. 真实抽取和票券写入必须由可信服务端负责；
 5. current、target、planned 不得混写；

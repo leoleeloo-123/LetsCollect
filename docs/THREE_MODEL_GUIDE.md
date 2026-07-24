@@ -62,6 +62,31 @@ material factory for legacy jade and V2 materials.
 See `playbooks/toy-thumbnail-rendering.md` for cache versioning, performance
 rules, and the future Supabase Storage boundary.
 
+## Collect Series Showcase Strategy
+
+The Collect series shelf is not a generic item list. It uses one WebGL canvas and
+renderer per series card, with two to twelve model roots placed under separate
+local pivots in one scene. All pivots consume the same rotation value, so pointer
+drag and keyboard input rotate the full row in place.
+
+This is a narrow exception to the thumbnail strategy:
+
+- never mount one `ToyViewer` or canvas per series member; the current shelf should
+  stay near five WebGL contexts rather than about twenty-three;
+- initialize the first color-series stage first and lazy-initialize special-series
+  stages near the viewport;
+- request mobile GLBs through `loadToyModel`, whose promise cache deduplicates
+  download and Draco decoding across cards;
+- load members in parallel and add each model to the stage as soon as it is ready;
+- use tile-level lightweight materials, a low initial pixel-ratio cap, and stop
+  rendering once motion and loading have settled;
+- change palettes by rebinding or updating materials on loaded model roots; do not
+  refetch a GLB or recreate the scene, canvas, or renderer.
+
+Poster or thumbnail fallbacks may cover loading and WebGL-unavailable states, but
+must not replace rotation after the live stage is ready. Special-series cards keep
+one model row above the information panel on desktop and mobile.
+
 The standardized model workflow lives in:
 
 `playbooks/model-asset-pipeline.md`

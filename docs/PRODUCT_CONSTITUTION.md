@@ -83,7 +83,7 @@ Collect · Connect · Companion
 
 ### Collect
 
-- 系列货架使用真实模型缩略图，抽取揭晓使用一个主要 live 3D Companion；
+- Collect 系列货架是受控 3D 例外：每个系列使用一个 WebGL canvas / renderer，卡内真实模型共享旋转；抽取揭晓使用一个主要 live 3D Companion；
 - 保留真实模型、colorway、旋转和材质效果；
 - 只允许基于当前可用资产表达偏好；
 - 通过柔和 reveal 建立期待，不使用老虎机或赌场叙事；
@@ -176,8 +176,9 @@ Agent 可以提出使用当前模型、颜色、权重、活动时长、任务�
 - 模型路径、palette 和渲染能力集中配置，不散落在页面；
 - 页面不创建自己的 GLTFLoader；
 - `ToyViewer` 统一管理加载、相机、灯光、材质、交互、状态、清理与性能档位；
-- 列表、Collection、Representative 和 Echo 卡片使用缩略图；
-- 同一主要页面默认只保留一个活跃 live Viewer；
+- 普通列表、Collection、Representative 和 Echo 卡片使用缩略图；
+- Collect 系列货架是受控例外：每个系列最多一个 canvas / renderer，卡内模型共享旋转；当前约五张系列卡合计约五个 WebGL context，不得为每个模型各建 canvas；
+- 除该系列货架外，同一主要页面默认只保留一个活跃 live Viewer；
 - GLB 保持移动端优化并使用版本化路径；
 - 必须有 loading、error、retry 和首次访问可用的静态 fallback；
 - 动效尊重 `prefers-reduced-motion`；

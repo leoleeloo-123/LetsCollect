@@ -13,7 +13,7 @@ Browser
   -> AuthProvider
   -> MvpStateProvider
   -> route-level pages
-  -> reusable ToyViewer / cached thumbnails
+  -> series showcase renderer / reusable ToyViewer / cached thumbnails
   -> optimized GLB assets + local Draco decoder
 ```
 
@@ -72,7 +72,11 @@ The current system is deliberately hybrid:
 
 `src/three/ThumbnailRenderer/` renders the real mobile GLB to a WebP poster, serializes rendering work, and stores results in IndexedDB. Collection and feed lists use thumbnails instead of keeping a WebGL canvas alive per card.
 
-The Collect series shelf uses cached thumbnails generated from the real GLBs. Repeated series cards must not mount a live viewer per model; the in-place reveal owns the page's primary live viewer.
+The Collect series shelf is a controlled exception to the list-thumbnail rule. Each series card owns one WebGL canvas and renderer; its two to twelve models live under independent local pivots in the same scene and share one rotation value. The first color-series card initializes first, while special-series cards initialize near the viewport and reveal models progressively as parallel loads complete. The full shelf therefore uses about five contexts, not one context per model.
+
+The series renderer reuses the mobile GLBs, the `loadToyModel` download and Draco-decode promise cache, tile-level lightweight materials, a low initial device-pixel ratio, and idle render suspension. Palette changes update material bindings on the existing scene; they must not reload a GLB or recreate the renderer. A special-series card keeps its model row above its information and actions at every breakpoint.
+
+Collection, feed, friend, and history surfaces remain thumbnail lists. They must not adopt the Collect showcase exception. In-place reveal and collection detail continue to use the reusable single-model `ToyViewer`.
 
 ## Current Supabase Boundary
 
@@ -176,7 +180,9 @@ Neither flow is implemented merely by being documented here.
 - Vercel builds `dist/` from the Vite app and rewrites application routes to `index.html`.
 - Versioned GLB and Draco assets use long-lived immutable cache headers.
 - Do not put model paths, draw weights, capability availability, or API calls directly in route components.
-- Do not load a live GLB for every repeated card.
+- Use thumbnails for repeated collection, feed, friend, and history rows. A Collect
+  series showcase may load live GLBs only through the documented one-canvas-per-series
+  renderer; never create one canvas per member.
 - Do not expose Supabase secret or service-role keys in browser code.
 - Do not move real draw or ticket writes into client-only code.
 - Changes to primary navigation, the core loop, active asset availability, or 3D loading policy require the product and architecture documents to be updated before implementation.

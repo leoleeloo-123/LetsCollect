@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { ToyThumbnail } from "../../components/toys/ToyThumbnail";
+import { SeriesToyViewer } from "../../three/SeriesToyViewer";
 import type { ToyPaletteId } from "../../types/toy";
 import {
   getCollectSeriesPreviewToys,
@@ -35,21 +35,11 @@ export function SeriesModelGrid({
   );
 
   return (
-    <div
+    <SeriesToyViewer
+      toys={previewToys}
+      variant={variant}
+      label={`${series.title}系列的 ${previewToys.length} 款伙伴`}
       className={`series-model-grid series-model-grid--${variant}`}
-      data-count={previewToys.length}
-      role="list"
-      aria-label={`${series.title}系列的 ${previewToys.length} 款伙伴`}
-    >
-      {previewToys.map((toy) => (
-        <div className="series-model-grid__item" role="listitem" key={toy.id}>
-          <ToyThumbnail
-            toy={toy}
-            size="card"
-            className="series-model-grid__thumbnail"
-          />
-        </div>
-      ))}
-    </div>
+    />
   );
 }
