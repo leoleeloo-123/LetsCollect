@@ -32,7 +32,7 @@
 - 建立 collection、analytics、resonance、campaign repository / service interface；
 - 将 UI copy、Demo fixture、Agent fixture 与 Campaign 配置分开；
 - 为旧 localStorage v12 提供显式迁移；
-- 解决 starter collection 自动补齐六模型对 Signature 的污染。
+- 解决 starter collection 自动补齐旧六模型对 Signature 的偏置。
 
 验收问题：页面是否只依赖 typed domain contract，而不是直接依赖 mock、localStorage 或 Supabase 表？
 
@@ -54,10 +54,15 @@
 
 ## 阶段 3：Collect
 
-- 将 `/` 重构为一个主要 live 3D Companion；
-- 六模型选择和九个真实 colorway / mood 映射；
+- 将 `/` 重构为可扩展的系列卡片架，移除卡片内部的全局分页器；
+- 第一张色彩系列卡同时展示十二个模型，以九个色点切换选定 colorway，
+  并在所选色系下严格 `1 / 12` 等概率抽取；
+- 熊猫、艺术家、狗狗与水晶作为独立特殊系列卡；新增系列只扩展集中配置；
+- 特殊系列使用各自的严格模型池；水晶系列随机原生 tint 并使用更多票券；
+- 系列卡使用缓存缩略图，只有揭晓与详情使用 live `ToyViewer`；
 - 正确表达每个模型的真实换色部位；
-- 保留当前 95% / 5% 抽取规则；
+- `/draw` 兼容入口继续保留 95% matte / 5% crystal 全局规则，系列抽取不
+  混入隐藏特殊分支；
 - 使用柔和 reveal、预载结果资产和 reduced motion；
 - 降低 rarity、品质分与五维评分的视觉权重；
 - 在 pending draw 契约完成前继续自动入库，并使用准确 CTA。
@@ -74,7 +79,8 @@
 - 增加真实 metadata 筛选与 acquisition date；
 - 建立 deterministic Collection Signature；
 - 使用真实 Supabase profile 替代硬编码 collector profile；
-- Diamond Unicorn 继续排除在普通六模型 / 九色 atlas 外。
+- 两只 Crystal Companion 的五个原生 tint 保持独立；色彩系列可以显式
+  使用九个常规色作为运行时 tint，但不改变兼容全局抽取的材质分支。
 
 验收问题：Collection 是否既能管理资产，又能克制地表达用户当前收藏倾向？
 
@@ -128,7 +134,8 @@
 
 - 增加 lint 和最小自动化测试工具链；
 - 覆盖 typecheck、build、关键纯逻辑和流程 smoke test；
-- 检查六模型、九 colorway、Diamond 五 tint 与 5% 分支；
+- 检查十个 matte、两只 Crystal、九个常规 colorway、五个原生 Crystal
+  tint、各系列严格模型池与兼容 5% 全局分支；
 - 检查 loading、empty、error、retry、poster / CSS fallback；
 - 检查移动端性能、键盘、对比度和 reduced motion；
 - 通过 Preview 远程验证；

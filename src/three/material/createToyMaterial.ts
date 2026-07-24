@@ -46,7 +46,7 @@ export function createToyMaterial(
   }
 
   const palette = getToyPalette(toy.paletteId);
-  if (toy.modelId === "diamond-unicorn") {
+  if (toy.modelId === "diamond-unicorn" || toy.modelId === "diamond-dog") {
     const material = createDiamondUnicornMaterial(THREE, palette.color, options);
     return {
       material,

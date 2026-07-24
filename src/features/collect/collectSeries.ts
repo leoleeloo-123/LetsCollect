@@ -1,97 +1,224 @@
-import { homeSeriesToys } from "../../data/mock/homeSeries";
-import { specialExhibitsSeries } from "../toys/activeSeries";
-import type { Collectible, ToyModelId } from "../../types/toy";
+import {
+  colorAnimalPalettes,
+  diamondUnicornPalettes
+} from "../toys/catalog";
+import { generateCollectible } from "../toys/generator";
+import type {
+  Collectible,
+  ToyModelId,
+  ToyPaletteId
+} from "../../types/toy";
 
 export type AvailableCollectSeriesId =
-  | "soft-companions"
-  | "panda-and-friends";
-
-export type PlannedCollectSeriesId = "sleepy-companions";
+  | "color-spectrum"
+  | "panda-pun"
+  | "artists"
+  | "dogs"
+  | "crystal";
 
 type CollectSeriesBase = {
+  id: AvailableCollectSeriesId;
+  availability: "available";
+  category: "color" | "special";
   eyebrow: string;
   title: string;
   description: string;
   memberSummary: string;
-};
-
-export type AvailableCollectSeries = CollectSeriesBase & {
-  id: AvailableCollectSeriesId;
-  availability: "available";
+  ticketCost: number;
   modelIds: readonly [ToyModelId, ...ToyModelId[]];
 };
 
-export type PlannedCollectSeries = CollectSeriesBase & {
-  id: PlannedCollectSeriesId;
-  availability: "planned";
-  modelIds: readonly [];
-  lockedReason: string;
+type SelectedPalettePolicy = {
+  mode: "selected";
+  paletteIds: readonly ToyPaletteId[];
+  defaultPaletteId: ToyPaletteId;
 };
 
-export type CollectSeriesDefinition =
-  | AvailableCollectSeries
-  | PlannedCollectSeries;
+type RandomPalettePolicy = {
+  mode: "random";
+  paletteIds: readonly ToyPaletteId[];
+};
 
-export const collectSeries: readonly CollectSeriesDefinition[] = [
+export type AvailableCollectSeries = CollectSeriesBase & {
+  palettePolicy: SelectedPalettePolicy | RandomPalettePolicy;
+};
+
+export type CollectSeriesDrawRequest = {
+  seriesId: AvailableCollectSeriesId;
+  paletteId?: ToyPaletteId;
+};
+
+const regularPaletteIds = colorAnimalPalettes.map(
+  (palette) => palette.id
+) as readonly ToyPaletteId[];
+const crystalPaletteIds = diamondUnicornPalettes.map(
+  (palette) => palette.id
+) as readonly ToyPaletteId[];
+
+const regularModelIds = [
+  "color-bunny",
+  "color-otter",
+  "color-bird",
+  "color-teddy",
+  "color-cat",
+  "color-panda",
+  "color-bear-singer",
+  "color-dog-camera",
+  "color-dog-drum",
+  "color-seal"
+] as const satisfies readonly [ToyModelId, ...ToyModelId[]];
+
+export const colorSpectrumSeries = {
+  id: "color-spectrum",
+  availability: "available",
+  category: "color",
+  eyebrow: "色彩系列",
+  title: "选一种颜色，遇见一位伙伴",
+  description:
+    "十二款伙伴共享九种代表色。先选定喜欢的色系，再从全部伙伴中均等抽取一款。",
+  memberSummary: "12 款伙伴 · 每款 1 / 12",
+  ticketCost: 3,
+  modelIds: [
+    ...regularModelIds,
+    "diamond-unicorn",
+    "diamond-dog"
+  ],
+  palettePolicy: {
+    mode: "selected",
+    paletteIds: regularPaletteIds,
+    defaultPaletteId: "apricot"
+  }
+} as const satisfies AvailableCollectSeries;
+
+export const specialCollectSeries = [
   {
-    id: "soft-companions",
+    id: "panda-pun",
     availability: "available",
-    eyebrow: "首发系列",
-    title: "软萌变色伙伴",
+    category: "special",
+    eyebrow: "谐音主题",
+    title: "熊猫",
     description:
-      "六只现有伙伴一起登场。左右拖动可以同步转动它们，再从这一系列里随机遇见一只。",
-    memberSummary: "6 款真实伙伴",
+      "熊猫，也可以是熊加猫。熊猫、小熊、小猫和爆炸头小熊组成四款主题阵容。",
+    memberSummary: "4 款伙伴 · 每款 1 / 4",
+    ticketCost: 3,
     modelIds: [
-      "color-bunny",
-      "color-otter",
-      "color-bird",
+      "color-panda",
       "color-teddy",
       "color-cat",
-      "color-panda"
-    ]
+      "color-bear-singer"
+    ],
+    palettePolicy: {
+      mode: "random",
+      paletteIds: regularPaletteIds
+    }
   },
   {
-    id: "panda-and-friends",
+    id: "artists",
     availability: "available",
-    eyebrow: "主题盲盒",
-    title: "熊猫和朋友们",
+    category: "special",
+    eyebrow: "创作主题",
+    title: "艺术家",
     description:
-      "熊猫、小猫和小熊组成三款小队。常规结果三中一，每一款出现机会相同。",
-    memberSummary: "3 款主题伙伴",
-    modelIds: ["color-panda", "color-cat", "color-teddy"]
+      "歌手小熊、鼓手小狗和摄影小狗集合。每次随机遇见一位正在创作的伙伴。",
+    memberSummary: "3 款伙伴 · 每款 1 / 3",
+    ticketCost: 3,
+    modelIds: [
+      "color-bear-singer",
+      "color-dog-drum",
+      "color-dog-camera"
+    ],
+    palettePolicy: {
+      mode: "random",
+      paletteIds: regularPaletteIds
+    }
   },
   {
-    id: "sleepy-companions",
-    availability: "planned",
-    eyebrow: "筹备中",
-    title: "睡觉觉",
+    id: "dogs",
+    availability: "available",
+    category: "special",
+    eyebrow: "狗狗主题",
+    title: "狗狗",
     description:
-      "未来会收录真正拥有睡觉姿态的伙伴。当前没有对应 3D 资产，所以暂不开放抽取。",
-    memberSummary: "新模型制作中",
-    modelIds: [],
-    lockedReason: "需要先完成睡觉姿态的专属 3D 模型"
+      "摄影小狗和鼓手小狗组成双人小队。颜色随机，两款伙伴出现机会相同。",
+    memberSummary: "2 款伙伴 · 每款 1 / 2",
+    ticketCost: 3,
+    modelIds: [
+      "color-dog-camera",
+      "color-dog-drum"
+    ],
+    palettePolicy: {
+      mode: "random",
+      paletteIds: regularPaletteIds
+    }
+  },
+  {
+    id: "crystal",
+    availability: "available",
+    category: "special",
+    eyebrow: "珍稀主题",
+    title: "水晶",
+    description:
+      "水晶独角兽和水晶小狗共享五种随机晶体色。更稀有的材质，需要更多抽取券。",
+    memberSummary: "2 款伙伴 · 每款 1 / 2",
+    ticketCost: 6,
+    modelIds: [
+      "diamond-unicorn",
+      "diamond-dog"
+    ],
+    palettePolicy: {
+      mode: "random",
+      paletteIds: crystalPaletteIds
+    }
   }
-] as const;
+] as const satisfies readonly AvailableCollectSeries[];
 
-const availableSeriesById = new Map(
-  collectSeries
-    .filter((series): series is AvailableCollectSeries =>
-      series.availability === "available"
-    )
-    .map((series) => [series.id, series])
+export const collectSeries = [
+  colorSpectrumSeries,
+  ...specialCollectSeries
+] as const satisfies readonly AvailableCollectSeries[];
+
+const availableSeriesById = new Map<AvailableCollectSeriesId, AvailableCollectSeries>(
+  collectSeries.map((series) => [series.id, series])
 );
-
-export const specialExhibitProbability =
-  specialExhibitsSeries.drawProbability;
 
 export function getAvailableCollectSeries(id: AvailableCollectSeriesId) {
   return availableSeriesById.get(id) ?? null;
 }
 
+function getPreviewPaletteId(
+  series: AvailableCollectSeries,
+  modelIndex: number,
+  selectedPaletteId?: ToyPaletteId
+) {
+  if (series.palettePolicy.mode === "selected") {
+    return selectedPaletteId
+      && series.palettePolicy.paletteIds.includes(selectedPaletteId)
+      ? selectedPaletteId
+      : series.palettePolicy.defaultPaletteId;
+  }
+
+  return series.palettePolicy.paletteIds[
+    modelIndex % series.palettePolicy.paletteIds.length
+  ] ?? series.palettePolicy.paletteIds[0];
+}
+
 export function getCollectSeriesPreviewToys(
-  series: CollectSeriesDefinition
+  series: AvailableCollectSeries,
+  selectedPaletteId?: ToyPaletteId
 ): readonly Collectible[] {
-  if (series.availability === "planned") return [];
-  const modelIds = new Set(series.modelIds);
-  return homeSeriesToys.filter((toy) => modelIds.has(toy.modelId));
+  return series.modelIds.map((modelId, modelIndex) => {
+    const paletteId = getPreviewPaletteId(
+      series,
+      modelIndex,
+      selectedPaletteId
+    );
+    return generateCollectible({
+      id: `series-preview-${series.id}-${modelId}`,
+      publicCode: `PREVIEW-${series.id}-${modelIndex + 1}`,
+      seed: 9100 + modelIndex * 97 + series.modelIds.length,
+      modelId,
+      paletteId,
+      createdAt: "2026-07-24T00:00:00.000Z"
+    });
+  });
 }

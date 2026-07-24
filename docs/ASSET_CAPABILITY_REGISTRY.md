@@ -50,14 +50,14 @@ and documentation together. Do not infer availability by scanning
 
 ## Available now: Color Animals V3
 
-The active regular series is `series_color_animals`. It contains exactly six
-mobile-first models. The internal material ID is `plastic`; the product label
+The active regular series is `series_color_animals`. It contains exactly ten
+mobile-first matte models. The internal material ID is `plastic`; the product label
 is `柔雾树脂` / soft matte resin. The series has one shared nine-color palette,
 but each model applies a selected colorway only to its approved recolor target.
 “Colorway” does not always mean body color.
 
 Both `modelUrl` and `mobileModelUrl` currently resolve to the runtime GLB shown
-below for these six entries.
+below for these ten entries.
 
 | Product name | Model ID | Runtime GLB | GLB bytes | Approved recolor target | Runtime implementation |
 | --- | --- | --- | ---: | --- | --- |
@@ -67,9 +67,14 @@ below for these six entries.
 | Color Bunny / 小兔 | `color-bunny` | `/models/toys/color-bunny/model-mobile-v002.glb` | 381,284 | Suitcase only; bunny body and face stay in authored colors | `onBeforeCompile` protection shader plus `/models/toys/color-bunny/protect-mask-mobile-v001.webp` (52,372 bytes) |
 | Color Cat / 小猫 | `color-cat` | `/models/toys/color-cat/model-mobile-v002.glb` | 656,900 | Yarn ball only; cat body, face, ears, paws, and blush stay in authored colors | Apply an `onBeforeCompile` recolor shader only to the named `color_cat_new_yarn` material; no mask |
 | Color Panda / 熊猫 | `color-panda` | `/models/toys/color-panda/model-mobile-v002.glb` | 430,628 | Hat only; panda body, markings, face, and blush stay in authored colors | `onBeforeCompile` protection shader plus `/models/toys/color-panda/hat-mask-mobile-v001.webp` (6,024 bytes) |
+| Color Bear Singer / 爆炸头小熊 | `color-bear-singer` | `/models/toys/color-bear-singer/model-mobile-v006.glb` | 1,375,744 | Afro only; face, ears and body stay authored | `onBeforeCompile` afro shader plus `/models/toys/color-bear-singer/afro-mask-mobile-v001.webp` (11,540 bytes) |
+| Color Dog Camera / 摄像小狗 | `color-dog-camera` | `/models/toys/color-dog-camera/model-mobile-v001.glb` | 372,848 | Hat and camera bag | `onBeforeCompile` accessory shader plus `/models/toys/color-dog-camera/accessory-mask-mobile-v001.webp` (13,820 bytes) |
+| Color Dog Drum / 鼓手小狗 | `color-dog-drum` | `/models/toys/color-dog-drum/model-mobile-v001.glb` | 373,540 | Validated drum region | `onBeforeCompile` semantic texture/position shader; no extra mask |
+| Color Seal / 海豹 | `color-seal` | `/models/toys/color-seal/model-mobile-v001.glb` | 319,576 | Starfish prop only | `onBeforeCompile` starfish shader plus two compact masks totaling 21,658 bytes |
 
-The six regular GLBs total 2,494,744 bytes. Their four runtime masks total
-83,640 bytes. Every regular GLB remains below the 1 MB mobile target.
+The ten regular GLBs total 4,936,452 bytes. Their runtime masks total
+130,658 bytes. Color Bear Singer v006 is a documented 1.376 MB exception to
+the normal 1 MB mobile target and remains an optimization follow-up.
 
 ### Shared regular colorways
 
@@ -89,46 +94,51 @@ The visible target differs by model as recorded above.
 | `sky` | 晴空棉花 | `#69a9c8` |
 
 The regular draw branch has an absolute probability of 95%. Within that
-branch, the six models are uniform and the nine primary palette IDs are
+branch, the ten models are uniform and the nine primary palette IDs are
 selected independently and uniformly:
 
-- each regular model has an absolute probability of `95% / 6`, approximately
-  15.8333%;
+- each regular model has an absolute probability of `95% / 10`, or 9.5%;
 - each regular model-and-primary-palette combination has an absolute
-  probability of `95% / 54`, approximately 1.7593%.
+  probability of `95% / 90`, approximately 1.0556%.
 
-## Available now: single Diamond Unicorn special exhibit
+## Available now: two crystal special exhibits
 
-There is exactly one active crystal-family Companion:
+There are exactly two active crystal-family Companions:
 
 | Product name | Model ID | Series | Runtime GLB | GLB bytes | Material and recolor |
 | --- | --- | --- | --- | ---: | --- |
 | Diamond Unicorn / 钻石独角兽 | `diamond-unicorn` | `series_special_exhibits` | `/models/toys/diamond-unicorn/model-mobile-v001.glb` | 174,984 | One shared faceted `MeshPhysicalMaterial` with runtime tint; no texture, mask, or per-color model replacement |
+| Diamond Dog / 水晶小狗 | `diamond-dog` | `series_special_exhibits` | `/models/toys/diamond-dog/model-mobile-v001.glb` | 344,052 | Reuses the shared faceted material and runtime tint; no texture or mask |
 
 The internal material ID is `crystal`; the current product label is
-`切面钻石`. This one asset must not be presented as a multi-model crystal
-series and must not appear in the normal six-model homepage lineup or
-Color Animals atlas.
+`切面钻石`. The two assets form the explicit Crystal series. They are not
+members of the ten-model matte series or matte atlas.
 
 The special-exhibit branch has an absolute draw probability of 5%. It selects
-the single Diamond Unicorn and one of five uniform runtime tints:
+one of the two crystal models uniformly and one of five uniform runtime tints.
+Each model/tint pair therefore has an absolute compatibility-draw probability of 0.5%:
 
 | Palette ID | Product name | Base tint | Absolute draw probability |
 | --- | --- | --- | ---: |
-| `diamond-clear` | 无色钻 | `#e8f3f5` | 1% |
-| `diamond-ice` | 冰蓝钻 | `#9fd6df` | 1% |
-| `diamond-rose` | 樱粉钻 | `#e4aac1` | 1% |
-| `diamond-champagne` | 香槟钻 | `#d7c18c` | 1% |
-| `diamond-mint` | 薄荷钻 | `#a5cfbe` | 1% |
+| `diamond-clear` | 无色钻 | `#e8f3f5` | 1% across both models |
+| `diamond-ice` | 冰蓝钻 | `#9fd6df` | 1% across both models |
+| `diamond-rose` | 樱粉钻 | `#e4aac1` | 1% across both models |
+| `diamond-champagne` | 香槟钻 | `#d7c18c` | 1% across both models |
+| `diamond-mint` | 薄荷钻 | `#a5cfbe` | 1% across both models |
+
+The Collect Color series additionally allows both crystal models to consume
+one of the nine regular palette values as a runtime tint. This is a configured
+use of the same material, not a new texture, GLB, or material family.
 
 ## Current runtime capabilities
 
 | Capability | Availability | Boundary |
 | --- | --- | --- |
-| Load and inspect the six active matte-series GLBs | `available` | Shared `ToyViewer`; local Draco decoder |
+| Load and inspect the ten active matte-series GLBs | `available` | Shared `ToyViewer`; local Draco decoder |
 | Apply the nine registered model-specific colorways | `available` | Only the approved target for each model may change |
-| Load and inspect the single Diamond Unicorn | `available` | Special-exhibit branch only |
-| Apply five Diamond Unicorn tints | `available` | Same GLB and material contract; no additional crystal models |
+| Load and inspect Diamond Unicorn and Diamond Dog | `available` | Shared crystal material; series cards use thumbnails |
+| Apply five native crystal tints | `available` | Same material contract on both crystal models |
+| Apply nine Color-series tints to crystal models | `available` | Runtime tint only; used by the explicit 12-model Color pool |
 | Client-side V3 mock draw | `available` | 95% regular / 5% special; not an authoritative server draw |
 | Persist the demo collection and recent draws | `available` | Browser local storage; not cloud ownership |
 | Render cached collection thumbnails from real GLBs | `available` | 320 px WebP, serialized render queue, IndexedDB cache |
@@ -148,7 +158,8 @@ the single Diamond Unicorn and one of five uniform runtime tints:
 - The eight-material prototype catalog, including wood and metal treatments,
   remains implementation history. A material ID or prototype implementation
   is not evidence that the material is currently collectible.
-- Color Dog and the retired Color Cat v001 are archived assets, not current
+- The former generic Color Dog and the retired Color Cat v001 are archived
+  assets. The dedicated Camera Dog and Drum Dog listed above are current
   product models.
 
 ### Experimental
@@ -157,7 +168,7 @@ the single Diamond Unicorn and one of five uniform runtime tints:
   active Companion or a second crystal exhibit.
 - `public/models/toys/color-otter/model-mobile-v024.glb` is an inactive
   experiment. The product uses v008.
-- Color Animal and Diamond Unicorn Lab routes are internal validation surfaces.
+- Color Animal and crystal-model Lab routes are internal validation surfaces.
   A Lab option does not automatically become a C-end capability.
 
 ### Planned
@@ -167,10 +178,10 @@ metadata, rendering contracts, and validation exist:
 
 - Sleepy, Quirky, Bold, and Cool archetypes;
 - expansion of Cute and other animal shapes;
-- additional crystal Companions;
+- crystal Companions beyond the registered Unicorn and Dog;
 - fuzzy, metallic, and porcelain material families;
 - additional palettes outside the registered nine regular colorways and five
-  Diamond Unicorn tints;
+  native crystal tints;
 - richer shared collection missions and rewards.
 
 No current C-end page, mock profile, Agent reason, or campaign may describe
@@ -195,8 +206,9 @@ Additional enforcement rules:
    and palette IDs marked `available` in this registry and active runtime code.
 2. Any `legacy`, `experimental`, `planned`, or `unavailable` dependency blocks
    publishing and must be named in `blockingReasons`.
-3. A proposal involving Sleepy, Quirky, metallic, fuzzy, porcelain, another
-   crystal Companion, or a new color is at least `requires_asset_creation`.
+3. A proposal involving Sleepy, Quirky, metallic, fuzzy, porcelain, a crystal
+   Companion beyond the registered pair, or a new color is at least
+   `requires_asset_creation`.
 4. A proposal involving Favorite, Representative Companions, Echo, Collection
    Signature, cloud ownership, or server-authoritative draws remains
    `requires_engineering` until the corresponding capability is implemented

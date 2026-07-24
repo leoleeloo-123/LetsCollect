@@ -63,17 +63,20 @@ Console remains a separately marked internal route.
 The redesign does not replace the proven rendering stack.
 
 - `ToyViewer` remains the only live C-end 3D renderer.
-- The Collect first viewport mounts one live hero viewer instead of six live
-  tile viewers.
+- Collect series cards use cached thumbnails from the real GLBs; only reveal
+  and detail surfaces mount a live viewer.
 - Collection and Echo lists use the existing cached thumbnail renderer.
 - Collection and draw detail surfaces continue to open the existing interactive
   3D viewer.
-- All six matte models retain their verified per-model recolor semantics.
-- Diamond Unicorn remains the only current crystal model and retains its five
-  verified tints.
+- All ten matte models retain their verified per-model recolor semantics.
+- Diamond Unicorn and Diamond Dog share five native crystal tints and can also
+  consume an explicitly selected regular tint in the Collect Color series.
 
-No GLB, material shader, mask texture, or probability constant is changed by
-this frontend migration.
+The initial frontend migration did not change a GLB, material shader, mask
+texture, or probability constant. The subsequent Collect series iteration adds
+registered runtime assets and rendering contracts documented in
+`ASSET_CAPABILITY_REGISTRY.md` and `COLLECT_SERIES_V2.md`; it preserves the
+compatible global 95% / 5% branch.
 
 ## Product state and adapters
 

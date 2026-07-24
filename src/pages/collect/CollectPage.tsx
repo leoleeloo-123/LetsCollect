@@ -5,13 +5,17 @@ import {
   Waypoints
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
 import { useMvpState } from "../../app/MvpState";
-import { routes } from "../../app/routes";
+import { ColorSeriesCard } from "../../features/collect/ColorSeriesCard";
+import {
+  colorSpectrumSeries,
+  getAvailableCollectSeries,
+  specialCollectSeries,
+  type AvailableCollectSeriesId
+} from "../../features/collect/collectSeries";
+import { SpecialSeriesCard } from "../../features/collect/SpecialSeriesCard";
 import { DrawReveal } from "../../features/draw/DrawReveal";
-import { CollectSeriesStage } from "../../features/collect/CollectSeriesStage";
-import { collectSeries } from "../../features/collect/collectSeries";
-import type { Collectible } from "../../types/toy";
+import type { Collectible, ToyPaletteId } from "../../types/toy";
 import "./collect-page.css";
 
 const DRAW_REVEAL_DELAY_MS = 720;
@@ -23,12 +27,15 @@ export function CollectPage() {
     tickets,
     drawCollectibleFromSeries
   } = useMvpState();
-  const [seriesIndex, setSeriesIndex] = useState(0);
-  const [isDrawing, setIsDrawing] = useState(false);
+  const [selectedColorPaletteId, setSelectedColorPaletteId] =
+    useState<ToyPaletteId>(
+      colorSpectrumSeries.palettePolicy.defaultPaletteId
+    );
+  const [drawingSeriesId, setDrawingSeriesId] =
+    useState<AvailableCollectSeriesId | null>(null);
   const [result, setResult] = useState<Collectible | null>(null);
   const [resultSeriesTitle, setResultSeriesTitle] = useState("");
   const drawTimerRef = useRef<number | null>(null);
-  const currentSeries = collectSeries[seriesIndex];
 
   useEffect(() => () => {
     if (drawTimerRef.current !== null) {
@@ -40,27 +47,29 @@ export function CollectPage() {
     collection.some((toy) => toy.id === id)
   ).length;
 
-  const changeSeries = (direction: -1 | 1) => {
-    if (isDrawing) return;
-    setSeriesIndex((current) =>
-      (current + direction + collectSeries.length) % collectSeries.length
-    );
-  };
+  const handleDraw = (
+    seriesId: AvailableCollectSeriesId,
+    paletteId?: ToyPaletteId
+  ) => {
+    if (drawingSeriesId !== null) return;
+    const series = getAvailableCollectSeries(seriesId);
+    if (!series || tickets < series.ticketCost) return;
 
-  const handleDraw = () => {
-    if (isDrawing || currentSeries.availability !== "available") return;
-
-    setIsDrawing(true);
-    setResultSeriesTitle(currentSeries.title);
-    const seriesId = currentSeries.id;
+    setDrawingSeriesId(series.id);
+    setResultSeriesTitle(series.title);
 
     drawTimerRef.current = window.setTimeout(() => {
-      const nextResult = drawCollectibleFromSeries(seriesId);
+      const nextResult = drawCollectibleFromSeries({
+        seriesId,
+        ...(paletteId ? { paletteId } : {})
+      });
       setResult(nextResult);
-      setIsDrawing(false);
+      setDrawingSeriesId(null);
       drawTimerRef.current = null;
     }, DRAW_REVEAL_DELAY_MS);
   };
+
+  const drawLocked = drawingSeriesId !== null;
 
   return (
     <div className="collect-page">
@@ -73,8 +82,8 @@ export function CollectPage() {
           <h1>今天，想从哪个系列里遇见新伙伴？</h1>
         </div>
         <p>
-          左右切换不同系列，看看里面现在有哪些真实伙伴。
-          选定后直接在这一页抽取，不需要再跳去另一个页面。
+          先从九种色系中选一个喜欢的颜色，或直接浏览不同主题。
+          每张卡片都是独立盲盒，选定后就在这里揭晓。
         </p>
       </header>
 
@@ -93,41 +102,56 @@ export function CollectPage() {
         </div>
       </dl>
 
-      <CollectSeriesStage
-        key={currentSeries.id}
-        series={currentSeries}
-        seriesIndex={seriesIndex}
-        seriesCount={collectSeries.length}
-        tickets={tickets}
-        isDrawing={isDrawing}
-        onPrevious={() => changeSeries(-1)}
-        onNext={() => changeSeries(1)}
-        onDraw={handleDraw}
-      />
-
-      <section className="collect-page__guide" aria-labelledby="collect-guide-title">
-        <div>
-          <p className="collect-kicker">怎么抽</p>
-          <h2 id="collect-guide-title">选系列，不用猜概率</h2>
+      <section
+        className="collect-page__series-section"
+        aria-labelledby="color-series-heading"
+      >
+        <div className="collect-page__section-heading">
+          <div>
+            <p className="collect-kicker">COLOR SERIES</p>
+            <h2 id="color-series-heading">色彩系列</h2>
+          </div>
+          <p>一张卡片，九种颜色，十二款伙伴。</p>
         </div>
-        <ol>
-          <li>
-            <span>01</span>
-            <div><strong>挑一个系列</strong><p>每个系列只展示当前真实存在的成员。</p></div>
-          </li>
-          <li>
-            <span>02</span>
-            <div><strong>原地打开盲盒</strong><p>扣除 3 张券，常规成员在主题池内均等出现。</p></div>
-          </li>
-          <li>
-            <span>03</span>
-            <div><strong>直接进入藏品柜</strong><p>揭晓结果会立即保存，也可以设为最爱。</p></div>
-          </li>
-        </ol>
-        <Link to={routes.collection}>
-          <LibraryBig size={17} aria-hidden="true" />
-          查看我的藏品柜
-        </Link>
+
+        <ColorSeriesCard
+          series={colorSpectrumSeries}
+          paletteId={selectedColorPaletteId}
+          tickets={tickets}
+          isDrawing={drawingSeriesId === colorSpectrumSeries.id}
+          drawLocked={drawLocked}
+          onPaletteChange={setSelectedColorPaletteId}
+          onDraw={() => handleDraw(
+            colorSpectrumSeries.id,
+            selectedColorPaletteId
+          )}
+        />
+      </section>
+
+      <section
+        className="collect-page__series-section"
+        aria-labelledby="special-series-heading"
+      >
+        <div className="collect-page__section-heading">
+          <div>
+            <p className="collect-kicker">SPECIAL SERIES</p>
+            <h2 id="special-series-heading">特殊系列</h2>
+          </div>
+          <p>按角色、兴趣和材质组成的小型主题池。</p>
+        </div>
+
+        <div className="collect-page__special-grid">
+          {specialCollectSeries.map((series) => (
+            <SpecialSeriesCard
+              key={series.id}
+              series={series}
+              tickets={tickets}
+              isDrawing={drawingSeriesId === series.id}
+              drawLocked={drawLocked}
+              onDraw={() => handleDraw(series.id)}
+            />
+          ))}
+        </div>
       </section>
 
       {result ? (

@@ -45,7 +45,7 @@ const stepCopy: Record<OnboardingStep, {
   3: {
     eyebrow: "偏好 03",
     title: "最后，选一种喜欢的质感",
-    description: "当前有六只柔雾伙伴，晶亮质感只有钻石独角兽这一件特别展品。"
+    description: "当前有十只柔雾伙伴，以及水晶独角兽和水晶小狗两只晶亮伙伴。"
   }
 };
 
@@ -286,7 +286,7 @@ export function OnboardingPage() {
                 );
               })}
             </div>
-            <p>选择“喜欢晶亮”不代表会出现新的晶体模型；当前只有钻石独角兽。</p>
+            <p>选择“喜欢晶亮”只是偏好信号，不会改变两只水晶伙伴的公开抽取概率。</p>
           </fieldset>
         ) : null}
 

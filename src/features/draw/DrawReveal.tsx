@@ -7,7 +7,10 @@ import { ToyViewer } from "../../three/ToyViewer";
 import type { Collectible } from "../../types/toy";
 import { isSpecialExhibitCollectible } from "../toys/activeSeries";
 import { getToyModel, getToyPalette } from "../toys/catalog";
-import { getCollectibleMaterialLabel } from "../toys/presentation";
+import {
+  getCollectibleMaterialLabel,
+  getCollectiblePaletteLabel
+} from "../toys/presentation";
 
 type DrawRevealProps = {
   toy: Collectible;
@@ -24,6 +27,7 @@ export function DrawReveal({
   const model = getToyModel(toy.modelId);
   const palette = getToyPalette(toy.paletteId);
   const materialLabel = getCollectibleMaterialLabel(toy);
+  const paletteLabel = getCollectiblePaletteLabel(toy);
   const isFavorite = favoriteIds.includes(toy.id);
 
   useEffect(() => {
@@ -58,7 +62,7 @@ export function DrawReveal({
         </button>
         <p className="eyebrow">
           {isSpecialExhibitCollectible(toy)
-            ? "钻石独角兽彩蛋"
+            ? "水晶伙伴出现了"
             : "新的伙伴出现了"}
         </p>
         <div className="reveal-sheet__stage">
@@ -73,7 +77,7 @@ export function DrawReveal({
           <p className="reveal-sheet__description">{toy.shortDescription}</p>
           <dl className="reveal-sheet__facts">
             <div><dt>伙伴</dt><dd>{model.name}</dd></div>
-            <div><dt>配色</dt><dd>{palette.name}</dd></div>
+            <div><dt>{paletteLabel}</dt><dd>{palette.name}</dd></div>
             <div><dt>质感</dt><dd>{materialLabel}</dd></div>
             <div>
               <dt>{encounterLabel ? "本次主题" : "系列"}</dt>

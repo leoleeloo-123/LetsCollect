@@ -9,7 +9,9 @@ import {
 } from "react";
 import {
   getAvailableCollectSeries,
-  type AvailableCollectSeriesId
+  type AvailableCollectSeries,
+  type AvailableCollectSeriesId,
+  type CollectSeriesDrawRequest
 } from "../features/collect/collectSeries";
 import { initialFriendIds, initialPendingFriendIds } from "../data/mock/social";
 import { starterCollectionToys } from "../data/mock/toys";
@@ -24,7 +26,12 @@ import type {
   MaterialPreference,
   TastePreferences
 } from "../types/taste";
-import type { Collectible, DrawRecord, ToyModelId } from "../types/toy";
+import type {
+  Collectible,
+  DrawRecord,
+  ToyModelId,
+  ToyPaletteId
+} from "../types/toy";
 
 const STORAGE_KEY = "lets-collect-mvp-state-v12";
 export const DRAW_COST = 3;
@@ -66,7 +73,9 @@ type MvpSnapshot = {
 type MvpStateValue = MvpSnapshot & {
   interactAndEarn: (activityId: string, reward: number) => void;
   drawCollectible: () => Collectible | null;
-  drawCollectibleFromSeries: (seriesId: AvailableCollectSeriesId) => Collectible | null;
+  drawCollectibleFromSeries: (
+    request: CollectSeriesDrawRequest
+  ) => Collectible | null;
   toggleFavorite: (collectibleId: string) => void;
   toggleRepresentative: (collectibleId: string) => void;
   updateTastePreferences: (partial: Partial<TastePreferences>) => void;
@@ -162,25 +171,45 @@ function loadSnapshot(): MvpSnapshot {
   }
 }
 
-function randomPoolModel(modelIds: readonly ToyModelId[]) {
-  const values = new Uint32Array(1);
-  globalThis.crypto.getRandomValues(values);
-  return (
-    modelIds[values[0] % modelIds.length]
-    ?? modelIds[0]
-    ?? "color-bunny"
-  );
+function randomPoolValue<T>(values: readonly T[]) {
+  if (values.length === 0) {
+    throw new Error("抽取池不能为空");
+  }
+
+  const randomRange = 0x1_0000_0000;
+  const unbiasedLimit = Math.floor(randomRange / values.length) * values.length;
+  const randomValues = new Uint32Array(1);
+  let randomValue = 0;
+  do {
+    globalThis.crypto.getRandomValues(randomValues);
+    randomValue = randomValues[0];
+  } while (randomValue >= unbiasedLimit);
+
+  return values[randomValue % values.length] as T;
 }
 
-function generateCollectibleFromModels(modelIds: readonly ToyModelId[]) {
-  const initialResult = generateCollectible();
-  if (
-    initialResult.modelId === "diamond-unicorn"
-    || modelIds.includes(initialResult.modelId)
-  ) {
-    return initialResult;
+function resolveSeriesPaletteId(
+  series: AvailableCollectSeries,
+  requestedPaletteId?: ToyPaletteId
+) {
+  if (series.palettePolicy.mode === "selected") {
+    return requestedPaletteId
+      && series.palettePolicy.paletteIds.includes(requestedPaletteId)
+      ? requestedPaletteId
+      : series.palettePolicy.defaultPaletteId;
   }
-  return generateCollectible({ modelId: randomPoolModel(modelIds) });
+
+  return randomPoolValue(series.palettePolicy.paletteIds);
+}
+
+function generateCollectibleFromSeries(
+  series: AvailableCollectSeries,
+  requestedPaletteId?: ToyPaletteId
+) {
+  return generateCollectible({
+    modelId: randomPoolValue(series.modelIds),
+    paletteId: resolveSeriesPaletteId(series, requestedPaletteId)
+  });
 }
 
 function createDrawRecord(
@@ -251,31 +280,29 @@ export function MvpStateProvider({ children }: MvpStateProviderProps) {
   }, [snapshot.collection, snapshot.tickets]);
 
   const drawCollectibleFromSeries = useCallback((
-    seriesId: AvailableCollectSeriesId
+    request: CollectSeriesDrawRequest
   ) => {
-    if (snapshot.tickets < DRAW_COST) return null;
-
-    const series = getAvailableCollectSeries(seriesId);
-    if (!series) return null;
+    const series = getAvailableCollectSeries(request.seriesId);
+    if (!series || snapshot.tickets < series.ticketCost) return null;
 
     const usedSeeds = new Set(
       snapshot.collection.map((item) => item.appearanceSeed)
     );
-    let result = generateCollectibleFromModels(series.modelIds);
+    let result = generateCollectibleFromSeries(series, request.paletteId);
     for (
       let attempt = 0;
       attempt < 4 && usedSeeds.has(result.appearanceSeed);
       attempt += 1
     ) {
-      result = generateCollectibleFromModels(series.modelIds);
+      result = generateCollectibleFromSeries(series, request.paletteId);
     }
     const draw = createDrawRecord(result, series.id);
 
     setSnapshot((current) => {
-      if (current.tickets < DRAW_COST) return current;
+      if (current.tickets < series.ticketCost) return current;
       return {
         ...current,
-        tickets: current.tickets - DRAW_COST,
+        tickets: current.tickets - series.ticketCost,
         collection: [result, ...current.collection],
         recentDraws: [draw, ...current.recentDraws].slice(0, 3)
       };

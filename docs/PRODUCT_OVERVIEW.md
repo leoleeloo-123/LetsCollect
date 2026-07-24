@@ -34,26 +34,37 @@ Collect · Connect · Companion
 
 当前 C 端路由：
 
-- `/`：六只 3D Companion、每日仪式与好友动态；
-- `/draw`：客户端 Mock 抽取与揭晓；
-- `/collection`：本地收藏、图鉴、成就和详情；
-- `/friends`：本地好友搜索、申请和管理；
+- `/`：色彩系列与特殊系列卡片架，以及原地揭晓；
+- `/draw`：兼容的客户端全局 Mock 抽取与揭晓；
+- `/collection`：本地收藏、Favorite、Representative、Signature 与 3D 详情；
+- `/echo`：有限、匿名、确定性的本地 Echo 演示；
 - `/onboarding`：匿名身份与 profile；
+- `/agent`：独立 Internal / Demo Agent Console；
 - Lab routes：内部 3D 资产验证。
 
-当前抽取会在揭晓前立即扣除票券并写入 Collection。当前没有 Favorite、Representative、Signature、Echo 或 Agent。
+`/friends` 与 `/profile` 只作为兼容重定向。当前抽取会在揭晓前立即扣除
+票券并写入 Collection；Favorite、Representative、Signature、Echo 与
+Agent Console 已有本地演示实现，但票券、所有权、Echo 和 Agent 审批均
+不是生产权威服务。
 
 ## Current assets：当前真实资产
 
-当前 active 内容只有：
+当前 active 内容为：
 
-- 六个 Color Animals matte / 柔雾树脂 Companion；
-- 九个注册 colorway；
-- 一只 Diamond Unicorn 特殊展品；
-- Diamond Unicorn 五个运行时 tint；
-- 常规分支 95%，Diamond Unicorn 分支 5%。
+- 十个 Color Animals matte / 柔雾树脂 Companion；
+- Diamond Unicorn 与 Diamond Dog 两只 Crystal Companion；
+- 九个注册常规 colorway，以及五个原生 Crystal tint；
+- Collect 首页的色彩系列：选择九色之一后，在十二个模型中严格等概率
+  `1 / 12` 抽取；
+- Collect 首页的特殊系列：熊猫、艺术家、狗狗与水晶各自使用独立、
+  可审计的模型池；水晶系列使用更多票券；
+- 兼容 `/draw` 仍保留常规分支 95%、Crystal 分支 5%，Crystal 分支在
+  Unicorn 与 Dog 之间等概率选择。
 
-六个普通模型使用不同的真实换色目标，不能统一描述为“全身换色”。完整路径、大小、palette、实现方式和 availability 见 `docs/ASSET_CAPABILITY_REGISTRY.md`。
+十个普通模型使用不同的真实换色目标，不能统一描述为“全身换色”。
+色彩系列中的两只 Crystal 模型会消费用户选择的常规色作为运行时 tint；
+独立水晶系列则从五个原生 Crystal tint 中随机。完整路径、大小、palette、
+实现方式和 availability 见 `docs/ASSET_CAPABILITY_REGISTRY.md`。
 
 旧 Jelly Jade、八材质、归档模型和 Lab 实验是 legacy / experimental，不是当前可抽取内容。
 
@@ -89,8 +100,10 @@ Agent Console 使用独立 Internal / Demo route，不进入 C 端主导航。
 
 ### Collect
 
-- 一个主要 live 3D Companion；
-- 六个真实模型与真实 colorway 偏好；
+- 一个可扩展的系列卡片架，而不是卡片内部的全局分页器；
+- 第一张色彩系列卡展示十二个真实模型，并用九个色点切换全卡配色；
+- 每个特殊系列独立成卡，模型池、配色策略、概率与票券成本集中配置；
+- 卡片使用真实 GLB 生成并缓存的缩略图，揭晓与详情继续使用 live 3D；
 - 柔和、非老虎机式揭晓；
 - 以 Companion、colorway、Matte / Crystal 和简短描述为主要信息。
 

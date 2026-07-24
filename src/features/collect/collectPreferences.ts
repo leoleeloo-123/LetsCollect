@@ -60,11 +60,11 @@ export const materialPreferences: readonly {
   description: string;
 }[] = [
   { id: "open", label: "都可以", description: "让不同质感自然出现" },
-  { id: "matte", label: "柔雾", description: "六只现有软萌伙伴" },
+  { id: "matte", label: "柔雾", description: "十只现有软萌伙伴" },
   {
     id: "crystal",
     label: "喜欢晶亮",
-    description: "当前只有钻石独角兽"
+    description: "水晶独角兽与水晶小狗"
   }
 ] as const;
 

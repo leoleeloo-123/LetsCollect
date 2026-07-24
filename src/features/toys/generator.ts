@@ -122,7 +122,10 @@ function createColorAnimalAppearance(traits: MaterialTraits): AppearanceVector {
 
 function getCollectibleDescription(modelId: ToyModelId, paletteName: string) {
   if (modelId === "diamond-unicorn") {
-    return `一件采用${paletteName}色泽的 Diamond Unicorn 特殊展品，拥有高折射率、清晰切面与明亮火彩。`;
+    return `一只采用${paletteName}色泽的水晶独角兽，拥有高折射率、清晰切面与明亮火彩。`;
+  }
+  if (modelId === "diamond-dog") {
+    return `一只采用${paletteName}色泽的水晶小狗，通透晶体与细密切面会在转动时呈现明亮火彩。`;
   }
   if (modelId === "color-bird") {
     return `一只采用${paletteName}配色的软萌小鸟，保留灵动眼睛、喙部和脚部原色。`;
@@ -141,6 +144,18 @@ function getCollectibleDescription(modelId: ToyModelId, paletteName: string) {
   }
   if (modelId === "color-otter") {
     return `一只拿着${paletteName}棒棒糖的软萌水獭，身体、眼睛、鼻嘴与腮红保持原色。`;
+  }
+  if (modelId === "color-bear-singer") {
+    return `一只顶着${paletteName}爆炸头的小熊，五官、服装与舞台配件保持原始造型。`;
+  }
+  if (modelId === "color-dog-camera") {
+    return `一只戴着${paletteName}帽子和包包的摄像狗，身体、五官与相机保持原色。`;
+  }
+  if (modelId === "color-dog-drum") {
+    return `一只带着${paletteName}鼓面的打鼓狗，狗狗主体与鼓的细节保持原色。`;
+  }
+  if (modelId === "color-seal") {
+    return `一只抱着${paletteName}海星的软萌海豹，身体、五官与尾部保持原色。`;
   }
   return `一只采用${paletteName}配色的软萌伙伴，保留原始五官与角色细节。`;
 }
@@ -177,14 +192,21 @@ export function generateCollectible(options: GenerateCollectibleOptions = {}): C
     colorAnimalsSeries.drawModelIds.length - 1,
     Math.floor(regularRoll * colorAnimalsSeries.drawModelIds.length)
   );
+  const specialModelIndex = Math.min(
+    specialExhibitsSeries.drawModelIds.length - 1,
+    Math.floor(rolls[2] * specialExhibitsSeries.drawModelIds.length)
+  );
   const modelId = requestedModel
     ?? (isSpecialRoll
-      ? specialExhibitsSeries.modelIds[0]
+      ? specialExhibitsSeries.drawModelIds[specialModelIndex]
       : colorAnimalsSeries.drawModelIds[regularModelIndex]);
   const isSpecialExhibit = specialExhibitsSeries.modelIds.includes(modelId);
   const palettePool = isSpecialExhibit ? diamondUnicornPalettes : colorAnimalPalettes;
+  const allowedRequestedPaletteIds = isSpecialExhibit
+    ? specialExhibitsSeries.explicitPaletteIds
+    : colorAnimalsSeries.paletteIds;
   const requestedPalette = options.paletteId
-    && palettePool.some((palette) => palette.id === options.paletteId)
+    && allowedRequestedPaletteIds.includes(options.paletteId)
     ? options.paletteId
     : null;
   const paletteId = requestedPalette

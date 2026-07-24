@@ -16,7 +16,7 @@ export const COLOR_ANIMALS_GENERATION_VERSION = 3;
 
 export const colorAnimalsSeries = {
   id: "series_color_animals",
-  name: "软萌变色伙伴",
+  name: "色彩系列",
   materialId: "plastic",
   materialLabel: "柔雾树脂",
   modelIds: colorAnimalModels.map((model) => model.id) as readonly ToyModelId[],
@@ -33,12 +33,17 @@ export const colorAnimalsSeries = {
 
 export const specialExhibitsSeries = {
   id: "series_special_exhibits",
-  name: "特殊展品",
+  name: "水晶系列",
   materialId: "crystal",
-  materialLabel: "切面钻石",
+  materialLabel: "切面水晶",
   drawProbability: 0.05,
   modelIds: specialExhibitModels.map((model) => model.id) as readonly ToyModelId[],
+  drawModelIds: specialExhibitModels.map((model) => model.id) as readonly ToyModelId[],
   paletteIds: diamondUnicornPalettes.map((palette) => palette.id) as readonly ToyPaletteId[],
+  explicitPaletteIds: [
+    ...diamondUnicornPalettes.map((palette) => palette.id),
+    ...colorAnimalPalettes.map((palette) => palette.id)
+  ] as readonly ToyPaletteId[],
   traitLabels: {
     craftsmanship: "切面工艺",
     finish: "抛光精度",
@@ -65,7 +70,7 @@ export function isActiveCollectible(toy: Collectible) {
 }
 
 export function getSpecialExhibitGrade() {
-  return "馆藏级钻石";
+  return "馆藏级水晶";
 }
 export function getColorAnimalGrade(rarity: RarityCode) {
   if (rarity === "mythic") return "梦幻配色";

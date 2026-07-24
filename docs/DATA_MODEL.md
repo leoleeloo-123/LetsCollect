@@ -74,7 +74,16 @@ type Collectible = {
 };
 ```
 
-The active V3 draw uses six matte Color Animals, nine regular palette IDs, one `diamond-unicorn`, and five Diamond Unicorn palette IDs. Older Jelly Jade models and material definitions remain for compatibility and rollback; they are not active V3 inventory.
+The active V3 inventory uses ten matte Color Animals, two crystal models
+(`diamond-unicorn` and `diamond-dog`), nine regular palette IDs, and five native
+crystal palette IDs. The Collect Color series pairs every one of the twelve
+models with the selected regular palette and draws uniformly from that model
+pool. Each special series owns an explicit model pool, palette policy, and
+ticket cost; it does not inherit the global hidden-special branch. The
+compatible global draw remains 95% matte / 5% crystal and selects uniformly
+within the chosen material branch. Older Jelly Jade models and material
+definitions remain for compatibility and rollback; they are not active V3
+inventory.
 
 ### Draw Record
 
@@ -85,10 +94,14 @@ type DrawRecord = {
   id: string;
   collectibleId: string;
   createdAt: string;
+  encounterSeriesId?: string;
 };
 ```
 
-The current client generator immediately inserts its result into the local collection. It is not a trusted server draw, ticket transaction, or separate collect / skip decision.
+Series draws record the selected series ID for local presentation and deduct
+that series' configured ticket cost. The current client generator immediately
+inserts its result into the local collection. It is not a trusted server draw,
+ticket transaction, or separate collect / skip decision.
 
 ### Mock Social Data And Thumbnail Cache
 

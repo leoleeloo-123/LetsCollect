@@ -13,7 +13,12 @@ export type ToyModelId =
   | "color-bunny"
   | "color-cat"
   | "color-panda"
-  | "diamond-unicorn";
+  | "color-bear-singer"
+  | "color-dog-camera"
+  | "color-dog-drum"
+  | "color-seal"
+  | "diamond-unicorn"
+  | "diamond-dog";
 
 export type ToyFallbackShape = "unicorn" | "cat" | "bunny" | "bird" | "dog" | "blob";
 export type ToyPaletteId =
@@ -88,6 +93,26 @@ export type ToyModelDefinition = {
         mode: "color-otter-lollipop";
         materialName: string;
         lollipopColorScale: number;
+      }
+    | {
+        mode: "color-bear-singer-afro";
+        maskUrl: string;
+        colorScale: number;
+      }
+    | {
+        mode: "color-dog-camera-accessories";
+        maskUrl: string;
+        colorScale: number;
+      }
+    | {
+        mode: "color-dog-drum";
+        drumColorScale: number;
+      }
+    | {
+        mode: "color-seal-starfish";
+        maskUrl: string;
+        objectMaskUrl: string;
+        colorScale: number;
       };
 };
 

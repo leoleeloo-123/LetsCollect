@@ -25,6 +25,20 @@ import {
   prepareColorPandaProtectTexture
 } from "../material/createColorPandaMaterials";
 import { cloneColorOtterMaterials } from "../material/createColorOtterMaterials";
+import {
+  cloneColorBearSingerMaterials,
+  prepareColorBearSingerMaskTexture
+} from "../material/createColorBearSingerMaterials";
+import {
+  cloneColorDogCameraMaterials,
+  prepareColorDogCameraMaskTexture
+} from "../material/createColorDogCameraMaterials";
+import { cloneColorDogDrumMaterials } from "../material/createColorDogDrumMaterials";
+import {
+  cloneColorSealMaterials,
+  prepareColorSealMaskTexture,
+  prepareColorSealObjectMaskTexture
+} from "../material/createColorSealMaterials";
 import { loadRoomEnvironment, loadToyModel, loadToyViewerRuntime } from "./runtime";
 
 export type ToyRotationController = {
@@ -175,7 +189,28 @@ export function ToyViewer({
       const colorOtterLollipop = modelDefinition.rendering?.mode === "color-otter-lollipop"
         ? modelDefinition.rendering
         : null;
-      const standardMaterialResult = colorBirdZones || colorTeddyCoat || colorBunnyBag || colorCatYarn || colorPandaHat || colorOtterLollipop
+      const colorBearSingerAfro = modelDefinition.rendering?.mode === "color-bear-singer-afro"
+        ? modelDefinition.rendering
+        : null;
+      const colorDogCameraAccessories = modelDefinition.rendering?.mode === "color-dog-camera-accessories"
+        ? modelDefinition.rendering
+        : null;
+      const colorDogDrum = modelDefinition.rendering?.mode === "color-dog-drum"
+        ? modelDefinition.rendering
+        : null;
+      const colorSealStarfish = modelDefinition.rendering?.mode === "color-seal-starfish"
+        ? modelDefinition.rendering
+        : null;
+      const standardMaterialResult = colorBirdZones
+        || colorTeddyCoat
+        || colorBunnyBag
+        || colorCatYarn
+        || colorPandaHat
+        || colorOtterLollipop
+        || colorBearSingerAfro
+        || colorDogCameraAccessories
+        || colorDogDrum
+        || colorSealStarfish
         ? null
         : createToyMaterial(THREE, toy, { lightweight: useLightweightStage });
       const toyMaterial = standardMaterialResult?.material ?? null;
@@ -204,12 +239,40 @@ export function ToyViewer({
             await new THREE.TextureLoader().loadAsync(colorPandaHat.protectMaskUrl)
           )
         : null;
+      const colorBearSingerMask = colorBearSingerAfro
+        ? await new THREE.TextureLoader().loadAsync(colorBearSingerAfro.maskUrl)
+        : null;
+      if (colorBearSingerMask) {
+        prepareColorBearSingerMaskTexture(THREE, colorBearSingerMask);
+      }
+      const colorDogCameraMask = colorDogCameraAccessories
+        ? await new THREE.TextureLoader().loadAsync(colorDogCameraAccessories.maskUrl)
+        : null;
+      if (colorDogCameraMask) {
+        prepareColorDogCameraMaskTexture(THREE, colorDogCameraMask);
+      }
+      const colorSealMasks = colorSealStarfish
+        ? await Promise.all([
+            new THREE.TextureLoader().loadAsync(colorSealStarfish.maskUrl),
+            new THREE.TextureLoader().loadAsync(colorSealStarfish.objectMaskUrl)
+          ])
+        : null;
+      const colorSealMask = colorSealMasks?.[0] ?? null;
+      const colorSealObjectMask = colorSealMasks?.[1] ?? null;
+      if (colorSealMask && colorSealObjectMask) {
+        prepareColorSealMaskTexture(THREE, colorSealMask);
+        prepareColorSealObjectMaskTexture(THREE, colorSealObjectMask);
+      }
       let colorBirdMaterials: import("three").Material[] = [];
       let colorTeddyMaterials: import("three").Material[] = [];
       let colorBunnyMaterials: import("three").Material[] = [];
       let colorCatMaterials: import("three").Material[] = [];
       let colorPandaMaterials: import("three").Material[] = [];
       let colorOtterMaterials: import("three").Material[] = [];
+      let colorBearSingerMaterials: import("three").Material[] = [];
+      let colorDogCameraMaterials: import("three").Material[] = [];
+      let colorDogDrumMaterials: import("three").Material[] = [];
+      let colorSealMaterials: import("three").Material[] = [];
       const tileTextureCopies: import("three").Texture[] = [];
       const tileTextureCache = new Map<import("three").Texture, import("three").Texture>();
       function applyTileMaterialProfile(materials: import("three").Material[]) {
@@ -328,11 +391,19 @@ export function ToyViewer({
         colorCatMaterials.forEach((material) => material.dispose());
         colorPandaMaterials.forEach((material) => material.dispose());
         colorOtterMaterials.forEach((material) => material.dispose());
+        colorBearSingerMaterials.forEach((material) => material.dispose());
+        colorDogCameraMaterials.forEach((material) => material.dispose());
+        colorDogDrumMaterials.forEach((material) => material.dispose());
+        colorSealMaterials.forEach((material) => material.dispose());
         tileTextureCopies.forEach((texture) => texture.dispose());
         colorBirdZoneMap?.dispose();
         colorTeddyProtectMap?.dispose();
         colorBunnyProtectMap?.dispose();
         colorPandaProtectMap?.dispose();
+        colorBearSingerMask?.dispose();
+        colorDogCameraMask?.dispose();
+        colorSealMask?.dispose();
+        colorSealObjectMask?.dispose();
         environmentTexture?.dispose();
         pedestal.geometry.dispose();
         (pedestal.material as import("three").Material).dispose();
@@ -415,6 +486,38 @@ export function ToyViewer({
           colorOtterLollipop.materialName,
           renderer.capabilities.getMaxAnisotropy()
         );
+      } else if (colorBearSingerAfro && colorBearSingerMask) {
+        colorBearSingerMaterials = cloneColorBearSingerMaterials(
+          THREE,
+          model,
+          new THREE.Color(palette.color).multiplyScalar(colorBearSingerAfro.colorScale),
+          colorBearSingerMask,
+          renderer.capabilities.getMaxAnisotropy()
+        );
+      } else if (colorDogCameraAccessories && colorDogCameraMask) {
+        colorDogCameraMaterials = cloneColorDogCameraMaterials(
+          THREE,
+          model,
+          new THREE.Color(palette.color).multiplyScalar(colorDogCameraAccessories.colorScale),
+          colorDogCameraMask,
+          renderer.capabilities.getMaxAnisotropy()
+        );
+      } else if (colorDogDrum) {
+        colorDogDrumMaterials = cloneColorDogDrumMaterials(
+          THREE,
+          model,
+          new THREE.Color(palette.color).multiplyScalar(colorDogDrum.drumColorScale),
+          renderer.capabilities.getMaxAnisotropy()
+        );
+      } else if (colorSealStarfish && colorSealMask && colorSealObjectMask) {
+        colorSealMaterials = cloneColorSealMaterials(
+          THREE,
+          model,
+          new THREE.Color(palette.color).multiplyScalar(colorSealStarfish.colorScale),
+          colorSealMask,
+          colorSealObjectMask,
+          renderer.capabilities.getMaxAnisotropy()
+        );
       } else {
         model.traverse((child) => {
           if (!(child instanceof THREE.Mesh) || !toyMaterial) return;
@@ -431,6 +534,10 @@ export function ToyViewer({
         ...colorCatMaterials,
         ...colorPandaMaterials,
         ...colorOtterMaterials,
+        ...colorBearSingerMaterials,
+        ...colorDogCameraMaterials,
+        ...colorDogDrumMaterials,
+        ...colorSealMaterials,
         ...(toyMaterial ? [toyMaterial] : [])
       ]);
 

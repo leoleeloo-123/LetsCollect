@@ -6,13 +6,13 @@ Last updated: 2026-07-24
 
 ## Decision
 
-The active React MVP moves from the eight-material crystal showcase to a mobile-first Color Animals series. The active draw models are Color Otter, Color Bird, Color Teddy, Color Bunny, Color Cat, and Color Panda. A collectible varies by animal model, model-specific colorway, quality, and seed while its material stays a fixed soft matte resin treatment. A selected colorway changes only the approved recolor target for that model; it does not imply that every model changes its full body color.
+The active React MVP moves from the eight-material crystal showcase to a mobile-first Color Animals series. The active matte models are Color Otter, Color Bird, Color Teddy, Color Bunny, Color Cat, Color Panda, Color Bear Singer, Color Dog Camera, Color Dog Drum, and Color Seal. A collectible varies by animal model, model-specific colorway, quality, and seed while its material stays a fixed soft matte resin treatment. A selected colorway changes only the approved recolor target for that model; it does not imply that every model changes its full body color.
 
 The former jelly-jade and material-generation assets, catalogs, and generator remain in the repository as a legacy rollback path. They are not part of the active draw pool or seeded collection.
 
-Diamond Unicorn is a separate 5% special-exhibit branch. It is not part of the six-model homepage lineup or the normal Color Animals atlas; its full contract is recorded in `docs/DIAMOND_UNICORN_SPECIAL_EXHIBIT.md`.
+Diamond Unicorn and Diamond Dog share a separate 5% special-exhibit branch. Their full contract is recorded in `docs/DIAMOND_UNICORN_SPECIAL_EXHIBIT.md`.
 
-Color Dog, Color Unicorn, and the retired Color Cat v001 are fully preserved under `assets/models/archive/`, including original sources, optimized GLBs, masks, builders, and former Lab/production code.
+The former generic Color Dog, Color Unicorn, and the retired Color Cat v001 remain rollback history. Color Dog Camera and Color Dog Drum are distinct active product models.
 
 The authoritative human-readable inventory, exact runtime sizes, recolor targets, palette IDs, availability states, and campaign feasibility rules are recorded in `docs/ASSET_CAPABILITY_REGISTRY.md`.
 
@@ -32,9 +32,13 @@ The authoritative human-readable inventory, exact runtime sizes, recolor targets
 - Color Bunny uses `model-mobile-v002.glb`; only its suitcase is recolored through `protect-mask-mobile-v001.webp`.
 - Color Cat uses `model-mobile-v002.glb`; only the named `color_cat_new_yarn` material changes the yarn colorway, with no additional mask request.
 - Color Panda uses `model-mobile-v002.glb`; only its hat is recolored through `hat-mask-mobile-v001.webp`.
-- The regular 95% draw branch selects one of the six active models and one of the nine shared primary colorway IDs independently with equal probability.
-- A separate 5% branch selects Diamond Unicorn and one of five diamond colors.
-- The normal six use fixed soft matte resin; the special exhibit uses its shared faceted diamond material.
+- Color Bear Singer uses `model-mobile-v006.glb`; only the protected afro region accepts the selected palette.
+- Color Dog Camera uses `model-mobile-v001.glb`; its hat and bag use `accessory-mask-mobile-v001.webp`.
+- Color Dog Drum uses `model-mobile-v001.glb`; its validated drum region accepts the selected palette.
+- Color Seal uses `model-mobile-v001.glb`; two compact masks isolate the starfish prop.
+- The regular 95% compatibility draw branch selects one of the ten matte models and one of the nine shared primary colorway IDs independently with equal probability.
+- A separate 5% compatibility branch selects Diamond Unicorn or Diamond Dog and one of five diamond colors.
+- The normal ten use fixed soft matte resin; the two special exhibits use the shared faceted diamond material.
 - The appearance signature includes the generation version, series, model, palette, material, rendering asset key, traits, and seed.
 
 ## Local data migration
@@ -50,9 +54,14 @@ The Color Animals demo uses a dedicated local-storage key. Earlier material-show
 - Color Bunny mobile GLB: about 381 KB; protection mask: about 52 KB.
 - Color Cat mobile GLB: about 657 KB; no protection mask is required.
 - Color Panda mobile GLB: about 431 KB; hat mask: about 6 KB.
+- Color Bear Singer v006: about 1.376 MB; this is a documented temporary exception to the 1 MB target and remains an optimization follow-up.
+- Color Dog Camera: about 373 KB; accessory mask: about 14 KB.
+- Color Dog Drum: about 374 KB; no mask request.
+- Color Seal: about 320 KB; its two masks total about 25 KB.
 - Diamond Unicorn special-exhibit GLB: about 175 KB; no textures or masks.
+- Diamond Dog special-exhibit GLB: about 344 KB; no textures or masks.
 - Color Bunny and Color Panda v002 preserve the v001 geometry while padding the 1024 px base-color atlas borders to reduce UV seam bleeding at tile size.
-- The home series grid uses six lightweight live viewers with a conservative first-paint DPR and a settled DPR cap of 1.75; collection lists use cached WebP thumbnails.
+- Collect series cards and collection lists use cached WebP thumbnails; only reveal and selected detail mount a live viewer.
 
 ## Validation
 
@@ -60,10 +69,10 @@ Before release:
 
 1. Type-check and production-build the exact intended change set.
 2. Verify home, draw, reveal, collection, detail, and friends routes at a narrow mobile viewport.
-3. Confirm repeated draws retain a 95% regular branch and a 5% Diamond Unicorn special-exhibit branch.
-4. Confirm all six active Color Animals models can appear with random registered colorways, change only their approved recolor targets, and add to the collection.
-5. Confirm all six normal models preserve their validated authored details in the live viewer and cached thumbnails.
-6. Confirm Diamond Unicorn reveals, persists, renders a thumbnail, and opens in the 3D detail view without changing normal atlas completion.
+3. Confirm the compatibility draw retains a 95% matte branch and a 5% two-model crystal branch.
+4. Confirm all ten active Color Animals models can appear with registered colorways, change only their approved recolor targets, and add to the collection.
+5. Confirm all ten matte models preserve their validated authored details in the live viewer and cached thumbnails.
+6. Confirm both crystal models reveal, persist, render thumbnails, and open in the 3D detail view.
 7. Confirm the previous storage entry and all legacy models remain available.
 
 ## Rollback

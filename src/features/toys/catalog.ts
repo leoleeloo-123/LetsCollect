@@ -182,6 +182,74 @@ export const colorPandaModel: ToyModelDefinition = {
   }
 };
 
+export const colorBearSingerModel: ToyModelDefinition = {
+  id: "color-bear-singer",
+  slug: "color-bear-singer",
+  name: "爆炸头小熊",
+  fallbackShape: "blob",
+  assets: {
+    modelUrl: "/models/toys/color-bear-singer/model-mobile-v006.glb",
+    mobileModelUrl: "/models/toys/color-bear-singer/model-mobile-v006.glb"
+  },
+  viewer: { scaleMultiplier: 0.94, yOffset: -0.02, rotationY: -0.24 },
+  rendering: {
+    mode: "color-bear-singer-afro",
+    maskUrl: "/models/toys/color-bear-singer/afro-mask-mobile-v001.webp",
+    colorScale: 0.9
+  }
+};
+
+export const colorDogCameraModel: ToyModelDefinition = {
+  id: "color-dog-camera",
+  slug: "color-dog-camera",
+  name: "摄像狗",
+  fallbackShape: "dog",
+  assets: {
+    modelUrl: "/models/toys/color-dog-camera/model-mobile-v001.glb",
+    mobileModelUrl: "/models/toys/color-dog-camera/model-mobile-v001.glb"
+  },
+  viewer: { scaleMultiplier: 0.94, yOffset: -0.02, rotationY: -0.28 },
+  rendering: {
+    mode: "color-dog-camera-accessories",
+    maskUrl: "/models/toys/color-dog-camera/accessory-mask-mobile-v001.webp",
+    colorScale: 0.9
+  }
+};
+
+export const colorDogDrumModel: ToyModelDefinition = {
+  id: "color-dog-drum",
+  slug: "color-dog-drum",
+  name: "打鼓狗",
+  fallbackShape: "dog",
+  assets: {
+    modelUrl: "/models/toys/color-dog-drum/model-mobile-v001.glb",
+    mobileModelUrl: "/models/toys/color-dog-drum/model-mobile-v001.glb"
+  },
+  viewer: { scaleMultiplier: 0.94, yOffset: -0.02, rotationY: -0.24 },
+  rendering: {
+    mode: "color-dog-drum",
+    drumColorScale: 0.9
+  }
+};
+
+export const colorSealModel: ToyModelDefinition = {
+  id: "color-seal",
+  slug: "color-seal",
+  name: "海豹",
+  fallbackShape: "blob",
+  assets: {
+    modelUrl: "/models/toys/color-seal/model-mobile-v001.glb",
+    mobileModelUrl: "/models/toys/color-seal/model-mobile-v001.glb"
+  },
+  viewer: { scaleMultiplier: 0.94, yOffset: -0.02, rotationY: -0.28 },
+  rendering: {
+    mode: "color-seal-starfish",
+    maskUrl: "/models/toys/color-seal/starfish-mask-mobile-v001.webp",
+    objectMaskUrl: "/models/toys/color-seal/starfish-object-mask-mobile-v001.webp",
+    colorScale: 0.9
+  }
+};
+
 export const diamondUnicornModel: ToyModelDefinition = {
   id: "diamond-unicorn",
   slug: "diamond-unicorn",
@@ -194,7 +262,22 @@ export const diamondUnicornModel: ToyModelDefinition = {
   viewer: { scaleMultiplier: 0.92, yOffset: 0, rotationY: -0.34 }
 };
 
-export const specialExhibitModels = [diamondUnicornModel] as const;
+export const diamondDogModel: ToyModelDefinition = {
+  id: "diamond-dog",
+  slug: "diamond-dog",
+  name: "水晶小狗",
+  fallbackShape: "dog",
+  assets: {
+    modelUrl: "/models/toys/diamond-dog/model-mobile-v001.glb",
+    mobileModelUrl: "/models/toys/diamond-dog/model-mobile-v001.glb"
+  },
+  viewer: { scaleMultiplier: 0.92, yOffset: 0, rotationY: -0.24 }
+};
+
+export const specialExhibitModels = [
+  diamondUnicornModel,
+  diamondDogModel
+] as const;
 
 export const colorAnimalModels = [
   colorOtterModel,
@@ -202,7 +285,11 @@ export const colorAnimalModels = [
   colorTeddyModel,
   colorBunnyModel,
   colorCatModel,
-  colorPandaModel
+  colorPandaModel,
+  colorBearSingerModel,
+  colorDogCameraModel,
+  colorDogDrumModel,
+  colorSealModel
 ] as const;
 export const toyPalettes: ToyPaletteDefinition[] = [
   { id: "rose", name: "樱花粉", color: "#ff789e", attenuation: "#8f2346", emissive: "#c83464", glow: "#ff7da5" },
@@ -283,13 +370,21 @@ export function getColorBirdAccentPalette(bodyPaletteId: ToyPaletteId, appearanc
 }
 
 export function getToyRenderingAssetKey(model: ToyModelDefinition) {
-  if (model.id === "diamond-unicorn") return "diamond-unicorn-material-v1";
+  if (model.id === "diamond-unicorn" || model.id === "diamond-dog") {
+    return "diamond-unicorn-material-v1";
+  }
   if (model.rendering?.mode === "color-bird-zones") return model.rendering.zoneMaskUrl;
   if (model.rendering?.mode === "color-teddy-coat") return model.rendering.protectMaskUrl;
   if (model.rendering?.mode === "color-bunny-bag") return model.rendering.protectMaskUrl;
   if (model.rendering?.mode === "color-cat-yarn") return model.rendering.materialName;
   if (model.rendering?.mode === "color-panda-hat") return model.rendering.protectMaskUrl;
   if (model.rendering?.mode === "color-otter-lollipop") return model.rendering.materialName;
+  if (model.rendering?.mode === "color-bear-singer-afro") return model.rendering.maskUrl;
+  if (model.rendering?.mode === "color-dog-camera-accessories") return model.rendering.maskUrl;
+  if (model.rendering?.mode === "color-dog-drum") return "color-dog-drum-material-v1";
+  if (model.rendering?.mode === "color-seal-starfish") {
+    return `${model.rendering.maskUrl}:${model.rendering.objectMaskUrl}`;
+  }
   return "unmasked";
 }
 

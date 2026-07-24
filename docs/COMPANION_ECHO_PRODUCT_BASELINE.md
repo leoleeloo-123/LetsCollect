@@ -60,23 +60,21 @@ Let's Collect 是一个围绕数字 Companion 展开的治愈系收藏体验。�
 - React 18、Vite、TypeScript、React Router；
 - Supabase 匿名 Auth 与 `profiles`；
 - React Context + `localStorage` 的票券、收藏、好友和最近抽取状态；
-- 六个 active Color Animals 基础模型；
+- 十个 active Color Animals matte 模型；
 - 九个常规 colorway；
-- 一只 Diamond Unicorn，五种运行时 tint，抽取概率 5%；
+- Diamond Unicorn 与 Diamond Dog，两者共享五种原生 Crystal tint；
+- 首页色彩系列的十二模型 × 九色显式组合，以及四个独立特殊系列池；
 - 共享 `ToyViewer`、本地 Draco、按 URL 的模型解码缓存；
 - IndexedDB WebP 缩略图缓存；
-- 当前首页、抽取、收藏、好友四入口；
+- Collect / Collection / Echo 三个 C 端入口，以及独立 Agent Console；
+- Favorite、最多三只 Representative Companions 与确定性 Collection Signature；
+- 有限本地 Echo、Collect Together、typed local analytics 和 capability registry；
 - 当前抽取在客户端生成，并在揭晓前立即写入本地 Collection。
 
 当前尚未实现：
 
-- Collect / Collection / Echo 三入口；
-- Favorite、最多三只 Representative Companions；
-- Collection Signature；
-- 偏好状态与 typed analytics；
-- Echo、Collect Together、Resonance Agent；
-- Evolution Agent 与 Agent Console；
-- capability / feasibility 运行时注册表；
+- 真实多人 Echo / Resonance 服务与生产通知；
+- Agent 对生产 Campaign 的权威审批、审计与发布；
 - 云端收藏、权威抽取与票券流水；
 - lint 与自动化测试脚本。
 
@@ -102,7 +100,9 @@ Let's Collect 是一个围绕数字 Companion 展开的治愈系收藏体验。�
 
 ## 6. Collect 页面
 
-Collect 是产品最重要的页面，3D Companion 是唯一主视觉焦点。
+Collect 是产品最重要的页面，真实 3D Companion 资产是唯一主视觉焦点。
+系列卡使用由同一 GLB 管线生成的缓存缩略图，以避免为每张卡同时创建
+多个 WebGL context；揭晓和详情继续使用 live `ToyViewer`。
 
 ### 6.1 页面层级
 
@@ -115,25 +115,35 @@ Collect 是产品最重要的页面，3D Companion 是唯一主视觉焦点。
 
 主体使用：
 
-- 一个 live `ToyViewer`；
-- 简单的柔和背景、光晕或底座；
-- 六个真实模型的缩略选择；
-- 真实 colorway 选择；
-- 一个主要 CTA。
+- 一个可扩展的系列卡片架，不使用卡片右上角的全局分页器；
+- 第一张色彩系列卡同时展示十二个真实模型；
+- 卡内九个色点切换全部模型的同一 colorway；
+- 熊猫、艺术家、狗狗与水晶各自一张扁平特殊系列卡；
+- 每张卡一个主要抽取 CTA，并准确展示 `1 / N` 与票券成本；
+- 揭晓阶段一个 live `ToyViewer`，卡片预览全部使用缓存缩略图。
 
-不得新增房间、森林、花园或其他复杂 3D 场景。首页当前六个并行 Canvas 应逐步收敛为一个主 Viewer，其余使用缩略图。
+不得新增房间、森林、花园或其他复杂 3D 场景。新增特殊系列应只扩展
+集中配置与一张复用卡片，不复制抽取逻辑或新增并行 Canvas。
 
 ### 6.2 偏好
 
 用户当前只能表达真实存在的偏好：
 
-- 六个 active matte Companion 中更喜欢哪些；
+- 十个 active matte 与两只 active Crystal Companion；
 - 九个真实 colorway 或它们的情绪分组；
-- Matte 倾向或对唯一 Diamond Unicorn 的 Crystal 兴趣。
+- Matte 倾向或对 Crystal 系列的兴趣；
+- 明确选择的系列与该系列真实存在的模型池。
 
 `Calm / Warm / Fresh / Dreamy / Bold / Monochrome` 只能作为九个真实 colorway 的 UI 分组，不是新增资产。映射必须集中配置并可解释。
 
-需要注意：六个普通模型不是全部“身体整体换色”。不同模型改变主体、帽子、行李箱、毛线球或棒棒糖。用户界面优先使用 `colorway / 配色 / color accent`，详情使用真实部位名称。
+需要注意：十个普通模型不是全部“身体整体换色”。不同模型改变主体、
+帽子、行李箱、毛线球、棒棒糖、爆炸头、相机配件、鼓或海星。用户界面
+优先使用 `colorway / 配色 / color accent`，详情使用真实部位名称。
+
+色彩系列的九个色点是显式选择：十二个模型在该色系下严格等概率
+`1 / 12`。熊猫、艺术家、狗狗与水晶系列分别使用自己的模型池；水晶
+系列颜色随机、票券成本更高。所有系列概率都从集中配置派生，不允许
+额外混入隐藏彩蛋概率。
 
 ### 6.3 抽取叙事
 
@@ -214,7 +224,9 @@ Signature 是近期收藏倾向的轻量、可解释总结，不是人格测试�
 
 语言必须使用“最近偏向”“目前似乎”“可能喜欢”，不能声称 AI 已完全理解用户。
 
-初始演示收藏目前会自动补齐六个 starter model。实现 Signature 前必须调整 seed 数据或明确排除 starter fixture，否则新用户会被错误判断为已经完整收集全部模型。
+初始演示收藏目前会自动补齐旧六个 starter model。Signature 已能工作，但
+真实用户上线前仍必须移除、标记或排除这些 fixture，避免新用户的收藏倾向
+被演示 seed 强烈偏置。
 
 ## 8. Echo 页面
 
@@ -453,8 +465,8 @@ campaign_completed
 ### Flow A：Collect
 
 ```text
-选择真实偏好
--> 遇见六个普通模型之一或唯一 Diamond Unicorn
+选择色彩系列的 colorway，或选择一张特殊系列卡
+-> 在该卡片声明的严格模型池中等概率遇见一个 Companion
 -> 揭晓真实模型 / colorway / material
 -> 进入 Collection
 -> Favorite / Representative
@@ -481,7 +493,10 @@ campaign_completed
 -> Roadmap Proposal 明确阻塞且不可发布
 ```
 
-完整实现必须保证六个普通模型、九个 colorway、Diamond Unicorn 五个 tint、5% 特殊分支和现有详情渲染不被破坏。
+完整实现必须保证十个 matte 模型、两只 Crystal 模型、九个常规
+colorway、五个原生 Crystal tint、色彩系列 `1 / 12`、各特殊系列的
+严格模型池与票券成本、兼容 `/draw` 的 95% / 5% 分支，以及现有详情
+渲染不被破坏。
 
 ## 18. 实施原则
 

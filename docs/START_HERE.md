@@ -15,8 +15,10 @@ Let's Collect 是一个围绕数字 Companion 展开的、手机优先的治愈�
 `codex/companion-echo-frontend` 分支已经实现第一版 Collect / Collection / Echo 前端和独立 Agent Console。`main` 与 Vercel Production 尚未被这个分支替换。
 
 2026-07-24 起，Collect 第一页进入“按系列选择、在当前页揭晓”的第二轮：
-默认复用六只 live 3D 玩偶舞台，系列可左右切换；首次注册依次收集昵称、
-伙伴、颜色和质感偏好。完整决定与回滚见 `docs/COLLECT_SERIES_V2.md`。
+首页改为一张可切 9 色的 12 模型「色彩系列」卡，以及熊猫、艺术家、狗狗、
+水晶等独立特殊系列卡；系列列表使用真实 GLB 缩略图，揭晓继续使用唯一的
+live 3D Viewer。首次注册依次收集昵称、伙伴、颜色和质感偏好。
+完整决定与回滚见 `docs/COLLECT_SERIES_V2.md`。
 
 改造前的 React MVP 已完整归档到：
 
@@ -85,7 +87,7 @@ GitHub：
 
 当前 C 端路由：
 
-- `/`：Collect，按系列左右切换 live 3D 成员，并在当前页扣券、揭晓和入柜；
+- `/`：Collect，从色彩或特殊系列卡选择盲盒，并在当前页扣券、揭晓和入柜；
 - `/draw`：旧随机抽取兼容入口，不再是 Collect 首页主流程；
 - `/collection`：最多三只 Representative、Favorite、真实 metadata 筛选、Collection Signature 和 3D 详情；
 - `/echo`：每日最多三条匿名 Echo、可解释共鸣和一个极简 Collect Together；
@@ -102,24 +104,25 @@ Primary navigation 只有 Collect、Collection、Echo。Agent 入口被明确标
 
 ## 当前真实资产
 
-- 六个 active matte Color Animals；
+- 十个 active matte Color Animals；
 - 九个常规 colorway；
-- 一只 Diamond Unicorn；
-- Diamond Unicorn 五个 tint；
+- Diamond Unicorn 与 Diamond Dog 两只水晶 Companion；
+- 两只水晶 Companion 的五个晶体 tint；
+- 色彩系列允许全部十二款模型复用九个常规色值；
 - 常规抽取分支 95%；
-- Diamond Unicorn 特殊分支 5%。
+- 两只水晶 Companion 共享特殊分支 5%。
 
-六个普通模型的换色目标不同；完整路径、大小、palette 与实现见 `docs/ASSET_CAPABILITY_REGISTRY.md`。
+十个普通模型的换色目标不同；完整路径、大小、palette 与实现见 `docs/ASSET_CAPABILITY_REGISTRY.md`。
 
-本次前端没有修改 GLB、shader、保护 mask、模型路径或抽取概率。
+本轮把已验证的新模型与 shader 接入产品 catalog，但不重建 GLB。
 
 ## 当前可以验证的流程
 
 ```text
 首次注册昵称 / 头像
 -> 依次选择伙伴 / 颜色 / 材质偏好
--> 左右切换 Collect 系列
--> 查看该系列 live 3D 成员
+-> 选择色彩系列或一张特殊系列卡
+-> 查看该系列真实模型缩略图
 -> 当前页抽取、柔和揭晓并立即加入本地 Collection
 -> Favorite / Representative
 -> 规则生成 Collection Signature

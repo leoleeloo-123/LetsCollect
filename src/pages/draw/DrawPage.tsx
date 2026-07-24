@@ -25,6 +25,8 @@ export function DrawPage() {
     () => new Map(collection.map((collectible) => [collectible.id, collectible])),
     [collection]
   );
+  const specialModelProbability = specialExhibitsSeries.drawProbability * 100
+    / specialExhibitsSeries.drawModelIds.length;
 
   useEffect(() => () => {
     if (revealTimer.current) window.clearTimeout(revealTimer.current);
@@ -50,13 +52,13 @@ export function DrawPage() {
       <PageHeader
         eyebrow="Encounter"
         title="Meet a Companion"
-        description="一次安静的相遇：六只 matte Companion 均等出现，Diamond Unicorn 仍保持 5% 的特殊展品概率。"
+        description="一次安静的相遇：十只柔雾伙伴共享 95% 的常规概率，两只水晶伙伴共享 5% 的特别概率。"
       />
 
       <section className={`draw-stage draw-stage--compact${isDrawing ? " draw-stage--active" : ""}`}>
         <div className="draw-stage__status">
           <span>Today’s encounter pool</span>
-          <strong>{colorAnimalsSeries.drawModelIds.length} matte companions · 1 crystal exhibit</strong>
+          <strong>{colorAnimalsSeries.drawModelIds.length} matte companions · {specialExhibitsSeries.drawModelIds.length} crystal companions</strong>
         </div>
         <div className="draw-stage__visual">
           <ToyViewer
@@ -84,13 +86,13 @@ export function DrawPage() {
         <summary><CircleHelp size={18} /> Encounter details</summary>
         <div className="probability-panel__grid">
           <span>Matte companions 95%</span>
-          <span>Diamond Unicorn {specialExhibitsSeries.drawProbability * 100}%</span>
+          <span>Crystal companions {specialExhibitsSeries.drawProbability * 100}% · {specialModelProbability}% each</span>
           <span>9 available matte colors</span>
           <span>5 available crystal tints</span>
         </div>
         <p>
-          The six matte models and their nine verified colors share the regular
-          pool. The only crystal result is the current Diamond Unicorn exhibit.
+          The ten matte models and their nine verified colors share the regular
+          pool. Diamond Unicorn and Diamond Dog split the crystal branch evenly.
         </p>
       </details>
 

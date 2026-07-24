@@ -83,7 +83,7 @@ Collect · Connect · Companion
 
 ### Collect
 
-- 使用一个主要 live 3D Companion；
+- 系列货架使用真实模型缩略图，抽取揭晓使用一个主要 live 3D Companion；
 - 保留真实模型、colorway、旋转和材质效果；
 - 只允许基于当前可用资产表达偏好；
 - 通过柔和 reveal 建立期待，不使用老虎机或赌场叙事；
@@ -127,14 +127,15 @@ Echo 不依赖并且不应展示：
 
 当前可用资产以 `docs/ASSET_CAPABILITY_REGISTRY.md` 为准。当前 C 端只可使用：
 
-- 六个 active Color Animals；
+- 十个 active Color Animals；
 - 九个注册的常规 colorway；
 - 固定的柔雾树脂表现；
-- 一只 Diamond Unicorn；
-- Diamond Unicorn 的五个运行时 tint；
+- Diamond Unicorn 与 Diamond Dog 两只水晶 Companion；
+- 两只水晶 Companion 的五个运行时 tint；
+- 色彩系列允许十二款模型共同使用九个常规色值；
 - 当前抽取、收藏、缩略图与 3D 详情能力。
 
-六个普通模型的换色目标不同；“colorway”不等于每只模型都改变完整身体颜色。
+十个普通模型的换色目标不同；“colorway”不等于每只模型都改变完整身体颜色。
 
 旧 Jelly Jade、八材质、Color Dog、Color Unicorn 实验、归档模型与 Lab 路由不是当前可抽取能力。Sleepy、Quirky、Bold、Cool、新动物、新水晶、新金属、毛绒和陶瓷只能作为 planned capability。
 
@@ -209,7 +210,7 @@ Agent 可以提出使用当前模型、颜色、权重、活动时长、任务�
 
 ## 十二、首期明确不做
 
-- 新 3D 模型或自动生成 GLB；
+- 未经验证的新 3D 模型或自动生成 GLB；
 - 房间、小屋、森林、花园或复杂 3D 世界；
 - Companion 养成或自主 AI 行动；
 - 实时多人同步；

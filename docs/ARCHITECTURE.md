@@ -21,7 +21,7 @@ The application entry is `src/main.tsx`. `src/app/App.tsx` lazy-loads route comp
 
 The current product routes are:
 
-- `/`: current home, six-Companion series stage, daily ritual, and mock community activity;
+- `/`: Collect series shelf with one nine-color pool, separate special-series cards, and in-place reveal;
 - `/draw`: client-side demo draw and reveal;
 - `/collection`: local collection, atlas, achievements, and 3D detail sheet;
 - `/friends`: local mock friend management;
@@ -72,7 +72,7 @@ The current system is deliberately hybrid:
 
 `src/three/ThumbnailRenderer/` renders the real mobile GLB to a WebP poster, serializes rendering work, and stores results in IndexedDB. Collection and feed lists use thumbnails instead of keeping a WebGL canvas alive per card.
 
-The current home series stage is a deliberate exception and can mount six tile viewers at once. It must not become the default list pattern. The target Collect experience should prefer one primary live viewer with lightweight selectors or cached thumbnails around it.
+The Collect series shelf uses cached thumbnails generated from the real GLBs. Repeated series cards must not mount a live viewer per model; the in-place reveal owns the page's primary live viewer.
 
 ## Current Supabase Boundary
 
@@ -112,7 +112,7 @@ React pages and feature components
 
 ### Capability And Asset Registry
 
-A centralized registry must distinguish `available`, `experimental`, `planned`, `legacy`, and `unavailable`. Runtime files existing in `public/` or `assets/` do not by themselves make a capability available. The six active matte Companions and the Diamond Unicorn must be declared explicitly, with their real model IDs, palettes, material behavior, and rendering constraints.
+A centralized registry must distinguish `available`, `experimental`, `planned`, `legacy`, and `unavailable`. Runtime files existing in `public/` or `assets/` do not by themselves make a capability available. The ten active matte Companions and two crystal Companions must be declared explicitly, with their real model IDs, palettes, material behavior, and rendering constraints.
 
 ### Collection Service And Repository
 

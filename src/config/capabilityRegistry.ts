@@ -24,6 +24,11 @@ export const diamondColorIds = [
   "diamond-mint"
 ] as const satisfies readonly ToyPaletteId[];
 
+export const crystalAvailableColorIds = [
+  ...diamondColorIds,
+  ...matteColorIds
+] as const satisfies readonly ToyPaletteId[];
+
 const currentAssetIds = [
   "color-otter",
   "color-bird",
@@ -31,7 +36,12 @@ const currentAssetIds = [
   "color-bunny",
   "color-cat",
   "color-panda",
-  "diamond-unicorn"
+  "color-bear-singer",
+  "color-dog-camera",
+  "color-dog-drum",
+  "color-seal",
+  "diamond-unicorn",
+  "diamond-dog"
 ] as const satisfies readonly ToyModelId[];
 
 export type CurrentAssetId = (typeof currentAssetIds)[number];
@@ -42,6 +52,7 @@ export type CurrentAssetRegistryEntry = {
   material: CurrentMaterialType;
   availability: "available";
   availableColorIds: readonly ToyPaletteId[];
+  defaultDrawColorIds: readonly ToyPaletteId[];
   drawRole: "regular" | "special_exhibit";
 };
 
@@ -52,6 +63,7 @@ export const currentAssetRegistry = [
     material: "matte",
     availability: "available",
     availableColorIds: matteColorIds,
+    defaultDrawColorIds: matteColorIds,
     drawRole: "regular"
   },
   {
@@ -60,6 +72,7 @@ export const currentAssetRegistry = [
     material: "matte",
     availability: "available",
     availableColorIds: matteColorIds,
+    defaultDrawColorIds: matteColorIds,
     drawRole: "regular"
   },
   {
@@ -68,6 +81,7 @@ export const currentAssetRegistry = [
     material: "matte",
     availability: "available",
     availableColorIds: matteColorIds,
+    defaultDrawColorIds: matteColorIds,
     drawRole: "regular"
   },
   {
@@ -76,6 +90,7 @@ export const currentAssetRegistry = [
     material: "matte",
     availability: "available",
     availableColorIds: matteColorIds,
+    defaultDrawColorIds: matteColorIds,
     drawRole: "regular"
   },
   {
@@ -84,6 +99,7 @@ export const currentAssetRegistry = [
     material: "matte",
     availability: "available",
     availableColorIds: matteColorIds,
+    defaultDrawColorIds: matteColorIds,
     drawRole: "regular"
   },
   {
@@ -92,6 +108,43 @@ export const currentAssetRegistry = [
     material: "matte",
     availability: "available",
     availableColorIds: matteColorIds,
+    defaultDrawColorIds: matteColorIds,
+    drawRole: "regular"
+  },
+  {
+    id: "color-bear-singer",
+    name: "Color Bear Singer",
+    material: "matte",
+    availability: "available",
+    availableColorIds: matteColorIds,
+    defaultDrawColorIds: matteColorIds,
+    drawRole: "regular"
+  },
+  {
+    id: "color-dog-camera",
+    name: "Color Dog Camera",
+    material: "matte",
+    availability: "available",
+    availableColorIds: matteColorIds,
+    defaultDrawColorIds: matteColorIds,
+    drawRole: "regular"
+  },
+  {
+    id: "color-dog-drum",
+    name: "Color Dog Drum",
+    material: "matte",
+    availability: "available",
+    availableColorIds: matteColorIds,
+    defaultDrawColorIds: matteColorIds,
+    drawRole: "regular"
+  },
+  {
+    id: "color-seal",
+    name: "Color Seal",
+    material: "matte",
+    availability: "available",
+    availableColorIds: matteColorIds,
+    defaultDrawColorIds: matteColorIds,
     drawRole: "regular"
   },
   {
@@ -99,7 +152,17 @@ export const currentAssetRegistry = [
     name: "Diamond Unicorn",
     material: "crystal",
     availability: "available",
-    availableColorIds: diamondColorIds,
+    availableColorIds: crystalAvailableColorIds,
+    defaultDrawColorIds: diamondColorIds,
+    drawRole: "special_exhibit"
+  },
+  {
+    id: "diamond-dog",
+    name: "Diamond Dog",
+    material: "crystal",
+    availability: "available",
+    availableColorIds: crystalAvailableColorIds,
+    defaultDrawColorIds: diamondColorIds,
     drawRole: "special_exhibit"
   }
 ] as const satisfies readonly CurrentAssetRegistryEntry[];
@@ -116,24 +179,24 @@ export type CapabilityRegistryEntry = {
 export const capabilityRegistry = [
   {
     id: "matte_companion_models",
-    label: "Six matte Companion models",
+    label: "Ten matte Companion models",
     availability: "available",
     category: "asset",
-    description: "Color Otter, Bird, Teddy, Bunny, Cat, and Panda."
+    description: "Ten matte Companions share the approved nine-color palette."
   },
   {
     id: "matte_color_variants",
     label: "Configurable matte colors",
     availability: "available",
     category: "asset",
-    description: "Nine approved palettes rendered on the six current matte models."
+    description: "Nine approved palettes rendered on the ten current matte models."
   },
   {
     id: "crystal_unicorn_exhibit",
-    label: "Diamond Unicorn special exhibit",
+    label: "Two crystal Companion exhibits",
     availability: "available",
     category: "asset",
-    description: "The only current crystal Companion, with five approved diamond colors."
+    description: "Diamond Unicorn and Diamond Dog use five default crystal tints; explicit themed draws may use the nine regular colors."
   },
   {
     id: "local_draw_flow",
@@ -277,7 +340,7 @@ export const capabilityRegistry = [
     label: "More crystal Companions",
     availability: "planned",
     category: "asset",
-    description: "Diamond Unicorn is the only current crystal model.",
+    description: "Additional crystal Companions beyond Diamond Unicorn and Diamond Dog remain planned.",
     requiresAssetCreation: true
   },
   {

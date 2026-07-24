@@ -2,9 +2,13 @@
 
 ## Current Model Pool
 
-The active mobile-first Color Animals pool contains Color Otter, Color Bird, Color Teddy, Color Bunny, Color Cat, and Color Panda. Runtime GLBs and their protection masks live under `public/models/toys/{toy-slug}/`; all active GLBs stay below 1 MB.
+The active mobile-first matte pool contains Color Otter, Color Bird, Color Teddy,
+Color Bunny, Color Cat, Color Panda, Color Bear Singer, Color Dog Camera,
+Color Dog Drum, and Color Seal. The crystal pool contains Diamond Unicorn and
+Diamond Dog. Runtime GLBs and their protection masks live under
+`public/models/toys/{toy-slug}/`.
 
-Original high-resolution GLBs for active models live under `assets/models/source/{toy-slug}/` and are never requested by the browser. Superseded experiments, retired model families, rebuild history, and rollback code belong under `assets/models/archive/{toy-slug}/`. Color Dog, Color Unicorn, and the retired Color Cat v001 are fully preserved there; the earlier Unicorn, Kitty, Bunny, Bird, Doggy, and Karpy crystal pool remains a separate rollback path.
+Original high-resolution GLBs for active models live under `assets/models/source/{toy-slug}/` and are never requested by the browser. Superseded experiments, retired model families, rebuild history, and rollback code belong under `assets/models/archive/{toy-slug}/`. Color Unicorn and the retired Color Cat v001 remain archived; the earlier Unicorn, Kitty, Bunny, Bird, Doggy, and Karpy crystal pool remains a separate rollback path.
 
 All runtime paths, protection masks, framing overrides, and recoloring modes are registered in:
 
