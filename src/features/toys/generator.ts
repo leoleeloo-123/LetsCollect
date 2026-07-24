@@ -8,6 +8,7 @@ import type {
 } from "../../types/toy";
 import {
   colorAnimalPalettes,
+  diamondUnicornPalettes,
   getToyModel,
   getToyPalette,
   getToyRenderingAssetKey
@@ -15,7 +16,9 @@ import {
 import {
   COLOR_ANIMALS_GENERATION_VERSION,
   colorAnimalsSeries,
-  getColorAnimalGrade
+  getColorAnimalGrade,
+  getSpecialExhibitGrade,
+  specialExhibitsSeries
 } from "./activeSeries";
 import { materialTraitWeights } from "./materialCatalog";
 
@@ -71,6 +74,15 @@ function createColorAnimalTraits(rolls: number[]): MaterialTraits {
   };
 }
 
+function createSpecialExhibitTraits(rolls: number[]): MaterialTraits {
+  return {
+    craftsmanship: clampScore(88 + rolls[3] * 10),
+    finish: 95,
+    purity: clampScore(90 + rolls[7] * 8),
+    character: clampScore(80 + rolls[8] * 18),
+    brilliance: 96
+  };
+}
 export function getMaterialCraftScore(traits: MaterialTraits) {
   return Math.round(
     traits.craftsmanship * materialTraitWeights.craftsmanship
@@ -108,7 +120,10 @@ function createColorAnimalAppearance(traits: MaterialTraits): AppearanceVector {
   };
 }
 
-function getColorAnimalDescription(modelId: ToyModelId, paletteName: string) {
+function getCollectibleDescription(modelId: ToyModelId, paletteName: string) {
+  if (modelId === "diamond-unicorn") {
+    return `一件采用${paletteName}色泽的 Diamond Unicorn 特殊展品，拥有高折射率、清晰切面与明亮火彩。`;
+  }
   if (modelId === "color-bird") {
     return `一只采用${paletteName}配色的软萌小鸟，保留灵动眼睛、喙部和脚部原色。`;
   }
@@ -130,34 +145,69 @@ function getColorAnimalDescription(modelId: ToyModelId, paletteName: string) {
   return `一只采用${paletteName}配色的软萌伙伴，保留原始五官与角色细节。`;
 }
 
-/** Active V3 generator: fixed soft-matte material, random approved model and body color. */
+function createSpecialExhibitAppearance(traits: MaterialTraits): AppearanceVector {
+  return {
+    transparency: 95,
+    colorDepth: traits.character,
+    hydration: traits.purity,
+    luster: traits.finish,
+    glow: traits.brilliance
+  };
+}
+
+/** Active V3 generator with a low-probability special-exhibit branch. */
 export function generateCollectible(options: GenerateCollectibleOptions = {}): Collectible {
   const seed = options.seed ?? randomSeed();
   const random = createSeededRandom(seed);
   const rolls = Array.from({ length: 10 }, () => random());
-  const requestedModel = options.modelId
-    && colorAnimalsSeries.modelIds.includes(options.modelId)
+  const activeModelIds = [
+    ...colorAnimalsSeries.modelIds,
+    ...specialExhibitsSeries.modelIds
+  ] as readonly ToyModelId[];
+  const requestedModel = options.modelId && activeModelIds.includes(options.modelId)
     ? options.modelId
     : null;
+  const isSpecialRoll = rolls[0] < specialExhibitsSeries.drawProbability;
+  const regularRoll = Math.max(
+    0,
+    (rolls[0] - specialExhibitsSeries.drawProbability)
+      / (1 - specialExhibitsSeries.drawProbability)
+  );
+  const regularModelIndex = Math.min(
+    colorAnimalsSeries.drawModelIds.length - 1,
+    Math.floor(regularRoll * colorAnimalsSeries.drawModelIds.length)
+  );
+  const modelId = requestedModel
+    ?? (isSpecialRoll
+      ? specialExhibitsSeries.modelIds[0]
+      : colorAnimalsSeries.drawModelIds[regularModelIndex]);
+  const isSpecialExhibit = specialExhibitsSeries.modelIds.includes(modelId);
+  const palettePool = isSpecialExhibit ? diamondUnicornPalettes : colorAnimalPalettes;
   const requestedPalette = options.paletteId
-    && colorAnimalsSeries.paletteIds.includes(options.paletteId)
+    && palettePool.some((palette) => palette.id === options.paletteId)
     ? options.paletteId
     : null;
-  const modelId = requestedModel
-    ?? colorAnimalsSeries.drawModelIds[Math.floor(rolls[0] * colorAnimalsSeries.drawModelIds.length)];
   const paletteId = requestedPalette
-    ?? colorAnimalPalettes[Math.floor(rolls[1] * colorAnimalPalettes.length)].id;
+    ?? palettePool[Math.floor(rolls[1] * palettePool.length)].id;
   const model = getToyModel(modelId);
   const palette = getToyPalette(paletteId);
-  const materialId = colorAnimalsSeries.materialId;
-  const materialTraits = createColorAnimalTraits(rolls);
+  const materialId = isSpecialExhibit
+    ? specialExhibitsSeries.materialId
+    : colorAnimalsSeries.materialId;
+  const materialTraits = isSpecialExhibit
+    ? createSpecialExhibitTraits(rolls)
+    : createColorAnimalTraits(rolls);
   const qualityScore = getMaterialCraftScore(materialTraits);
-  const rarity = getRarityForQuality(qualityScore);
+  const rarity: RarityCode = isSpecialExhibit ? "mythic" : getRarityForQuality(qualityScore);
   const id = options.id ?? createId();
-  const appearance = createColorAnimalAppearance(materialTraits);
+  const appearance = isSpecialExhibit
+    ? createSpecialExhibitAppearance(materialTraits)
+    : createColorAnimalAppearance(materialTraits);
+  const seriesId = isSpecialExhibit ? specialExhibitsSeries.id : colorAnimalsSeries.id;
+  const seriesName = isSpecialExhibit ? specialExhibitsSeries.name : colorAnimalsSeries.name;
   const appearanceSignature = [
     GENERATION_VERSION,
-    colorAnimalsSeries.id,
+    seriesId,
     modelId,
     paletteId,
     materialId,
@@ -172,18 +222,18 @@ export function generateCollectible(options: GenerateCollectibleOptions = {}): C
     modelId,
     paletteId,
     materialId,
-    materialGrade: getColorAnimalGrade(rarity),
+    materialGrade: isSpecialExhibit ? getSpecialExhibitGrade() : getColorAnimalGrade(rarity),
     materialTraits,
     name: palette.name + model.name,
-    seriesId: colorAnimalsSeries.id,
-    seriesName: colorAnimalsSeries.name,
+    seriesId,
+    seriesName,
     rarity,
     qualityScore,
     appearanceSeed: seed,
     generationVersion: GENERATION_VERSION,
     appearance,
     appearanceSignature,
-    shortDescription: getColorAnimalDescription(modelId, palette.name),
+    shortDescription: getCollectibleDescription(modelId, palette.name),
     createdAt: options.createdAt ?? new Date().toISOString()
   };
 }

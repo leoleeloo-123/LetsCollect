@@ -14,7 +14,7 @@ import { ToyThumbnail } from "../../components/toys/ToyThumbnail";
 import { collectorProfile } from "../../data/mock/community";
 import { homeSeriesToys } from "../../data/mock/homeSeries";
 import { ToyDetailSheet } from "../../features/collection/ToyDetailSheet";
-import { colorAnimalsSeries } from "../../features/toys/activeSeries";
+import { colorAnimalsSeries, isColorAnimalCollectible } from "../../features/toys/activeSeries";
 import { colorAnimalModels, colorAnimalPalettes, rarityLabels } from "../../features/toys/catalog";
 import type { Collectible } from "../../types/toy";
 
@@ -25,10 +25,11 @@ export function CollectorProfilePage() {
   const [activeSection, setActiveSection] = useState<ProfileSection>("showcase");
   const [selectedToy, setSelectedToy] = useState<Collectible | null>(null);
 
-  const distinctPalettes = new Set(collection.map((toy) => toy.paletteId));
+  const colorAnimalCollection = collection.filter(isColorAnimalCollectible);
+  const distinctPalettes = new Set(colorAnimalCollection.map((toy) => toy.paletteId));
   const colorProgress = distinctPalettes.size;
   const colorCompletion = Math.round((colorProgress / colorAnimalPalettes.length) * 100);
-  const distinctModels = new Set(collection.map((toy) => toy.modelId));
+  const distinctModels = new Set(colorAnimalCollection.map((toy) => toy.modelId));
   const modelProgress = distinctModels.size;
   const collectorLevel = Math.max(1, Math.floor(collection.length / 4) + 1);
   const completedSetCount = Number(colorProgress >= colorAnimalPalettes.length);

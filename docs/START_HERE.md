@@ -14,6 +14,7 @@ Let's Collect 是一个以 3D 数字收藏玩具为核心、优先服务手机�
 - `docs/THEMING.md`：前端主题变量、样式分层与调整规则；
 - `docs/THREE_MODEL_GUIDE.md`：GLB 与 Three.js 资产规则。
 - `docs/COLOR_ANIMALS_V3.md`：当前软萌变色小动物系列、移动端预算与回退方案。
+- `docs/DIAMOND_UNICORN_SPECIAL_EXHIBIT.md`：抽取库特殊展品的概率、渲染、收藏统计与回退边界；
 
 ## 本地与远程位置
 

@@ -9,6 +9,8 @@ The active React MVP moves from the eight-material crystal showcase to a mobile-
 
 The former jelly-jade and material-generation assets, catalogs, and generator remain in the repository as a legacy rollback path. They are not part of the active draw pool or seeded collection.
 
+Diamond Unicorn is a separate 5% special-exhibit branch. It is not part of the six-model homepage lineup or the normal Color Animals atlas; its full contract is recorded in `docs/DIAMOND_UNICORN_SPECIAL_EXHIBIT.md`.
+
 Color Dog, Color Unicorn, and the retired Color Cat v001 are fully preserved under `assets/models/archive/`, including original sources, optimized GLBs, masks, builders, and former Lab/production code.
 
 ## Reason
@@ -19,7 +21,7 @@ Color Dog, Color Unicorn, and the retired Color Cat v001 are fully preserved und
 
 ## Active contract
 
-- `generationVersion = 3` identifies Color Animals collectibles.
+- `generationVersion = 3` identifies active collectibles.
 - Active model and palette choices live in a shared series configuration, never in page components.
 - Color Otter uses `model-mobile-v008.glb`; only the named `Lollipop_Color` material changes palette, with no additional mask request.
 - Color Bird uses `model-mobile-v001.glb` and its production zone mask.
@@ -27,8 +29,9 @@ Color Dog, Color Unicorn, and the retired Color Cat v001 are fully preserved und
 - Color Bunny uses `model-mobile-v002.glb`; only its suitcase is recolored through `protect-mask-mobile-v001.webp`.
 - Color Cat uses `model-mobile-v002.glb`; only the named `color_cat_new_yarn` material changes palette, with no additional mask request.
 - Color Panda uses `model-mobile-v002.glb`; only its hat is recolored through `hat-mask-mobile-v001.webp`.
-- Draws select one of the six active models and one color palette independently with equal probability.
-- Material is fixed to soft matte resin; each model's eyes and authored facial details remain protected by its production shader.
+- The regular 95% draw branch selects one of the six active models and one color palette independently with equal probability.
+- A separate 5% branch selects Diamond Unicorn and one of five diamond colors.
+- The normal six use fixed soft matte resin; the special exhibit uses its shared faceted diamond material.
 - The appearance signature includes the generation version, series, model, palette, rendering asset URL, traits, and seed.
 
 ## Local data migration
@@ -44,6 +47,7 @@ The Color Animals demo uses a dedicated local-storage key. Earlier material-show
 - Color Bunny mobile GLB: about 381 KB; protection mask: about 52 KB.
 - Color Cat mobile GLB: about 657 KB; no protection mask is required.
 - Color Panda mobile GLB: about 431 KB; hat mask: about 6 KB.
+- Diamond Unicorn special-exhibit GLB: about 175 KB; no textures or masks.
 - Color Bunny and Color Panda v002 preserve the v001 geometry while padding the 1024 px base-color atlas borders to reduce UV seam bleeding at tile size.
 - The home series grid uses six lightweight live viewers with a conservative first-paint DPR and a settled DPR cap of 1.75; collection lists use cached WebP thumbnails.
 
@@ -53,10 +57,11 @@ Before release:
 
 1. Type-check and production-build the exact intended change set.
 2. Verify home, draw, reveal, collection, detail, and friends routes at a narrow mobile viewport.
-3. Confirm repeated draws can produce all six active Color Animals models with random palettes and add them to the collection.
-4. Confirm all six models preserve their validated authored details in the live viewer and cached thumbnails.
-5. Confirm no crystal/material language is visible in active product pages.
-6. Confirm the previous storage entry and all legacy models remain available.
+3. Confirm repeated draws retain a 95% regular branch and a 5% Diamond Unicorn special-exhibit branch.
+4. Confirm all six active Color Animals models can appear with random palettes and add to the collection.
+5. Confirm all six normal models preserve their validated authored details in the live viewer and cached thumbnails.
+6. Confirm Diamond Unicorn reveals, persists, renders a thumbnail, and opens in the 3D detail view without changing normal atlas completion.
+7. Confirm the previous storage entry and all legacy models remain available.
 
 ## Rollback
 

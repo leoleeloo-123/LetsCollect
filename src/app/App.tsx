@@ -15,6 +15,7 @@ const ColorOtterLabPage = lazy(() => import("../pages/color-otter-lab/ColorOtter
 const ColorBirdLabPage = lazy(() => import("../pages/color-bird-lab/ColorBirdLabPage").then((module) => ({ default: module.ColorBirdLabPage })));
 const ColorCatLabPage = lazy(() => import("../pages/color-cat-lab/ColorCatLabPage").then((module) => ({ default: module.ColorCatLabPage })));
 const ColorTeddyLabPage = lazy(() => import("../pages/color-teddy-lab/ColorTeddyLabPage").then((module) => ({ default: module.ColorTeddyLabPage })));
+const DiamondUnicornLabPage = lazy(() => import("../pages/diamond-unicorn-lab/DiamondUnicornLabPage").then((module) => ({ default: module.DiamondUnicornLabPage })));
 const NotFoundPage = lazy(() => import("../pages/not-found/NotFoundPage").then((module) => ({ default: module.NotFoundPage })));
 
 function RouteLoading() {
@@ -37,6 +38,7 @@ export function App() {
         <Route path="color-bird-lab" element={<ColorBirdLabPage />} />
         <Route path="color-cat-lab" element={<ColorCatLabPage />} />
         <Route path="color-teddy-lab" element={<ColorTeddyLabPage />} />
+        <Route path="diamond-unicorn-lab" element={<DiamondUnicornLabPage />} />
         <Route element={<RequireProfile />}>
           <Route element={<AppLayout />}>
             <Route index element={<HomePage />} />

@@ -12,7 +12,8 @@ export type ToyModelId =
   | "color-teddy"
   | "color-bunny"
   | "color-cat"
-  | "color-panda";
+  | "color-panda"
+  | "diamond-unicorn";
 
 export type ToyFallbackShape = "unicorn" | "cat" | "bunny" | "bird" | "dog" | "blob";
 export type ToyPaletteId =
@@ -32,7 +33,12 @@ export type ToyPaletteId =
   | "grape"
   | "coral"
   | "lime"
-  | "sky";
+  | "sky"
+  | "diamond-clear"
+  | "diamond-ice"
+  | "diamond-rose"
+  | "diamond-champagne"
+  | "diamond-mint";
 export type ToyMaterialId = "jade" | "plastic" | "glass" | "wood" | "iron" | "copper" | "silver" | "gold" | "crystal";
 
 export type ToyModelDefinition = {

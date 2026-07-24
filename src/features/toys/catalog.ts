@@ -182,6 +182,20 @@ export const colorPandaModel: ToyModelDefinition = {
   }
 };
 
+export const diamondUnicornModel: ToyModelDefinition = {
+  id: "diamond-unicorn",
+  slug: "diamond-unicorn",
+  name: "钻石独角兽",
+  fallbackShape: "unicorn",
+  assets: {
+    modelUrl: "/models/toys/diamond-unicorn/model-mobile-v001.glb",
+    mobileModelUrl: "/models/toys/diamond-unicorn/model-mobile-v001.glb"
+  },
+  viewer: { scaleMultiplier: 0.92, yOffset: 0, rotationY: -0.34 }
+};
+
+export const specialExhibitModels = [diamondUnicornModel] as const;
+
 export const colorAnimalModels = [
   colorOtterModel,
   colorBirdModel,
@@ -212,6 +226,14 @@ export const colorAnimalPalettes: ToyPaletteDefinition[] = [
   { id: "lime", name: "青柠果冻", color: "#9db660", attenuation: "#526326", emissive: "#71863d", glow: "#c8dc91" },
   { id: "sky", name: "晴空棉花", color: "#69a9c8", attenuation: "#315e75", emissive: "#477f9a", glow: "#a0d1e6" }
 ];
+
+export const diamondUnicornPalettes: ToyPaletteDefinition[] = [
+  { id: "diamond-clear", name: "无色钻", color: "#e8f3f5", attenuation: "#b9d4d8", emissive: "#dcecef", glow: "#f7ffff" },
+  { id: "diamond-ice", name: "冰蓝钻", color: "#9fd6df", attenuation: "#4f8f9b", emissive: "#78b7c2", glow: "#c5f3f7" },
+  { id: "diamond-rose", name: "樱粉钻", color: "#e4aac1", attenuation: "#a25a78", emissive: "#c67e9b", glow: "#f7ccdc" },
+  { id: "diamond-champagne", name: "香槟钻", color: "#d7c18c", attenuation: "#937a43", emissive: "#b29a62", glow: "#f4e2b6" },
+  { id: "diamond-mint", name: "薄荷钻", color: "#a5cfbe", attenuation: "#5d927d", emissive: "#7eae9a", glow: "#d2f0e4" }
+];
 export type TransparencyGrade = {
   id: number;
   name: string;
@@ -241,9 +263,9 @@ export const rarityLabels: Record<RarityCode, string> = {
   mythic: "神话"
 };
 
-const toyModelById = new Map([...toyModels, ...colorAnimalModels].map((model) => [model.id, model]));
+const toyModelById = new Map([...toyModels, ...colorAnimalModels, ...specialExhibitModels].map((model) => [model.id, model]));
 const toyPaletteById = new Map(
-  [...toyPalettes, ...colorAnimalPalettes].map((palette) => [palette.id, palette])
+  [...toyPalettes, ...colorAnimalPalettes, ...diamondUnicornPalettes].map((palette) => [palette.id, palette])
 );
 
 export function getToyModel(id: ToyModelId) {
@@ -261,6 +283,7 @@ export function getColorBirdAccentPalette(bodyPaletteId: ToyPaletteId, appearanc
 }
 
 export function getToyRenderingAssetKey(model: ToyModelDefinition) {
+  if (model.id === "diamond-unicorn") return "diamond-unicorn-material-v1";
   if (model.rendering?.mode === "color-bird-zones") return model.rendering.zoneMaskUrl;
   if (model.rendering?.mode === "color-teddy-coat") return model.rendering.protectMaskUrl;
   if (model.rendering?.mode === "color-bunny-bag") return model.rendering.protectMaskUrl;

@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { routes } from "../../app/routes";
 import { AppearanceVector } from "../../components/collectibles/AppearanceVector";
+import { isSpecialExhibitCollectible } from "../toys/activeSeries";
 import { getToyModel, getToyPalette, rarityLabels } from "../toys/catalog";
 import { getCollectibleGradeLabel } from "../toys/compatibility";
 import { getCollectibleMaterialLabel } from "../toys/presentation";
@@ -45,7 +46,7 @@ export function DrawReveal({ toy, onClose }: DrawRevealProps) {
         <button className="icon-button reveal-sheet__close" type="button" onClick={onClose} aria-label="关闭">
           <X size={20} />
         </button>
-        <p className="eyebrow">新的独立藏品</p>
+        <p className="eyebrow">{isSpecialExhibitCollectible(toy) ? "发现特殊展品" : "新的独立藏品"}</p>
         <div className="reveal-sheet__stage">
           <ToyViewer toy={toy} variant="inspect" />
         </div>

@@ -6,7 +6,7 @@ import { ToyThumbnail } from "../../components/toys/ToyThumbnail";
 import { ButtonLink } from "../../components/ui/ButtonLink";
 import { PageHeader } from "../../components/ui/PageHeader";
 import { featuredOtter } from "../../data/mock/toys";
-import { colorAnimalsSeries } from "../../features/toys/activeSeries";
+import { colorAnimalsSeries, specialExhibitsSeries } from "../../features/toys/activeSeries";
 import { DrawReveal } from "../../features/draw/DrawReveal";
 import { ToyViewer } from "../../three/ToyViewer";
 import type { Collectible } from "../../types/toy";
@@ -46,13 +46,13 @@ export function DrawPage() {
       <PageHeader
         eyebrow="抽取"
         title="软萌变色伙伴"
-        description="随机遇见一只新配色的水獭、小鸟、小熊、小兔、小猫或熊猫。"
+        description="随机遇见六款软萌变色伙伴，并有 5% 概率发现 Diamond Unicorn 特殊展品。"
       />
 
       <section className={`draw-stage draw-stage--compact${isDrawing ? " draw-stage--active" : ""}`}>
         <div className="draw-stage__status">
           <span>本期收藏池</span>
-          <strong>{colorAnimalsSeries.drawModelIds.length} 种造型 × 9 种配色</strong>
+          <strong>{colorAnimalsSeries.drawModelIds.length} 种常规造型 + 1 件特殊展品</strong>
         </div>
         <div className="draw-stage__visual">
           <ToyViewer
@@ -77,11 +77,11 @@ export function DrawPage() {
       </section>
 
       <details className="probability-panel">
-        <summary><CircleHelp size={18} /> 查看 V3 配色规则</summary>
+        <summary><CircleHelp size={18} /> 查看本期抽取规则</summary>
         <div className="probability-panel__grid">
-          <span>六种造型各约 16.7%</span><span>每种配色约 11.1%</span><span>柔雾表面固定</span><span>五官细节固定</span>
+          <span>常规伙伴 95%</span><span>Diamond Unicorn {specialExhibitsSeries.drawProbability * 100}%</span><span>常规九种配色</span><span>钻石五种色泽</span>
         </div>
-        <p>六种软萌伙伴等概率出现，九种配色也等概率生成；表面始终保持柔雾树脂效果，模型各自的眼睛和面部细节保留原始设计。</p>
+        <p>95% 概率抽到六款常规伙伴，六种造型与九种配色均匀随机；另有 5% 概率发现 Diamond Unicorn，随机呈现五种钻石色泽。</p>
       </details>
 
       {recentDraws.length > 0 ? (

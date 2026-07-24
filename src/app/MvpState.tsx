@@ -9,7 +9,7 @@ import {
 } from "react";
 import { initialFriendIds, initialPendingFriendIds } from "../data/mock/social";
 import { starterCollectionToys } from "../data/mock/toys";
-import { isColorAnimalCollectible } from "../features/toys/activeSeries";
+import { isActiveCollectible } from "../features/toys/activeSeries";
 import { normalizeStoredCollectible } from "../features/toys/compatibility";
 import { generateCollectible } from "../features/toys/generator";
 import type { Collectible, DrawRecord } from "../types/toy";
@@ -52,7 +52,7 @@ function loadSnapshot(): MvpSnapshot {
     const storedCollection = Array.isArray(parsed.collection)
       ? parsed.collection
           .map((toy) => normalizeStoredCollectible(toy))
-          .filter((toy) => isColorAnimalCollectible(toy))
+          .filter((toy) => isActiveCollectible(toy))
       : initialSnapshot.collection;
     const storedModelIds = new Set(storedCollection.map((toy) => toy.modelId));
     const missingStarterToys = starterCollectionToys.filter((toy) => !storedModelIds.has(toy.modelId));

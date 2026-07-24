@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { AppearanceVector } from "../../components/collectibles/AppearanceVector";
 import { ToyViewerPanel } from "../../components/three-viewer/ToyViewerPanel";
 import { getToyModel, getToyPalette, rarityLabels } from "../toys/catalog";
-import { isColorAnimalCollectible } from "../toys/activeSeries";
+import { isColorAnimalCollectible, isSpecialExhibitCollectible } from "../toys/activeSeries";
 import { getCollectibleGradeLabel } from "../toys/compatibility";
 import { getCollectibleMaterialLabel, getCollectiblePaletteLabel } from "../toys/presentation";
 import type { Collectible } from "../../types/toy";
@@ -19,9 +19,11 @@ export function ToyDetailSheet({ toy, onClose }: ToyDetailSheetProps) {
   const materialLabel = getCollectibleMaterialLabel(toy);
   const paletteFieldLabel = getCollectiblePaletteLabel(toy);
   const grade = getCollectibleGradeLabel(toy);
-  const gradeFieldLabel = isColorAnimalCollectible(toy)
-    ? "配色等级"
-    : toy.materialId === "jade" ? "通透档位" : "品相";
+  const gradeFieldLabel = isSpecialExhibitCollectible(toy)
+    ? "展品等级"
+    : isColorAnimalCollectible(toy)
+      ? "配色等级"
+      : toy.materialId === "jade" ? "通透档位" : "品相";
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
