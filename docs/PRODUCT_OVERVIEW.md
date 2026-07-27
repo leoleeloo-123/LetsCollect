@@ -57,10 +57,9 @@ Agent Console 已有本地演示实现，但票券、所有权、Echo 和 Agent 
   `1 / 12` 抽取；
 - Collect 首页的特殊系列：熊猫、艺术家、汪汪队、ZZZ 与吃货系列各自
   使用独立、可审计的模型池，全部每次六张券；
-- Diamond Unicorn 与 Diamond Dog 两只 Crystal Companion 暂时不在
-  Collect 货架或色彩系列中，但资产、已有藏品、详情与 Lab 继续保留；
-- 兼容 `/draw` 仍保留常规分支 95%、Crystal 分支 5%，Crystal 分支在
-  Unicorn 与 Dog 之间等概率选择。
+- Diamond Unicorn 与 Diamond Dog 两只 Crystal Companion 已归档，不在
+  Collect 货架、色彩系列或新抽取中；已有本地藏品、详情与 Lab 继续兼容；
+- 兼容 `/draw` 现在只从十二只 matte 伙伴中均等抽取，不再生成 Crystal。
 
 十二个普通模型使用不同的真实换色目标，不能统一描述为“全身换色”。
 ZZZ 复用小猫、海豹和考拉三款现有睡姿。水晶模型当前只在旧 `/draw`

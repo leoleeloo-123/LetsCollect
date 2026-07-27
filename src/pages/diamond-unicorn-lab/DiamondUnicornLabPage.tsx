@@ -66,9 +66,9 @@ export function DiamondUnicornLabPage() {
       <section className="color-animal-notes" aria-label="资产压缩说明">
         <Info size={19} />
         <p>
-          <strong>抽取库特殊展品：</strong> 最早的 2.35MB、约 100 万三角面 Unicorn 已压缩为
+          <strong>已归档材质研究：</strong> 最早的 2.35MB、约 100 万三角面 Unicorn 已压缩为
           174,984 字节、53,522 三角面的 Draco GLB。钻石效果完全由运行时材质生成，没有新增贴图；
-          它以 5% 概率进入抽取，但不会出现在首页常规六款阵容。
+          它只用于历史本地藏品与内部检查，不再进入任何新抽取。
         </p>
       </section>
     </main>

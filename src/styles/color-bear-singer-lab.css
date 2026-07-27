@@ -1,0 +1,25 @@
+.color-bear-singer-page {
+  max-width: 980px;
+}
+
+.color-bear-singer-intro h1 {
+  max-width: 760px;
+  font-size: 32px;
+  line-height: 1.04;
+  letter-spacing: 0;
+}
+
+.color-bear-singer-viewer {
+  aspect-ratio: 4 / 5;
+  background: #f1eee9;
+}
+
+@media (min-width: 700px) {
+  .color-bear-singer-intro h1 {
+    font-size: 44px;
+  }
+
+  .color-bear-singer-viewer {
+    aspect-ratio: 16 / 10;
+  }
+}

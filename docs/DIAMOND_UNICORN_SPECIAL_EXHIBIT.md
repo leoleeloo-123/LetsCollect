@@ -1,57 +1,56 @@
 # Crystal special exhibits
 
-Status: retained compatibility assets; Collect shelf card paused
-Date: 2026-07-24
+Status: archived compatibility studies
+Date: 2026-07-27
 
 ## Decision
 
-Diamond Unicorn and Diamond Dog form the crystal exhibit family. In the legacy
-compatibility draw they share a 5% branch and one of five equally distributed
-diamond colors; the remaining 95% uses the twelve Color Animals models and nine
-palettes.
+Diamond Unicorn and Diamond Dog no longer fit the active Color Animals visual
+language. Their editable sources have moved to `assets/models/archive/`, and
+their special-exhibit draw probability is now zero.
 
-The current Collect shelf does not expose a Crystal card and does not include
-either crystal model in the nine-color Color series. The Color series now contains
-twelve matte models. Crystal assets, existing collectibles, details, Labs, and
-the legacy `/draw` compatibility branch remain intact so the card can be restored
-later without rebuilding either GLB.
+The current Collect shelf and legacy `/draw` route contain twelve matte
+models only. Compact crystal runtimes, five historical tint IDs, and internal
+Labs remain so an existing browser-local collectible can still render and the
+material study can be inspected without rebuilding either GLB.
 
 ## Data and rendering boundary
 
-- Series: `series_special_exhibits`
+- Historical series: `series_special_exhibits`
 - Models: `diamond-unicorn`, `diamond-dog`
 - Material: shared high-IOR faceted diamond material
-- Native crystal palette IDs: `diamond-clear`, `diamond-ice`, `diamond-rose`, `diamond-champagne`, `diamond-mint`
-- Supported historical tint inputs: the nine registered regular palette IDs
-- Rarity: mythic
-- Grade: `馆藏级钻石`
-- Runtime models:
+- Historical palette IDs: `diamond-clear`, `diamond-ice`, `diamond-rose`, `diamond-champagne`, `diamond-mint`
+- Archived sources:
+  - `assets/models/archive/diamond-unicorn/source/`
+  - `assets/models/archive/diamond-dog/source/`
+- Compatibility runtimes:
   - `public/models/toys/diamond-unicorn/model-mobile-v001.glb` — 174,984 bytes
   - `public/models/toys/diamond-dog/model-mobile-v001.glb` — 344,052 bytes
 
-The Lab and product viewer share `src/three/material/createDiamondUnicornMaterial.ts`; page code does not contain model paths or material constants.
+The internal Labs and historical item renderer share
+`src/three/material/createDiamondUnicornMaterial.ts`.
 
 ## Product boundaries
 
-- Do not add either crystal model to `colorAnimalModels`.
-- Do not count them toward matte-model atlas completion.
-- Do allow both through active-collection persistence, thumbnails, detail and compatibility normalization.
-- Keep the twelve Color Animals uniform inside the compatibility draw's 95% branch.
-- Do not expose a Collect Crystal card or add crystal models to the Color pool
-  until a later product decision explicitly restores them.
+- Do not add either crystal model to `colorAnimalModels` or a Collect series.
+- Do not generate either model through `/draw`, campaigns, Agent proposals, or
+  seeded demo collections.
+- Do not count them toward active-model completion.
+- Do allow an already stored local crystal item to resolve its model, tint,
+  thumbnail, and 3D detail.
+- Restoring a crystal series requires a new explicit product decision, source
+  move, catalog review, draw-policy change, and mobile validation.
 
 ## Validation
 
 1. Type-check and production-build.
-2. Verify both crystal Labs load all five native colors.
-3. Verify the compatibility draw communicates the 95% / 5% split.
-4. Verify the current Collect shelf has no Crystal card or crystal member in the Color pool.
-5. Verify forced or legacy crystal collectibles resolve model, palette, series, material, grade and persistence.
-6. Verify both runtime GLB headers and declared byte lengths.
+2. Verify all new draws resolve to one of the twelve matte models.
+3. Verify the Collect shelf has no Crystal card or crystal member.
+4. Verify a forced historical crystal item still renders in thumbnail and 3D detail.
+5. Verify both archive folders and compatibility runtimes remain recoverable.
 
-## Historical rollback
+## Restore path
 
-The original addition could be rolled back by removing Diamond Dog from the
-special-exhibit registry and restoring the single-model branch. The current
-shelf pause requires no asset rollback; restoring it only requires an explicit
-series configuration and product-document update.
+Move the archived source folders back under `assets/models/source/`, restore a
+non-zero special-series policy, update the current asset registry and product
+documents, then revalidate both Labs and mobile rendering before release.

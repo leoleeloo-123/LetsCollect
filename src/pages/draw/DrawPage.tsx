@@ -6,10 +6,7 @@ import { ToyThumbnail } from "../../components/toys/ToyThumbnail";
 import { ButtonLink } from "../../components/ui/ButtonLink";
 import { PageHeader } from "../../components/ui/PageHeader";
 import { featuredOtter } from "../../data/mock/toys";
-import {
-  colorAnimalsSeries,
-  specialExhibitsSeries
-} from "../../features/toys/activeSeries";
+import { colorAnimalsSeries } from "../../features/toys/activeSeries";
 import { DrawReveal } from "../../features/draw/DrawReveal";
 import { ToyViewer } from "../../three/ToyViewer";
 import type { Collectible } from "../../types/toy";
@@ -25,9 +22,6 @@ export function DrawPage() {
     () => new Map(collection.map((collectible) => [collectible.id, collectible])),
     [collection]
   );
-  const specialModelProbability = specialExhibitsSeries.drawProbability * 100
-    / specialExhibitsSeries.drawModelIds.length;
-
   useEffect(() => () => {
     if (revealTimer.current) window.clearTimeout(revealTimer.current);
   }, []);
@@ -52,13 +46,13 @@ export function DrawPage() {
       <PageHeader
         eyebrow="Encounter"
         title="Meet a Companion"
-        description="一次安静的相遇：十只柔雾伙伴共享 95% 的常规概率，两只水晶伙伴共享 5% 的特别概率。"
+        description="一次安静的相遇：十二只柔雾伙伴组成当前完整收藏系列。"
       />
 
       <section className={`draw-stage draw-stage--compact${isDrawing ? " draw-stage--active" : ""}`}>
         <div className="draw-stage__status">
           <span>Today’s encounter pool</span>
-          <strong>{colorAnimalsSeries.drawModelIds.length} matte companions · {specialExhibitsSeries.drawModelIds.length} crystal companions</strong>
+          <strong>{colorAnimalsSeries.drawModelIds.length} matte companions</strong>
         </div>
         <div className="draw-stage__visual">
           <ToyViewer
@@ -85,14 +79,14 @@ export function DrawPage() {
       <details className="probability-panel">
         <summary><CircleHelp size={18} /> Encounter details</summary>
         <div className="probability-panel__grid">
-          <span>Matte companions 95%</span>
-          <span>Crystal companions {specialExhibitsSeries.drawProbability * 100}% · {specialModelProbability}% each</span>
+          <span>Matte companions 100%</span>
+          <span>{colorAnimalsSeries.drawModelIds.length} companions · equal chance</span>
           <span>9 available matte colors</span>
-          <span>5 available crystal tints</span>
+          <span>Model-specific recolor zones</span>
         </div>
         <p>
-          The ten matte models and their nine verified colors share the regular
-          pool. Diamond Unicorn and Diamond Dog split the crystal branch evenly.
+          The twelve matte models and their nine verified colors share the
+          current local encounter pool.
         </p>
       </details>
 

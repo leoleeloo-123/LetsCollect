@@ -64,7 +64,7 @@ Let's Collect 是一个围绕数字 Companion 展开的治愈系收藏体验。�
 - 九个常规 colorway；
 - 首页色彩系列的十二个 matte 模型 × 九色显式组合；
 - 熊猫、艺术家、汪汪队、ZZZ 与吃货系列五个独立特殊系列池，全部六券一次；
-- Diamond Unicorn 与 Diamond Dog 及五种原生 Crystal tint 只保留给旧 `/draw`、已有藏品与内部验证；
+- Diamond Unicorn 与 Diamond Dog 已归档，五种原生 Crystal tint 只保留给已有本地藏品与内部验证；
 - 共享 `ToyViewer`、本地 Draco、按 URL 的模型解码缓存；
 - IndexedDB WebP 缩略图缓存；
 - Collect / Collection / Echo 三个 C 端入口，以及独立 Agent Console；
@@ -146,8 +146,8 @@ renderer，卡内模型共享旋转，并在接近 viewport 时懒初始化。�
 
 色彩系列的九个色点是显式选择：十二个模型在该色系下严格等概率
 `1 / 12`。熊猫、艺术家、汪汪队、ZZZ 与吃货系列分别使用自己的模型池，
-全部六券一次。水晶卡暂时下架，且水晶模型不进入色彩系列；旧 `/draw`
-仍保留 95% matte / 5% Crystal 兼容分支。所有系列概率都从集中配置派生，
+全部六券一次。水晶卡与新生成分支已经归档；旧 `/draw`
+也只从十二只 matte 伙伴中生成。所有系列概率都从集中配置派生，
 不允许额外混入隐藏彩蛋概率。
 
 ### 6.3 抽取叙事
@@ -444,7 +444,7 @@ campaign_completed
 - 列表、Representative 与 Echo 卡片使用缩略图；
 - 保留模型 URL 解码缓存与 IndexedDB WebP；
 - 为首次访问增加静态 poster 或 CSS fallback，不能只依赖已经生成过的缓存缩略图；
-- 旧 `/draw` 若命中 Diamond Unicorn，应在揭晓前预载结果资产；
+- 历史本地藏品若包含归档水晶模型，详情页仍应按需加载兼容运行文件；
 - 高频 colorway 切换应优先原位更新材质，避免销毁整个 renderer；
 - 所有页面具备 loading、empty、error、retry；
 - 所有交互可键盘操作，有可见 focus；
@@ -504,7 +504,7 @@ campaign_completed
 完整实现必须保证十二个 matte 模型、九个常规 colorway、色彩系列
 `1 / 12`，以及熊猫、艺术家、汪汪队、ZZZ、吃货系列五个六券特殊池的
 严格模型与概率。两只 Crystal 模型及五个原生 tint 不出现在当前 Collect
-货架，但兼容 `/draw` 的 95% / 5% 分支、已有藏品和现有详情渲染不得被破坏。
+货架或新抽取；已有本地藏品和现有详情渲染不得被破坏。
 
 ## 18. 实施原则
 

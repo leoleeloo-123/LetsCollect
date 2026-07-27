@@ -36,7 +36,7 @@ export const specialExhibitsSeries = {
   name: "水晶系列",
   materialId: "crystal",
   materialLabel: "切面水晶",
-  drawProbability: 0.05,
+  drawProbability: 0,
   modelIds: specialExhibitModels.map((model) => model.id) as readonly ToyModelId[],
   drawModelIds: specialExhibitModels.map((model) => model.id) as readonly ToyModelId[],
   paletteIds: diamondUnicornPalettes.map((palette) => palette.id) as readonly ToyPaletteId[],

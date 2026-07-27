@@ -73,14 +73,14 @@ The redesign does not replace the proven rendering stack.
 - The Color series contains those twelve matte models only. Its five special
   cards are Panda, Artists, Wangwang Team (汪汪队), ZZZ, and Foodies; each draw
   costs six tickets.
-- Diamond Unicorn and Diamond Dog retain five native crystal tints for existing
-  collections, Labs, and the legacy draw, but the Collect Crystal card is paused.
+- Diamond Unicorn and Diamond Dog are archived. Five native crystal tints remain
+  only for historical local collections and internal Labs; no new draw can select them.
 
 The initial frontend migration did not change a GLB, material shader, mask
 texture, or probability constant. The subsequent Collect series iteration adds
 registered runtime assets and rendering contracts documented in
 `ASSET_CAPABILITY_REGISTRY.md` and `COLLECT_SERIES_V2.md`; it preserves the
-compatible global 95% / 5% branch.
+matte-only compatibility draw.
 
 ## Product state and adapters
 

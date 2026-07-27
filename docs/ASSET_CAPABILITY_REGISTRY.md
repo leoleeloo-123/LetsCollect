@@ -1,7 +1,7 @@
 # Asset and Capability Registry
 
 Status: current product contract
-Last verified: 2026-07-24
+Last verified: 2026-07-27
 
 ## Purpose
 
@@ -21,8 +21,7 @@ The executable sources of truth are:
 - `src/features/toys/catalog.ts`: model IDs, runtime paths, palette IDs,
   framing, recolor mode, masks, and named material targets;
 - `src/features/toys/activeSeries.ts`: active series membership, material
-  labels, palette membership, and the legacy `/draw` Diamond branch
-  probability;
+  labels, palette membership, and archived compatibility boundaries;
 - `src/features/collect/collectSeries.ts`: the current Collect shelf,
   explicit theme membership, palette policy, and ticket cost;
 - `src/features/toys/generator.ts`: draw selection, generated metadata, and
@@ -98,57 +97,38 @@ The visible target differs by model as recorded above.
 | `lime` | 青柠果冻 | `#9db660` |
 | `sky` | 晴空棉花 | `#69a9c8` |
 
-The regular draw branch has an absolute probability of 95%. Within that
-legacy `/draw` compatibility branch, the twelve models are uniform and the
-nine primary palette IDs are
-selected independently and uniformly:
+The current local draw branch has an absolute probability of 100%. The twelve
+models are uniform and the nine primary palette IDs are selected independently
+and uniformly:
 
-- each regular model has an absolute probability of `95% / 12`, approximately
-  7.9167%;
+- each regular model has an absolute probability of `100% / 12`, approximately
+  8.3333%;
 - each regular model-and-primary-palette combination has an absolute
-  probability of `95% / 108`, approximately 0.8796%.
+  probability of `100% / 108`, approximately 0.9259%.
+## Archived compatibility assets: two crystal studies
 
-## Available compatibility assets: two crystal special exhibits
+Diamond Unicorn and Diamond Dog are archived, not current product assets:
 
-There are exactly two registered crystal-family Companions:
+| Product name | Model ID | Archived source | Compatibility runtime | Status |
+| --- | --- | --- | --- | --- |
+| Diamond Unicorn / 钻石独角兽 | `diamond-unicorn` | `assets/models/archive/diamond-unicorn/source/` | `/models/toys/diamond-unicorn/model-mobile-v001.glb` | Historical local collection and internal Lab rendering only |
+| Diamond Dog / 水晶小狗 | `diamond-dog` | `assets/models/archive/diamond-dog/source/` | `/models/toys/diamond-dog/model-mobile-v001.glb` | Historical local collection and internal Lab rendering only |
 
-| Product name | Model ID | Series | Runtime GLB | GLB bytes | Material and recolor |
-| --- | --- | --- | --- | ---: | --- |
-| Diamond Unicorn / 钻石独角兽 | `diamond-unicorn` | `series_special_exhibits` | `/models/toys/diamond-unicorn/model-mobile-v001.glb` | 174,984 | One shared faceted `MeshPhysicalMaterial` with runtime tint; no texture, mask, or per-color model replacement |
-| Diamond Dog / 水晶小狗 | `diamond-dog` | `series_special_exhibits` | `/models/toys/diamond-dog/model-mobile-v001.glb` | 344,052 | Reuses the shared faceted material and runtime tint; no texture or mask |
-
-The internal material ID is `crystal`; the current product label is
-`切面钻石`. The explicit Crystal card is temporarily removed from the Collect
-shelf. The assets remain available for historical collection rendering and the
-legacy `/draw` compatibility branch. They are not members of the twelve-model
-matte series or matte atlas.
-
-The special-exhibit branch has an absolute draw probability of 5%. It selects
-one of the two crystal models uniformly and one of five uniform runtime tints.
-Each model/tint pair therefore has an absolute compatibility-draw probability of 0.5%:
-
-| Palette ID | Product name | Base tint | Absolute draw probability |
-| --- | --- | --- | ---: |
-| `diamond-clear` | 无色钻 | `#e8f3f5` | 1% across both models |
-| `diamond-ice` | 冰蓝钻 | `#9fd6df` | 1% across both models |
-| `diamond-rose` | 樱粉钻 | `#e4aac1` | 1% across both models |
-| `diamond-champagne` | 香槟钻 | `#d7c18c` | 1% across both models |
-| `diamond-mint` | 薄荷钻 | `#a5cfbe` | 1% across both models |
-
-The renderer can still consume the earlier nine regular tint values for
-backward compatibility, but no current Collect series references that path.
-
+The special-exhibit draw probability is `0`. Five historical crystal tint IDs
+remain in the compatibility renderer so an old local item can still be opened,
+but no current Collect series, legacy `/draw`, campaign, or Agent proposal may
+generate either model.
 ## Current runtime capabilities
 
 | Capability | Availability | Boundary |
 | --- | --- | --- |
 | Load and inspect the twelve active matte-series GLBs | `available` | Shared `ToyViewer`; local Draco decoder |
 | Apply the nine registered model-specific colorways | `available` | Only the approved target for each model may change |
-| Load and inspect Diamond Unicorn and Diamond Dog | `available` | Shared crystal material; historical collection and old `/draw` compatibility only |
-| Apply five native crystal tints | `available` | Same compatibility material contract on both crystal models |
+| Load and inspect Diamond Unicorn and Diamond Dog | `legacy` | Historical local collection and internal Lab rendering only |
+| Apply five native crystal tints | `legacy` | Retained only to render historical local items |
 | Apply nine regular tints to crystal models | `legacy` | Preserved rendering compatibility; no active Collect pool references it |
 | Draw from 熊猫、艺术家、汪汪队、ZZZ、吃货系列 | `available` | Explicit members, random registered matte colorway, six tickets per draw |
-| Client-side V3 mock draw | `available` | Old `/draw` keeps 95% regular / 5% special; not an authoritative server draw |
+| Client-side V3 mock draw | `available` | Old `/draw` uses the twelve regular models only; not an authoritative server draw |
 | Persist the demo collection and recent draws | `available` | Browser local storage; not cloud ownership |
 | Render cached collection thumbnails from real GLBs | `available` | 320 px WebP, serialized render queue, IndexedDB cache |
 | Live 3D collection detail | `available` | One selected item at a time |
@@ -170,8 +150,13 @@ backward compatibility, but no current Collect series references that path.
 - The former generic Color Dog and the retired Color Cat v001 are archived
   assets. The dedicated Camera Dog and Drum Dog listed above are current
   product models.
+- Diamond Unicorn and Diamond Dog source assets are archived under
+  `assets/models/archive/`; compact runtimes remain only for old local items
+  and internal material inspection.
 
 ### Experimental
+
+- Color Penguin / 围巾企鹅 has a processed runtime and accessory-mask Lab, but remains under adjustment and is not in the active catalog or draw pool.
 
 - Color Unicorn recolor experiments under `assets/models/archive/` are not an
   active Companion or a second crystal exhibit.

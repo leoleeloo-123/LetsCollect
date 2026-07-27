@@ -41,9 +41,7 @@ const currentAssetIds = [
   "color-dog-drum",
   "color-seal",
   "color-karpy",
-  "color-koala",
-  "diamond-unicorn",
-  "diamond-dog"
+  "color-koala"
 ] as const satisfies readonly ToyModelId[];
 
 export type CurrentAssetId = (typeof currentAssetIds)[number];
@@ -166,24 +164,6 @@ export const currentAssetRegistry = [
     availableColorIds: matteColorIds,
     defaultDrawColorIds: matteColorIds,
     drawRole: "regular"
-  },
-  {
-    id: "diamond-unicorn",
-    name: "Diamond Unicorn",
-    material: "crystal",
-    availability: "available",
-    availableColorIds: crystalAvailableColorIds,
-    defaultDrawColorIds: diamondColorIds,
-    drawRole: "special_exhibit"
-  },
-  {
-    id: "diamond-dog",
-    name: "Diamond Dog",
-    material: "crystal",
-    availability: "available",
-    availableColorIds: crystalAvailableColorIds,
-    defaultDrawColorIds: diamondColorIds,
-    drawRole: "special_exhibit"
   }
 ] as const satisfies readonly CurrentAssetRegistryEntry[];
 
@@ -213,10 +193,10 @@ export const capabilityRegistry = [
   },
   {
     id: "crystal_unicorn_exhibit",
-    label: "Two crystal Companion exhibits",
-    availability: "available",
+    label: "Archived crystal Companion studies",
+    availability: "experimental",
     category: "asset",
-    description: "Diamond Unicorn and Diamond Dog use five default crystal tints; explicit themed draws may use the nine regular colors."
+    description: "Diamond Unicorn and Diamond Dog are archived studies retained only for historical local collection rendering and internal Labs."
   },
   {
     id: "local_draw_flow",

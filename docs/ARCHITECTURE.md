@@ -75,7 +75,7 @@ The current system is deliberately hybrid:
 
 `src/three/ThumbnailRenderer/` renders the real mobile GLB to a WebP poster, serializes rendering work, and stores results in IndexedDB. Collection and feed lists use thumbnails instead of keeping a WebGL canvas alive per card.
 
-The Collect series shelf is a controlled exception to the list-thumbnail rule. Each series card owns one WebGL canvas and renderer; its two to twelve models live under independent local pivots in the same scene and share one rotation value. The first color-series card initializes first, while special-series cards initialize near the viewport and reveal models progressively as parallel loads complete. One Color card plus five active special cards therefore use about six contexts, not one context per model. The Crystal card is temporarily absent; its two assets remain available to historical collection rendering and the old `/draw` compatibility branch.
+The Collect series shelf is a controlled exception to the list-thumbnail rule. Each series card owns one WebGL canvas and renderer; its two to twelve models live under independent local pivots in the same scene and share one rotation value. The first color-series card initializes first, while special-series cards initialize near the viewport and reveal models progressively as parallel loads complete. One Color card plus five active special cards therefore use about six contexts, not one context per model. The Crystal card is absent; its two archived assets remain available only to historical local collection rendering and internal Labs.
 
 The series renderer reuses the mobile GLBs, the `loadToyModel` download and Draco-decode promise cache, tile-level lightweight materials, a low initial device-pixel ratio, and idle render suspension. Palette changes update material bindings on the existing scene; they must not reload a GLB or recreate the renderer. A special-series card keeps its model row above its information and actions at every breakpoint.
 
@@ -119,7 +119,7 @@ React pages and feature components
 
 ### Capability And Asset Registry
 
-A centralized registry must distinguish `available`, `experimental`, `planned`, `legacy`, and `unavailable`. Runtime files existing in `public/` or `assets/` do not by themselves make a capability available. The twelve active matte Companions and two compatibility crystal Companions must be declared explicitly, with their real model IDs, palettes, material behavior, and rendering constraints.
+A centralized registry must distinguish `available`, `experimental`, `planned`, `legacy`, and `unavailable`. Runtime files existing in `public/` or `assets/` do not by themselves make a capability available. The twelve active matte Companions and two archived crystal studies must be declared explicitly, with their real model IDs, palettes, material behavior, and rendering constraints.
 
 ### Collection Service And Repository
 

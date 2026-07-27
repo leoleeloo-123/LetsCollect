@@ -182,8 +182,7 @@ export function generateCollectible(options: GenerateCollectibleOptions = {}): C
   const random = createSeededRandom(seed);
   const rolls = Array.from({ length: 10 }, () => random());
   const activeModelIds = [
-    ...colorAnimalsSeries.modelIds,
-    ...specialExhibitsSeries.modelIds
+    ...colorAnimalsSeries.modelIds
   ] as readonly ToyModelId[];
   const requestedModel = options.modelId && activeModelIds.includes(options.modelId)
     ? options.modelId

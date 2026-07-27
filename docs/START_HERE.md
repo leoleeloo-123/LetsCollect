@@ -106,13 +106,13 @@ Primary navigation 只有 Collect、Collection、Echo。Agent 入口被明确标
 
 ## 当前真实资产
 
-- 十二个 active matte Color Animals，包括新增的饭团 Karpy 与睡觉 Koala；
+- 十二个 active matte Color Animals，包括饭团 Karpy 与睡觉 Koala；
 - 九个常规 colorway；
-- Diamond Unicorn 与 Diamond Dog 两只水晶 Companion；
-- 两只水晶 Companion 的五个晶体 tint；
-- 色彩系列只包含十二个柔雾模型，每个色系严格 `1 / 12`；
+- Diamond Unicorn 与 Diamond Dog 已归档，只保留旧藏品运行兼容；
+- 五个旧晶体 tint 只保留给历史藏品与内部 Lab；
+- 色彩系列包含十二个柔雾模型，每个色系严格 `1 / 12`；
 - 特殊系列为熊猫、艺术家、汪汪队、ZZZ 与吃货系列，全部使用 6 张券；
-- 水晶系列卡暂时下架；旧 `/draw` 仍保留 95% 柔雾 / 5% 水晶兼容规则。
+- 水晶系列与新抽取分支已归档；旧 `/draw` 现在也只生成十二只柔雾伙伴。
 
 十二个普通模型的换色目标不同；完整路径、大小、palette 与实现见 `docs/ASSET_CAPABILITY_REGISTRY.md`。
 

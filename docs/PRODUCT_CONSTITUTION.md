@@ -132,9 +132,8 @@ Echo 不依赖并且不应展示：
 - 固定的柔雾树脂表现；
 - 色彩系列中的十二款 matte 模型与九个常规色值；
 - 熊猫、艺术家、汪汪队、ZZZ 与吃货系列五个特殊池，全部每次消耗六张券；
-- Diamond Unicorn 与 Diamond Dog 两只水晶 Companion 及五个运行时 tint，
-  仅保留给已有藏品、详情、Lab 与旧 `/draw` 兼容入口，当前 Collect 货架
-  不展示水晶卡，也不把它们放入色彩系列；
+- Diamond Unicorn 与 Diamond Dog 两只水晶 Companion 及五个运行时 tint 已归档，
+  仅保留给已有本地藏品、详情与内部 Lab；当前 Collect 货架和新抽取都不使用；
 - 当前抽取、收藏、缩略图与 3D 详情能力。
 
 十二个普通模型的换色目标不同；“colorway”不等于每只模型都改变完整身体颜色。

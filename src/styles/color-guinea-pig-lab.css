@@ -1,0 +1,40 @@
+.color-guinea-pig-page {
+  max-width: 980px;
+}
+
+.color-guinea-pig-intro {
+  align-items: end;
+}
+
+.color-guinea-pig-viewer {
+  aspect-ratio: 4 / 5;
+  cursor: grab;
+}
+
+.color-guinea-pig-viewer:active {
+  cursor: grabbing;
+}
+
+.color-guinea-pig-viewer__palette {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.color-guinea-pig-viewer__palette span {
+  width: 13px;
+  height: 13px;
+  border: 1px solid rgba(62, 44, 36, 0.18);
+  border-radius: 50%;
+}
+
+.color-guinea-pig-viewer__palette strong {
+  margin-left: 3px;
+}
+
+@media (min-width: 700px) {
+  .color-guinea-pig-viewer {
+    aspect-ratio: 16 / 10;
+  }
+}
+

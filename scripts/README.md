@@ -10,4 +10,6 @@ Do not commit temporary optimization outputs. See `.gitignore`.
 - `3d/build-color-bunny-mask-v001.py`: rebuilds the Color Bunny warm-detail and fixed-dark mask used by the production bag-only material.
 - `3d/build-color-panda-mask-v001.py`: rebuilds the Color Panda blue headwear mask used by the hat-only color lab.
 - `3d/build-color-cat-mask-v008.py`: rebuilds the active Color Cat fixed-detail mask for the production geometry-gated material.
+- `3d/build-color-guinea-pig-balloon-mask-v003.py`: repairs the active Color Guinea Pig balloon coverage mask from the optimized model UV islands.
+- `3d/build-color-penguin-mask-v001.py`: rebuilds the experimental Color Penguin earmuff-top, scarf, and cup RGB mask from an unpacked optimized model.
 

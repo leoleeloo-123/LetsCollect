@@ -30,13 +30,13 @@ export const evolutionSignals = [
   {
     id: "signal_crystal_draw_share",
     label: "Crystal encounter share",
-    value: 5.1,
+    value: 0,
     unit: "percent",
-    displayValue: "5.1%",
-    deltaLabel: "Near the configured 5%",
+    displayValue: "0%",
+    deltaLabel: "Archived from new draws",
     trend: "steady",
     period: "Last 7 days",
-    description: "Diamond Unicorn remains a rare, single-model special exhibit."
+    description: "Crystal studies remain viewable only for historical local items and internal Labs."
   }
 ] as const satisfies readonly CommunitySignal[];
 
@@ -51,7 +51,7 @@ export const evolutionInsights = [
   {
     id: "insight_crystal_boundary",
     title: "Keep crystal communication specific",
-    summary: "Crystal interest can be acknowledged, but the current product has one crystal Companion only: Diamond Unicorn.",
+    summary: "Crystal interest can be acknowledged as a future signal, but archived crystal studies are not current collectible assets.",
     evidenceSignalIds: ["signal_crystal_draw_share"],
     confidence: "high"
   }

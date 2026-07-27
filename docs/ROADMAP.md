@@ -58,11 +58,11 @@
 - 第一张色彩系列卡同时展示十二个 matte 模型，以九个色点切换选定 colorway，
   并在所选色系下严格 `1 / 12` 等概率抽取；
 - 熊猫、艺术家、汪汪队、ZZZ 与吃货系列作为独立特殊系列卡，全部六券一次；
-- 特殊系列使用各自的严格模型池；水晶卡暂时下架，资产和旧 `/draw` 兼容保留；
+- 特殊系列使用各自的严格模型池；水晶卡与新抽取分支归档，旧藏品运行兼容保留；
 - 每张系列卡使用一个 live canvas 让卡内模型同步旋转，特殊卡临近 viewport
   才初始化；当前约六个 context，而不是逐模型约二十六个；
 - 正确表达每个模型的真实换色部位；
-- `/draw` 兼容入口继续保留 95% matte / 5% crystal 全局规则，系列抽取不
+- `/draw` 兼容入口使用 100% matte 全局规则，系列抽取不
   混入隐藏特殊分支；
 - 使用柔和 reveal、预载结果资产和 reduced motion；
 - 降低 rarity、品质分与五维评分的视觉权重；
@@ -81,7 +81,7 @@
 - 建立 deterministic Collection Signature；
 - 使用真实 Supabase profile 替代硬编码 collector profile；
 - 两只 Crystal Companion 的五个原生 tint、已有藏品与详情保持独立；
-  当前色彩系列只含十二个 matte 模型，不改变旧 `/draw` 的 Crystal 兼容分支。
+  当前色彩系列包含十二个 matte 模型，旧 `/draw` 不再生成 Crystal。
 
 验收问题：Collection 是否既能管理资产，又能克制地表达用户当前收藏倾向？
 
@@ -136,7 +136,7 @@
 - 增加 lint 和最小自动化测试工具链；
 - 覆盖 typecheck、build、关键纯逻辑和流程 smoke test；
 - 检查十二个 matte、九个常规 colorway、色彩系列 `1 / 12`、五个六券
-  特殊池，以及两只 Crystal 与五个原生 tint 的兼容 5% 全局分支；
+  特殊池，以及两只归档 Crystal 对旧本地藏品的兼容渲染；
 - 检查 loading、empty、error、retry、poster / CSS fallback；
 - 检查移动端性能、键盘、对比度和 reduced motion；
 - 通过 Preview 远程验证；
