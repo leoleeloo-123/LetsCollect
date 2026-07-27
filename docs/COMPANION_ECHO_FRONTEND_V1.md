@@ -70,7 +70,7 @@ The redesign does not replace the proven rendering stack.
 - Collection and draw detail surfaces continue to open the existing interactive
   3D viewer.
 - All twelve matte models retain their verified per-model recolor semantics.
-- The Color series contains those twelve matte models only. Its five special
+- The Color series contains those twelve matte models only. Its thirteen special
   cards are Panda, Artists, Wangwang Team (汪汪队), ZZZ, and Foodies; each draw
   costs six tickets.
 - Diamond Unicorn and Diamond Dog are archived. Five native crystal tints remain

@@ -55,9 +55,9 @@
 ## 阶段 3：Collect
 
 - 将 `/` 重构为可扩展的系列卡片架，移除卡片内部的全局分页器；
-- 第一张色彩系列卡同时展示十二个 matte 模型，以九个色点切换选定 colorway，
-  并在所选色系下严格 `1 / 12` 等概率抽取；
-- 熊猫、艺术家、汪汪队、ZZZ 与吃货系列作为独立特殊系列卡，全部六券一次；
+- 第一张色彩系列卡同时展示二十四个 matte 模型，以九个色点切换选定 colorway，
+  并在所选色系下严格 `1 / 24` 等概率抽取；
+- `collectSeries.ts` 注册的十三个特殊系列作为独立特殊系列卡，全部六券一次；
 - 特殊系列使用各自的严格模型池；水晶卡与新抽取分支归档，旧藏品运行兼容保留；
 - 每张系列卡使用一个 live canvas 让卡内模型同步旋转，特殊卡临近 viewport
   才初始化；当前约六个 context，而不是逐模型约二十六个；
@@ -81,7 +81,7 @@
 - 建立 deterministic Collection Signature；
 - 使用真实 Supabase profile 替代硬编码 collector profile；
 - 两只 Crystal Companion 的五个原生 tint、已有藏品与详情保持独立；
-  当前色彩系列包含十二个 matte 模型，旧 `/draw` 不再生成 Crystal。
+  当前色彩系列包含二十四个 matte 模型，旧 `/draw` 不再生成 Crystal。
 
 验收问题：Collection 是否既能管理资产，又能克制地表达用户当前收藏倾向？
 
@@ -135,7 +135,7 @@
 
 - 增加 lint 和最小自动化测试工具链；
 - 覆盖 typecheck、build、关键纯逻辑和流程 smoke test；
-- 检查十二个 matte、九个常规 colorway、色彩系列 `1 / 12`、五个六券
+- 检查二十四个 matte、九个常规 colorway、色彩系列 `1 / 24`、十三个六券
   特殊池，以及两只归档 Crystal 对旧本地藏品的兼容渲染；
 - 检查 loading、empty、error、retry、poster / CSS fallback；
 - 检查移动端性能、键盘、对比度和 reduced motion；

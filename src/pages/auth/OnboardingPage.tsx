@@ -45,7 +45,7 @@ const stepCopy: Record<OnboardingStep, {
   3: {
     eyebrow: "偏好 03",
     title: "最后，选一种喜欢的质感",
-    description: "当前可抽取的是十二只柔雾伙伴；晶亮偏好会先作为未来风格信号保留。"
+    description: "当前可抽取的是二十四只柔雾伙伴；晶亮偏好会先作为未来风格信号保留。"
   }
 };
 

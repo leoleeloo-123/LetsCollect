@@ -45,11 +45,15 @@ import {
   cloneColorKoalaMaterials,
   prepareColorKoalaMaskTexture
 } from "../material/createColorKoalaMaterials";
+import {
+  isColorAccessoryRendering,
+  prepareColorAccessoryModel
+} from "../material/prepareColorAccessoryModel";
 import { loadRoomEnvironment, loadToyModel, loadToyViewerRuntime } from "../ToyViewer/runtime";
 import { readThumbnailBlob, writeThumbnailBlob } from "./storage";
 
 const THUMBNAIL_SIZE = 320;
-const THUMBNAIL_RENDER_VERSION = 18;
+const THUMBNAIL_RENDER_VERSION = 19;
 const THUMBNAIL_TARGET_HEIGHT = 3.45;
 const THUMBNAIL_MAX_WIDTH = 3.62;
 const WEBP_QUALITY = 0.82;
@@ -194,6 +198,11 @@ async function renderThumbnail(toy: Collectible) {
   const colorKoalaHat = modelDefinition.rendering?.mode === "color-koala-hat"
     ? modelDefinition.rendering
     : null;
+  const colorAccessoryRendering = isColorAccessoryRendering(
+    modelDefinition.rendering
+  )
+    ? modelDefinition.rendering
+    : null;
   const standardMaterialResult = colorBirdZones
     || colorTeddyCoat
     || colorBunnyBag
@@ -206,6 +215,7 @@ async function renderThumbnail(toy: Collectible) {
     || colorSealStarfish
     || colorKarpyHat
     || colorKoalaHat
+    || colorAccessoryRendering
     ? null
     : createToyMaterial(THREE, toy);
   const material = standardMaterialResult?.material ?? null;
@@ -272,6 +282,15 @@ async function renderThumbnail(toy: Collectible) {
   }
   const { glow } = getCollectibleRenderTraits(toy);
   const model = gltf.scene;
+  const colorAccessory = colorAccessoryRendering
+    ? await prepareColorAccessoryModel(
+        THREE,
+        renderer,
+        model,
+        colorAccessoryRendering,
+        palette.color
+      )
+    : null;
   const thumbnailRotationOffset = modelDefinition.id === "color-cat" ? -0.3 : 0;
   model.rotation.y = modelDefinition.viewer.rotationY + thumbnailRotationOffset;
   const accentPalette = colorBirdZones
@@ -403,6 +422,7 @@ async function renderThumbnail(toy: Collectible) {
     && !colorSealStarfish
     && !colorKarpyHat
     && !colorKoalaHat
+    && !colorAccessoryRendering
   ) {
     model.traverse((child) => {
       if (!(child instanceof THREE.Mesh) || !material) return;
@@ -462,6 +482,7 @@ async function renderThumbnail(toy: Collectible) {
     colorSealMaterials.forEach((item) => item.dispose());
     colorKarpyMaterials.forEach((item) => item.dispose());
     colorKoalaMaterials.forEach((item) => item.dispose());
+    colorAccessory?.materials.forEach((item) => item.dispose());
     colorBirdZoneMap?.dispose();
     colorTeddyProtectMap?.dispose();
     colorBunnyProtectMap?.dispose();
@@ -472,6 +493,7 @@ async function renderThumbnail(toy: Collectible) {
     colorSealObjectMask?.dispose();
     colorKarpyMask?.dispose();
     colorKoalaMask?.dispose();
+    colorAccessory?.textures.forEach((texture) => texture.dispose());
     scene.clear();
   }
 }

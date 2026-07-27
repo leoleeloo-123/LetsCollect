@@ -47,6 +47,10 @@ import {
   cloneColorKoalaMaterials,
   prepareColorKoalaMaskTexture
 } from "../material/createColorKoalaMaterials";
+import {
+  isColorAccessoryRendering,
+  prepareColorAccessoryModel
+} from "../material/prepareColorAccessoryModel";
 import { loadRoomEnvironment, loadToyModel, loadToyViewerRuntime } from "./runtime";
 
 export type ToyRotationController = {
@@ -247,6 +251,11 @@ export function ToyViewer({
       const colorKoalaHat = modelDefinition.rendering?.mode === "color-koala-hat"
         ? modelDefinition.rendering
         : null;
+      const colorAccessoryRendering = isColorAccessoryRendering(
+        modelDefinition.rendering
+      )
+        ? modelDefinition.rendering
+        : null;
       const standardMaterialResult = colorBirdZones
         || colorTeddyCoat
         || colorBunnyBag
@@ -259,6 +268,7 @@ export function ToyViewer({
         || colorSealStarfish
         || colorKarpyHat
         || colorKoalaHat
+        || colorAccessoryRendering
         ? null
         : createToyMaterial(THREE, toy, { lightweight: useLightweightStage });
       const toyMaterial = standardMaterialResult?.material ?? null;
@@ -335,6 +345,8 @@ export function ToyViewer({
       let colorSealMaterials: import("three").Material[] = [];
       let colorKarpyMaterials: import("three").Material[] = [];
       let colorKoalaMaterials: import("three").Material[] = [];
+      let colorAccessoryMaterials: import("three").Material[] = [];
+      let colorAccessoryTextures: import("three").Texture[] = [];
       const tileTextureCopies: import("three").Texture[] = [];
       const tileTextureCache = new Map<import("three").Texture, import("three").Texture>();
       function applyTileMaterialProfile(materials: import("three").Material[]) {
@@ -459,6 +471,8 @@ export function ToyViewer({
         colorSealMaterials.forEach((material) => material.dispose());
         colorKarpyMaterials.forEach((material) => material.dispose());
         colorKoalaMaterials.forEach((material) => material.dispose());
+        colorAccessoryMaterials.forEach((material) => material.dispose());
+        colorAccessoryTextures.forEach((texture) => texture.dispose());
         tileTextureCopies.forEach((texture) => texture.dispose());
         colorBirdZoneMap?.dispose();
         colorTeddyProtectMap?.dispose();
@@ -502,7 +516,17 @@ export function ToyViewer({
 
       const model = gltf.scene;
       model.rotation.y = modelDefinition.viewer.rotationY;
-      if (colorBirdZones && colorBirdZoneMap) {
+      if (colorAccessoryRendering) {
+        const preparedAccessory = await prepareColorAccessoryModel(
+          THREE,
+          renderer,
+          model,
+          colorAccessoryRendering,
+          palette.color
+        );
+        colorAccessoryMaterials = preparedAccessory.materials;
+        colorAccessoryTextures = preparedAccessory.textures;
+      } else if (colorBirdZones && colorBirdZoneMap) {
         const accentPalette = getColorBirdAccentPalette(toy.paletteId, toy.appearanceSeed);
         colorBirdMaterials = cloneColorBirdMaterials(
           THREE,
@@ -626,6 +650,7 @@ export function ToyViewer({
         ...colorSealMaterials,
         ...colorKarpyMaterials,
         ...colorKoalaMaterials,
+        ...colorAccessoryMaterials,
         ...(toyMaterial ? [toyMaterial] : [])
       ]);
 

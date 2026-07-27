@@ -111,7 +111,7 @@ export function CollectPage() {
             <p className="collect-kicker">COLOR SERIES</p>
             <h2 id="color-series-heading">色彩系列</h2>
           </div>
-          <p>一张卡片，九种颜色，十二款伙伴。</p>
+          <p>一张卡片，九种颜色，二十四款伙伴。</p>
         </div>
 
         <ColorSeriesCard

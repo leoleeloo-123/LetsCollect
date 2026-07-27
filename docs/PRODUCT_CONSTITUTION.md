@@ -1,7 +1,7 @@
 # Let's Collect 产品宪法
 
 状态：v2
-日期：2026-07-24
+日期：2026-07-27
 用途：统一产品方向、体验原则、真实资产边界与工程决策顺序
 
 ## 一、产品定义
@@ -127,19 +127,20 @@ Echo 不依赖并且不应展示：
 
 当前可用资产以 `docs/ASSET_CAPABILITY_REGISTRY.md` 为准。当前 C 端只可使用：
 
-- 十二个 active Color Animals；
+- 二十四个 active Color Animals；奶油小熊暂时保留；
+- 围巾企鹅仍为 experimental Lab 资产，不进入正式 catalog 或抽取池；
 - 九个注册的常规 colorway；
 - 固定的柔雾树脂表现；
-- 色彩系列中的十二款 matte 模型与九个常规色值；
-- 熊猫、艺术家、汪汪队、ZZZ 与吃货系列五个特殊池，全部每次消耗六张券；
+- 色彩系列中的二十四款 matte 模型与九个常规色值；
+- `collectSeries.ts` 注册的十三个特殊池，全部每次消耗六张券；
 - Diamond Unicorn 与 Diamond Dog 两只水晶 Companion 及五个运行时 tint 已归档，
   仅保留给已有本地藏品、详情与内部 Lab；当前 Collect 货架和新抽取都不使用；
 - 当前抽取、收藏、缩略图与 3D 详情能力。
 
-十二个普通模型的换色目标不同；“colorway”不等于每只模型都改变完整身体颜色。
+二十四个普通模型的换色目标不同；“colorway”不等于每只模型都改变完整身体颜色。
 
-ZZZ 已复用小猫、海豹和考拉三款现有睡姿。除此之外的新 Sleepy、Quirky、
-Bold、Cool、新动物、新水晶、新金属、毛绒和陶瓷仍只能作为 planned capability。
+ZZZ 已复用小猫、海豹和考拉三款现有睡姿。注册表以外的新姿态、新动物、
+新水晶、新金属、毛绒和陶瓷仍只能作为 planned capability。
 旧 Jelly Jade、八材质、Color Dog、Color Unicorn 实验、归档模型与 Lab 路由不是当前可抽取能力。
 
 文件存在于仓库不等于产品可用。代码 active registry 与人类可读资产注册表必须同时明确 availability。

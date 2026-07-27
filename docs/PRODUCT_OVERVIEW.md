@@ -53,15 +53,15 @@ Agent Console 已有本地演示实现，但票券、所有权、Echo 和 Agent 
 
 - 十二个 Color Animals matte / 柔雾树脂 Companion；
 - 九个注册常规 colorway，以及五个原生 Crystal tint；
-- Collect 首页的色彩系列：选择九色之一后，在十二个 matte 模型中严格等概率
-  `1 / 12` 抽取；
-- Collect 首页的特殊系列：熊猫、艺术家、汪汪队、ZZZ 与吃货系列各自
+- Collect 首页的色彩系列：选择九色之一后，在二十四个 matte 模型中严格等概率
+  `1 / 24` 抽取；
+- Collect 首页的特殊系列：`collectSeries.ts` 注册的十三个特殊系列各自
   使用独立、可审计的模型池，全部每次六张券；
 - Diamond Unicorn 与 Diamond Dog 两只 Crystal Companion 已归档，不在
   Collect 货架、色彩系列或新抽取中；已有本地藏品、详情与 Lab 继续兼容；
-- 兼容 `/draw` 现在只从十二只 matte 伙伴中均等抽取，不再生成 Crystal。
+- 兼容 `/draw` 现在只从二十四只 matte 伙伴中均等抽取，不再生成 Crystal。
 
-十二个普通模型使用不同的真实换色目标，不能统一描述为“全身换色”。
+二十四个普通模型使用不同的真实换色目标，不能统一描述为“全身换色”。
 ZZZ 复用小猫、海豹和考拉三款现有睡姿。水晶模型当前只在旧 `/draw`
 兼容分支中从五个原生 tint 随机；完整路径、大小、palette、实现方式和
 availability 见 `docs/ASSET_CAPABILITY_REGISTRY.md`。

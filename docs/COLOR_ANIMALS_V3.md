@@ -49,7 +49,7 @@ The authoritative human-readable inventory, exact runtime sizes, recolor targets
 - The archived crystal branch has zero probability and cannot generate a new collectible.
 - The active twelve use fixed soft matte resin; archived crystal rendering remains only for historical local items.
 - The current Collect Color card contains only the twelve matte models. Its
-  explicit series draw is `1 / 12` and does not use the compatibility crystal
+  explicit series draw is `1 / 24` and does not use the compatibility crystal
   branch.
 - The appearance signature includes the generation version, series, model, palette, material, rendering asset key, traits, and seed.
 

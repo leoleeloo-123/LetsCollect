@@ -52,14 +52,14 @@ and documentation together. Do not infer availability by scanning
 
 ## Available now: Color Animals V3
 
-The active regular series is `series_color_animals`. It contains exactly twelve
+The active regular series is `series_color_animals`. It contains exactly twenty-four
 mobile-first matte models. The internal material ID is `plastic`; the product label
 is `柔雾树脂` / soft matte resin. The series has one shared nine-color palette,
 but each model applies a selected colorway only to its approved recolor target.
 “Colorway” does not always mean body color.
 
 Both `modelUrl` and `mobileModelUrl` currently resolve to the runtime GLB shown
-below for these twelve entries.
+below for these twenty-four entries.
 
 | Product name | Model ID | Runtime GLB | GLB bytes | Approved recolor target | Runtime implementation |
 | --- | --- | --- | ---: | --- | --- |
@@ -75,10 +75,22 @@ below for these twelve entries.
 | Color Seal / 海豹 | `color-seal` | `/models/toys/color-seal/model-mobile-v001.glb` | 319,576 | Starfish prop only | `onBeforeCompile` starfish shader plus two compact masks totaling 21,658 bytes |
 | Color Karpy / 饭团 Karpy | `color-karpy` | `/models/toys/color-karpy/model-mobile-v001.glb` | 315,240 | Red beret only; Karpy, rice ball, clothing, face, paws, and blush stay authored | `onBeforeCompile` hat shader plus `/models/toys/color-karpy/hat-mask-mobile-v001.webp` (18,474 bytes), red-UV selection, and a local upper-head gate |
 | Color Koala / 睡觉考拉 | `color-koala` | `/models/toys/color-koala/model-mobile-v001.glb` | 335,136 | Sleeping-hat body only; pom-pom, koala, branch, leaves, and other props stay authored | `onBeforeCompile` hat shader plus `/models/toys/color-koala/hat-mask-mobile-v001.webp` (9,014 bytes), targeted UV protection, and a local hat-height gate |
+| Color Racoon / 糖葫芦浣熊 | `color-racoon` | `/models/toys/color-racoon/model-mobile-v001.glb` | 327,400 | Tanghulu only | Accessory mask plus local position gates |
+| Color Hamster / 雪糕仓鼠 | `color-hamster-icecream` | `/models/toys/color-hamster-icecream/model-mobile-v001.glb` | 231,128 | Ice cream only | Accessory mask plus local position gates |
+| Color Dino / 围巾恐龙 | `color-dino` | `/models/toys/color-dino/model-mobile-v001.glb` | 255,936 | Scarf only | Accessory mask plus local position gates |
+| Color Fox / 羽毛帽狐狸 | `color-fox` | `/models/toys/color-fox/model-mobile-v001.glb` | 247,540 | Hat and feather | Two-channel mask plus local hat and feather gates |
+| Color Deer / 蝴蝶结小鹿 | `color-deer` | `/models/toys/color-deer/model-mobile-v001.glb` | 236,804 | Bow and approved accessories | Accessory mask plus semantic connected-component bow protection |
+| Color Sheep / 披风小羊 | `color-sheep` | `/models/toys/color-sheep/model-mobile-v001.glb` | 267,280 | Cape and bow | Two-channel accessory mask plus source-color protection |
+| Color Sloth / 针织帽树懒 | `color-sloth` | `/models/toys/color-sloth/model-mobile-v001.glb` | 293,836 | Knit hat only | Hat mask shader |
+| Color Owl / 博士猫头鹰 | `color-owl` | `/models/toys/color-owl/model-mobile-v001.glb` | 323,444 | Academic hat and book pieces | Academic accessory mask shader |
+| Color Duck / 浴缸小鸭 | `color-duck` | `/models/toys/color-duck/model-mobile-v001.glb` | 317,252 | Bathtub pieces; foam remains clean | Bath mask plus dedicated foam-cleanup mask |
+| Color Guinea Pig / 气球豚鼠 | `color-guinea-pig` | `/models/toys/color-guinea-pig/model-mobile-v001.glb` | 309,868 | Three balloons share one selected color | Joint UV mask plus semantic balloon geometry zones |
+| Color Black Cat / 黑盒猫猫 | `color-black-cat` | `/models/toys/color-black-cat/model-mobile-v001.glb` | 359,448 | Fish logo only | Logo mask plus local position gates |
+| Color Cool Wolf / 酷酷狼人 | `color-cool-wolf` | `/models/toys/color-cool-wolf/model-mobile-v001.glb` | 349,456 | Ear studs only | Stud mask plus local position gates |
 
-The twelve regular GLBs total 5,586,828 bytes. Their runtime masks total
-158,146 bytes. Color Bear Singer v006 is a documented 1.376 MB exception to
-the normal 1 MB mobile target and remains an optimization follow-up.
+The twenty-four regular GLBs total 9,106,220 bytes. Their selected runtime masks
+total 412,952 bytes. Color Bear Singer v006 is a documented 1.376 MB exception
+to the normal 1 MB mobile target and remains an optimization follow-up.
 
 ### Shared regular colorways
 
@@ -97,14 +109,14 @@ The visible target differs by model as recorded above.
 | `lime` | 青柠果冻 | `#9db660` |
 | `sky` | 晴空棉花 | `#69a9c8` |
 
-The current local draw branch has an absolute probability of 100%. The twelve
+The current local draw branch has an absolute probability of 100%. The twenty-four
 models are uniform and the nine primary palette IDs are selected independently
 and uniformly:
 
-- each regular model has an absolute probability of `100% / 12`, approximately
-  8.3333%;
+- each regular model has an absolute probability of `100% / 24`, approximately
+  4.1667%;
 - each regular model-and-primary-palette combination has an absolute
-  probability of `100% / 108`, approximately 0.9259%.
+  probability of `100% / 216`, approximately 0.4630%.
 ## Archived compatibility assets: two crystal studies
 
 Diamond Unicorn and Diamond Dog are archived, not current product assets:
@@ -122,13 +134,13 @@ generate either model.
 
 | Capability | Availability | Boundary |
 | --- | --- | --- |
-| Load and inspect the twelve active matte-series GLBs | `available` | Shared `ToyViewer`; local Draco decoder |
+| Load and inspect the twenty-four active matte-series GLBs | `available` | Shared `ToyViewer`; local Draco decoder |
 | Apply the nine registered model-specific colorways | `available` | Only the approved target for each model may change |
 | Load and inspect Diamond Unicorn and Diamond Dog | `legacy` | Historical local collection and internal Lab rendering only |
 | Apply five native crystal tints | `legacy` | Retained only to render historical local items |
 | Apply nine regular tints to crystal models | `legacy` | Preserved rendering compatibility; no active Collect pool references it |
-| Draw from 熊猫、艺术家、汪汪队、ZZZ、吃货系列 | `available` | Explicit members, random registered matte colorway, six tickets per draw |
-| Client-side V3 mock draw | `available` | Old `/draw` uses the twelve regular models only; not an authoritative server draw |
+| Draw from the thirteen registered special series | `available` | Explicit members, random registered matte colorway, six tickets per draw |
+| Client-side V3 mock draw | `available` | Old `/draw` uses the twenty-four regular models only; not an authoritative server draw |
 | Persist the demo collection and recent draws | `available` | Browser local storage; not cloud ownership |
 | Render cached collection thumbnails from real GLBs | `available` | 320 px WebP, serialized render queue, IndexedDB cache |
 | Live 3D collection detail | `available` | One selected item at a time |

@@ -163,6 +163,42 @@ function getCollectibleDescription(modelId: ToyModelId, paletteName: string) {
   if (modelId === "color-koala") {
     return `一只戴着${paletteName}睡帽的软萌考拉，身体、五官、帽顶绒球、树枝与叶片保持原色。`;
   }
+  if (modelId === "color-racoon") {
+    return `一只拿着${paletteName}糖葫芦的浣熊，脸部、眼睛与服装细节保持原色。`;
+  }
+  if (modelId === "color-hamster-icecream") {
+    return `一只举着${paletteName}雪糕的仓鼠，身体、眼睛与小爪子保持原色。`;
+  }
+  if (modelId === "color-dino") {
+    return `一只围着${paletteName}围巾的小恐龙，身体与五官保持原色。`;
+  }
+  if (modelId === "color-fox") {
+    return `一只戴着${paletteName}羽毛帽的狐狸，毛色、眼睛与面部细节保持原色。`;
+  }
+  if (modelId === "color-deer") {
+    return `一只佩戴${paletteName}蝴蝶结的小鹿，身体与五官保持原色。`;
+  }
+  if (modelId === "color-sheep") {
+    return `一只穿着${paletteName}披风的小羊，羊毛、眼睛与面部细节保持原色。`;
+  }
+  if (modelId === "color-sloth") {
+    return `一只戴着${paletteName}针织帽的树懒，身体与五官保持原色。`;
+  }
+  if (modelId === "color-owl") {
+    return `一只带着${paletteName}学术配件的猫头鹰，羽毛与五官保持原色。`;
+  }
+  if (modelId === "color-duck") {
+    return `一只坐在${paletteName}浴缸里的小鸭，身体、泡沫与五官保持原色。`;
+  }
+  if (modelId === "color-guinea-pig") {
+    return `一只带着${paletteName}气球的豚鼠，身体与五官保持原色。`;
+  }
+  if (modelId === "color-black-cat") {
+    return `一只带着${paletteName}鱼形标记的黑盒猫猫，黑色造型与五官保持原色。`;
+  }
+  if (modelId === "color-cool-wolf") {
+    return `一只戴着${paletteName}耳钉的酷酷狼人，服装、毛色与五官保持原色。`;
+  }
   return `一只采用${paletteName}配色的软萌伙伴，保留原始五官与角色细节。`;
 }
 

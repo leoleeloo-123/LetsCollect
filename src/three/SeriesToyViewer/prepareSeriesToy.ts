@@ -46,6 +46,10 @@ import {
   cloneColorKoalaMaterials,
   prepareColorKoalaMaskTexture
 } from "../material/createColorKoalaMaterials";
+import {
+  isColorAccessoryRendering,
+  prepareColorAccessoryModel
+} from "../material/prepareColorAccessoryModel";
 import { applyDiamondUnicornTint } from "../material/createDiamondUnicornMaterial";
 import { loadToyModel } from "../ToyViewer/runtime";
 
@@ -78,8 +82,11 @@ function applyTileMaterialProfile(
   materials.forEach((material) => {
     if (!(material instanceof THREE.MeshStandardMaterial)) return;
     material.normalMap = null;
-    material.roughness = Math.max(material.roughness, 0.88);
-    material.envMapIntensity = Math.min(material.envMapIntensity, 0.08);
+    material.metalness = 0;
+    material.roughness = 1;
+    material.envMapIntensity = Math.min(material.envMapIntensity, 0.05);
+    material.metalnessMap = null;
+    material.roughnessMap = null;
 
     if (!material.map) {
       material.needsUpdate = true;
@@ -132,6 +139,9 @@ export async function prepareSeriesToy(
   const colorSealStarfish = rendering?.mode === "color-seal-starfish" ? rendering : null;
   const colorKarpyHat = rendering?.mode === "color-karpy-hat" ? rendering : null;
   const colorKoalaHat = rendering?.mode === "color-koala-hat" ? rendering : null;
+  const colorAccessoryRendering = isColorAccessoryRendering(rendering)
+    ? rendering
+    : null;
 
   const [
     gltf,
@@ -174,6 +184,15 @@ export async function prepareSeriesToy(
 
   const root = gltf.scene;
   root.rotation.y = modelDefinition.viewer.rotationY;
+  const colorAccessory = colorAccessoryRendering
+    ? await prepareColorAccessoryModel(
+        THREE,
+        renderer,
+        root,
+        colorAccessoryRendering,
+        getToyPalette(toy.paletteId).color
+      )
+    : null;
   const materials: Three.Material[] = [];
   const disposableTextures = [
     colorBirdZoneMap,
@@ -185,13 +204,19 @@ export async function prepareSeriesToy(
     colorSealMask,
     colorSealObjectMask,
     colorKarpyMask,
-    colorKoalaMask
+    colorKoalaMask,
+    ...(colorAccessory?.textures ?? [])
   ].filter((texture): texture is Three.Texture => texture !== null);
 
   let updateAppearance: (nextToy: Collectible) => void;
   const maxAnisotropy = renderer.capabilities.getMaxAnisotropy();
 
-  if (colorBirdZones && colorBirdZoneMap) {
+  if (colorAccessory) {
+    materials.push(...colorAccessory.materials);
+    updateAppearance = (nextToy) => {
+      colorAccessory.updateColor(getToyPalette(nextToy.paletteId).color);
+    };
+  } else if (colorBirdZones && colorBirdZoneMap) {
     const bodyColor = new THREE.Color();
     const capColor = new THREE.Color();
     materials.push(...cloneColorBirdMaterials(

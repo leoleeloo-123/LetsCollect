@@ -46,7 +46,7 @@ export function DrawPage() {
       <PageHeader
         eyebrow="Encounter"
         title="Meet a Companion"
-        description="一次安静的相遇：十二只柔雾伙伴组成当前完整收藏系列。"
+        description="一次安静的相遇：二十四只柔雾伙伴组成当前完整收藏系列。"
       />
 
       <section className={`draw-stage draw-stage--compact${isDrawing ? " draw-stage--active" : ""}`}>

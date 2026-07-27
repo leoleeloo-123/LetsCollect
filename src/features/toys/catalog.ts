@@ -284,6 +284,222 @@ export const colorKoalaModel: ToyModelDefinition = {
   }
 };
 
+export const colorRacoonModel: ToyModelDefinition = {
+  id: "color-racoon",
+  slug: "color-racoon",
+  name: "糖葫芦浣熊",
+  fallbackShape: "blob",
+  assets: {
+    modelUrl: "/models/toys/color-racoon/model-mobile-v001.glb",
+    mobileModelUrl: "/models/toys/color-racoon/model-mobile-v001.glb"
+  },
+  viewer: { scaleMultiplier: 0.94, yOffset: -0.02, rotationY: -0.24 },
+  rendering: {
+    mode: "color-accessory-mask",
+    profile: "racoon-tanghulu",
+    maskUrl: "/models/toys/color-racoon/tanghulu-mask-mobile-v001.webp?v=1",
+    colorScale: 0.92
+  }
+};
+
+export const colorHamsterIcecreamModel: ToyModelDefinition = {
+  id: "color-hamster-icecream",
+  slug: "color-hamster-icecream",
+  name: "雪糕仓鼠",
+  fallbackShape: "blob",
+  assets: {
+    modelUrl: "/models/toys/color-hamster-icecream/model-mobile-v001.glb",
+    mobileModelUrl: "/models/toys/color-hamster-icecream/model-mobile-v001.glb"
+  },
+  viewer: { scaleMultiplier: 0.94, yOffset: -0.02, rotationY: -0.24 },
+  rendering: {
+    mode: "color-accessory-mask",
+    profile: "hamster-icecream",
+    maskUrl: "/models/toys/color-hamster-icecream/icecream-mask-mobile-v001.webp?v=1",
+    colorScale: 0.92
+  }
+};
+
+export const colorDinoModel: ToyModelDefinition = {
+  id: "color-dino",
+  slug: "color-dino",
+  name: "围巾恐龙",
+  fallbackShape: "blob",
+  assets: {
+    modelUrl: "/models/toys/color-dino/model-mobile-v001.glb",
+    mobileModelUrl: "/models/toys/color-dino/model-mobile-v001.glb"
+  },
+  viewer: { scaleMultiplier: 0.94, yOffset: -0.02, rotationY: -0.24 },
+  rendering: {
+    mode: "color-accessory-mask",
+    profile: "dino-scarf",
+    maskUrl: "/models/toys/color-dino/scarf-mask-mobile-v001.webp?v=2",
+    colorScale: 0.92
+  }
+};
+
+export const colorFoxModel: ToyModelDefinition = {
+  id: "color-fox",
+  slug: "color-fox",
+  name: "羽毛帽狐狸",
+  fallbackShape: "blob",
+  assets: {
+    modelUrl: "/models/toys/color-fox/model-mobile-v001.glb",
+    mobileModelUrl: "/models/toys/color-fox/model-mobile-v001.glb"
+  },
+  viewer: { scaleMultiplier: 0.94, yOffset: -0.02, rotationY: -0.24 },
+  rendering: {
+    mode: "color-accessory-mask",
+    profile: "fox-hat",
+    maskUrl: "/models/toys/color-fox/hat-feather-mask-mobile-v001.webp?v=4",
+    colorScale: 0.92
+  }
+};
+
+export const colorDeerModel: ToyModelDefinition = {
+  id: "color-deer",
+  slug: "color-deer",
+  name: "蝴蝶结小鹿",
+  fallbackShape: "blob",
+  assets: {
+    modelUrl: "/models/toys/color-deer/model-mobile-v001.glb",
+    mobileModelUrl: "/models/toys/color-deer/model-mobile-v001.glb"
+  },
+  viewer: { scaleMultiplier: 0.94, yOffset: -0.02, rotationY: -0.24 },
+  rendering: {
+    mode: "color-accessory-mask",
+    profile: "deer-accessories",
+    maskUrl: "/models/toys/color-deer/accessory-mask-mobile-v001.webp?v=22",
+    colorScale: 0.92
+  }
+};
+
+export const colorSheepModel: ToyModelDefinition = {
+  id: "color-sheep",
+  slug: "color-sheep",
+  name: "披风小羊",
+  fallbackShape: "blob",
+  assets: {
+    modelUrl: "/models/toys/color-sheep/model-mobile-v001.glb",
+    mobileModelUrl: "/models/toys/color-sheep/model-mobile-v001.glb"
+  },
+  viewer: { scaleMultiplier: 0.94, yOffset: -0.02, rotationY: -0.24 },
+  rendering: {
+    mode: "color-accessory-mask",
+    profile: "sheep-accessories",
+    maskUrl: "/models/toys/color-sheep/accessory-mask-mobile-v001.webp?v=4",
+    colorScale: 0.92
+  }
+};
+
+export const colorSlothModel: ToyModelDefinition = {
+  id: "color-sloth",
+  slug: "color-sloth",
+  name: "针织帽树懒",
+  fallbackShape: "blob",
+  assets: {
+    modelUrl: "/models/toys/color-sloth/model-mobile-v001.glb",
+    mobileModelUrl: "/models/toys/color-sloth/model-mobile-v001.glb"
+  },
+  viewer: { scaleMultiplier: 0.94, yOffset: -0.02, rotationY: -0.24 },
+  rendering: {
+    mode: "color-accessory-mask",
+    profile: "sloth-hat",
+    maskUrl: "/models/toys/color-sloth/hat-mask-mobile-v001.webp?v=4",
+    colorScale: 0.92
+  }
+};
+
+export const colorOwlModel: ToyModelDefinition = {
+  id: "color-owl",
+  slug: "color-owl",
+  name: "博士猫头鹰",
+  fallbackShape: "bird",
+  assets: {
+    modelUrl: "/models/toys/color-owl/model-mobile-v001.glb",
+    mobileModelUrl: "/models/toys/color-owl/model-mobile-v001.glb"
+  },
+  viewer: { scaleMultiplier: 0.94, yOffset: -0.02, rotationY: -0.24 },
+  rendering: {
+    mode: "color-accessory-mask",
+    profile: "owl-academic",
+    maskUrl: "/models/toys/color-owl/hat-book-mask-mobile-v001.webp?v=2",
+    colorScale: 0.92
+  }
+};
+
+export const colorDuckModel: ToyModelDefinition = {
+  id: "color-duck",
+  slug: "color-duck",
+  name: "浴缸小鸭",
+  fallbackShape: "bird",
+  assets: {
+    modelUrl: "/models/toys/color-duck/model-mobile-v001.glb",
+    mobileModelUrl: "/models/toys/color-duck/model-mobile-v001.glb"
+  },
+  viewer: { scaleMultiplier: 0.94, yOffset: -0.02, rotationY: -0.24 },
+  rendering: {
+    mode: "color-accessory-mask",
+    profile: "duck-bath",
+    maskUrl: "/models/toys/color-duck/bath-mask-mobile-v003.webp?v=1",
+    secondaryMaskUrl: "/models/toys/color-duck/foam-cleanup-mask-mobile-v001.webp?v=1",
+    colorScale: 0.92
+  }
+};
+
+export const colorGuineaPigModel: ToyModelDefinition = {
+  id: "color-guinea-pig",
+  slug: "color-guinea-pig",
+  name: "气球豚鼠",
+  fallbackShape: "blob",
+  assets: {
+    modelUrl: "/models/toys/color-guinea-pig/model-mobile-v001.glb",
+    mobileModelUrl: "/models/toys/color-guinea-pig/model-mobile-v001.glb"
+  },
+  viewer: { scaleMultiplier: 0.94, yOffset: -0.03, rotationY: -0.25 },
+  rendering: {
+    mode: "color-accessory-mask",
+    profile: "guinea-pig-balloons",
+    maskUrl: "/models/toys/color-guinea-pig/balloon-zones-mobile-v003.webp?v=3",
+    colorScale: 0.94
+  }
+};
+
+export const colorBlackCatModel: ToyModelDefinition = {
+  id: "color-black-cat",
+  slug: "color-black-cat",
+  name: "黑盒猫猫",
+  fallbackShape: "cat",
+  assets: {
+    modelUrl: "/models/toys/color-black-cat/model-mobile-v001.glb",
+    mobileModelUrl: "/models/toys/color-black-cat/model-mobile-v001.glb"
+  },
+  viewer: { scaleMultiplier: 0.94, yOffset: -0.02, rotationY: -0.22 },
+  rendering: {
+    mode: "color-accessory-mask",
+    profile: "black-cat-logo",
+    maskUrl: "/models/toys/color-black-cat/fish-logo-mask-mobile-v001.webp?v=5",
+    colorScale: 0.92
+  }
+};
+
+export const colorCoolWolfModel: ToyModelDefinition = {
+  id: "color-cool-wolf",
+  slug: "color-cool-wolf",
+  name: "酷酷狼人",
+  fallbackShape: "dog",
+  assets: {
+    modelUrl: "/models/toys/color-cool-wolf/model-mobile-v001.glb",
+    mobileModelUrl: "/models/toys/color-cool-wolf/model-mobile-v001.glb"
+  },
+  viewer: { scaleMultiplier: 0.94, yOffset: -0.02, rotationY: -0.22 },
+  rendering: {
+    mode: "color-accessory-mask",
+    profile: "cool-wolf-studs",
+    maskUrl: "/models/toys/color-cool-wolf/ear-stud-mask-mobile-v001.webp?v=3",
+    colorScale: 0.92
+  }
+};
 export const diamondUnicornModel: ToyModelDefinition = {
   id: "diamond-unicorn",
   slug: "diamond-unicorn",
@@ -325,7 +541,19 @@ export const colorAnimalModels = [
   colorDogDrumModel,
   colorSealModel,
   colorKarpyModel,
-  colorKoalaModel
+  colorKoalaModel,
+  colorRacoonModel,
+  colorHamsterIcecreamModel,
+  colorDinoModel,
+  colorFoxModel,
+  colorDeerModel,
+  colorSheepModel,
+  colorSlothModel,
+  colorOwlModel,
+  colorDuckModel,
+  colorGuineaPigModel,
+  colorBlackCatModel,
+  colorCoolWolfModel
 ] as const;
 export const toyPalettes: ToyPaletteDefinition[] = [
   { id: "rose", name: "樱花粉", color: "#ff789e", attenuation: "#8f2346", emissive: "#c83464", glow: "#ff7da5" },
@@ -423,6 +651,13 @@ export function getToyRenderingAssetKey(model: ToyModelDefinition) {
   }
   if (model.rendering?.mode === "color-karpy-hat") return model.rendering.maskUrl;
   if (model.rendering?.mode === "color-koala-hat") return model.rendering.maskUrl;
+  if (model.rendering?.mode === "color-accessory-mask") {
+    return [
+      model.rendering.profile,
+      model.rendering.maskUrl,
+      model.rendering.secondaryMaskUrl ?? ""
+    ].join(":");
+  }
   return "unmasked";
 }
 

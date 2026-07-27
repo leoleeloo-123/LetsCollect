@@ -31,7 +31,7 @@ type MountedToy = {
 };
 
 const INITIAL_PIXEL_RATIO_CAP = 1;
-const SETTLED_PIXEL_RATIO_CAP = 1.55;
+const SETTLED_PIXEL_RATIO_CAP = 1.75;
 
 export function SeriesToyViewer({
   toys,
@@ -114,7 +114,7 @@ export function SeriesToyViewer({
       );
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      renderer.toneMappingExposure = 1.04;
+      renderer.toneMappingExposure = 1;
       renderer.domElement.className = "series-toy-viewer__canvas";
       renderer.domElement.setAttribute("aria-hidden", "true");
       viewerHost.replaceChildren(renderer.domElement);
@@ -123,14 +123,18 @@ export function SeriesToyViewer({
       const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 30);
       camera.position.set(0, 0, 10);
       camera.lookAt(0, 0, 0);
-      scene.add(new THREE.HemisphereLight(0xffffff, 0xb7cfc3, 2.1));
+      scene.add(new THREE.HemisphereLight(0xffffff, 0xb7cfc3, 1.95));
 
-      const keyLight = new THREE.DirectionalLight(0xffffff, 3.1);
-      keyLight.position.set(-4.5, 6, 8);
+      const keyLight = new THREE.DirectionalLight(0xfffbf7, 1.6);
+      keyLight.position.set(-4.5, 6.2, 7);
       scene.add(keyLight);
 
-      const rimLight = new THREE.DirectionalLight(0xd9b2c3, 1.8);
-      rimLight.position.set(5, 2.5, -5);
+      const fillLight = new THREE.DirectionalLight(0xffe2d6, 0.34);
+      fillLight.position.set(5.2, 2.5, 4.5);
+      scene.add(fillLight);
+
+      const rimLight = new THREE.DirectionalLight(0xdceaff, 0.3);
+      rimLight.position.set(4, 3.5, -5);
       scene.add(rimLight);
 
       const mountedToys: MountedToy[] = [];
@@ -149,11 +153,9 @@ export function SeriesToyViewer({
       let firstFrameRendered = false;
 
       function layoutModels() {
-        const columns = variant === "color" && layoutWidth < 620
+        const columns = variant === "color"
           ? 4
-          : variant === "color"
-            ? 6
-            : Math.max(toys.length, 1);
+          : Math.max(toys.length, 1);
         const rows = Math.max(1, Math.ceil(toys.length / columns));
         const worldHeight = rows * 2.18;
         const aspect = layoutWidth / Math.max(layoutHeight, 1);
@@ -280,7 +282,7 @@ export function SeriesToyViewer({
 
       frameId = window.requestAnimationFrame(render);
 
-      const loadTasks = latestToysRef.current.map(async (toy, sourceIndex) => {
+      async function loadSeriesToy(toy: Collectible, sourceIndex: number) {
         const prepared = await prepareSeriesToy(THREE, renderer, toy);
         if (cancelled || disposed) {
           prepared.dispose();
@@ -304,9 +306,17 @@ export function SeriesToyViewer({
         if (currentToy) prepared.updateAppearance(currentToy);
         layoutModels();
         setLoadedCount((count) => count + 1);
-      });
+      }
 
-      const results = await Promise.allSettled(loadTasks);
+      const results: PromiseSettledResult<void>[] = [];
+      const currentToys = latestToysRef.current;
+      for (let start = 0; start < currentToys.length; start += 6) {
+        if (cancelled || disposed) return;
+        const batch = currentToys
+          .slice(start, start + 6)
+          .map((toy, offset) => loadSeriesToy(toy, start + offset));
+        results.push(...await Promise.allSettled(batch));
+      }
       if (cancelled || disposed) return;
       const successfulLoads = results.filter(
         (result) => result.status === "fulfilled"

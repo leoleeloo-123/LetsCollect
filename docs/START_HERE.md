@@ -14,12 +14,12 @@ Let's Collect 是一个围绕数字 Companion 展开的、手机优先的治愈�
 
 `codex/companion-echo-frontend` 分支已经实现第一版 Collect / Collection / Echo 前端和独立 Agent Console。`main` 与 Vercel Production 尚未被这个分支替换。
 
-2026-07-24 起，Collect 第一页进入“按系列选择、在当前页揭晓”的第三轮：
-首页是一张可切 9 色、只包含 12 个柔雾模型的「色彩系列」卡，以及熊猫、
-艺术家、汪汪队、ZZZ、吃货系列五张独立特殊系列卡。所有特殊系列统一为 6 张券，
-每张系列卡使用一个受控 WebGL 舞台，让卡内模型同步原地旋转；特殊系列卡
-统一为上方一排模型、下方信息。水晶卡暂时下架，但两只水晶资产和旧 `/draw`
-兼容分支继续保留。首次注册依次收集昵称、伙伴、颜色和质感偏好。
+2026-07-27 起，Collect 第一页使用“按系列选择、在当前页揭晓”的第四轮：
+首页是一张可切 9 色、包含 24 个正式柔雾模型的「色彩系列」卡，以及按角色、
+状态与兴趣组成的 13 张特殊系列卡。所有特殊系列统一为 6 张券；每张系列卡
+只使用一个受控 WebGL 舞台，让卡内模型同步原地旋转。色彩系列固定为 4 列 ×
+6 行并按 6 只一批渐进加载。围巾企鹅继续留在 Lab 调整，奶油小熊暂时保留；
+两只水晶资产继续归档。首次注册依次收集昵称、伙伴、颜色和质感偏好。
 完整决定与回滚见 `docs/COLLECT_SERIES_V2.md`。
 
 改造前的 React MVP 已完整归档到：
@@ -59,9 +59,13 @@ GitHub：
 
 `https://github.com/leoleeloo-123/LetsCollect`
 
-线上 Vercel：
+线上 Vercel（旧 Production）：
 
 `https://lets-collect.vercel.app/`
+
+当前 Netlify Deploy Preview：
+
+`https://deploy-preview-2--letscollect.netlify.app/`
 
 ## Git 与发布
 
@@ -106,15 +110,16 @@ Primary navigation 只有 Collect、Collection、Echo。Agent 入口被明确标
 
 ## 当前真实资产
 
-- 十二个 active matte Color Animals，包括饭团 Karpy 与睡觉 Koala；
+- 二十四个 active matte Color Animals，奶油小熊暂时保留；
+- 围巾企鹅为 experimental Lab 资产，不进入 catalog 或抽取池；
 - 九个常规 colorway；
 - Diamond Unicorn 与 Diamond Dog 已归档，只保留旧藏品运行兼容；
 - 五个旧晶体 tint 只保留给历史藏品与内部 Lab；
-- 色彩系列包含十二个柔雾模型，每个色系严格 `1 / 12`；
-- 特殊系列为熊猫、艺术家、汪汪队、ZZZ 与吃货系列，全部使用 6 张券；
-- 水晶系列与新抽取分支已归档；旧 `/draw` 现在也只生成十二只柔雾伙伴。
+- 色彩系列包含二十四个柔雾模型，每个色系严格 `1 / 24`；
+- 十三个特殊系列按集中配置组合，全部使用 6 张券；
+- 旧 `/draw` 与系列抽取都只生成二十四只正式柔雾伙伴。
 
-十二个普通模型的换色目标不同；完整路径、大小、palette 与实现见 `docs/ASSET_CAPABILITY_REGISTRY.md`。
+二十四个普通模型的换色目标不同；完整路径、大小、palette 与实现见 `docs/ASSET_CAPABILITY_REGISTRY.md`。
 
 本轮把已验证的新模型与 shader 接入产品 catalog，但不重建 GLB。
 

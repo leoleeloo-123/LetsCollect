@@ -60,7 +60,7 @@ export const materialPreferences: readonly {
   description: string;
 }[] = [
   { id: "open", label: "都可以", description: "先记录开放的质感偏好" },
-  { id: "matte", label: "柔雾", description: "十二只现有软萌伙伴" },
+  { id: "matte", label: "柔雾", description: "二十四只现有软萌伙伴" },
   {
     id: "crystal",
     label: "喜欢晶亮",

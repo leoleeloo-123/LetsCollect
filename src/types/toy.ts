@@ -19,6 +19,18 @@ export type ToyModelId =
   | "color-seal"
   | "color-karpy"
   | "color-koala"
+  | "color-racoon"
+  | "color-hamster-icecream"
+  | "color-dino"
+  | "color-fox"
+  | "color-deer"
+  | "color-sheep"
+  | "color-sloth"
+  | "color-owl"
+  | "color-duck"
+  | "color-guinea-pig"
+  | "color-black-cat"
+  | "color-cool-wolf"
   | "diamond-unicorn"
   | "diamond-dog";
 
@@ -125,6 +137,25 @@ export type ToyModelDefinition = {
         mode: "color-koala-hat";
         maskUrl: string;
         hatColorScale: number;
+      }
+    | {
+        mode: "color-accessory-mask";
+        profile:
+          | "racoon-tanghulu"
+          | "hamster-icecream"
+          | "dino-scarf"
+          | "fox-hat"
+          | "deer-accessories"
+          | "sheep-accessories"
+          | "sloth-hat"
+          | "owl-academic"
+          | "duck-bath"
+          | "guinea-pig-balloons"
+          | "black-cat-logo"
+          | "cool-wolf-studs";
+        maskUrl: string;
+        secondaryMaskUrl?: string;
+        colorScale: number;
       };
 };
 

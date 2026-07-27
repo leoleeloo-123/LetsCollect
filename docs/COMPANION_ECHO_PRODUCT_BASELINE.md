@@ -60,10 +60,10 @@ Let's Collect 是一个围绕数字 Companion 展开的治愈系收藏体验。�
 - React 18、Vite、TypeScript、React Router；
 - Supabase 匿名 Auth 与 `profiles`；
 - React Context + `localStorage` 的票券、收藏、好友和最近抽取状态；
-- 十二个 active Color Animals matte 模型；
+- 二十四个 active Color Animals matte 模型；
 - 九个常规 colorway；
-- 首页色彩系列的十二个 matte 模型 × 九色显式组合；
-- 熊猫、艺术家、汪汪队、ZZZ 与吃货系列五个独立特殊系列池，全部六券一次；
+- 首页色彩系列的二十四个 matte 模型 × 九色显式组合；
+- `collectSeries.ts` 注册的十三个特殊系列十三个独立特殊系列池，全部六券一次；
 - Diamond Unicorn 与 Diamond Dog 已归档，五种原生 Crystal tint 只保留给已有本地藏品与内部验证；
 - 共享 `ToyViewer`、本地 Draco、按 URL 的模型解码缓存；
 - IndexedDB WebP 缩略图缓存；
@@ -121,7 +121,7 @@ renderer，卡内模型共享旋转，并在接近 viewport 时懒初始化。�
 - 一个可扩展的系列卡片架，不使用卡片右上角的全局分页器；
 - 第一张色彩系列卡同时展示十二个真实 matte 模型；
 - 卡内九个色点切换全部模型的同一 colorway；
-- 熊猫、艺术家、汪汪队、ZZZ 与吃货系列各自一张纵向特殊系列卡；
+- `collectSeries.ts` 注册的十三个特殊系列各自一张纵向特殊系列卡；
 - 五个特殊系列全部消耗六张券，且只在自己的严格模型池中均等抽取；
 - 每张卡一个主要抽取 CTA，并准确展示 `1 / N` 与票券成本；
 - 系列卡预览使用单卡单 canvas 的共享旋转舞台；揭晓阶段使用一个 live `ToyViewer`。
@@ -133,21 +133,21 @@ renderer，卡内模型共享旋转，并在接近 viewport 时懒初始化。�
 
 用户当前只能表达真实存在的偏好：
 
-- 十二个 active matte Companion；
+- 二十四个 active matte Companion；
 - 九个真实 colorway 或它们的情绪分组；
 - Matte 倾向，以及为未来保留但不会改变当前抽取的 Crystal 兴趣信号；
 - 明确选择的系列与该系列真实存在的模型池。
 
 `Calm / Warm / Fresh / Dreamy / Bold / Monochrome` 只能作为九个真实 colorway 的 UI 分组，不是新增资产。映射必须集中配置并可解释。
 
-需要注意：十二个普通模型不是全部“身体整体换色”。不同模型改变主体、
+需要注意：二十四个普通模型不是全部“身体整体换色”。不同模型改变主体、
 帽子、行李箱、毛线球、棒棒糖、爆炸头、相机配件、鼓、海星或睡帽。用户界面
 优先使用 `colorway / 配色 / color accent`，详情使用真实部位名称。
 
-色彩系列的九个色点是显式选择：十二个模型在该色系下严格等概率
-`1 / 12`。熊猫、艺术家、汪汪队、ZZZ 与吃货系列分别使用自己的模型池，
+色彩系列的九个色点是显式选择：二十四个模型在该色系下严格等概率
+`1 / 24`。`collectSeries.ts` 注册的十三个特殊系列分别使用自己的模型池，
 全部六券一次。水晶卡与新生成分支已经归档；旧 `/draw`
-也只从十二只 matte 伙伴中生成。所有系列概率都从集中配置派生，
+也只从二十四只 matte 伙伴中生成。所有系列概率都从集中配置派生，
 不允许额外混入隐藏彩蛋概率。
 
 ### 6.3 抽取叙事
@@ -501,8 +501,8 @@ campaign_completed
 -> Roadmap Proposal 明确阻塞且不可发布
 ```
 
-完整实现必须保证十二个 matte 模型、九个常规 colorway、色彩系列
-`1 / 12`，以及熊猫、艺术家、汪汪队、ZZZ、吃货系列五个六券特殊池的
+完整实现必须保证二十四个 matte 模型、九个常规 colorway、色彩系列
+`1 / 24`，以及`collectSeries.ts` 注册的十三个特殊系列十三个六券特殊池的
 严格模型与概率。两只 Crystal 模型及五个原生 tint 不出现在当前 Collect
 货架或新抽取；已有本地藏品和现有详情渲染不得被破坏。
 

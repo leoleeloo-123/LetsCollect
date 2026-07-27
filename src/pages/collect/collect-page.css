@@ -187,11 +187,11 @@
 
 .color-series-card {
   grid-template-columns: minmax(0, 1.48fr) minmax(290px, 0.72fr);
-  min-height: 326px;
+  min-height: 680px;
 }
 
 .color-series-card__visual {
-  min-height: 326px;
+  min-height: 680px;
 }
 
 .color-series-card__palette {
@@ -482,7 +482,7 @@
   }
 
   .color-series-card__visual {
-    min-height: 284px;
+    min-height: 620px;
   }
 }
 
@@ -517,7 +517,7 @@
   }
 
   .color-series-card__visual {
-    min-height: 264px;
+    min-height: 600px;
   }
 
   .special-series-card {
