@@ -27,6 +27,12 @@ color-cat
 color-panda
 ```
 
+The draw-only special-exhibit pool is:
+
+```text
+diamond-unicorn
+```
+
 ```text
 public/models/toys/
 public/images/toys/

@@ -1,0 +1,25 @@
+.color-seal-page {
+  max-width: 980px;
+}
+
+.color-seal-intro h1 {
+  max-width: 760px;
+  font-size: 34px;
+  line-height: 1.04;
+  letter-spacing: 0;
+}
+
+.color-seal-viewer {
+  aspect-ratio: 4 / 5;
+  background: #f1eee9;
+}
+
+@media (min-width: 700px) {
+  .color-seal-intro h1 {
+    font-size: 50px;
+  }
+
+  .color-seal-viewer {
+    aspect-ratio: 16 / 10;
+  }
+}

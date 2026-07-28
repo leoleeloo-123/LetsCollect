@@ -1,5 +1,6 @@
 # WorkBuddy workspace data
 .workbuddy/
+.netlify/
 
 # Screenshot / verification artifacts
 *.png

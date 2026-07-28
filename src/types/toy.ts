@@ -12,7 +12,27 @@ export type ToyModelId =
   | "color-teddy"
   | "color-bunny"
   | "color-cat"
-  | "color-panda";
+  | "color-panda"
+  | "color-bear-singer"
+  | "color-dog-camera"
+  | "color-dog-drum"
+  | "color-seal"
+  | "color-karpy"
+  | "color-koala"
+  | "color-racoon"
+  | "color-hamster-icecream"
+  | "color-dino"
+  | "color-fox"
+  | "color-deer"
+  | "color-sheep"
+  | "color-sloth"
+  | "color-owl"
+  | "color-duck"
+  | "color-guinea-pig"
+  | "color-black-cat"
+  | "color-cool-wolf"
+  | "diamond-unicorn"
+  | "diamond-dog";
 
 export type ToyFallbackShape = "unicorn" | "cat" | "bunny" | "bird" | "dog" | "blob";
 export type ToyPaletteId =
@@ -32,7 +52,12 @@ export type ToyPaletteId =
   | "grape"
   | "coral"
   | "lime"
-  | "sky";
+  | "sky"
+  | "diamond-clear"
+  | "diamond-ice"
+  | "diamond-rose"
+  | "diamond-champagne"
+  | "diamond-mint";
 export type ToyMaterialId = "jade" | "plastic" | "glass" | "wood" | "iron" | "copper" | "silver" | "gold" | "crystal";
 
 export type ToyModelDefinition = {
@@ -82,6 +107,55 @@ export type ToyModelDefinition = {
         mode: "color-otter-lollipop";
         materialName: string;
         lollipopColorScale: number;
+      }
+    | {
+        mode: "color-bear-singer-afro";
+        maskUrl: string;
+        colorScale: number;
+      }
+    | {
+        mode: "color-dog-camera-accessories";
+        maskUrl: string;
+        colorScale: number;
+      }
+    | {
+        mode: "color-dog-drum";
+        drumColorScale: number;
+      }
+    | {
+        mode: "color-seal-starfish";
+        maskUrl: string;
+        objectMaskUrl: string;
+        colorScale: number;
+      }
+    | {
+        mode: "color-karpy-hat";
+        maskUrl: string;
+        colorScale: number;
+      }
+    | {
+        mode: "color-koala-hat";
+        maskUrl: string;
+        hatColorScale: number;
+      }
+    | {
+        mode: "color-accessory-mask";
+        profile:
+          | "racoon-tanghulu"
+          | "hamster-icecream"
+          | "dino-scarf"
+          | "fox-hat"
+          | "deer-accessories"
+          | "sheep-accessories"
+          | "sloth-hat"
+          | "owl-academic"
+          | "duck-bath"
+          | "guinea-pig-balloons"
+          | "black-cat-logo"
+          | "cool-wolf-studs";
+        maskUrl: string;
+        secondaryMaskUrl?: string;
+        colorScale: number;
       };
 };
 
@@ -137,6 +211,7 @@ export type DrawRecord = {
   id: string;
   collectibleId: string;
   createdAt: string;
+  encounterSeriesId?: string;
 };
 
 export type SocialActivity = {

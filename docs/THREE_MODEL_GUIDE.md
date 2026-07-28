@@ -2,9 +2,20 @@
 
 ## Current Model Pool
 
-The active mobile-first Color Animals pool contains Color Otter, Color Bird, Color Teddy, Color Bunny, Color Cat, and Color Panda. Runtime GLBs and their protection masks live under `public/models/toys/{toy-slug}/`; all active GLBs stay below 1 MB.
+The active mobile-first matte pool contains Color Otter, Color Bird, Color Teddy,
+Color Bunny, Color Cat, Color Panda, Color Bear Singer, Color Dog Camera,
+Color Dog Drum, Color Seal, Color Karpy, and Color Koala. Diamond Unicorn and
+Diamond Dog remain compatibility assets, but their Collect shelf card is
+temporarily removed. Runtime GLBs and their protection masks live under
+`public/models/toys/{toy-slug}/`.
 
-Original high-resolution GLBs for active models live under `assets/models/source/{toy-slug}/` and are never requested by the browser. Superseded experiments, retired model families, rebuild history, and rollback code belong under `assets/models/archive/{toy-slug}/`. Color Dog, Color Unicorn, and the retired Color Cat v001 are fully preserved there; the earlier Unicorn, Kitty, Bunny, Bird, Doggy, and Karpy crystal pool remains a separate rollback path.
+Color Karpy's 315,240-byte Draco GLB uses an 18,474-byte mask and a local
+upper-head gate so only its beret changes color; the rice ball and character
+stay authored. Color Koala's 335,136-byte Draco GLB uses a 9,014-byte mask and
+height gate so only the sleeping-hat body changes; the pom-pom, koala, branch,
+leaves, and props stay authored.
+
+Original high-resolution GLBs for active models live under `assets/models/source/{toy-slug}/` and are never requested by the browser. Superseded experiments, retired model families, rebuild history, and rollback code belong under `assets/models/archive/{toy-slug}/`. Color Unicorn and the retired Color Cat v001 remain archived; the earlier Unicorn, Kitty, Bunny, Bird, Doggy, and Karpy crystal pool remains a separate rollback path.
 
 All runtime paths, protection masks, framing overrides, and recoloring modes are registered in:
 
@@ -57,6 +68,32 @@ material factory for legacy jade and V2 materials.
 
 See `playbooks/toy-thumbnail-rendering.md` for cache versioning, performance
 rules, and the future Supabase Storage boundary.
+
+## Collect Series Showcase Strategy
+
+The Collect series shelf is not a generic item list. It uses one WebGL canvas and
+renderer per series card, with two to twenty-four model roots placed under separate
+local pivots in one scene. All pivots consume the same rotation value, so pointer
+drag and keyboard input rotate the full row in place.
+
+This is a narrow exception to the thumbnail strategy:
+
+- never mount one `ToyViewer` or canvas per series member; the current shelf should
+  stay at no more than fourteen series WebGL contexts after a full-page visit,
+  rather than sixty per-model contexts;
+- initialize the first color-series stage first and lazy-initialize special-series
+  stages near the viewport;
+- request mobile GLBs through `loadToyModel`, whose promise cache deduplicates
+  download and Draco decoding across cards;
+- load members in parallel and add each model to the stage as soon as it is ready;
+- use tile-level lightweight materials, a low initial pixel-ratio cap, and stop
+  rendering once motion and loading have settled;
+- change palettes by rebinding or updating materials on loaded model roots; do not
+  refetch a GLB or recreate the scene, canvas, or renderer.
+
+Poster or thumbnail fallbacks may cover loading and WebGL-unavailable states, but
+must not replace rotation after the live stage is ready. Special-series cards keep
+one model row above the information panel on desktop and mobile.
 
 The standardized model workflow lives in:
 

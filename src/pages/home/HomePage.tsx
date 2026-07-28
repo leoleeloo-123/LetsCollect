@@ -1,1 +1,1 @@
-export { SocialHomePage as HomePage } from "./SocialHomePage";
+export { CollectPage as HomePage } from "../collect/CollectPage";

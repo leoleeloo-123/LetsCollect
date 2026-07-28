@@ -1,13 +1,12 @@
-import { NavLink } from "react-router-dom";
+import { Bot } from "lucide-react";
+import { Link, NavLink } from "react-router-dom";
 import { routes } from "../../app/routes";
 import { TicketBalance } from "../../features/tickets/TicketBalance";
-import { preloadDrawExperience } from "../../features/draw/preloadDraw";
 
 const navItems = [
-  { to: routes.home, label: "首页" },
-  { to: routes.draw, label: "抽取" },
-  { to: routes.collection, label: "收藏" },
-  { to: routes.friends, label: "好友" }
+  { to: routes.home, label: "收藏" },
+  { to: routes.collection, label: "藏品柜" },
+  { to: routes.echo, label: "回声" }
 ];
 
 export function DesktopNav() {
@@ -17,19 +16,22 @@ export function DesktopNav() {
         <span className="brand-mark__gem">L</span>
         <span>Let's Collect</span>
       </NavLink>
-      <nav className="desktop-nav__links" aria-label="Primary desktop navigation">
+      <nav className="desktop-nav__links" aria-label="桌面主要导航">
         {navItems.map((item) => (
           <NavLink
             key={item.to}
             to={item.to}
-            onPointerEnter={item.to === routes.draw ? preloadDrawExperience : undefined}
-            onFocus={item.to === routes.draw ? preloadDrawExperience : undefined}
           >
             {item.label}
           </NavLink>
         ))}
       </nav>
-      <TicketBalance />
+      <div className="desktop-nav__tools">
+        <Link className="desktop-nav__agent-link" to={routes.agent}>
+          <Bot size={14} aria-hidden="true" /> <span>内部</span>
+        </Link>
+        <TicketBalance />
+      </div>
     </header>
   );
 }

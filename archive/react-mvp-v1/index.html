@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#fff8fa" />
+    <script>
+      if (window.location.pathname === "/draw") {
+        const isCompactDevice = window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 760;
+        const preloadAssets = [
+          [
+            isCompactDevice
+              ? "/models/toys/jelly-jade-unicorn/model-mobile-v001.glb"
+              : "/models/toys/jelly-jade-unicorn/model-web-v002.glb",
+            "model/gltf-binary"
+          ],
+          ["/draco/draco_wasm_wrapper.js", "application/javascript"],
+          ["/draco/draco_decoder.wasm", "application/wasm"]
+        ];
+
+        preloadAssets.forEach(([href, type]) => {
+          const preload = document.createElement("link");
+          preload.rel = "preload";
+          preload.href = href;
+          preload.as = "fetch";
+          preload.type = type;
+          preload.crossOrigin = "anonymous";
+          document.head.appendChild(preload);
+        });
+      }
+    </script>
+    <title>Let's Collect</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

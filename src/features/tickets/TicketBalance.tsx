@@ -12,9 +12,9 @@ export function TicketBalance({ compact = false }: TicketBalanceProps) {
 
   return (
     <Link
-      to={routes.draw}
+      to={routes.home}
       className={`ticket-balance${compact ? " ticket-balance--compact" : ""}`}
-      aria-label={`当前有 ${tickets} 张抽取券`}
+      aria-label={`当前有 ${tickets} 张抽取券，返回收藏页`}
     >
       <Ticket size={17} strokeWidth={2.2} />
       <strong>{tickets}</strong>

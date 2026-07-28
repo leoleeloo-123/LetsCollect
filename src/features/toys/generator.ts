@@ -8,6 +8,7 @@ import type {
 } from "../../types/toy";
 import {
   colorAnimalPalettes,
+  diamondUnicornPalettes,
   getToyModel,
   getToyPalette,
   getToyRenderingAssetKey
@@ -15,7 +16,9 @@ import {
 import {
   COLOR_ANIMALS_GENERATION_VERSION,
   colorAnimalsSeries,
-  getColorAnimalGrade
+  getColorAnimalGrade,
+  getSpecialExhibitGrade,
+  specialExhibitsSeries
 } from "./activeSeries";
 import { materialTraitWeights } from "./materialCatalog";
 
@@ -71,6 +74,15 @@ function createColorAnimalTraits(rolls: number[]): MaterialTraits {
   };
 }
 
+function createSpecialExhibitTraits(rolls: number[]): MaterialTraits {
+  return {
+    craftsmanship: clampScore(88 + rolls[3] * 10),
+    finish: 95,
+    purity: clampScore(90 + rolls[7] * 8),
+    character: clampScore(80 + rolls[8] * 18),
+    brilliance: 96
+  };
+}
 export function getMaterialCraftScore(traits: MaterialTraits) {
   return Math.round(
     traits.craftsmanship * materialTraitWeights.craftsmanship
@@ -108,7 +120,13 @@ function createColorAnimalAppearance(traits: MaterialTraits): AppearanceVector {
   };
 }
 
-function getColorAnimalDescription(modelId: ToyModelId, paletteName: string) {
+function getCollectibleDescription(modelId: ToyModelId, paletteName: string) {
+  if (modelId === "diamond-unicorn") {
+    return `一只采用${paletteName}色泽的水晶独角兽，拥有高折射率、清晰切面与明亮火彩。`;
+  }
+  if (modelId === "diamond-dog") {
+    return `一只采用${paletteName}色泽的水晶小狗，通透晶体与细密切面会在转动时呈现明亮火彩。`;
+  }
   if (modelId === "color-bird") {
     return `一只采用${paletteName}配色的软萌小鸟，保留灵动眼睛、喙部和脚部原色。`;
   }
@@ -127,37 +145,132 @@ function getColorAnimalDescription(modelId: ToyModelId, paletteName: string) {
   if (modelId === "color-otter") {
     return `一只拿着${paletteName}棒棒糖的软萌水獭，身体、眼睛、鼻嘴与腮红保持原色。`;
   }
+  if (modelId === "color-bear-singer") {
+    return `一只顶着${paletteName}爆炸头的小熊，五官、服装与舞台配件保持原始造型。`;
+  }
+  if (modelId === "color-dog-camera") {
+    return `一只戴着${paletteName}帽子和包包的摄像狗，身体、五官与相机保持原色。`;
+  }
+  if (modelId === "color-dog-drum") {
+    return `一只带着${paletteName}鼓面的打鼓狗，狗狗主体与鼓的细节保持原色。`;
+  }
+  if (modelId === "color-seal") {
+    return `一只抱着${paletteName}海星的软萌海豹，身体、五官与尾部保持原色。`;
+  }
+  if (modelId === "color-karpy") {
+    return `一只吃着饭团、戴着${paletteName}帽子的软萌卡皮，身体、白色衣服、五官、爪子与腮红保持原色。`;
+  }
+  if (modelId === "color-koala") {
+    return `一只戴着${paletteName}睡帽的软萌考拉，身体、五官、帽顶绒球、树枝与叶片保持原色。`;
+  }
+  if (modelId === "color-racoon") {
+    return `一只拿着${paletteName}糖葫芦的浣熊，脸部、眼睛与服装细节保持原色。`;
+  }
+  if (modelId === "color-hamster-icecream") {
+    return `一只举着${paletteName}雪糕的仓鼠，身体、眼睛与小爪子保持原色。`;
+  }
+  if (modelId === "color-dino") {
+    return `一只围着${paletteName}围巾的小恐龙，身体与五官保持原色。`;
+  }
+  if (modelId === "color-fox") {
+    return `一只戴着${paletteName}羽毛帽的狐狸，毛色、眼睛与面部细节保持原色。`;
+  }
+  if (modelId === "color-deer") {
+    return `一只佩戴${paletteName}蝴蝶结的小鹿，身体与五官保持原色。`;
+  }
+  if (modelId === "color-sheep") {
+    return `一只穿着${paletteName}披风的小羊，羊毛、眼睛与面部细节保持原色。`;
+  }
+  if (modelId === "color-sloth") {
+    return `一只戴着${paletteName}针织帽的树懒，身体与五官保持原色。`;
+  }
+  if (modelId === "color-owl") {
+    return `一只带着${paletteName}学术配件的猫头鹰，羽毛与五官保持原色。`;
+  }
+  if (modelId === "color-duck") {
+    return `一只坐在${paletteName}浴缸里的小鸭，身体、泡沫与五官保持原色。`;
+  }
+  if (modelId === "color-guinea-pig") {
+    return `一只带着${paletteName}气球的豚鼠，身体与五官保持原色。`;
+  }
+  if (modelId === "color-black-cat") {
+    return `一只带着${paletteName}鱼形标记的黑盒猫猫，黑色造型与五官保持原色。`;
+  }
+  if (modelId === "color-cool-wolf") {
+    return `一只戴着${paletteName}耳钉的酷酷狼人，服装、毛色与五官保持原色。`;
+  }
   return `一只采用${paletteName}配色的软萌伙伴，保留原始五官与角色细节。`;
 }
 
-/** Active V3 generator: fixed soft-matte material, random approved model and body color. */
+function createSpecialExhibitAppearance(traits: MaterialTraits): AppearanceVector {
+  return {
+    transparency: 95,
+    colorDepth: traits.character,
+    hydration: traits.purity,
+    luster: traits.finish,
+    glow: traits.brilliance
+  };
+}
+
+/** Active V3 generator with a low-probability special-exhibit branch. */
 export function generateCollectible(options: GenerateCollectibleOptions = {}): Collectible {
   const seed = options.seed ?? randomSeed();
   const random = createSeededRandom(seed);
   const rolls = Array.from({ length: 10 }, () => random());
-  const requestedModel = options.modelId
-    && colorAnimalsSeries.modelIds.includes(options.modelId)
+  const activeModelIds = [
+    ...colorAnimalsSeries.modelIds
+  ] as readonly ToyModelId[];
+  const requestedModel = options.modelId && activeModelIds.includes(options.modelId)
     ? options.modelId
     : null;
+  const isSpecialRoll = rolls[0] < specialExhibitsSeries.drawProbability;
+  const regularRoll = Math.max(
+    0,
+    (rolls[0] - specialExhibitsSeries.drawProbability)
+      / (1 - specialExhibitsSeries.drawProbability)
+  );
+  const regularModelIndex = Math.min(
+    colorAnimalsSeries.drawModelIds.length - 1,
+    Math.floor(regularRoll * colorAnimalsSeries.drawModelIds.length)
+  );
+  const specialModelIndex = Math.min(
+    specialExhibitsSeries.drawModelIds.length - 1,
+    Math.floor(rolls[2] * specialExhibitsSeries.drawModelIds.length)
+  );
+  const modelId = requestedModel
+    ?? (isSpecialRoll
+      ? specialExhibitsSeries.drawModelIds[specialModelIndex]
+      : colorAnimalsSeries.drawModelIds[regularModelIndex]);
+  const isSpecialExhibit = specialExhibitsSeries.modelIds.includes(modelId);
+  const palettePool = isSpecialExhibit ? diamondUnicornPalettes : colorAnimalPalettes;
+  const allowedRequestedPaletteIds = isSpecialExhibit
+    ? specialExhibitsSeries.explicitPaletteIds
+    : colorAnimalsSeries.paletteIds;
   const requestedPalette = options.paletteId
-    && colorAnimalsSeries.paletteIds.includes(options.paletteId)
+    && allowedRequestedPaletteIds.includes(options.paletteId)
     ? options.paletteId
     : null;
-  const modelId = requestedModel
-    ?? colorAnimalsSeries.drawModelIds[Math.floor(rolls[0] * colorAnimalsSeries.drawModelIds.length)];
   const paletteId = requestedPalette
-    ?? colorAnimalPalettes[Math.floor(rolls[1] * colorAnimalPalettes.length)].id;
+    ?? palettePool[Math.floor(rolls[1] * palettePool.length)].id;
   const model = getToyModel(modelId);
   const palette = getToyPalette(paletteId);
-  const materialId = colorAnimalsSeries.materialId;
-  const materialTraits = createColorAnimalTraits(rolls);
+  const materialId = isSpecialExhibit
+    ? specialExhibitsSeries.materialId
+    : colorAnimalsSeries.materialId;
+  const materialTraits = isSpecialExhibit
+    ? createSpecialExhibitTraits(rolls)
+    : createColorAnimalTraits(rolls);
   const qualityScore = getMaterialCraftScore(materialTraits);
-  const rarity = getRarityForQuality(qualityScore);
+  const rarity: RarityCode = isSpecialExhibit ? "mythic" : getRarityForQuality(qualityScore);
   const id = options.id ?? createId();
-  const appearance = createColorAnimalAppearance(materialTraits);
+  const appearance = isSpecialExhibit
+    ? createSpecialExhibitAppearance(materialTraits)
+    : createColorAnimalAppearance(materialTraits);
+  const seriesId = isSpecialExhibit ? specialExhibitsSeries.id : colorAnimalsSeries.id;
+  const seriesName = isSpecialExhibit ? specialExhibitsSeries.name : colorAnimalsSeries.name;
   const appearanceSignature = [
     GENERATION_VERSION,
-    colorAnimalsSeries.id,
+    seriesId,
     modelId,
     paletteId,
     materialId,
@@ -172,18 +285,18 @@ export function generateCollectible(options: GenerateCollectibleOptions = {}): C
     modelId,
     paletteId,
     materialId,
-    materialGrade: getColorAnimalGrade(rarity),
+    materialGrade: isSpecialExhibit ? getSpecialExhibitGrade() : getColorAnimalGrade(rarity),
     materialTraits,
     name: palette.name + model.name,
-    seriesId: colorAnimalsSeries.id,
-    seriesName: colorAnimalsSeries.name,
+    seriesId,
+    seriesName,
     rarity,
     qualityScore,
     appearanceSeed: seed,
     generationVersion: GENERATION_VERSION,
     appearance,
     appearanceSignature,
-    shortDescription: getColorAnimalDescription(modelId, palette.name),
+    shortDescription: getCollectibleDescription(modelId, palette.name),
     createdAt: options.createdAt ?? new Date().toISOString()
   };
 }

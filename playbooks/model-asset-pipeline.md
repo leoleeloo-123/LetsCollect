@@ -12,7 +12,7 @@ collectible system, load quickly on mobile, and remain easy to swap in
 ```text
 assets/models/source/{toy-slug}/
   model-source-v001.glb          # raw or high quality source, local only
-  notes.md                       # optional artist/export notes
+  notes.md                       # required provenance and rebuild notes
 
 public/models/toys/{toy-slug}/
   model-web-v001.glb             # default frontend model
@@ -23,18 +23,41 @@ assets/models/archive/{toy-slug}/
   ...                            # superseded experiments, never browser-served
 ```
 
+## Raw Asset Intake
+
+Do not leave newly delivered GLBs in the repository root.
+
+1. Create `assets/models/source/{toy-slug}/`.
+2. Move the delivered file to
+   `assets/models/source/{toy-slug}/model-source-v001.glb`.
+3. Add `notes.md` with the original filename, import date, byte size, SHA-256,
+   geometry and texture summary, intended recoloring scope, and rebuild command.
+4. Build runtime assets into `public/models/toys/{toy-slug}/`.
+5. Remove byte-identical copies such as a root-level raw GLB or
+   `model-original-drop.glb`.
+
+When a later delivery is genuinely different, version it as
+`model-source-v002.glb`. Move superseded source versions to
+`assets/models/archive/{toy-slug}/source/` only when they are required for
+rollback and document why they are retained.
+
+Do not create empty source or runtime directories as placeholders.
+
 Current source model area:
 
 ```text
-assets/models/source/jelly-jade-*/model-source-v001.glb
+assets/models/source/{color-*,diamond-*,jelly-jade-*}/model-source-v*.glb
 ```
 
-Current production model pool:
+Current runtime model area:
 
 ```text
-public/models/toys/jelly-jade-*/model-web-v001.glb
-public/models/toys/jelly-jade-*/model-mobile-v001.glb
+public/models/toys/{color-*,diamond-*,jelly-jade-*}/model-*.glb
 ```
+
+The active runtime version for each model is declared in
+`src/features/toys/catalog.ts`; directory presence alone does not make an asset
+active.
 
 Only files under `public/` are served to the browser. Source files under
 `assets/` are for editing, audit, and re-export.

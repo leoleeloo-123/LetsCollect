@@ -1,57 +1,164 @@
 # 产品概览
 
+状态：当前实现与已批准目标并行记录
+日期：2026-07-28
+
 ## 产品是什么
 
-Let's Collect 是一个以 3D 数字收藏玩具为核心、优先服务手机端的收藏产品。
+Let's Collect 是一个围绕数字 Companion 展开的治愈系收藏体验。
 
-用户通过好友互动获得抽取券，使用抽取券遇见新的玩具，并逐步完成自己的系列收藏。产品的核心循环是：
+用户通过遇见、选择和收藏 Companion 表达审美与偏好；系统从真实收藏行为中发现人与人之间细微的共鸣。收藏是前台主体验，Echo 是低压力的第二层体验，Agent 是幕后解释与运营能力。
 
 ```text
-互动 -> 获得抽取券 -> 抽取 -> 收藏 -> 分享 -> 再次互动
+Collect · Connect · Companion
 ```
 
-完整的产品原则与边界见 `docs/PRODUCT_CONSTITUTION.md`。
+> Collect what you love. Meet who understands.
 
-## 四个一级模块
+长期原则见 `docs/PRODUCT_CONSTITUTION.md`，详细目标规格见 `docs/COMPANION_ECHO_PRODUCT_BASELINE.md`。
 
-- 首页：本期系列、好友动态和互动获券任务；
-- 抽取：抽取券余额、当前抽取池、抽取操作和结果揭晓；
-- 收藏：拥有与未解锁玩具、系列进度和单只玩具检查；
-- 好友：好友、申请、推荐和收藏关系概览。
+## Current reality：当前已经实现
 
-`Explore` 的发现能力分散在首页、系列和收藏中，不作为一级入口。`Profile` 通过头像进入，不占用底部导航。
+当前开发事实以 `codex/companion-echo-frontend` 为准：它是 React + Vite +
+TypeScript SPA，并跟踪同名 GitHub 远程分支。`main` 仍是 Vercel Production
+发布分支，但尚未由当前 Companion / Echo 开发分支替换。
 
-## 当前开发状态
+技术和数据现状：
 
-`main` 当前已经是 React + Vite + TypeScript MVP，并由 Vercel Production 部署。
+- React Router 路由和响应式 App Shell；
+- Supabase 匿名 Auth 与 `profiles`；
+- 本地 `MvpStateProvider` 保存票券、收藏、好友和最近抽取；
+- 收藏状态使用 `localStorage`，3D 缩略图使用 IndexedDB；
+- 抽取结果和票券仍由客户端 Demo 逻辑产生，不是权威后端；
+- 共享 Three.js `ToyViewer`、本地 Draco、模型解码缓存、加载与错误状态；
+- Collection 缩略图网格、Favorite、Representative、Signature 和选中藏品 3D 详情；
+- Legacy Hero 保留在 `legacy/hero-prototype/` 作为视觉与行为参考。
 
-当前版本已经可以验证：
+当前 C 端路由：
 
-- 好友动态互动后获得抽取券；
-- 消耗抽取券进行 Mock 抽取；
-- 展示抽取揭晓结果；
-- 将结果加入本地收藏；
-- 筛选收藏并打开详情；
-- 搜索、添加和接受好友；
-- 将演示状态保存在浏览器本地；
-- 通过可复用的 Three.js `ToyViewer` 查看当前激活的 GLB 玩具。
-- 当前抽取使用 Color Animals V3：从已批准的小动物模型与身体配色中随机组合，表面固定为柔雾树脂；旧 V1/V2 果冻玉与八材质系统保留为可回退的 legacy 实现。
+- `/`：色彩系列与特殊系列卡片架，以及原地揭晓；
+- `/draw`：兼容的客户端全局 Mock 抽取与揭晓；
+- `/collection`：本地收藏、Favorite、Representative、Signature 与 3D 详情；
+- `/echo`：有限、匿名、确定性的本地 Echo 演示；
+- `/onboarding`：匿名身份与 profile；
+- `/agent`：独立 Internal / Demo Agent Console；
+- Lab routes：内部 3D 资产验证。
 
-静态 Legacy Hero 已迁入 `legacy/hero-prototype/`，继续作为视觉、材质和拖动检查行为的参考，不再是当前线上根入口。
+`/friends` 与 `/profile` 只作为兼容重定向。当前抽取会在揭晓前立即扣除
+票券并写入 Collection；Favorite、Representative、Signature、Echo 与
+Agent Console 已有本地演示实现，但票券、所有权、Echo 和 Agent 审批均
+不是生产权威服务。
 
-## 当前不是正式能力
+## Current assets：当前真实资产
 
-- 完整账户体系和生产级用户资料；
-- 真实好友关系；
-- 服务端抽取概率和结果；
-- 权威的抽取券流水；
-- 云端收藏数据；
-- 支付、交易或真钱抽取。
+当前 active 内容为：
 
-## 近期目标
+- 二十四个 Color Animals matte / 柔雾树脂 Companion；
+- 九个注册常规 colorway，以及仅供历史兼容渲染的五个原生 Crystal tint；
+- Collect 首页的色彩系列：选择九色之一后，在二十四个 matte 模型中严格等概率
+  `1 / 24` 抽取；
+- Collect 首页的特殊系列：`collectSeries.ts` 注册的十三个特殊系列各自
+  使用独立、可审计的模型池，全部每次六张券；
+- Diamond Unicorn 与 Diamond Dog 两只 Crystal Companion 已归档，不在
+  Collect 货架、色彩系列或新抽取中；已有本地藏品、详情与 Lab 继续兼容；
+- 兼容 `/draw` 现在只从二十四只 matte 伙伴中均等抽取，不再生成 Crystal。
 
-1. 根据真实手机体验持续调整四模块的信息架构；
-2. 收敛视觉语言与交互反馈；
-3. 继续验证 `ToyViewer` 在首页、收藏详情和抽取结果中的稳定性；
-4. 收敛 Mock 数据合同，为云端收藏、好友和抽取服务做边界准备；
-5. 在前端流程稳定后逐步替换为 Supabase 服务层。
+二十四个普通模型使用不同的真实换色目标，不能统一描述为“全身换色”。
+ZZZ 复用小猫、海豹和考拉三款现有睡姿。五个原生 Crystal tint 只用于已有
+本地水晶藏品与内部 Lab 的兼容渲染，任何当前抽取都不会生成水晶；完整路径、大小、palette、实现方式和
+availability 见 `docs/ASSET_CAPABILITY_REGISTRY.md`。
+
+旧 Jelly Jade、八材质、归档模型和 Lab 实验是 legacy / experimental，不是当前可抽取内容。
+
+## Approved target：已经批准但尚未全部实现
+
+目标 C 端一级入口收敛为：
+
+1. `Collect`
+2. `Collection`
+3. `Echo`
+
+目标核心循环：
+
+```text
+表达偏好
+-> 遇见 Companion
+-> 加入 Collection
+-> 形成 Collection Signature
+-> 看见有限匿名 Echo
+-> 可选 Collect Together
+-> 返回 Collect
+```
+
+目标产品比例：
+
+- 80% Collect / Collection；
+- 15% Echo；
+- 5% Agent 展示。
+
+Agent Console 使用独立 Internal / Demo route，不进入 C 端主导航。
+
+## 当前分支已经实现的本地 Demo 能力
+
+### Collect
+
+- 一个可扩展的系列卡片架，而不是卡片内部的全局分页器；
+- 第一张色彩系列卡展示二十四个真实 matte 模型，并用九个色点切换全卡配色；
+- 每个特殊系列独立成卡，模型池、配色策略、概率与票券成本集中配置；
+- 每张卡使用一个 live canvas 让卡内模型同步旋转，下方卡片临近 viewport 才初始化；
+- 当前一张色彩卡与十三张特殊卡各使用一个 canvas；特殊卡接近 viewport
+  才初始化，离屏时停止无意义渲染。用户滚动访问全部卡片后最多可同时保留
+  十四个系列 WebGL context，而不是为六十个模型格分别建立 canvas；
+- 柔和、非老虎机式揭晓；
+- 以 Companion、colorway、当前 matte 主题和简短描述为主要信息。
+
+### Collection
+
+- 现有缩略图网格与详情 Viewer；
+- Favorite；
+- 最多三只 Representative Companions；
+- 从真实信号派生的 Collection Signature。
+
+Model / Colorway / Material / Date 筛选、Representative 排序和真实 profile
+展示仍是下一步能力，不属于当前已实现范围。
+
+### Echo
+
+- 每日有限匿名候选；
+- Representative Companions 作为匿名形象；
+- 可解释 resonance reasons；
+- Leave an Echo / Let it drift；
+- mutual 后可选的一张极简 Collect Together 进度卡；
+- 无真人照片、Match percentage、Chat、Feed 或在线状态。
+
+### Agents
+
+- Resonance Agent：deterministic、结构化、可解释，外部模型不是基础流程依赖；
+- Evolution Agent：当前演示 Observe → Reason → Propose → Human Approve，
+  并展示 Measure 区域；Apply 与持久化测量尚未实现；
+- 所有 Campaign 必须经过 capability feasibility 与人工批准；
+- 依赖未来资产的提案只能成为 Roadmap Proposal。
+
+## 当前只在本地 Demo、不是生产权威能力
+
+- 云端收藏和跨设备所有权；
+- 服务端权威抽取、票券流水和概率版本；
+- Favorite、Representative、Signature；
+- Echo、Shared Collection Task；
+- Resonance / Evolution Agent；
+- Campaign 配置与发布；
+- typed analytics 后端；
+- lint 与自动化测试工具链。
+
+此外，`src/config/capabilityRegistry.ts` 的 `currentAssetRegistry` 仍停留在
+早期十二模型列表，与当前二十四模型 catalog / draw pool 不一致。这不会改变
+当前抽取池，但会影响 Agent feasibility 对后十二个模型的判断，属于明确的代码
+一致性修复项。
+
+## 迁移原则
+
+1. 保留当前稳定的 3D、抽取、收藏、响应式和视觉基础；
+2. 先更新文档、capability 和状态合同，再改变导航；
+3. `/draw`、`/friends` 与现有 localStorage 必须有兼容和回滚；
+4. 不把 planned 或 legacy 能力提前展示为 available；
+5. 不换框架，不建设平行 Demo，不做一次性大重写。

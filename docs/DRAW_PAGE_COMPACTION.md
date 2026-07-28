@@ -1,5 +1,9 @@
 # Draw page compaction
 
+Status: historical rollout note. The current compatibility `/draw` pool uses
+all twenty-four active matte models; the six-model details below describe the
+implementation at the time of this compaction change.
+
 ## Reason
 
 The mobile draw page repeated the ticket balance already shown in the global ribbon and used a large decorative 3D stage. The extra description, rings, pedestal, floor shadow, and drag prompt delayed the primary draw action.

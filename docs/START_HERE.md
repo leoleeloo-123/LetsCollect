@@ -2,18 +2,52 @@
 
 ## 项目定位
 
-Let's Collect 是一个以 3D 数字收藏玩具为核心、优先服务手机端的收藏产品。
+Let's Collect 是一个围绕数字 Companion 展开的、手机优先的治愈系收藏体验。
 
-开发前先阅读：
+产品表达是：
 
-- `docs/PRODUCT_CONSTITUTION.md`：产品方向和不可随意改变的边界；
-- `docs/PRODUCT_OVERVIEW.md`：当前产品状态；
-- `docs/SOCIAL_COLLECTING_V1.md`：社区、收藏身份与成就系统的第一轮产品基线；
-- `docs/ROADMAP.md`：实施顺序和验收闸门；
-- `docs/ARCHITECTURE.md`：前后端与 3D 模块边界；
-- `docs/THEMING.md`：前端主题变量、样式分层与调整规则；
-- `docs/THREE_MODEL_GUIDE.md`：GLB 与 Three.js 资产规则。
-- `docs/COLOR_ANIMALS_V3.md`：当前软萌变色小动物系列、移动端预算与回退方案。
+`Collect · Connect · Companion`
+
+收藏是前台主体验；Echo 是有限、匿名、无聊天的 Soft Connection；Agent 在幕后寻找可解释的微小共鸣，并在明确能力边界和人工批准下提出运营配置。
+
+## 当前实施状态
+
+`codex/companion-echo-frontend` 分支已经实现第一版 Collect / Collection / Echo 前端和独立 Agent Console。`main` 与 Vercel Production 尚未被这个分支替换。
+
+截至 2026-07-28，Collect 第一页使用“按系列选择、在当前页揭晓”的第四轮：
+首页是一张可切 9 色、包含 24 个正式柔雾模型的「色彩系列」卡，以及按角色、
+状态与兴趣组成的 13 张特殊系列卡。所有特殊系列统一为 6 张券；每张系列卡
+只使用一个受控 WebGL 舞台，让卡内模型同步原地旋转。色彩系列固定为 4 列 ×
+6 行并按 6 只一批渐进加载。围巾企鹅继续留在 Lab 调整，奶油小熊暂时保留；
+两只水晶资产继续归档。首次注册依次收集昵称、伙伴、颜色和质感偏好。
+完整决定与回滚见 `docs/COLLECT_SERIES_V2.md`。
+
+改造前的 React MVP 已完整归档到：
+
+`archive/react-mvp-v1/`
+
+迁移原因、影响、验证与回滚见：
+
+`docs/COMPANION_ECHO_FRONTEND_V1.md` 与 `docs/COLLECT_SERIES_V2.md`
+
+## 阅读顺序
+
+开发前按顺序阅读：
+
+1. `docs/PRODUCT_CONSTITUTION.md`：长期产品原则和不可越界事项；
+2. `docs/COMPANION_ECHO_PRODUCT_BASELINE.md`：Collect / Collection / Echo、Agent、数据与验收规格；
+3. `docs/COMPANION_ECHO_FRONTEND_V1.md`：当前实现、归档、验证和回滚；
+4. `docs/COLLECT_SERIES_V2.md`：系列盲盒、原地揭晓、注册偏好与回滚；
+5. `docs/ASSET_CAPABILITY_REGISTRY.md`：当前真实资产、legacy / planned 边界与 feasibility；
+6. `docs/PRODUCT_OVERVIEW.md`：产品范围与核心循环；
+7. `docs/ROADMAP.md`：分阶段实施与服务端演进；
+8. `docs/ARCHITECTURE.md`：技术边界和 adapter / service；
+9. `docs/DATA_MODEL.md`：当前数据与目标领域合同；
+10. `docs/THEMING.md`：Rose Frost 到 Quiet Collectible 的视觉演进；
+11. `docs/THREE_MODEL_GUIDE.md`：GLB、Three.js、缩略图和回退规则；
+12. `docs/COLOR_ANIMALS_V3.md` 与 `docs/DIAMOND_UNICORN_SPECIAL_EXHIBIT.md`：active 系列和特殊展品。
+
+`docs/SOCIAL_COLLECTING_V1.md` 是历史探索记录，不再作为新导航、好友 Feed 或八材质图鉴的实施依据。
 
 ## 本地与远程位置
 
@@ -25,27 +59,24 @@ GitHub：
 
 `https://github.com/leoleeloo-123/LetsCollect`
 
-线上 Vercel：
+线上 Vercel（旧 Production）：
 
 `https://lets-collect.vercel.app/`
 
-## Git 状态
+当前 Netlify Deploy Preview：
 
-- `main` 是当前 React MVP 和 Vercel Production 的发布分支；
-- `legacy/hero-prototype/` 继续保留旧 HTML Hero 作为视觉参考；
-- 推送 `main` 会触发 Vercel Production，未经明确确认不要操作。
+`https://deploy-preview-2--letscollect.netlify.app/`
 
-## 当前线上入口
+## Git 与发布
 
-`vercel.json` 将 `/` 重写到：
+- `main` 是 Vercel Production 的发布分支；
+- 当前改造分支是 `codex/companion-echo-frontend`；
+- 推送 `main` 会触发 Vercel Production；
+- `archive/react-mvp-v1/` 保存改造前 React MVP；
+- `legacy/hero-prototype/` 保存更早的 HTML Hero；
+- 未经用户明确确认，不推送 `main`、不改变线上根入口。
 
-`/`
-
-当前默认 Hero 页面加载：
-
-`Color Otter / Color Bird / Color Teddy / Color Bunny / Color Cat / Color Panda` 六种移动端模型展示。
-
-## 当前 React MVP
+## Current reality：当前分支应用
 
 技术栈：
 
@@ -53,44 +84,118 @@ GitHub：
 - Vite；
 - TypeScript；
 - React Router；
+- Three.js；
 - Lucide React；
 - Supabase 匿名 Auth 与 Profile；
-- 浏览器本地藏品、票券和社交 Mock 状态。
+- 浏览器本地票券、收藏偏好、Favorite、Representative 和 Echo Demo 状态；
+- IndexedDB 3D 缩略图缓存；
+- typed local analytics adapter。
 
-一级路由：
+当前 C 端路由：
 
-- `/`：首页与好友动态；
-- `/draw`：Mock 抽取；
-- `/collection`：收藏；
-- `/friends`：好友；
-- `/login`、`/register`：认证边界占位。
+- `/`：Collect，从色彩或特殊系列卡选择盲盒，并在当前页扣券、揭晓和入柜；
+- `/draw`：旧随机抽取兼容入口，不再是 Collect 首页主流程；
+- `/collection`：最多三只 Representative、Favorite、Collection Signature、缩略图网格和单项 3D 详情；
+- `/echo`：每日最多三条匿名 Echo、可解释共鸣和一个极简 Collect Together；
+- `/onboarding`：Supabase 匿名身份与四步 Taste 偏好注册；
+- `/friends -> /echo`；
+- `/profile -> /collection`。
 
-旧 `/explore` 会回到首页，旧 `/profile` 会转到好友页。
+内部路由：
 
-## 已经可以验证的流程
+- `/agent`：Evolution Agent Console；
+- 各模型 Lab route：资产和材质验证，不是 C 端产品能力。
+
+Primary navigation 只有 Collect、Collection、Echo。Agent 入口被明确标记为 Internal。
+
+其中 Collection 当前尚未实现 metadata / acquisition date 筛选、Representative
+排序和 profile 展示，不得提前写成现成功能。
+
+## 当前真实资产
+
+- 二十四个 active matte Color Animals，奶油小熊暂时保留；
+- 围巾企鹅为 experimental Lab 资产，不进入 catalog 或抽取池；
+- 九个常规 colorway；
+- Diamond Unicorn 与 Diamond Dog 已归档，只保留旧藏品运行兼容；
+- 五个旧晶体 tint 只保留给历史藏品与内部 Lab；
+- 色彩系列包含二十四个柔雾模型，每个色系严格 `1 / 24`；
+- 十三个特殊系列按集中配置组合，全部使用 6 张券；
+- 旧 `/draw` 与系列抽取都只生成二十四只正式柔雾伙伴。
+
+二十四个普通模型的换色目标不同；完整路径、大小、palette 与实现见 `docs/ASSET_CAPABILITY_REGISTRY.md`。
+
+本轮把已验证的新模型与 shader 接入产品 catalog，但不重建 GLB。
+
+## 当前可以验证的流程
 
 ```text
-好友动态互动 -> 抽取券增加 -> 生成独立材质藏品 -> 揭晓 -> 收藏更新
+首次注册昵称 / 头像
+-> 依次选择伙伴 / 颜色 / 材质偏好
+-> 选择色彩系列或一张特殊系列卡
+-> 拖动查看该系列可同步旋转的真实 3D 模型
+-> 当前页抽取、柔和揭晓并立即加入本地 Collection
+-> Favorite / Representative
+-> 规则生成 Collection Signature
+-> 查看有限匿名 Echo
+-> Leave an Echo / Let it drift
+-> mutual 后推进 Collect Together
+-> 完成时获得一次额外抽取
+-> 返回 Collect
 ```
 
-还可以验证：
+Agent Demo：
 
-- 六种 Color Animals 移动端 GLB 的动态展示、随机配色与详情保护；
-- 收藏筛选、材质工艺品质与 3D 详情浮层；
-- 好友搜索、添加与接受申请；
-- 手机端底部导航；
-- 桌面端顶部导航；
-- 本地状态刷新后保留；
-- 好友页重置演示数据。
+```text
+Observe
+-> Reason
+-> Propose
+-> Human Approve
+-> Measure
+```
 
-## 尚未接入
+- Calm Green Week 只引用当前真实 matte 模型与颜色；
+- Sleepy Crystal Night 仍显示 `requires_asset_creation`，因为当前只有柔雾猫咪、
+  海豹和考拉睡姿，没有对应水晶睡姿资产；
+- 依赖不存在资产的提案不可批准或发布。
 
-- 云端藏品、抽奖和票券表；
-- 真实好友关系；
-- 服务端抽取；
-- 权威抽取券流水；
-- 木头 UV 纹理、玻璃厚度细节和更细致的水晶内含物资产；
-- 抽奖记录点赞与真实动态流。
+## 状态与 adapter 边界
+
+- `MvpStateProvider` 是当前 collector 本地 repository adapter；
+- storage key 继续使用 `lets-collect-mvp-state-v12`，并兼容旧快照；
+- Echo 使用独立 service / repository 和本地 Demo fixtures；
+- Resonance 是 deterministic、结构化、可追溯 fallback，不依赖 LLM API；
+- Evolution 使用聚合 Demo signals 与 deterministic feasibility；
+- UI 不直接解析自由文本 Agent 输出；
+- typed analytics 不记录照片、聊天、精确位置或敏感身份。
+
+## 当前尚未实现
+
+- 云端收藏、票券、Favorite、Representative 与 Echo 持久化；
+- 服务端权威抽取；
+- 生产多用户 Resonance；
+- 生产 Campaign 应用、发布与测量；
+- 自由文本 Chat、私信、关注 / 粉丝与实时多人；
+- 已注册三只睡姿伙伴之外的更多 Sleepy / Quirky / Cool 模型；
+- 新的 fuzzy / metallic / porcelain 材质；
+- pending draw-result transaction；
+- Collection metadata / acquisition date 筛选与 Representative 排序；
+- `src/config/capabilityRegistry.ts` 对全部二十四个 active 模型的同步登记；
+- lint 与自动化 test 工具链；
+- 首次访问可靠的静态 3D poster fallback。
+
+这些能力不得在 C 端假装已经存在。
+
+## 当前项目进度
+
+- 已完成：产品宪法、资产注册表、三入口 App Shell、24 模型 Collect 系列货架、
+  本地 Collection 表达、有限 Echo Demo、Evolution Agent Console Demo；
+- 部分完成：typed adapter 边界、Collection 管理、Campaign 生命周期；部分页面
+  仍直接依赖 `MvpStateProvider`，Console 目前只演示 proposal / approve；
+- 下一阶段：服务端权威抽取、票券和所有权，user-scoped 云端状态，生产 Echo / Campaign
+  审计，以及 lint、自动化测试与真实移动设备性能加固；
+- 已知一致性债务：人类可读资产注册表和抽取代码是 24 模型，但
+  `src/config/capabilityRegistry.ts` 仍只登记早期 12 模型。在代码注册表修正前，
+  Agent feasibility 可能把后 12 个正式模型误判为未登记资产。
 
 ## 常用命令
 
@@ -101,15 +206,20 @@ pnpm run typecheck
 pnpm run build
 ```
 
+当前 `package.json` 没有 `lint` 或 `test` 脚本。交付时必须如实说明，不得声称已执行不存在的命令。
+
 ## 修改规则
 
-1. 修改一级导航、核心循环、3D 加载策略或首期非目标前，先更新产品宪法；
-2. 列表使用缩略图，不为每个卡片加载 GLB；
+1. 修改一级导航、核心循环、active asset、3D 加载策略或首期非目标前，先更新产品宪法；
+2. 普通藏品、Feed 与历史列表使用缩略图；Collect 系列展示是受控例外，每张
+   系列卡最多一个 WebGL canvas，不得为每只模型创建一个 canvas；
 3. 页面不直接创建自己的 GLTFLoader；
-4. 真实抽取和票券写入必须由服务端负责；
-5. Legacy Hero 在 React 版本完成远程验证前继续保留；
-6. 未经用户明确确认，不修改线上根入口或推送到 `main`。
+4. 真实抽取和票券写入必须由可信服务端负责；
+5. current、target、planned 不得混写；
+6. Agent 不得生成不存在的资产或跳过人工批准；
+7. Legacy Hero 和 React MVP archive 在替代流程完成远程验证前继续保留；
+8. 未经用户明确确认，不修改线上根入口或推送到 `main`。
 
-藏品生成规则与未来数据边界见：
+藏品生成与未来数据边界见：
 
 `playbooks/collectible-generation-architecture.md`
