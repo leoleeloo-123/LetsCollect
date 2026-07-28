@@ -20,11 +20,14 @@ export function prepareColorTeddyProtectTexture(
 function colorizeColorTeddyCoat(
   material: Three.Material,
   coatColor: Three.Color,
-  protectMap: Three.Texture
+  protectMap: Three.Texture,
+  debugMode?: { value: number }
 ) {
+  const debugEnabled = Boolean(debugMode);
   material.onBeforeCompile = (shader) => {
     shader.uniforms.teddyProtectMap = { value: protectMap };
     shader.uniforms.teddyCoatColor = { value: coatColor };
+    if (debugMode) shader.uniforms.teddyDebugMode = debugMode;
     shader.vertexShader = shader.vertexShader
       .replace("#include <common>", `#include <common>
 varying vec3 vTeddyObjectPosition;`)
@@ -34,6 +37,7 @@ vTeddyObjectPosition = position;`);
       .replace("#include <common>", `#include <common>
 uniform sampler2D teddyProtectMap;
 uniform vec3 teddyCoatColor;
+${debugEnabled ? "uniform float teddyDebugMode;" : ""}
 varying vec3 vTeddyObjectPosition;`)
       .replace("#include <map_fragment>", `#ifdef USE_MAP
   vec4 sampledDiffuseColor = texture2D(map, vMapUv);
@@ -67,11 +71,18 @@ varying vec3 vTeddyObjectPosition;`)
   resultColor = mix(resultColor, originalDiffuseColor, featureKeep);
   vec3 blushColor = mix(resultColor, vec3(1.0, 0.44, 0.52), 0.48);
   resultColor = mix(resultColor, blushColor, blushDetail);
-  sampledDiffuseColor.rgb = resultColor;
+${debugEnabled ? `  vec3 zoneColor = vec3(0.08, 0.38, 0.32);
+  zoneColor = mix(zoneColor, vec3(0.12, 0.24, 0.72), muzzleDetail);
+  zoneColor = mix(zoneColor, vec3(0.72, 0.12, 0.30), blushDetail);
+  zoneColor = mix(zoneColor, vec3(0.72, 0.10, 0.05), fixedDetail);
+  sampledDiffuseColor.rgb = mix(resultColor, zoneColor, teddyDebugMode);` : "  sampledDiffuseColor.rgb = resultColor;"}
   diffuseColor *= sampledDiffuseColor;
 #endif`);
   };
-  material.customProgramCacheKey = () => "color-teddy-protected-coat-production-v1";
+  material.customProgramCacheKey = () =>
+    debugEnabled
+      ? "color-teddy-protected-coat-production-v2-debug"
+      : "color-teddy-protected-coat-production-v2";
   material.needsUpdate = true;
 }
 
@@ -80,7 +91,8 @@ export function cloneColorTeddyMaterials(
   root: Three.Object3D,
   coatColor: Three.Color,
   protectMap: Three.Texture,
-  maxAnisotropy = 1
+  maxAnisotropy = 1,
+  debugMode?: { value: number }
 ) {
   const materials: Three.Material[] = [];
   root.traverse((child) => {
@@ -103,7 +115,7 @@ export function cloneColorTeddyMaterials(
           clone.map.needsUpdate = true;
         }
       }
-      colorizeColorTeddyCoat(clone, coatColor, protectMap);
+      colorizeColorTeddyCoat(clone, coatColor, protectMap, debugMode);
       materials.push(clone);
       return clone;
     });
