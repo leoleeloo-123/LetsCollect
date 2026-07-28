@@ -1,5 +1,7 @@
 # Architecture
 
+Status date: 2026-07-28
+
 This document separates the architecture that exists in the repository today from the approved Companion / Echo target. A target section is a contract for future work, not a claim that the feature is already implemented.
 
 ## Current Runtime Architecture
@@ -21,11 +23,11 @@ The application entry is `src/main.tsx`. `src/app/App.tsx` lazy-loads route comp
 
 The current product routes are:
 
-- `/`: Collect series shelf with one twelve-model matte nine-color pool,
-  熊猫 / 艺术家 / 汪汪队 / ZZZ / 吃货系列 special-series cards, six-ticket special
-  draws, and in-place reveal;
+- `/`: Collect series shelf with one twenty-four-model matte nine-color pool,
+  thirteen configured special-series cards, three-ticket color draws,
+  six-ticket special draws, and in-place reveal;
 - `/draw`: client-side demo draw and reveal;
-- `/collection`: local collection, filters, Favorites, Representatives, Collection Signature, and 3D detail;
+- `/collection`: local collection, Favorites, Representatives, Collection Signature, and 3D detail;
 - `/echo`: finite explainable Echo and one lightweight Collect Together task;
 - `/friends`: redirects to `/echo`;
 - `/onboarding`: anonymous Supabase profile creation;
@@ -75,9 +77,9 @@ The current system is deliberately hybrid:
 
 `src/three/ThumbnailRenderer/` renders the real mobile GLB to a WebP poster, serializes rendering work, and stores results in IndexedDB. Collection and feed lists use thumbnails instead of keeping a WebGL canvas alive per card.
 
-The Collect series shelf is a controlled exception to the list-thumbnail rule. Each series card owns one WebGL canvas and renderer; its models live under independent local pivots in the same scene and share one rotation value. The 24-model Color card initializes first and loads at most six models concurrently; thirteen special-series cards initialize only near the viewport. This keeps the active context count bounded by visible cards rather than one context per model. The Crystal card is absent; its two archived assets remain available only to historical local collection rendering and internal Labs.
+The Collect series shelf is a controlled exception to the list-thumbnail rule. Each series card owns one WebGL canvas and renderer; its models live under independent local pivots in the same scene and share one rotation value. The 24-model Color card initializes first and loads at most six models concurrently; thirteen special-series cards initialize only near the viewport. This defers model loading and render work until cards are approached, but initialized contexts remain alive until page unmount. The Crystal card is absent; its two archived assets remain available only to historical local collection rendering and internal Labs.
 
-The series renderer reuses the mobile GLBs, the `loadToyModel` download and Draco-decode promise cache, tile-level lightweight materials, a low initial device-pixel ratio, and idle render suspension. Palette changes update material bindings on the existing scene; they must not reload a GLB or recreate the renderer. A special-series card keeps its model row above its information and actions at every breakpoint.
+The series renderer reuses the mobile GLBs, the `loadToyModel` download and Draco-decode promise cache, tile-level lightweight materials, a low initial device-pixel ratio, and idle render suspension. Palette changes update material bindings on the existing scene; they must not reload a GLB or recreate the renderer. A special-series card keeps its model row above its information and actions at every breakpoint. The current shelf has fourteen series cards. Special cards initialize only after approaching the viewport, but an initialized renderer remains alive until the page unmounts; after a full-page visit, up to fourteen series WebGL contexts may coexist. This is substantially below the sixty per-tile contexts the current card contents would create, but it still requires real-device budget validation and may need future renderer recycling.
 
 Collection, feed, friend, and history surfaces remain thumbnail lists. They must not adopt the Collect showcase exception. In-place reveal and collection detail continue to use the reusable single-model `ToyViewer`.
 
@@ -119,7 +121,13 @@ React pages and feature components
 
 ### Capability And Asset Registry
 
-A centralized registry must distinguish `available`, `experimental`, `planned`, `legacy`, and `unavailable`. Runtime files existing in `public/` or `assets/` do not by themselves make a capability available. The twelve active matte Companions and two archived crystal studies must be declared explicitly, with their real model IDs, palettes, material behavior, and rendering constraints.
+A centralized registry must distinguish `available`, `experimental`, `planned`, `legacy`, and `unavailable`. Runtime files existing in `public/` or `assets/` do not by themselves make a capability available. The twenty-four active matte Companions and two archived crystal studies must be declared explicitly, with their real model IDs, palettes, material behavior, and rendering constraints.
+
+Known consistency debt: `catalog.ts`, `activeSeries.ts`, `collectSeries.ts`, and
+`ASSET_CAPABILITY_REGISTRY.md` describe the current twenty-four-model product,
+while `src/config/capabilityRegistry.ts` still registers only the first twelve
+assets for Agent feasibility. Until that TypeScript registry is updated, it is
+not an authoritative complete list of the active draw pool.
 
 ### Collection Service And Repository
 

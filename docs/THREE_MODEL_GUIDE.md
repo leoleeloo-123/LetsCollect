@@ -72,14 +72,15 @@ rules, and the future Supabase Storage boundary.
 ## Collect Series Showcase Strategy
 
 The Collect series shelf is not a generic item list. It uses one WebGL canvas and
-renderer per series card, with two to twelve model roots placed under separate
+renderer per series card, with two to twenty-four model roots placed under separate
 local pivots in one scene. All pivots consume the same rotation value, so pointer
 drag and keyboard input rotate the full row in place.
 
 This is a narrow exception to the thumbnail strategy:
 
 - never mount one `ToyViewer` or canvas per series member; the current shelf should
-  stay near six WebGL contexts rather than about twenty-six;
+  stay at no more than fourteen series WebGL contexts after a full-page visit,
+  rather than sixty per-model contexts;
 - initialize the first color-series stage first and lazy-initialize special-series
   stages near the viewport;
 - request mobile GLBs through `loadToyModel`, whose promise cache deduplicates

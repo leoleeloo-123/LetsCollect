@@ -2,7 +2,7 @@
 
 Status: implemented on `codex/companion-echo-frontend`
 
-Date: 2026-07-24
+Date: 2026-07-28
 
 This note records the reason, impact, validation plan, and rollback path for the
 first frontend implementation of the Companion + Echo product baseline. It
@@ -47,9 +47,9 @@ The archive was saved independently in Git commit `f71ea31`.
 
 | Route | Audience | Purpose |
 | --- | --- | --- |
-| `/` | Collector | Collect landing, one live 3D hero, real model/color/material preferences |
+| `/` | Collector | Twenty-four-model color series, thirteen special-series cards, and in-place reveal |
 | `/draw` | Collector | Existing random encounter and reveal flow, with calmer product language |
-| `/collection` | Collector | Representatives, filters, Favorites, 3D detail, Collection Signature |
+| `/collection` | Collector | Representatives, Favorites, 3D detail, Collection Signature |
 | `/echo` | Collector | At most three finite anonymous Echo candidates and one small shared task |
 | `/agent` | Internal/demo | Evolution Agent lifecycle, signals, proposals, feasibility, approval |
 | `/friends` | Compatibility | Redirects to `/echo` |
@@ -64,15 +64,16 @@ The redesign does not replace the proven rendering stack.
 
 - `ToyViewer` remains the reusable single-model renderer for reveal and detail.
 - Collect series cards use one `SeriesToyViewer` canvas per card, with all model
-  roots sharing rotation; the current shelf is about six contexts rather than
-  about twenty-six per-model contexts.
+  roots sharing rotation; the current shelf has fourteen cards and can retain
+  up to fourteen contexts after a full-page visit rather than sixty per-model
+  contexts. Special cards initialize near the viewport and suspend idle renders.
 - Collection and Echo lists use the existing cached thumbnail renderer.
 - Collection and draw detail surfaces continue to open the existing interactive
   3D viewer.
-- All twelve matte models retain their verified per-model recolor semantics.
-- The Color series contains those twelve matte models only. Its thirteen special
-  cards are Panda, Artists, Wangwang Team (汪汪队), ZZZ, and Foodies; each draw
-  costs six tickets.
+- All twenty-four matte models retain their verified per-model recolor semantics.
+- The Color series contains those twenty-four matte models only. Thirteen
+  configured special-series cards use explicit model pools and cost six tickets
+  per draw.
 - Diamond Unicorn and Diamond Dog are archived. Five native crystal tints remain
   only for historical local collections and internal Labs; no new draw can select them.
 
@@ -242,3 +243,21 @@ This version does not claim:
 
 Those boundaries are visible in code and in the capability registry rather than
 being hidden behind aspirational UI.
+
+## 2026-07-28 progress note
+
+The local frontend now covers the intended Collect → Collection → Echo loop and
+the Internal Agent demonstration. Remaining work is not another frontend
+rewrite: it is backend authority, incomplete Collection controls, production
+hardening, and consistency cleanup.
+
+- Collection metadata/date filters, Representative reordering, and profile
+  presentation are not implemented.
+- Campaign Edit, Archive, Apply, durable Measure, and production publishing are
+  not implemented; the current Console demonstrates proposal and approval only.
+- `src/config/capabilityRegistry.ts` still lists twelve current assets while the
+  active catalog and draw pool contain twenty-four, so Agent feasibility is
+  incomplete for the latter twelve.
+- The package still has no lint or automated test scripts.
+- The fourteen-context full-scroll series shelf needs real mobile-device budget
+  verification and may require renderer recycling before production cutover.

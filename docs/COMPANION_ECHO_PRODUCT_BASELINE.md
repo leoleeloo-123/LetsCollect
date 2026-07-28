@@ -1,8 +1,8 @@
 # Companion / Echo 产品基线
 
-状态：已批准的目标方向，尚未全部实现
+状态：已批准方向；本地 Demo 主循环已实现，生产权威化尚未完成
 版本：v1
-日期：2026-07-24
+日期：2026-07-28
 产品表达：`Collect · Connect · Companion`
 
 ## 1. 文档职责
@@ -55,7 +55,7 @@ Let's Collect 是一个围绕数字 Companion 展开的治愈系收藏体验。�
 
 ## 4. 当前事实快照
 
-截至 2026-07-24，当前代码已经具备：
+截至 2026-07-28，当前代码已经具备：
 
 - React 18、Vite、TypeScript、React Router；
 - Supabase 匿名 Auth 与 `profiles`；
@@ -63,7 +63,7 @@ Let's Collect 是一个围绕数字 Companion 展开的治愈系收藏体验。�
 - 二十四个 active Color Animals matte 模型；
 - 九个常规 colorway；
 - 首页色彩系列的二十四个 matte 模型 × 九色显式组合；
-- `collectSeries.ts` 注册的十三个特殊系列十三个独立特殊系列池，全部六券一次；
+- `collectSeries.ts` 注册的十三个独立特殊系列池，全部六券一次；
 - Diamond Unicorn 与 Diamond Dog 已归档，五种原生 Crystal tint 只保留给已有本地藏品与内部验证；
 - 共享 `ToyViewer`、本地 Draco、按 URL 的模型解码缓存；
 - IndexedDB WebP 缩略图缓存；
@@ -103,8 +103,9 @@ Let's Collect 是一个围绕数字 Companion 展开的治愈系收藏体验。�
 
 Collect 是产品最重要的页面，真实 3D Companion 资产是唯一主视觉焦点。
 Collect 系列货架是受控 live 3D 例外：每张系列卡只创建一个 canvas /
-renderer，卡内模型共享旋转，并在接近 viewport 时懒初始化。当前六张卡
-最多约六个 WebGL context；如果逐模型创建则会接近二十六个。普通列表仍
+renderer，卡内模型共享旋转，并在接近 viewport 时懒初始化。当前十四张卡
+在全部访问后最多保留十四个 WebGL context；如果按六十个模型格逐项创建
+canvas，会远超移动端预算。普通列表仍
 使用缓存缩略图，揭晓和详情继续使用单模型 live `ToyViewer`。
 
 ### 6.1 页面层级
@@ -119,10 +120,10 @@ renderer，卡内模型共享旋转，并在接近 viewport 时懒初始化。�
 主体使用：
 
 - 一个可扩展的系列卡片架，不使用卡片右上角的全局分页器；
-- 第一张色彩系列卡同时展示十二个真实 matte 模型；
+- 第一张色彩系列卡同时展示二十四个真实 matte 模型；
 - 卡内九个色点切换全部模型的同一 colorway；
 - `collectSeries.ts` 注册的十三个特殊系列各自一张纵向特殊系列卡；
-- 五个特殊系列全部消耗六张券，且只在自己的严格模型池中均等抽取；
+- 十三个特殊系列全部消耗六张券，且只在自己的严格模型池中均等抽取；
 - 每张卡一个主要抽取 CTA，并准确展示 `1 / N` 与票券成本；
 - 系列卡预览使用单卡单 canvas 的共享旋转舞台；揭晓阶段使用一个 live `ToyViewer`。
 
@@ -440,7 +441,8 @@ campaign_completed
 ## 15. 性能、状态与可访问性
 
 - 除 Collect 系列货架外，同一主要页面默认只保留一个 active live Viewer；
-- Collect 货架每张卡最多一个 canvas，当前最多约六个 context，并对下方卡片懒初始化；
+- Collect 货架每张卡最多一个 canvas，当前最多十四个系列 context，并对下方
+  卡片懒初始化、对离屏卡片暂停无意义渲染；renderer 回收仍需移动端验证；
 - 列表、Representative 与 Echo 卡片使用缩略图；
 - 保留模型 URL 解码缓存与 IndexedDB WebP；
 - 为首次访问增加静态 poster 或 CSS fallback，不能只依赖已经生成过的缓存缩略图；

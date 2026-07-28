@@ -1,7 +1,7 @@
 # 产品与技术路线图
 
-状态：Companion / Echo 迁移路线
-更新日期：2026-07-24
+状态：本地 Demo 主循环已完成，进入权威后端与生产加固阶段
+更新日期：2026-07-28
 
 ## 路线原则
 
@@ -12,7 +12,23 @@
 - Agent 先规则化、结构化、可解释，再考虑外部模型服务；
 - 真实抽取、票券和所有权最终由可信服务端负责。
 
-## 阶段 0：新产品基线与真实能力盘点（当前）
+## 当前进度摘要
+
+- 阶段 0 已完成：产品、资产和能力边界文档已经建立；
+- 阶段 1 部分完成：Favorite、Representative、偏好、Echo repository、
+  typed analytics 与迁移兼容已存在，但 Collection 仍直接依赖
+  `MvpStateProvider`，统一 repository/service contract 尚未完成；
+- 阶段 2 已完成：主导航已收敛为 Collect / Collection / Echo，Agent 独立；
+- 阶段 3 已完成本地 Demo：24 模型、9 色、13 个特殊系列和原地揭晓已接入；
+- 阶段 4 部分完成：Favorite、最多三只 Representative、Signature、缩略图和
+  3D 详情已完成；筛选、Representative 排序和 profile 展示未完成；
+- 阶段 5 已完成本地 Demo：有限 Echo、确定性 Resonance 与 Collect Together
+  已实现，生产多人服务未开始；
+- 阶段 6 部分完成：signals、insight、proposal、feasibility 和 approve Demo
+  已实现；Edit / Archive / Apply / durable Measure 与生产发布未实现；
+- 阶段 7 是下一主阶段；阶段 8 尚未开始。
+
+## 阶段 0：新产品基线与真实能力盘点（已完成）
 
 - 升级产品宪法；
 - 建立 Companion / Echo 产品基线；
@@ -25,7 +41,7 @@
 
 回滚：只修改文档，不改变运行时行为。
 
-## 阶段 1：领域合同与本地 adapter
+## 阶段 1：领域合同与本地 adapter（部分完成）
 
 - 定义基础 Companion、收藏实例和用户所有权边界；
 - 为 Favorite、Representative rank、偏好和 typed events 增加版本化本地状态；
@@ -38,7 +54,7 @@
 
 回滚：保留当前 `MvpStateProvider` 快照和 v12 读取路径。
 
-## 阶段 2：App Shell、导航与 Quiet Collectible 视觉
+## 阶段 2：App Shell、导航与 Quiet Collectible 视觉（已完成）
 
 - 将目标主导航收敛为 Collect / Collection / Echo；
 - `/draw` 暂时保留兼容入口；
@@ -52,7 +68,7 @@
 
 回滚：恢复原四入口 nav 配置和 Rose Frost token 值。
 
-## 阶段 3：Collect
+## 阶段 3：Collect（本地 Demo 已完成）
 
 - 将 `/` 重构为可扩展的系列卡片架，移除卡片内部的全局分页器；
 - 第一张色彩系列卡同时展示二十四个 matte 模型，以九个色点切换选定 colorway，
@@ -60,7 +76,7 @@
 - `collectSeries.ts` 注册的十三个特殊系列作为独立特殊系列卡，全部六券一次；
 - 特殊系列使用各自的严格模型池；水晶卡与新抽取分支归档，旧藏品运行兼容保留；
 - 每张系列卡使用一个 live canvas 让卡内模型同步旋转，特殊卡临近 viewport
-  才初始化；当前约六个 context，而不是逐模型约二十六个；
+  才初始化；全页访问后最多十四个系列 context，而不是六十个逐模型 context；
 - 正确表达每个模型的真实换色部位；
 - `/draw` 兼容入口使用 100% matte 全局规则，系列抽取不
   混入隐藏特殊分支；
@@ -72,7 +88,7 @@
 
 回滚：`/` 恢复现有首页，`/draw` 继续承担抽取。
 
-## 阶段 4：Collection
+## 阶段 4：Collection（部分完成）
 
 - 保留现有 WebP 网格和单项 3D 详情；
 - 增加 Favorite；
@@ -87,7 +103,7 @@
 
 回滚：新字段可忽略，现有 collection array 和详情继续工作。
 
-## 阶段 5：Echo 与 Resonance
+## 阶段 5：Echo 与 Resonance（本地 Demo 已完成）
 
 - 新增 `/echo`；
 - 使用清晰隔离的 demo repository / fixture；
@@ -103,7 +119,7 @@
 
 回滚：从主导航隐藏 Echo，保留 Collection 主循环。
 
-## 阶段 6：Evolution Agent Console
+## 阶段 6：Evolution Agent Console（部分完成）
 
 - 建立聚合 signals；
 - 生成结构化 insight；
@@ -118,7 +134,7 @@
 
 回滚：Console 作为独立 Internal route 隐藏，不影响 C 端。
 
-## 阶段 7：后端权威化
+## 阶段 7：后端权威化（下一主阶段）
 
 - 将 Collection、Favorite、Representative 和偏好迁移到 user-scoped Supabase repository；
 - 为 Echo 提供最小匿名投影和 RLS / service boundary；
@@ -131,7 +147,7 @@
 
 回滚：保留本地 Demo adapter，生产写入开关可关闭。
 
-## 阶段 8：生产加固与切换
+## 阶段 8：生产加固与切换（未开始）
 
 - 增加 lint 和最小自动化测试工具链；
 - 覆盖 typecheck、build、关键纯逻辑和流程 smoke test；
@@ -139,6 +155,8 @@
   特殊池，以及两只归档 Crystal 对旧本地藏品的兼容渲染；
 - 检查 loading、empty、error、retry、poster / CSS fallback；
 - 检查移动端性能、键盘、对比度和 reduced motion；
+- 检查全部十四张系列卡被访问后的 WebGL context 峰值，并评估离屏 renderer 回收；
+- 将 `src/config/capabilityRegistry.ts` 同步到全部二十四个 active 模型；
 - 通过 Preview 远程验证；
 - 经明确确认后再修改生产导航或推送 `main`；
 - 保留 Legacy Hero 与旧路由回滚。

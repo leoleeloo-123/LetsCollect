@@ -1,5 +1,23 @@
 # Changelog
 
+## 2026-07-28
+
+- Synchronized the current project documentation with the active
+  `codex/companion-echo-frontend` branch.
+- Recorded twenty-four active matte models, nine regular colorways, thirteen
+  special series, and the archived crystal compatibility boundary.
+- Marked the local Collect / Collection / Echo loop and Agent Console demo as
+  implemented while keeping server authority and production multi-user behavior
+  explicitly pending.
+- Corrected the series shelf budget from the earlier six-context snapshot to a
+  fourteen-series maximum after all lazy cards have been visited; per-model
+  canvases remain prohibited.
+- Documented current gaps: Collection filtering and Representative ordering,
+  incomplete campaign lifecycle, the twelve-vs-twenty-four TypeScript capability
+  registry mismatch, missing lint/tests, and mobile WebGL hardening.
+- Confirmed that `main` / Vercel Production have not been replaced by the
+  current development branch.
+
 ## 2026-07-17
 
 - Replaced diamond with higher-transparency crystal, introduced colorless glass after plastic, and preserved the calibrated material-tier distribution.

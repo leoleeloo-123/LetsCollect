@@ -1,7 +1,7 @@
 # Asset and Capability Registry
 
 Status: current product contract
-Last verified: 2026-07-27
+Last verified: 2026-07-28
 
 ## Purpose
 
@@ -39,6 +39,13 @@ This document is the human-readable product contract. If it disagrees with
 runtime code, stop product work, verify the intended behavior, and update code
 and documentation together. Do not infer availability by scanning
 `public/models/`, `assets/models/`, `ToyModelId`, or `ToyMaterialId`.
+
+Known 2026-07-28 consistency issue: the executable draw sources listed above
+contain all twenty-four active matte models, but
+`src/config/capabilityRegistry.ts` still registers only the earlier twelve
+assets for Agent feasibility. That TypeScript registry must be expanded before
+it can be treated as a complete campaign-asset source; it does not reduce or
+change the active draw pool documented here.
 
 ## Availability vocabulary
 

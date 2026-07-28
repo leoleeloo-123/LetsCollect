@@ -1,5 +1,11 @@
 # Home first-viewport compaction
 
+Status: historical rollout note, superseded by the series-first Collect shelf
+documented in `docs/COLLECT_SERIES_V2.md`.
+
+The six-model layout below records an earlier implementation and is not a
+description of the current twenty-four-model product.
+
 ## Reason
 
 The mobile home screen should show both the featured 3D collectible and the daily collection action without requiring an immediate scroll. The previous hero reserved too much vertical space around the model, while the stacked ritual-card treatment added visual depth without improving task discovery.

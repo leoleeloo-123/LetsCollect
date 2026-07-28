@@ -15,8 +15,12 @@ the product into chat, dating, or a virtual world.
 - Current entry: React + Vite application in `src/`
 - Archived React MVP: `archive/react-mvp-v1/`
 - Legacy prototype: `legacy/hero-prototype/hero-jelly-jade-toy.html`
-- Active collectible assets: six mobile matte Color Animals plus one Diamond
-  Unicorn special exhibit, registered in `src/features/toys/catalog.ts`
+- Active collectible assets: twenty-four mobile matte Color Animals, nine
+  regular colorways, and thirteen six-ticket special series, registered in
+  `src/features/toys/catalog.ts` and `src/features/collect/collectSeries.ts`
+- Archived compatibility assets: Diamond Unicorn and Diamond Dog remain
+  renderable for historical local collections and internal Labs, but cannot be
+  drawn by the current product
 - Source model assets: `assets/models/source/`
 - Model pipeline playbook: `playbooks/model-asset-pipeline.md`
 - Supabase project: `fpfmtmykncuknwlnakiv`
@@ -32,6 +36,25 @@ pnpm run build
 ```
 
 The current package does not define lint or automated test scripts.
+
+## Current progress
+
+As of 2026-07-28, `codex/companion-echo-frontend` contains the current product
+demo: Collect, Collection, finite Echo, and the Internal Agent Console. The
+consumer flow is implemented locally, but collection ownership, tickets, draw
+results, Echo, analytics, and campaign approval are not yet authoritative
+server data. `main` and the Vercel production entry have not been replaced by
+this branch.
+
+The next delivery focus is backend authority and production hardening:
+
+- user-scoped collection, Favorite, Representative, and preference storage;
+- atomic server-side ticket and draw transactions;
+- production Echo and campaign audit boundaries;
+- alignment of the TypeScript capability registry with all twenty-four active
+  assets;
+- lint, automated tests, mobile WebGL budget verification, and static first-load
+  fallbacks.
 
 For UI-only local verification without creating a Supabase anonymous profile,
 start Vite with the development-only demo identity:

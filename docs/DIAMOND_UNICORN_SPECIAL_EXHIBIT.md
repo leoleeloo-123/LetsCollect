@@ -9,7 +9,7 @@ Diamond Unicorn and Diamond Dog no longer fit the active Color Animals visual
 language. Their editable sources have moved to `assets/models/archive/`, and
 their special-exhibit draw probability is now zero.
 
-The current Collect shelf and legacy `/draw` route contain twelve matte
+The current Collect shelf and legacy `/draw` route contain twenty-four matte
 models only. Compact crystal runtimes, five historical tint IDs, and internal
 Labs remain so an existing browser-local collectible can still render and the
 material study can be inspected without rebuilding either GLB.
@@ -44,7 +44,7 @@ The internal Labs and historical item renderer share
 ## Validation
 
 1. Type-check and production-build.
-2. Verify all new draws resolve to one of the twelve matte models.
+2. Verify all new draws resolve to one of the twenty-four matte models.
 3. Verify the Collect shelf has no Crystal card or crystal member.
 4. Verify a forced historical crystal item still renders in thumbnail and 3D detail.
 5. Verify both archive folders and compatibility runtimes remain recoverable.

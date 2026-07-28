@@ -2,11 +2,18 @@
 
 Status: active MVP direction
 Date: 2026-07-19
-Last updated: 2026-07-27
+Last updated: 2026-07-28
 
 ## Decision
 
-The active React MVP moves from the eight-material crystal showcase to a mobile-first Color Animals series. The active matte models are Color Otter, Color Bird, Color Teddy, Color Bunny, Color Cat, Color Panda, Color Bear Singer, Color Dog Camera, Color Dog Drum, Color Seal, Color Karpy, Color Koala. A collectible varies by animal model, model-specific colorway, quality, and seed while its material stays a fixed soft matte resin treatment. A selected colorway changes only the approved recolor target for that model; it does not imply that every model changes its full body color.
+The active React MVP moves from the eight-material crystal showcase to a
+mobile-first Color Animals series. It contains twenty-four active matte models;
+the authoritative model list, runtime paths, sizes, and per-model recolor
+targets live in `docs/ASSET_CAPABILITY_REGISTRY.md`. A collectible varies by
+animal model, model-specific colorway, quality, and seed while its material
+stays a fixed soft matte resin treatment. A selected colorway changes only the
+approved recolor target for that model; it does not imply that every model
+changes its full body color.
 
 The former jelly-jade and material-generation assets, catalogs, and generator remain in the repository as a legacy rollback path. They are not part of the active draw pool or seeded collection.
 
@@ -45,10 +52,10 @@ The authoritative human-readable inventory, exact runtime sizes, recolor targets
 - Color Koala uses `model-mobile-v001.glb`; a compact mask and local height
   gate recolors only the sleeping-hat body, preserving its pom-pom, koala,
   branch, leaves, and other props.
-- The compatibility draw selects one of the twelve matte models and one of the nine shared primary colorway IDs independently with equal probability.
+- The compatibility draw selects one of the twenty-four matte models and one of the nine shared primary colorway IDs independently with equal probability.
 - The archived crystal branch has zero probability and cannot generate a new collectible.
-- The active twelve use fixed soft matte resin; archived crystal rendering remains only for historical local items.
-- The current Collect Color card contains only the twelve matte models. Its
+- The active twenty-four use fixed soft matte resin; archived crystal rendering remains only for historical local items.
+- The current Collect Color card contains only the twenty-four matte models. Its
   explicit series draw is `1 / 24` and does not use the compatibility crystal
   branch.
 - The appearance signature includes the generation version, series, model, palette, material, rendering asset key, traits, and seed.
@@ -85,11 +92,11 @@ Before release:
 
 1. Type-check and production-build the exact intended change set.
 2. Verify home, draw, reveal, collection, detail, and friends routes at a narrow mobile viewport.
-3. Confirm the compatibility draw contains only the twelve matte models and cannot generate an archived crystal model.
-4. Confirm all twelve active Color Animals models can appear with registered colorways, change only their approved recolor targets, and add to the collection.
-5. Confirm all twelve matte models preserve their validated authored details in the series viewer, live viewer, and cached thumbnails.
+3. Confirm the compatibility draw contains only the twenty-four matte models and cannot generate an archived crystal model.
+4. Confirm all twenty-four active Color Animals models can appear with registered colorways, change only their approved recolor targets, and add to the collection.
+5. Confirm all twenty-four matte models preserve their validated authored details in the series viewer, live viewer, and cached thumbnails.
 6. Confirm historical crystal items still render while neither crystal model can be newly generated.
-7. Confirm the Collect Color card contains no crystal model and that the five
+7. Confirm the Collect Color card contains no crystal model and that the thirteen
    special cards charge six tickets.
 8. Confirm archived source folders and compatibility runtimes remain recoverable.
 

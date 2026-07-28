@@ -14,7 +14,7 @@ Let's Collect 是一个围绕数字 Companion 展开的、手机优先的治愈�
 
 `codex/companion-echo-frontend` 分支已经实现第一版 Collect / Collection / Echo 前端和独立 Agent Console。`main` 与 Vercel Production 尚未被这个分支替换。
 
-2026-07-27 起，Collect 第一页使用“按系列选择、在当前页揭晓”的第四轮：
+截至 2026-07-28，Collect 第一页使用“按系列选择、在当前页揭晓”的第四轮：
 首页是一张可切 9 色、包含 24 个正式柔雾模型的「色彩系列」卡，以及按角色、
 状态与兴趣组成的 13 张特殊系列卡。所有特殊系列统一为 6 张券；每张系列卡
 只使用一个受控 WebGL 舞台，让卡内模型同步原地旋转。色彩系列固定为 4 列 ×
@@ -95,7 +95,7 @@ GitHub：
 
 - `/`：Collect，从色彩或特殊系列卡选择盲盒，并在当前页扣券、揭晓和入柜；
 - `/draw`：旧随机抽取兼容入口，不再是 Collect 首页主流程；
-- `/collection`：最多三只 Representative、Favorite、真实 metadata 筛选、Collection Signature 和 3D 详情；
+- `/collection`：最多三只 Representative、Favorite、Collection Signature、缩略图网格和单项 3D 详情；
 - `/echo`：每日最多三条匿名 Echo、可解释共鸣和一个极简 Collect Together；
 - `/onboarding`：Supabase 匿名身份与四步 Taste 偏好注册；
 - `/friends -> /echo`；
@@ -107,6 +107,9 @@ GitHub：
 - 各模型 Lab route：资产和材质验证，不是 C 端产品能力。
 
 Primary navigation 只有 Collect、Collection、Echo。Agent 入口被明确标记为 Internal。
+
+其中 Collection 当前尚未实现 metadata / acquisition date 筛选、Representative
+排序和 profile 展示，不得提前写成现成功能。
 
 ## 当前真实资产
 
@@ -175,10 +178,24 @@ Observe
 - 已注册三只睡姿伙伴之外的更多 Sleepy / Quirky / Cool 模型；
 - 新的 fuzzy / metallic / porcelain 材质；
 - pending draw-result transaction；
+- Collection metadata / acquisition date 筛选与 Representative 排序；
+- `src/config/capabilityRegistry.ts` 对全部二十四个 active 模型的同步登记；
 - lint 与自动化 test 工具链；
 - 首次访问可靠的静态 3D poster fallback。
 
 这些能力不得在 C 端假装已经存在。
+
+## 当前项目进度
+
+- 已完成：产品宪法、资产注册表、三入口 App Shell、24 模型 Collect 系列货架、
+  本地 Collection 表达、有限 Echo Demo、Evolution Agent Console Demo；
+- 部分完成：typed adapter 边界、Collection 管理、Campaign 生命周期；部分页面
+  仍直接依赖 `MvpStateProvider`，Console 目前只演示 proposal / approve；
+- 下一阶段：服务端权威抽取、票券和所有权，user-scoped 云端状态，生产 Echo / Campaign
+  审计，以及 lint、自动化测试与真实移动设备性能加固；
+- 已知一致性债务：人类可读资产注册表和抽取代码是 24 模型，但
+  `src/config/capabilityRegistry.ts` 仍只登记早期 12 模型。在代码注册表修正前，
+  Agent feasibility 可能把后 12 个正式模型误判为未登记资产。
 
 ## 常用命令
 

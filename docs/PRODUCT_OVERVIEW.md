@@ -1,7 +1,7 @@
 # 产品概览
 
 状态：当前实现与已批准目标并行记录
-日期：2026-07-24
+日期：2026-07-28
 
 ## 产品是什么
 
@@ -19,7 +19,9 @@ Collect · Connect · Companion
 
 ## Current reality：当前已经实现
 
-当前 `main` 是 React + Vite + TypeScript SPA，并由 Vercel Production 部署。
+当前开发事实以 `codex/companion-echo-frontend` 为准：它是 React + Vite +
+TypeScript SPA，并跟踪同名 GitHub 远程分支。`main` 仍是 Vercel Production
+发布分支，但尚未由当前 Companion / Echo 开发分支替换。
 
 技术和数据现状：
 
@@ -29,7 +31,7 @@ Collect · Connect · Companion
 - 收藏状态使用 `localStorage`，3D 缩略图使用 IndexedDB；
 - 抽取结果和票券仍由客户端 Demo 逻辑产生，不是权威后端；
 - 共享 Three.js `ToyViewer`、本地 Draco、模型解码缓存、加载与错误状态；
-- Collection Grid、图鉴、成就和选中藏品 3D 详情；
+- Collection 缩略图网格、Favorite、Representative、Signature 和选中藏品 3D 详情；
 - Legacy Hero 保留在 `legacy/hero-prototype/` 作为视觉与行为参考。
 
 当前 C 端路由：
@@ -51,8 +53,8 @@ Agent Console 已有本地演示实现，但票券、所有权、Echo 和 Agent 
 
 当前 active 内容为：
 
-- 十二个 Color Animals matte / 柔雾树脂 Companion；
-- 九个注册常规 colorway，以及五个原生 Crystal tint；
+- 二十四个 Color Animals matte / 柔雾树脂 Companion；
+- 九个注册常规 colorway，以及仅供历史兼容渲染的五个原生 Crystal tint；
 - Collect 首页的色彩系列：选择九色之一后，在二十四个 matte 模型中严格等概率
   `1 / 24` 抽取；
 - Collect 首页的特殊系列：`collectSeries.ts` 注册的十三个特殊系列各自
@@ -62,8 +64,8 @@ Agent Console 已有本地演示实现，但票券、所有权、Echo 和 Agent 
 - 兼容 `/draw` 现在只从二十四只 matte 伙伴中均等抽取，不再生成 Crystal。
 
 二十四个普通模型使用不同的真实换色目标，不能统一描述为“全身换色”。
-ZZZ 复用小猫、海豹和考拉三款现有睡姿。水晶模型当前只在旧 `/draw`
-兼容分支中从五个原生 tint 随机；完整路径、大小、palette、实现方式和
+ZZZ 复用小猫、海豹和考拉三款现有睡姿。五个原生 Crystal tint 只用于已有
+本地水晶藏品与内部 Lab 的兼容渲染，任何当前抽取都不会生成水晶；完整路径、大小、palette、实现方式和
 availability 见 `docs/ASSET_CAPABILITY_REGISTRY.md`。
 
 旧 Jelly Jade、八材质、归档模型和 Lab 实验是 legacy / experimental，不是当前可抽取内容。
@@ -96,15 +98,17 @@ availability 见 `docs/ASSET_CAPABILITY_REGISTRY.md`。
 
 Agent Console 使用独立 Internal / Demo route，不进入 C 端主导航。
 
-## 目标能力
+## 当前分支已经实现的本地 Demo 能力
 
 ### Collect
 
 - 一个可扩展的系列卡片架，而不是卡片内部的全局分页器；
-- 第一张色彩系列卡展示十二个真实 matte 模型，并用九个色点切换全卡配色；
+- 第一张色彩系列卡展示二十四个真实 matte 模型，并用九个色点切换全卡配色；
 - 每个特殊系列独立成卡，模型池、配色策略、概率与票券成本集中配置；
 - 每张卡使用一个 live canvas 让卡内模型同步旋转，下方卡片临近 viewport 才初始化；
-- 当前一张色彩卡与五张特殊卡最多约六个 canvas，而不是逐模型约二十六个；
+- 当前一张色彩卡与十三张特殊卡各使用一个 canvas；特殊卡接近 viewport
+  才初始化，离屏时停止无意义渲染。用户滚动访问全部卡片后最多可同时保留
+  十四个系列 WebGL context，而不是为六十个模型格分别建立 canvas；
 - 柔和、非老虎机式揭晓；
 - 以 Companion、colorway、当前 matte 主题和简短描述为主要信息。
 
@@ -113,8 +117,10 @@ Agent Console 使用独立 Internal / Demo route，不进入 C 端主导航。
 - 现有缩略图网格与详情 Viewer；
 - Favorite；
 - 最多三只 Representative Companions；
-- Model / Colorway / Material / Date 筛选；
 - 从真实信号派生的 Collection Signature。
+
+Model / Colorway / Material / Date 筛选、Representative 排序和真实 profile
+展示仍是下一步能力，不属于当前已实现范围。
 
 ### Echo
 
@@ -128,11 +134,12 @@ Agent Console 使用独立 Internal / Demo route，不进入 C 端主导航。
 ### Agents
 
 - Resonance Agent：deterministic、结构化、可解释，外部模型不是基础流程依赖；
-- Evolution Agent：Observe → Reason → Propose → Human Approve → Apply → Measure；
+- Evolution Agent：当前演示 Observe → Reason → Propose → Human Approve，
+  并展示 Measure 区域；Apply 与持久化测量尚未实现；
 - 所有 Campaign 必须经过 capability feasibility 与人工批准；
 - 依赖未来资产的提案只能成为 Roadmap Proposal。
 
-## 当前不是正式能力
+## 当前只在本地 Demo、不是生产权威能力
 
 - 云端收藏和跨设备所有权；
 - 服务端权威抽取、票券流水和概率版本；
@@ -142,6 +149,11 @@ Agent Console 使用独立 Internal / Demo route，不进入 C 端主导航。
 - Campaign 配置与发布；
 - typed analytics 后端；
 - lint 与自动化测试工具链。
+
+此外，`src/config/capabilityRegistry.ts` 的 `currentAssetRegistry` 仍停留在
+早期十二模型列表，与当前二十四模型 catalog / draw pool 不一致。这不会改变
+当前抽取池，但会影响 Agent feasibility 对后十二个模型的判断，属于明确的代码
+一致性修复项。
 
 ## 迁移原则
 

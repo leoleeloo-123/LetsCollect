@@ -1,7 +1,7 @@
 # Let's Collect 产品宪法
 
 状态：v2
-日期：2026-07-27
+日期：2026-07-28
 用途：统一产品方向、体验原则、真实资产边界与工程决策顺序
 
 ## 一、产品定义
@@ -182,8 +182,9 @@ Agent 可以提出使用当前模型、颜色、权重、活动时长、任务�
 - `ToyViewer` 统一管理加载、相机、灯光、材质、交互、状态、清理与性能档位；
 - 普通列表、Collection、Representative 和 Echo 卡片使用缩略图；
 - Collect 系列货架是受控例外：每个系列最多一个 canvas / renderer，卡内模型共享旋转；
-  当前一张色彩卡与五张特殊卡合计约六个 WebGL context；若逐模型创建会接近
-  二十六个 context，因此严禁为每个模型各建 canvas；
+  当前一张色彩卡与十三张特殊卡最多保留十四个系列 WebGL context；若按当前
+  六十个模型格逐项创建 canvas，context 数会远超移动端预算，因此严禁为每个
+  模型各建 canvas。特殊卡继续按 viewport 懒初始化，并应评估离屏 renderer 回收；
 - 除该系列货架外，同一主要页面默认只保留一个活跃 live Viewer；
 - GLB 保持移动端优化并使用版本化路径；
 - 必须有 loading、error、retry 和首次访问可用的静态 fallback；
