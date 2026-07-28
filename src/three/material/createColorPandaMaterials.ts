@@ -20,11 +20,14 @@ export function prepareColorPandaProtectTexture(
 function colorizeColorPandaHat(
   material: Three.Material,
   hatColor: Three.Color,
-  protectMap: Three.Texture
+  protectMap: Three.Texture,
+  debugMode?: { value: number }
 ) {
+  const debugEnabled = Boolean(debugMode);
   material.onBeforeCompile = (shader) => {
     shader.uniforms.pandaProtectMap = { value: protectMap };
     shader.uniforms.pandaHatColor = { value: hatColor };
+    if (debugMode) shader.uniforms.pandaDebugMode = debugMode;
     shader.vertexShader = shader.vertexShader
       .replace("#include <common>", `#include <common>
 varying vec3 vPandaObjectPosition;`)
@@ -34,6 +37,7 @@ vPandaObjectPosition = position;`);
       .replace("#include <common>", `#include <common>
 uniform sampler2D pandaProtectMap;
 uniform vec3 pandaHatColor;
+${debugEnabled ? "uniform float pandaDebugMode;" : ""}
 varying vec3 vPandaObjectPosition;`)
       .replace("#include <map_fragment>", `#ifdef USE_MAP
   vec4 sampledDiffuseColor = texture2D(map, vMapUv);
@@ -44,11 +48,18 @@ varying vec3 vPandaObjectPosition;`)
   float baseLuma = dot(originalDiffuseColor, vec3(0.2126, 0.7152, 0.0722));
   float hatShading = mix(0.58, 1.02, smoothstep(0.08, 0.90, baseLuma));
   vec3 colorizedHat = pandaHatColor * hatShading;
-  sampledDiffuseColor.rgb = mix(originalDiffuseColor, colorizedHat, hatDetail);
+  vec3 resultColor = mix(originalDiffuseColor, colorizedHat, hatDetail);
+${debugEnabled ? `  vec3 zoneColor = mix(
+    vec3(0.10, 0.43, 0.37),
+    vec3(0.14, 0.27, 0.78),
+    hatDetail
+  );
+  sampledDiffuseColor.rgb = mix(resultColor, zoneColor, pandaDebugMode);` : "  sampledDiffuseColor.rgb = resultColor;"}
   diffuseColor *= sampledDiffuseColor;
 #endif`);
   };
-  material.customProgramCacheKey = () => "color-panda-hat-production-v1";
+  material.customProgramCacheKey = () =>
+    debugEnabled ? "color-panda-hat-production-v2-debug" : "color-panda-hat-production-v2";
   material.needsUpdate = true;
 }
 
@@ -57,7 +68,8 @@ export function cloneColorPandaMaterials(
   root: Three.Object3D,
   hatColor: Three.Color,
   protectMap: Three.Texture,
-  maxAnisotropy = 1
+  maxAnisotropy = 1,
+  debugMode?: { value: number }
 ) {
   const materials: Three.Material[] = [];
   root.traverse((child) => {
@@ -80,7 +92,7 @@ export function cloneColorPandaMaterials(
           clone.map.needsUpdate = true;
         }
       }
-      colorizeColorPandaHat(clone, hatColor, protectMap);
+      colorizeColorPandaHat(clone, hatColor, protectMap, debugMode);
       materials.push(clone);
       return clone;
     });

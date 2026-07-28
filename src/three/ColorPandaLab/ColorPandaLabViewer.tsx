@@ -1,5 +1,9 @@
 import { Rotate3D } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import {
+  cloneColorPandaMaterials,
+  prepareColorPandaProtectTexture
+} from "../material/createColorPandaMaterials";
 import { loadRoomEnvironment, loadToyModel, loadToyViewerRuntime } from "../ToyViewer/runtime";
 
 export type PandaHatVariant = {
@@ -19,52 +23,6 @@ type HatControls = {
 const MODEL_URL = "/models/toys/color-panda/model-mobile-v001.glb";
 const PROTECT_MASK_URL = "/models/toys/color-panda/hat-mask-mobile-v001.webp";
 
-function colorizeHat(
-  material: import("three").Material,
-  hatColor: import("three").Color,
-  protectMap: import("three").Texture,
-  debugMode: { value: number }
-) {
-  material.onBeforeCompile = (shader) => {
-    shader.uniforms.pandaProtectMap = { value: protectMap };
-    shader.uniforms.pandaHatColor = { value: hatColor };
-    shader.uniforms.pandaDebugMode = debugMode;
-    shader.vertexShader = shader.vertexShader
-      .replace("#include <common>", `#include <common>
-varying vec3 vPandaObjectPosition;`)
-      .replace("#include <begin_vertex>", `#include <begin_vertex>
-vPandaObjectPosition = position;`);
-    shader.fragmentShader = shader.fragmentShader
-      .replace("#include <common>", `#include <common>
-uniform sampler2D pandaProtectMap;
-uniform vec3 pandaHatColor;
-uniform float pandaDebugMode;
-varying vec3 vPandaObjectPosition;`)
-      .replace("#include <map_fragment>", `#ifdef USE_MAP
-  vec4 sampledDiffuseColor = texture2D(map, vMapUv);
-  vec3 originalDiffuseColor = sampledDiffuseColor.rgb;
-  float hatCandidate = smoothstep(0.01, 0.34, texture2D(pandaProtectMap, vMapUv).r);
-
-  float hatHeight = smoothstep(0.44, 0.54, vPandaObjectPosition.y);
-  float hatDetail = hatCandidate * hatHeight;
-
-  float baseLuma = dot(originalDiffuseColor, vec3(0.2126, 0.7152, 0.0722));
-  float hatShading = mix(0.58, 1.02, smoothstep(0.08, 0.90, baseLuma));
-  vec3 colorizedHat = pandaHatColor * hatShading;
-  vec3 resultColor = mix(originalDiffuseColor, colorizedHat, hatDetail);
-
-  vec3 zoneColor = mix(
-    vec3(0.10, 0.43, 0.37),
-    vec3(0.14, 0.27, 0.78),
-    hatDetail
-  );
-  sampledDiffuseColor.rgb = mix(resultColor, zoneColor, pandaDebugMode);
-  diffuseColor *= sampledDiffuseColor;
-#endif`);
-  };
-  material.customProgramCacheKey = () => "color-panda-hat-v4";
-  material.needsUpdate = true;
-}
 export function ColorPandaLabViewer({ variant, showZones }: Props) {
   const hostRef = useRef<HTMLDivElement>(null);
   const controlsRef = useRef<HatControls | null>(null);
@@ -104,12 +62,7 @@ export function ColorPandaLabViewer({ variant, showZones }: Props) {
       if (cancelled || !hostRef.current) return;
 
       const protectMap = await new THREE.TextureLoader().loadAsync(PROTECT_MASK_URL);
-      protectMap.flipY = false;
-      protectMap.colorSpace = THREE.NoColorSpace;
-      protectMap.wrapS = THREE.RepeatWrapping;
-      protectMap.wrapT = THREE.RepeatWrapping;
-      protectMap.generateMipmaps = false;
-      protectMap.minFilter = THREE.LinearFilter;
+      prepareColorPandaProtectTexture(THREE, protectMap);
 
       const currentHost = hostRef.current;
       const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
@@ -156,33 +109,15 @@ export function ColorPandaLabViewer({ variant, showZones }: Props) {
       controlsRef.current = controls;
 
       const model = gltf.scene;
-      const materials: import("three").Material[] = [];
-      model.traverse((child) => {
-        if (!(child instanceof THREE.Mesh)) return;
-        const originals = Array.isArray(child.material) ? child.material : [child.material];
-        const clones = originals.map((item) => {
-          const clone = item.clone();
-          if (clone instanceof THREE.MeshStandardMaterial) {
-            clone.metalness = 0;
-            clone.roughness = 1;
-            clone.envMapIntensity = 0.1;
-            clone.metalnessMap = null;
-            clone.roughnessMap = null;
-            if (clone.normalMap) clone.normalScale.setScalar(0.42);
-            if (clone.map) {
-              clone.map.generateMipmaps = false;
-              clone.map.minFilter = THREE.LinearFilter;
-              clone.map.magFilter = THREE.LinearFilter;
-              clone.map.anisotropy = Math.min(4, renderer.capabilities.getMaxAnisotropy());
-              clone.map.needsUpdate = true;
-            }
-          }
-          colorizeHat(clone, controls.color, protectMap, controls.debugMode);
-          materials.push(clone);
-          return clone;
-        });
-        child.material = Array.isArray(child.material) ? clones : clones[0];
-      });
+      const materials = cloneColorPandaMaterials(
+        THREE,
+        model,
+        controls.color,
+        protectMap,
+        renderer.capabilities.getMaxAnisotropy(),
+        controls.debugMode
+      );
+
 
       const box = new THREE.Box3().setFromObject(model);
       const center = box.getCenter(new THREE.Vector3());

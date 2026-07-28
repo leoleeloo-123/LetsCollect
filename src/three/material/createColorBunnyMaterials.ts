@@ -20,11 +20,14 @@ export function prepareColorBunnyProtectTexture(
 function colorizeColorBunnyBag(
   material: Three.Material,
   bagColor: Three.Color,
-  protectMap: Three.Texture
+  protectMap: Three.Texture,
+  debugMode?: { value: number }
 ) {
+  const debugEnabled = Boolean(debugMode);
   material.onBeforeCompile = (shader) => {
     shader.uniforms.bunnyProtectMap = { value: protectMap };
     shader.uniforms.bunnyBagColor = { value: bagColor };
+    if (debugMode) shader.uniforms.bunnyDebugMode = debugMode;
     shader.vertexShader = shader.vertexShader
       .replace("#include <common>", `#include <common>
 varying vec3 vBunnyObjectPosition;
@@ -36,12 +39,15 @@ vBunnyObjectNormal = normal;`);
       .replace("#include <common>", `#include <common>
 uniform sampler2D bunnyProtectMap;
 uniform vec3 bunnyBagColor;
+${debugEnabled ? "uniform float bunnyDebugMode;" : ""}
 varying vec3 vBunnyObjectPosition;
 varying vec3 vBunnyObjectNormal;`)
       .replace("#include <map_fragment>", `#ifdef USE_MAP
   vec4 sampledDiffuseColor = texture2D(map, vMapUv);
   vec3 originalDiffuseColor = sampledDiffuseColor.rgb;
-  float warmCandidate = smoothstep(0.16, 0.68, texture2D(bunnyProtectMap, vMapUv).r);
+  vec2 maskChannels = texture2D(bunnyProtectMap, vMapUv).rg;
+  float warmCandidate = smoothstep(0.16, 0.68, maskChannels.r);
+${debugEnabled ? "  float darkCandidate = smoothstep(0.18, 0.66, maskChannels.g);" : ""}
 
   float bagFront = smoothstep(0.22, 0.34, vBunnyObjectPosition.z);
   float caseX = 1.0 - smoothstep(0.165, 0.235, abs(vBunnyObjectPosition.x));
@@ -63,11 +69,47 @@ varying vec3 vBunnyObjectNormal;`)
   float bagShading = mix(0.58, 1.0, smoothstep(0.10, 0.88, baseLuma));
   bagShading = mix(bagShading, 0.88, casePanel);
   vec3 colorizedBag = bunnyBagColor * bagShading;
-  sampledDiffuseColor.rgb = mix(originalDiffuseColor, colorizedBag, bagDetail);
+  vec3 resultColor = mix(originalDiffuseColor, colorizedBag, bagDetail);
+${debugEnabled ? `
+  vec3 bunnyPosition = vBunnyObjectPosition;
+  vec2 leftEyePoint = vec2(
+    (bunnyPosition.x + 0.19) / 0.075,
+    (bunnyPosition.y - 0.255) / 0.11
+  );
+  vec2 rightEyePoint = vec2(
+    (bunnyPosition.x - 0.20) / 0.075,
+    (bunnyPosition.y - 0.255) / 0.11
+  );
+  float leftEyeGate = 1.0 - smoothstep(0.76, 1.0, dot(leftEyePoint, leftEyePoint));
+  float rightEyeGate = 1.0 - smoothstep(0.76, 1.0, dot(rightEyePoint, rightEyePoint));
+  float eyeGate = max(leftEyeGate, rightEyeGate) * smoothstep(0.22, 0.27, bunnyPosition.z);
+
+  vec2 muzzlePoint = vec2(
+    bunnyPosition.x / 0.11,
+    (bunnyPosition.y - 0.16) / 0.105
+  );
+  float muzzleGate = (1.0 - smoothstep(0.76, 1.0, dot(muzzlePoint, muzzlePoint)))
+    * smoothstep(0.28, 0.34, bunnyPosition.z);
+
+  float cheekX = smoothstep(0.15, 0.20, abs(bunnyPosition.x))
+    * (1.0 - smoothstep(0.34, 0.39, abs(bunnyPosition.x)));
+  float cheekY = smoothstep(0.04, 0.10, bunnyPosition.y)
+    * (1.0 - smoothstep(0.22, 0.27, bunnyPosition.y));
+  float cheekGate = cheekX * cheekY * smoothstep(0.16, 0.24, bunnyPosition.z);
+  float innerEarGate = smoothstep(0.42, 0.52, bunnyPosition.y);
+
+  float fixedWarm = warmCandidate * max(innerEarGate, cheekGate);
+  float fixedDark = darkCandidate * max(eyeGate, muzzleGate);
+  vec3 zoneColor = vec3(0.10, 0.43, 0.37);
+  zoneColor = mix(zoneColor, vec3(0.76, 0.16, 0.34), fixedWarm);
+  zoneColor = mix(zoneColor, vec3(0.78, 0.26, 0.08), fixedDark);
+  zoneColor = mix(zoneColor, vec3(0.14, 0.27, 0.78), bagDetail);
+  sampledDiffuseColor.rgb = mix(resultColor, zoneColor, bunnyDebugMode);` : "  sampledDiffuseColor.rgb = resultColor;"}
   diffuseColor *= sampledDiffuseColor;
 #endif`);
   };
-  material.customProgramCacheKey = () => "color-bunny-bag-production-v1";
+  material.customProgramCacheKey = () =>
+    debugEnabled ? "color-bunny-bag-production-v2-debug" : "color-bunny-bag-production-v2";
   material.needsUpdate = true;
 }
 
@@ -76,7 +118,8 @@ export function cloneColorBunnyMaterials(
   root: Three.Object3D,
   bagColor: Three.Color,
   protectMap: Three.Texture,
-  maxAnisotropy = 1
+  maxAnisotropy = 1,
+  debugMode?: { value: number }
 ) {
   const materials: Three.Material[] = [];
   root.traverse((child) => {
@@ -99,7 +142,7 @@ export function cloneColorBunnyMaterials(
           clone.map.needsUpdate = true;
         }
       }
-      colorizeColorBunnyBag(clone, bagColor, protectMap);
+      colorizeColorBunnyBag(clone, bagColor, protectMap, debugMode);
       materials.push(clone);
       return clone;
     });
