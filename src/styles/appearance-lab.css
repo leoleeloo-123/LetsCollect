@@ -97,7 +97,7 @@
   top: 0;
   z-index: 20;
   display: grid;
-  grid-template-columns: 210px minmax(0, 1fr);
+  grid-template-columns: 190px 190px minmax(0, 1fr);
   gap: 16px;
   padding-block: 12px;
   border-bottom: 1px solid #d3dfda;
@@ -105,7 +105,7 @@
   backdrop-filter: blur(12px);
 }
 
-.appearance-lab__model-filter {
+.appearance-lab__select-filter {
   display: grid;
   gap: 5px;
   color: #687a74;
@@ -113,7 +113,7 @@
   font-weight: 760;
 }
 
-.appearance-lab__model-filter select {
+.appearance-lab__select-filter select {
   width: 100%;
   min-height: 40px;
   padding: 0 34px 0 11px;
@@ -126,7 +126,7 @@
   font-weight: 760;
 }
 
-.appearance-lab__model-filter select:focus-visible {
+.appearance-lab__select-filter select:focus-visible {
   outline: 3px solid rgba(126, 67, 85, 0.2);
   outline-offset: 2px;
 }
@@ -471,10 +471,14 @@
   }
 
   .appearance-lab__filters {
-    grid-template-columns: 124px minmax(0, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
     margin-inline: -12px;
     padding: 10px 12px;
+  }
+
+  .appearance-lab__palette-filter {
+    grid-column: 1 / -1;
   }
 
   .appearance-lab__palette-options button {
@@ -558,10 +562,6 @@
 }
 
 @media (max-width: 380px) {
-  .appearance-lab__filters {
-    grid-template-columns: 112px minmax(0, 1fr);
-  }
-
   .appearance-inspector {
     grid-template-columns: minmax(0, 1fr) 104px;
   }

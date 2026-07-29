@@ -45,10 +45,11 @@ import { loadRoomEnvironment, loadToyModel, loadToyViewerRuntime } from "../ToyV
 import { readThumbnailBlob, writeThumbnailBlob } from "./storage";
 
 const THUMBNAIL_SIZE = 320;
-const THUMBNAIL_RENDER_VERSION = 19;
+const THUMBNAIL_RENDER_VERSION = 20;
 const THUMBNAIL_TARGET_HEIGHT = 3.45;
 const THUMBNAIL_MAX_WIDTH = 3.62;
 const WEBP_QUALITY = 0.82;
+const MIN_VISIBLE_PIXEL_COUNT = 512;
 
 type ThumbnailContext = {
   THREE: typeof import("three");
@@ -60,6 +61,8 @@ let contextPromise: Promise<ThumbnailContext> | null = null;
 let renderQueue = Promise.resolve();
 let contextDisposalTimer = 0;
 const pendingThumbnails = new Map<string, Promise<Blob>>();
+
+class EmptyThumbnailRenderError extends Error {}
 
 function getThumbnailKey(toy: Collectible) {
   const model = getToyModel(toy.modelId);
@@ -121,6 +124,18 @@ function scheduleContextDisposal() {
   }, 1800);
 }
 
+async function resetContext() {
+  window.clearTimeout(contextDisposalTimer);
+  const contextToDispose = contextPromise;
+  contextPromise = null;
+  if (!contextToDispose) return;
+
+  const { renderer, environmentTexture } = await contextToDispose;
+  environmentTexture.dispose();
+  renderer.dispose();
+  renderer.forceContextLoss();
+}
+
 function canvasToBlob(canvas: HTMLCanvasElement) {
   return new Promise<Blob>((resolve, reject) => {
     canvas.toBlob(
@@ -129,6 +144,29 @@ function canvasToBlob(canvas: HTMLCanvasElement) {
       WEBP_QUALITY
     );
   });
+}
+
+function hasVisibleThumbnailPixels(renderer: Three.WebGLRenderer) {
+  const gl = renderer.getContext();
+  const pixels = new Uint8Array(THUMBNAIL_SIZE * THUMBNAIL_SIZE * 4);
+  gl.readPixels(
+    0,
+    0,
+    THUMBNAIL_SIZE,
+    THUMBNAIL_SIZE,
+    gl.RGBA,
+    gl.UNSIGNED_BYTE,
+    pixels
+  );
+
+  let visiblePixelCount = 0;
+  for (let index = 3; index < pixels.length; index += 4) {
+    if (pixels[index] <= 8) continue;
+    visiblePixelCount += 1;
+    if (visiblePixelCount >= MIN_VISIBLE_PIXEL_COUNT) return true;
+  }
+
+  return false;
 }
 
 function disposeModel(THREE: typeof import("three"), model: Three.Object3D) {
@@ -410,6 +448,11 @@ async function renderThumbnail(toy: Collectible) {
     renderer.compile(scene, camera);
     renderer.render(scene, camera);
     renderer.render(scene, camera);
+    if (!hasVisibleThumbnailPixels(renderer)) {
+      throw new EmptyThumbnailRenderError(
+        `Thumbnail rendered without visible pixels: ${modelDefinition.id}`
+      );
+    }
     return await canvasToBlob(renderer.domElement);
   } finally {
     disposeModel(THREE, model);
@@ -439,7 +482,17 @@ async function renderThumbnail(toy: Collectible) {
 }
 
 function enqueueRender(toy: Collectible) {
-  const task = renderQueue.then(() => renderThumbnail(toy)).finally(scheduleContextDisposal);
+  const task = renderQueue
+    .then(async () => {
+      try {
+        return await renderThumbnail(toy);
+      } catch (error) {
+        if (!(error instanceof EmptyThumbnailRenderError)) throw error;
+        await resetContext();
+        return renderThumbnail(toy);
+      }
+    })
+    .finally(scheduleContextDisposal);
   renderQueue = task.then(() => undefined, () => undefined);
   return task;
 }

@@ -13,9 +13,14 @@ import {
   type FormalColorAnimalModelId
 } from "../../features/toys/formalRoster";
 import { generateCollectible } from "../../features/toys/generator";
+import {
+  collectSeries,
+  type AvailableCollectSeriesId
+} from "../../features/collect/collectSeries";
 import { ToyViewer } from "../../three/ToyViewer/ToyViewer";
 import type { Collectible, ToyPaletteId } from "../../types/toy";
 
+type SeriesFilter = "all" | AvailableCollectSeriesId;
 type ModelFilter = "all" | FormalColorAnimalModelId;
 type PaletteFilter = "all" | ToyPaletteId;
 
@@ -91,6 +96,7 @@ function AppearanceCell({
 
 export function AppearanceLabPage() {
   const matrix = useMemo(createAppearanceMatrix, []);
+  const [seriesFilter, setSeriesFilter] = useState<SeriesFilter>("all");
   const [modelFilter, setModelFilter] = useState<ModelFilter>("all");
   const [paletteFilter, setPaletteFilter] = useState<PaletteFilter>(
     colorAnimalPalettes[0].id
@@ -103,9 +109,15 @@ export function AppearanceLabPage() {
     ?? matrix.values().next().value as Collectible;
   const selectedModel = getToyModel(selectedToy.modelId);
   const selectedPalette = getToyPalette(selectedToy.paletteId);
+  const selectedSeries = seriesFilter === "all"
+    ? null
+    : collectSeries.find((series) => series.id === seriesFilter) ?? null;
+  const seriesModels = selectedSeries
+    ? selectedSeries.modelIds.map(getToyModel)
+    : colorAnimalModels;
   const visibleModels = modelFilter === "all"
-    ? colorAnimalModels
-    : colorAnimalModels.filter((model) => model.id === modelFilter);
+    ? seriesModels
+    : seriesModels.filter((model) => model.id === modelFilter);
   const visiblePalettes = paletteFilter === "all"
     ? colorAnimalPalettes
     : colorAnimalPalettes.filter((palette) => palette.id === paletteFilter);
@@ -116,6 +128,22 @@ export function AppearanceLabPage() {
     paletteId: ToyPaletteId
   ) => {
     setSelectedKey(getMatrixKey(modelId, paletteId));
+  };
+
+  const selectSeries = (nextSeriesFilter: SeriesFilter) => {
+    setSeriesFilter(nextSeriesFilter);
+    setModelFilter("all");
+
+    if (nextSeriesFilter === "all") return;
+    const nextSeries = collectSeries.find(
+      (series) => series.id === nextSeriesFilter
+    );
+    const firstModelId = nextSeries?.modelIds[0] as
+      | FormalColorAnimalModelId
+      | undefined;
+    if (firstModelId) {
+      setSelectedKey(getMatrixKey(firstModelId, selectedToy.paletteId));
+    }
   };
 
   return (
@@ -152,16 +180,37 @@ export function AppearanceLabPage() {
       </header>
 
       <section className="appearance-lab__filters" aria-label="外观筛选">
-        <label className="appearance-lab__model-filter">
+        <label className="appearance-lab__select-filter">
+          <span>系列</span>
+          <select
+            data-testid="series-filter"
+            value={seriesFilter}
+            onChange={(event) =>
+              selectSeries(event.target.value as SeriesFilter)
+            }
+          >
+            <option value="all">全部系列 · 24 只</option>
+            {collectSeries.map((series) => (
+              <option key={series.id} value={series.id}>
+                {series.category === "color" ? series.eyebrow : series.title}
+                {" · "}
+                {series.modelIds.length} 只
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <label className="appearance-lab__select-filter">
           <span>模型</span>
           <select
+            data-testid="model-filter"
             value={modelFilter}
             onChange={(event) =>
               setModelFilter(event.target.value as ModelFilter)
             }
           >
-            <option value="all">全部 24 只</option>
-            {colorAnimalModels.map((model) => (
+            <option value="all">全部 {seriesModels.length} 只</option>
+            {seriesModels.map((model) => (
               <option key={model.id} value={model.id}>
                 {model.name}
               </option>
@@ -239,7 +288,13 @@ export function AppearanceLabPage() {
         <section className="appearance-lab__matrix" aria-live="polite">
           <div className="appearance-lab__matrix-head">
             <div>
-              <span>柔雾树脂基线</span>
+              <span>
+                {selectedSeries
+                  ? `${selectedSeries.category === "color"
+                      ? selectedSeries.eyebrow
+                      : selectedSeries.title}系列`
+                  : "柔雾树脂基线"}
+              </span>
               <strong>{visibleCombinationCount} 个组合</strong>
             </div>
             <span>{visibleModels.length} × {visiblePalettes.length}</span>
