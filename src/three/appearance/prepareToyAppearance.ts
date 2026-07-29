@@ -3,8 +3,13 @@ import {
   getToyModel,
   getToyPalette
 } from "../../features/toys/catalog";
+import { getToySurfaceStyle } from "../../features/toys/surfaceStyles";
 import type { Collectible } from "../../types/toy";
 import { createToyMaterial } from "../material/createToyMaterial";
+import {
+  applyToySurfaceStyle,
+  type ToySurfaceCoverage
+} from "../material/applyToySurfaceStyle";
 import {
   cloneColorBunnyMaterials,
   prepareColorBunnyProtectTexture
@@ -67,6 +72,68 @@ export type PreparedToyAppearance = {
   dispose: () => void;
 };
 
+function getAppearanceColor(toy: Collectible) {
+  const surface = getToySurfaceStyle(toy.surfaceStyleId);
+  return surface.colorOverride ?? getToyPalette(toy.paletteId).color;
+}
+
+function getAppearanceGlow(toy: Collectible) {
+  const surface = getToySurfaceStyle(toy.surfaceStyleId);
+  return surface.glowOverride ?? getToyPalette(toy.paletteId).glow;
+}
+
+function getSurfaceCoverage(
+  rendering: ReturnType<typeof getToyModel>["rendering"]
+): ToySurfaceCoverage {
+  if (!rendering) return { kind: "full-material" };
+
+  switch (rendering.mode) {
+    case "color-bunny-bag":
+      return { kind: "shader-mask", expression: "bagDetail" };
+    case "color-cat-yarn":
+      return { kind: "full-material", materialName: rendering.materialName };
+    case "color-panda-hat":
+      return { kind: "shader-mask", expression: "hatDetail" };
+    case "color-otter-lollipop":
+      return { kind: "full-material", materialName: rendering.materialName };
+    case "color-bear-singer-afro":
+      return { kind: "shader-mask", expression: "afroDetail" };
+    case "color-dog-camera-accessories":
+      return { kind: "shader-mask", expression: "accessoryDetail" };
+    case "color-dog-drum":
+      return { kind: "shader-mask", expression: "drumMask * 0.94" };
+    case "color-seal-starfish":
+      return {
+        kind: "shader-mask",
+        expression: "starfishMask * (1.0 - faceDetailMask)"
+      };
+    case "color-karpy-hat":
+      return { kind: "shader-mask", expression: "hatDetail" };
+    case "color-koala-hat":
+      return { kind: "shader-mask", expression: "hatRegion" };
+    case "color-accessory-mask":
+      switch (rendering.profile) {
+        case "bird-crown":
+          return { kind: "shader-mask", expression: "crownDetail" };
+        case "penguin-accessories":
+          return { kind: "shader-mask", expression: "accessoryDetail" };
+        case "sloth-hat":
+          return { kind: "shader-mask", expression: "hatDetail" };
+        case "owl-academic":
+          return { kind: "shader-mask", expression: "academicDetail" };
+        case "duck-bath":
+          return { kind: "shader-mask", expression: "bathDetail" };
+        case "guinea-pig-balloons":
+          return { kind: "shader-mask", expression: "balloonWeight" };
+        case "black-cat-logo":
+          return { kind: "shader-mask", expression: "logoDetail" };
+        case "cool-wolf-studs":
+          return { kind: "shader-mask", expression: "studDetail" };
+        default:
+          return { kind: "shader-mask", expression: "accessoryDetail" };
+      }
+  }
+}
 function nullableTexture(
   THREE: ThreeRuntime,
   url: string | null
@@ -188,7 +255,7 @@ export async function prepareToyAppearance(
         renderer,
         root,
         colorAccessoryRendering,
-        getToyPalette(toy.paletteId).color
+        getAppearanceColor(toy)
       )
     : null;
   const materials: Three.Material[] = [];
@@ -206,13 +273,13 @@ export async function prepareToyAppearance(
 
   let updateAppearance: (nextToy: Collectible) => void;
   let primaryMaterial: Three.MeshPhysicalMaterial | null = null;
-  const glowColor = new THREE.Color(getToyPalette(toy.paletteId).glow);
+  const glowColor = new THREE.Color(getAppearanceGlow(toy));
   const maxAnisotropy = renderer.capabilities.getMaxAnisotropy();
 
   if (colorAccessory) {
     materials.push(...colorAccessory.materials);
     updateAppearance = (nextToy) => {
-      colorAccessory.updateColor(getToyPalette(nextToy.paletteId).color);
+      colorAccessory.updateColor(getAppearanceColor(nextToy));
     };
   } else if (colorBunnyBag && colorBunnyProtectMap) {
     const bagColor = new THREE.Color();
@@ -225,7 +292,7 @@ export async function prepareToyAppearance(
     ));
     updateAppearance = (nextToy) => {
       bagColor
-        .set(getToyPalette(nextToy.paletteId).color)
+        .set(getAppearanceColor(nextToy))
         .multiplyScalar(colorBunnyBag.bagColorScale);
     };
   } else if (colorCatYarn) {
@@ -239,7 +306,7 @@ export async function prepareToyAppearance(
     ));
     updateAppearance = (nextToy) => {
       yarnColor
-        .set(getToyPalette(nextToy.paletteId).color)
+        .set(getAppearanceColor(nextToy))
         .multiplyScalar(colorCatYarn.yarnColorScale);
     };
   } else if (colorPandaHat && colorPandaProtectMap) {
@@ -253,20 +320,20 @@ export async function prepareToyAppearance(
     ));
     updateAppearance = (nextToy) => {
       hatColor
-        .set(getToyPalette(nextToy.paletteId).color)
+        .set(getAppearanceColor(nextToy))
         .multiplyScalar(colorPandaHat.hatColorScale);
     };
   } else if (colorOtterLollipop) {
     materials.push(...cloneColorOtterMaterials(
       THREE,
       root,
-      new THREE.Color(getToyPalette(toy.paletteId).color)
+      new THREE.Color(getAppearanceColor(toy))
         .multiplyScalar(colorOtterLollipop.lollipopColorScale),
       colorOtterLollipop.materialName,
       maxAnisotropy
     ));
     updateAppearance = (nextToy) => {
-      const color = new THREE.Color(getToyPalette(nextToy.paletteId).color)
+      const color = new THREE.Color(getAppearanceColor(nextToy))
         .multiplyScalar(colorOtterLollipop.lollipopColorScale);
       materials.forEach((material) => {
         if (
@@ -288,7 +355,7 @@ export async function prepareToyAppearance(
     ));
     updateAppearance = (nextToy) => {
       afroColor
-        .set(getToyPalette(nextToy.paletteId).color)
+        .set(getAppearanceColor(nextToy))
         .multiplyScalar(colorBearSingerAfro.colorScale);
     };
   } else if (colorDogCameraAccessories && colorDogCameraMask) {
@@ -302,7 +369,7 @@ export async function prepareToyAppearance(
     ));
     updateAppearance = (nextToy) => {
       accessoryColor
-        .set(getToyPalette(nextToy.paletteId).color)
+        .set(getAppearanceColor(nextToy))
         .multiplyScalar(colorDogCameraAccessories.colorScale);
     };
   } else if (colorDogDrum) {
@@ -315,7 +382,7 @@ export async function prepareToyAppearance(
     ));
     updateAppearance = (nextToy) => {
       drumColor
-        .set(getToyPalette(nextToy.paletteId).color)
+        .set(getAppearanceColor(nextToy))
         .multiplyScalar(colorDogDrum.drumColorScale);
     };
   } else if (colorSealStarfish && colorSealMask && colorSealObjectMask) {
@@ -330,7 +397,7 @@ export async function prepareToyAppearance(
     ));
     updateAppearance = (nextToy) => {
       starfishColor
-        .set(getToyPalette(nextToy.paletteId).color)
+        .set(getAppearanceColor(nextToy))
         .multiplyScalar(colorSealStarfish.colorScale);
     };
   } else if (colorKarpyHat && colorKarpyMask) {
@@ -344,7 +411,7 @@ export async function prepareToyAppearance(
     ));
     updateAppearance = (nextToy) => {
       hatColor
-        .set(getToyPalette(nextToy.paletteId).color)
+        .set(getAppearanceColor(nextToy))
         .multiplyScalar(colorKarpyHat.colorScale);
     };
   } else if (colorKoalaHat && colorKoalaMask) {
@@ -358,7 +425,7 @@ export async function prepareToyAppearance(
     ));
     updateAppearance = (nextToy) => {
       hatColor
-        .set(getToyPalette(nextToy.paletteId).color)
+        .set(getAppearanceColor(nextToy))
         .multiplyScalar(colorKoalaHat.hatColorScale);
     };
   } else {
@@ -377,7 +444,7 @@ export async function prepareToyAppearance(
     });
     updateAppearance = (nextToy) => {
       const palette = getToyPalette(nextToy.paletteId);
-      material.color.set(palette.color);
+      material.color.set(getAppearanceColor(nextToy));
       material.attenuationColor.set(palette.attenuation);
       material.emissive.set(palette.emissive);
     };
@@ -387,6 +454,13 @@ export async function prepareToyAppearance(
     applyTileMaterialProfile(THREE, materials, disposableTextures);
   }
   updateAppearance(toy);
+  applyToySurfaceStyle(
+    THREE,
+    materials,
+    toy.surfaceStyleId,
+    options.profile,
+    getSurfaceCoverage(rendering)
+  );
 
   let mixer: Three.AnimationMixer | null = null;
   if (gltf.animations.length > 0) {
