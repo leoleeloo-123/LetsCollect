@@ -40,6 +40,11 @@ type ModelFilter = "all" | FormalColorAnimalModelId;
 type PaletteFilter = "all" | ToyPaletteId;
 
 const FIXED_CREATED_AT = "2026-07-29T00:00:00.000Z";
+const FIXED_METAL_SURFACE_COUNT = toySurfaceStyles.filter(
+  (surface) => surface.colorOverride !== null
+).length;
+const TOTAL_APPEARANCE_COMBINATION_COUNT = formalColorAnimalModelIds.length
+  * (colorAnimalPalettes.length + FIXED_METAL_SURFACE_COUNT);
 
 function getMatrixKey(modelId: FormalColorAnimalModelId, paletteId: ToyPaletteId) {
   return `${modelId}:${paletteId}`;
@@ -208,7 +213,7 @@ export function AppearanceLabPage() {
             APPEARANCE LAB
           </p>
           <h1>24 只玩偶，外观实验室</h1>
-          <p>正式阵容 · 柔雾树脂 / 金属金 · 9 组配色</p>
+          <p>正式阵容 · 柔雾树脂 / 三种金属 · 9 组配色</p>
         </div>
 
         <dl className="appearance-lab__metrics">
@@ -223,7 +228,7 @@ export function AppearanceLabPage() {
           <div>
             <dt>组合</dt>
             <dd>
-              {formalColorAnimalModelIds.length * (colorAnimalPalettes.length + 1)}
+              {TOTAL_APPEARANCE_COMBINATION_COUNT}
             </dd>
           </div>
         </dl>

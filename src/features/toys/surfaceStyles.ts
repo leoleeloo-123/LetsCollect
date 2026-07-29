@@ -53,6 +53,36 @@ export const toySurfaceStyles: readonly ToySurfaceStyleDefinition[] = [
       tile: { metalness: 0.78, roughness: 0.34, envMapIntensity: 0.68 },
       thumbnail: { metalness: 0.86, roughness: 0.28, envMapIntensity: 0.82 }
     }
+  },
+  {
+    id: "metal-silver",
+    name: "金属银",
+    shortName: "金属银",
+    description: "仅让原有改色部位呈现冷调银色金属反射，动物主体保持不变。",
+    colorOverride: "#b7c0c8",
+    glowOverride: "#e2eaf0",
+    swatch: "#b7c0c8",
+    render: {
+      detail: { metalness: 0.97, roughness: 0.14, envMapIntensity: 1.2 },
+      compact: { metalness: 0.94, roughness: 0.2, envMapIntensity: 1.05 },
+      tile: { metalness: 0.8, roughness: 0.32, envMapIntensity: 0.72 },
+      thumbnail: { metalness: 0.88, roughness: 0.26, envMapIntensity: 0.88 }
+    }
+  },
+  {
+    id: "metal-rose-gold",
+    name: "玫瑰金",
+    shortName: "玫瑰金",
+    description: "仅让原有改色部位呈现暖粉色金属反射，动物主体保持不变。",
+    colorOverride: "#c77d70",
+    glowOverride: "#efb1a5",
+    swatch: "#c77d70",
+    render: {
+      detail: { metalness: 0.94, roughness: 0.2, envMapIntensity: 1.12 },
+      compact: { metalness: 0.91, roughness: 0.24, envMapIntensity: 0.98 },
+      tile: { metalness: 0.77, roughness: 0.35, envMapIntensity: 0.66 },
+      thumbnail: { metalness: 0.84, roughness: 0.3, envMapIntensity: 0.8 }
+    }
   }
 ];
 

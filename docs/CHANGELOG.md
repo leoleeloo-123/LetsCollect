@@ -41,9 +41,9 @@
 - Centralized collectible-specific model preparation across `ToyViewer`,
   `SeriesToyViewer`, and `ThumbnailRenderer`.
 - Added an optional surface-style layer with a matte-compatible default and a
-  localized metallic-gold treatment for all twenty-four active models.
-- Expanded Appearance Lab with matte/metallic-gold controls, surface-aware
-  cache identities, and a 240-combination summary without adding the Lab to
+  localized gold, silver, and rose-gold treatments for all twenty-four active models.
+- Expanded Appearance Lab with matte and three-metal controls, surface-aware
+  cache identities, and a 288-combination summary without adding the Lab to
   the production SPA bundle.
 
 ## 2026-07-28

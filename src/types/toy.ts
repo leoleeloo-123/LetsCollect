@@ -36,7 +36,11 @@ export type ToyPaletteId =
   | "coral"
   | "lime"
   | "sky";
-export type ToySurfaceStyleId = "matte" | "metal-gold";
+export type ToySurfaceStyleId =
+  | "matte"
+  | "metal-gold"
+  | "metal-silver"
+  | "metal-rose-gold";
 export type ToyMaterialId =
   | "plastic"
   | "glass"
