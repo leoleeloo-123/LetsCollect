@@ -27,17 +27,20 @@
 
 ## 阶段 1：全模型外观检查页
 
-新增内部路由 `/appearance-lab`，作为后续重构和材质开发的视觉基准。
+新增独立开发 HTML `/appearance-lab/`，作为后续重构和材质开发的视觉基准。
+该入口不属于产品 SPA，也不进入默认 `vite build` 的生产产物。
 
 实现状态（2026-07-29）：
 
 - 24 只正式模型 ID 已收敛到 `formalColorAnimalModelIds`，目录、抽取池与能力
   注册表共享这一清单；
-- `/appearance-lab` 已提供 24 × 9 柔雾基线、模型筛选、配色筛选及单个实时
+- `/appearance-lab/` 已提供 24 × 9 柔雾基线、模型筛选、配色筛选及单个实时
   3D 检查器；
+- 默认先加载同一配色下的 24 只模型，确认全阵容后再手动展开全部 9 色；
 - 216 个缩略图按可视区域进入串行队列，不创建 216 个 WebGL context；
 - 手机端全阵容视图固定为 4 列，桌面端按模型展示 9 色横向对照；
-- 旧 `/asset-lab` 多画布页面已删除，原地址只重定向到 `/appearance-lab`；
+- 旧 `/asset-lab` 多画布页面与产品路由均已删除；
+- Lab 使用独立 HTML 与 React 入口，正式首页构建不包含 Lab chunk 或样式；
 - 金属与珠光闪粉仍须等待阶段 2 的生产渲染入口收敛。
 
 - 正式范围只读取 `colorAnimalModels`，不显示 Jelly Jade、Crystal 或 archive。
@@ -100,7 +103,7 @@ type ToyPaletteDefinition = {
 - 同一个颜色可以与不同表面组合，避免复制整套色板。
 
 第一轮只做金、银和一个低强度珠光闪粉样本，不直接进入抽取经济。先在
-`/appearance-lab` 做 24 模型覆盖检查，再决定奖励与 Echo 解锁规则。
+本地 `/appearance-lab/` 做 24 模型覆盖检查，再决定奖励与 Echo 解锁规则。
 
 ## 阶段 4：静态优先缩略图
 

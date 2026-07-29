@@ -52,6 +52,7 @@ type AppearanceCellProps = {
   toy: Collectible;
   label: string;
   sublabel?: string;
+  eager?: boolean;
   selected: boolean;
   onSelect: () => void;
 };
@@ -60,6 +61,7 @@ function AppearanceCell({
   toy,
   label,
   sublabel,
+  eager = false,
   selected,
   onSelect
 }: AppearanceCellProps) {
@@ -72,7 +74,7 @@ function AppearanceCell({
       onClick={onSelect}
     >
       <span className="appearance-cell__visual">
-        <ToyThumbnail toy={toy} size="card" />
+        <ToyThumbnail toy={toy} size="card" eager={eager} />
         {selected ? (
           <span className="appearance-cell__selected" aria-hidden="true">
             <Check size={12} strokeWidth={3} />
@@ -90,7 +92,9 @@ function AppearanceCell({
 export function AppearanceLabPage() {
   const matrix = useMemo(createAppearanceMatrix, []);
   const [modelFilter, setModelFilter] = useState<ModelFilter>("all");
-  const [paletteFilter, setPaletteFilter] = useState<PaletteFilter>("all");
+  const [paletteFilter, setPaletteFilter] = useState<PaletteFilter>(
+    colorAnimalPalettes[0].id
+  );
   const [selectedKey, setSelectedKey] = useState(() =>
     getMatrixKey(formalColorAnimalModelIds[0], colorAnimalPalettes[0].id)
   );
@@ -293,6 +297,7 @@ export function AppearanceLabPage() {
                     toy={toy}
                     label={model.name}
                     sublabel={palette.name}
+                    eager
                     selected={selectedKey === key}
                     onSelect={() =>
                       selectToy(

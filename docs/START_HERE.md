@@ -22,8 +22,9 @@ Let's Collect 是一个围绕数字 Companion 展开的、手机优先的治愈�
 新小鸟只改变皇冠颜色，企鹅只改变耳罩顶部与杯子；
 两只水晶资产继续归档。首次注册依次收集昵称、伙伴、颜色和质感偏好。
 完整决定与回滚见 `docs/COLLECT_SERIES_V2.md`。
-全模型检查页已在 `/appearance-lab` 建立 24 × 9 柔雾视觉基线；下一阶段的
-渲染入口收敛、金银与珠光闪粉计划见
+全模型检查页已在本地开发入口 `/appearance-lab/` 建立 24 × 9 柔雾视觉
+基线。它使用独立 HTML，不进入正式首页或默认生产构建；下一阶段的渲染入口
+收敛、金银与珠光闪粉计划见
 `docs/RENDERING_SURFACE_UPGRADE_PLAN.md`。
 
 改造前的 React MVP 已完整归档到：

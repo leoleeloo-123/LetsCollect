@@ -9,6 +9,7 @@ type ToyThumbnailProps = {
   toy: Collectible;
   size?: "small" | "card" | "large";
   cacheOnly?: boolean;
+  eager?: boolean;
   className?: string;
 };
 
@@ -18,16 +19,21 @@ export function ToyThumbnail({
   toy,
   size = "card",
   cacheOnly = false,
+  eager = false,
   className = ""
 }: ToyThumbnailProps) {
   const hostRef = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(cacheOnly);
+  const [visible, setVisible] = useState(cacheOnly || eager);
   const [source, setSource] = useState<string | null>(null);
   const [status, setStatus] = useState<ThumbnailStatus>("waiting");
 
   useEffect(() => {
     const host = hostRef.current;
-    if (!host || cacheOnly || visible) return;
+    if (!host || visible) return;
+    if (cacheOnly || eager) {
+      setVisible(true);
+      return;
+    }
     if (!("IntersectionObserver" in window)) {
       setVisible(true);
       return;
@@ -43,7 +49,7 @@ export function ToyThumbnail({
     );
     observer.observe(host);
     return () => observer.disconnect();
-  }, [cacheOnly, visible]);
+  }, [cacheOnly, eager, visible]);
 
   useEffect(() => {
     if (!visible) return;

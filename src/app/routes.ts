@@ -36,5 +36,4 @@ export const routes = {
   colorSealLab: "/color-seal-lab",
   diamondDogLab: "/diamond-dog-lab",
   diamondUnicornLab: "/diamond-unicorn-lab",
-  appearanceLab: "/appearance-lab",
 } as const;

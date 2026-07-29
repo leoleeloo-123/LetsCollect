@@ -13,10 +13,12 @@
   models.
 - Added a canonical formal-roster contract shared by the catalog, draw series,
   and capability registry.
-- Added `/appearance-lab` with a lazy 24-by-9 matte comparison matrix, palette
-  and model filters, and one live 3D inspector.
-- Removed the duplicate multi-canvas Asset Lab implementation and redirected
-  its legacy route to Appearance Lab.
+- Added the development-only `/appearance-lab/` HTML with a 24-by-9 matte
+  comparison matrix, palette and model filters, and one live 3D inspector.
+- Defaulted the Lab to one color across all twenty-four models so every model
+  enters the thumbnail queue before the optional full-color matrix.
+- Removed the duplicate multi-canvas Asset Lab and excluded Appearance Lab
+  routes, chunks, and styles from the production SPA build.
 
 ## 2026-07-28
 
