@@ -4,9 +4,9 @@
 
 The active mobile-first matte pool contains the twenty-four models registered
 in `src/features/toys/catalog.ts`, including Color Bird v002 and Color Penguin
-v003. Color Teddy is retired. Diamond Unicorn and Diamond Dog remain
-compatibility assets, but their Collect shelf card is removed. Runtime GLBs and
-their protection masks live under `public/models/toys/{toy-slug}/`.
+v003. Color Teddy, all Jelly Jade models, Diamond Unicorn, and Diamond Dog are
+fully offline archives. Only the twenty-four formal model folders and their
+protection masks live under `public/models/toys/{toy-slug}/`.
 
 Color Karpy's 315,240-byte Draco GLB uses an 18,474-byte mask and a local
 upper-head gate so only its beret changes color; the rice ball and character
@@ -14,7 +14,7 @@ stay authored. Color Koala's 335,136-byte Draco GLB uses a 9,014-byte mask and
 height gate so only the sleeping-hat body changes; the pom-pom, koala, branch,
 leaves, and props stay authored.
 
-Original high-resolution GLBs for active models live under `assets/models/source/{toy-slug}/` and are never requested by the browser. Superseded experiments, retired model families, rebuild history, and rollback code belong under `assets/models/archive/{toy-slug}/`. Color Unicorn and the retired Color Cat v001 remain archived; the earlier Unicorn, Kitty, Bunny, Bird, Doggy, and Karpy crystal pool remains a separate rollback path.
+Original high-resolution GLBs for active models live under `assets/models/source/{toy-slug}/` and are never requested by the browser. Superseded experiments, retired model families, rebuild history, and rollback code belong under `assets/models/archive/{toy-slug}/`. Color Unicorn and the retired Color Cat v001 remain archived; the earlier Jelly Jade and crystal studies remain a local-only archive path.
 
 All runtime paths, protection masks, framing overrides, and recoloring modes are registered in:
 
@@ -43,7 +43,7 @@ public/models/toys/{toy-slug}/model-preview-v001.glb
 Example:
 
 ```text
-public/models/toys/jelly-jade-unicorn/model-web-v001.glb
+public/models/toys/color-karpy/model-mobile-v001.glb
 ```
 
 ## Asset Rules
@@ -62,8 +62,7 @@ public/models/toys/jelly-jade-unicorn/model-web-v001.glb
 Collection, feed, friend, and draw-history lists use WebP stills rendered from
 the real Mobile GLB. They do not mount a live `ToyViewer` per item. The first
 visible render is queued and persisted in IndexedDB; later page loads use the
-cached image. `ToyViewer` and the thumbnail renderer share the same versioned
-material factory for legacy jade and V2 materials.
+cached image. `ToyViewer` and the thumbnail renderer share the same current material and model-specific recolor factories.
 
 See `playbooks/toy-thumbnail-rendering.md` for cache versioning, performance
 rules, and the future Supabase Storage boundary.
@@ -117,7 +116,7 @@ The shared ThreeViewer supports or should continue to support:
 - WebGL unavailable fallback.
 - Model switching.
 - Resource disposal for geometry, material, texture, renderer, and event listeners.
-- Versioned jade and V2 material mapping without duplicating base model geometry.
+- Versioned current material mapping without duplicating base model geometry.
 
 ## Deployment Notes
 

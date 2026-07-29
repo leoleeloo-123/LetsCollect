@@ -2,6 +2,25 @@
 
 ## 2026-07-29
 
+- Moved all six Jelly Jade runtime groups and both Diamond runtime groups out of
+  `public/models/toys/` into local-only archive folders; the public runtime tree
+  now contains exactly the twenty-four formal Color Animals.
+- Removed retired Jelly Jade/Diamond IDs, palettes, generator branches, stored
+  compatibility, preload paths, Diamond backdrops/materials, and the old
+  Material/Diamond Labs from the active application.
+- Added verified byte-size/SHA-256 manifests for all eight offline runtime
+  archives and documented the explicit restoration boundary.
+- Moved the five retired Jelly Jade source GLBs from the canonical active
+  source area into local-only archive folders, preserving byte sizes and
+  SHA-256 identities in tracked manifests.
+
+- Removed the retired `legacy/hero-prototype/` HTML and GLB from the working
+  tree after the React replacement, retaining Git commit `d34f28c` as the
+  documented historical recovery point.
+- Updated current architecture, product, development, roadmap, and handoff
+  documents so they no longer describe the retired Hero as a live rollback
+  directory.
+
 - Replaced the retired full-body Color Bird with the v002 crown-only model.
 - Promoted Color Penguin v003 into the formal twenty-four-model roster and the
   Monochrome series.

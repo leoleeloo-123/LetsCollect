@@ -1,12 +1,6 @@
 export type RarityCode = "common" | "rare" | "epic" | "legendary" | "mythic";
 
 export type ToyModelId =
-  | "unicorn"
-  | "kitty"
-  | "bunny"
-  | "bird"
-  | "doggy"
-  | "karpy"
   | "color-otter"
   | "color-bird"
   | "color-penguin"
@@ -30,20 +24,9 @@ export type ToyModelId =
   | "color-duck"
   | "color-guinea-pig"
   | "color-black-cat"
-  | "color-cool-wolf"
-  | "diamond-unicorn"
-  | "diamond-dog";
-
+  | "color-cool-wolf";
 export type ToyFallbackShape = "unicorn" | "cat" | "bunny" | "bird" | "dog" | "blob";
 export type ToyPaletteId =
-  | "rose"
-  | "mint"
-  | "honey"
-  | "ice"
-  | "emerald"
-  | "lavender"
-  | "moon"
-  | "ink"
   | "cocoa"
   | "apricot"
   | "cream-rose"
@@ -52,13 +35,7 @@ export type ToyPaletteId =
   | "grape"
   | "coral"
   | "lime"
-  | "sky"
-  | "diamond-clear"
-  | "diamond-ice"
-  | "diamond-rose"
-  | "diamond-champagne"
-  | "diamond-mint";
-export type ToyMaterialId = "jade" | "plastic" | "glass" | "wood" | "iron" | "copper" | "silver" | "gold" | "crystal";
+  | "sky";export type ToyMaterialId = "plastic" | "glass" | "wood" | "iron" | "copper" | "silver" | "gold" | "crystal";
 
 export type ToyModelDefinition = {
   id: ToyModelId;
@@ -187,8 +164,6 @@ export type Collectible = {
   materialId: ToyMaterialId;
   materialGrade: string;
   materialTraits: MaterialTraits;
-  transparencyGrade?: number;
-  jadeGrade?: string;
   appearanceSeed: number;
   generationVersion: number;
   appearance: AppearanceVector;

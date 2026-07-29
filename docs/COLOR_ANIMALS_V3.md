@@ -2,7 +2,7 @@
 
 Status: active MVP direction
 Date: 2026-07-19
-Last updated: 2026-07-28
+Last updated: 2026-07-29
 
 ## Decision
 
@@ -15,11 +15,11 @@ stays a fixed soft matte resin treatment. A selected colorway changes only the
 approved recolor target for that model; it does not imply that every model
 changes its full body color.
 
-The former jelly-jade and material-generation assets, catalogs, and generator remain in the repository as a legacy rollback path. They are not part of the active draw pool or seeded collection.
+The former Jelly Jade runtime/source assets are fully offline under `assets/models/archive/`; their active catalog, generator, material, and compatibility branches have been removed.
 
-Diamond Unicorn and Diamond Dog are archived and no longer appear in the legacy `/draw`
-or any active Collect series. Their Collect shelf card remains removed, while
-their historical rendering and compatibility contract remains recorded in
+Diamond Unicorn and Diamond Dog are fully offline under `assets/models/archive/`
+and no longer appear in the browser runtime, stored-item compatibility, Labs,
+`/draw`, or any active Collect series. Their retirement record is
 `docs/DIAMOND_UNICORN_SPECIAL_EXHIBIT.md`.
 
 The former generic Color Dog, Color Unicorn, and the retired Color Cat v001 remain rollback history. Color Dog Camera and Color Dog Drum are distinct active product models.
@@ -54,17 +54,15 @@ The authoritative human-readable inventory, exact runtime sizes, recolor targets
 - Color Koala uses `model-mobile-v001.glb`; a compact mask and local height
   gate recolors only the sleeping-hat body, preserving its pom-pom, koala,
   branch, leaves, and other props.
-- The compatibility draw selects one of the twenty-four matte models and one of the nine shared primary colorway IDs independently with equal probability.
-- The archived crystal branch has zero probability and cannot generate a new collectible.
-- The active twenty-four use fixed soft matte resin; archived crystal rendering remains only for historical local items.
-- The current Collect Color card contains only the twenty-four matte models. Its
-  explicit series draw is `1 / 24` and does not use the compatibility crystal
-  branch.
+- The global draw selects one of the twenty-four matte models and one of the nine shared primary colorway IDs independently with equal probability.
+- No archived Jelly Jade or Diamond identifier is accepted by the active generator or type boundary.
+- The active twenty-four use fixed soft matte resin; retired models are offline archive payloads only.
+- The current Collect Color card contains only the twenty-four matte models. Its explicit series draw is `1 / 24`.
 - The appearance signature includes the generation version, series, model, palette, material, rendering asset key, traits, and seed.
 
 ## Local data migration
 
-The Color Animals demo uses a dedicated local-storage key. Earlier material-showcase data remains untouched for rollback. Pages continue to consume `Collectible` domain objects and do not read storage directly.
+The Color Animals demo uses a dedicated local-storage key. The state loader keeps only current Color Animals; retired-family records are filtered. Pages continue to consume `Collectible` domain objects and do not read storage directly.
 
 ## Mobile budget
 
@@ -81,8 +79,8 @@ The Color Animals demo uses a dedicated local-storage key. Earlier material-show
 - Color Seal: about 320 KB; its two masks total about 25 KB.
 - Color Karpy: about 315 KB; hat mask: about 18 KB.
 - Color Koala: about 335 KB; sleeping-hat mask: about 9 KB.
-- Archived Diamond Unicorn compatibility GLB: about 175 KB; no textures or masks.
-- Archived Diamond Dog compatibility GLB: about 344 KB; no textures or masks.
+- Offline Diamond Unicorn runtime archive: about 175 KB; no textures or masks.
+- Offline Diamond Dog runtime archive: about 344 KB; no textures or masks.
 - Color Bunny and Color Panda v002 preserve the v001 geometry while padding the 1024 px base-color atlas borders to reduce UV seam bleeding at tile size.
 - Collect series cards use one live canvas per series and synchronize rotation
   across their model roots. Collection, feed, friend, and history lists keep

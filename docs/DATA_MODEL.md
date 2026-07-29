@@ -74,16 +74,13 @@ type Collectible = {
 };
 ```
 
-The active V3 inventory uses twenty-four matte Color Animals. Two archived crystal models
-(`diamond-unicorn` and `diamond-dog`) retain five native
-crystal palette IDs only for historical rendering. The Collect Color series pairs every one of the twenty-four
-models with the selected regular palette and draws uniformly from that model
-pool. Each special series owns an explicit model pool, palette policy, and
-ticket cost; it does not inherit the global hidden-special branch. The
-compatible global draw is now 100% matte and selects uniformly
-within the chosen material branch. Older Jelly Jade models and material
-definitions remain for compatibility and rollback; they are not active V3
-inventory.
+The active V3 inventory uses twenty-four matte Color Animals and nine palette
+IDs. The Collect Color series pairs every model with the selected regular
+palette and draws uniformly from that model pool. Each special series owns an
+explicit model pool, palette policy, and ticket cost; it does not inherit a
+hidden-special branch. The global draw is 100% matte. Retired Jelly Jade and
+Diamond identifiers are absent from the active model, palette, and material
+types; their binary payloads remain local-only archives.
 
 The TypeScript campaign capability registry, active catalog, and series modules
 now contain the same twenty-four active model IDs.

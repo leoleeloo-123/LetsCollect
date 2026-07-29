@@ -1,34 +1,30 @@
 # Source Assets
 
-This folder stores non-runtime source assets for Let's Collect.
+This folder stores non-runtime source assets and local rollback history for
+Let's Collect. Nothing under `assets/` is requested directly by the browser.
 
-Files here are not requested directly by the browser. Runtime assets that the
-frontend loads must be exported into `public/`.
-
-## Model Areas
+## Model areas
 
 ```text
 assets/models/source/
-  jelly-jade-bird/
-    model-source-v001.glb
-  jelly-jade-bunny/
-    model-source-v001.glb
-  jelly-jade-doggy/
-    model-source-v001.glb
-  jelly-jade-karpy/
-    model-source-v001.glb
-  jelly-jade-kitty/
-    model-source-v001.glb
+  color-*/
+    model-source-v*.glb
+assets/models/archive/
+  {retired-toy-slug}/
+    README.md
+    source/          # optional, local-only
+    runtime/         # optional, local-only
 ```
 
-The matching optimized Web/Mobile exports for all five source models now live
-under `public/models/toys/`. The unicorn runtime assets remain the reference
-pair for the original hero model.
+The five available Jelly Jade source inputs, all six Jelly Jade runtime groups,
+and both Diamond runtime groups are fully offline under `assets/models/archive/`.
+Jelly Jade Unicorn has no retained standalone source GLB. Archive manifests
+record sizes, hashes, previous paths, and restore requirements.
 
 ## Rules
 
-- Keep large source `.glb` files local under `assets/models/source/`; Git ignores them.
-- Do not reference `assets/` paths from React or Three.js code.
-- Export optimized runtime models to `public/models/toys/{toy-slug}/`.
-- Keep each source toy in its own slug folder.
-- Preserve versioned filenames so old deployments and QA notes stay traceable.
+- Keep active source GLBs under `assets/models/source/`; move retired source and runtime payloads to `assets/models/archive/{toy-slug}/`.
+- Do not reference `assets/` paths from React, Three.js, HTML preload code, or production URLs.
+- Export only current optimized runtime models to `public/models/toys/{toy-slug}/`.
+- Keep each active source toy in its own slug folder and add a tracked top-level `README.md` to every archived toy.
+- Preserve versioned filenames and SHA-256 manifests so rollback material stays traceable.

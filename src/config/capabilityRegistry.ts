@@ -3,7 +3,7 @@ import { formalColorAnimalModelIds } from "../features/toys/formalRoster";
 
 export type CapabilityAvailability = "available" | "planned" | "experimental";
 export type CapabilityCategory = "asset" | "experience" | "platform" | "agent" | "reward";
-export type CurrentMaterialType = "matte" | "crystal";
+export type CurrentMaterialType = "matte";
 
 export const matteColorIds = [
   "cocoa",
@@ -17,19 +17,6 @@ export const matteColorIds = [
   "sky"
 ] as const satisfies readonly ToyPaletteId[];
 
-export const diamondColorIds = [
-  "diamond-clear",
-  "diamond-ice",
-  "diamond-rose",
-  "diamond-champagne",
-  "diamond-mint"
-] as const satisfies readonly ToyPaletteId[];
-
-export const crystalAvailableColorIds = [
-  ...diamondColorIds,
-  ...matteColorIds
-] as const satisfies readonly ToyPaletteId[];
-
 export const currentAssetIds = formalColorAnimalModelIds;
 
 export type CurrentAssetId = (typeof currentAssetIds)[number];
@@ -41,7 +28,7 @@ export type CurrentAssetRegistryEntry = {
   availability: "available";
   availableColorIds: readonly ToyPaletteId[];
   defaultDrawColorIds: readonly ToyPaletteId[];
-  drawRole: "regular" | "special_exhibit";
+  drawRole: "regular";
 };
 
 const currentAssetNames: Record<CurrentAssetId, string> = {
@@ -105,13 +92,6 @@ export const capabilityRegistry = [
     availability: "available",
     category: "asset",
     description: "Nine approved palettes rendered on the twenty-four current matte models."
-  },
-  {
-    id: "crystal_unicorn_exhibit",
-    label: "Archived crystal Companion studies",
-    availability: "experimental",
-    category: "asset",
-    description: "Diamond Unicorn and Diamond Dog are archived studies retained only for historical local collection rendering and internal Labs."
   },
   {
     id: "local_draw_flow",
@@ -255,7 +235,7 @@ export const capabilityRegistry = [
     label: "More crystal Companions",
     availability: "planned",
     category: "asset",
-    description: "Additional crystal Companions beyond Diamond Unicorn and Diamond Dog remain planned.",
+    description: "A future crystal material family remains planned and has no active runtime model yet.",
     requiresAssetCreation: true
   },
   {

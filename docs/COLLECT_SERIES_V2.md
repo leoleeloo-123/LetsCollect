@@ -50,8 +50,8 @@ Collect 使用“色彩系列 + 特殊系列”的可扩展货架。页面不显
 | 薯薯队 | 雪糕仓鼠、气球豚鼠 |
 
 特殊系列卡继续使用上方模型、下方信息的纵向结构。水晶系列卡不回到
-Collect 货架；Diamond Unicorn、Diamond Dog 和五个历史 tint 只用于旧
-藏品显示与内部 Lab。
+Collect 货架；Diamond Unicorn、Diamond Dog 和 Jelly Jade 已完全离线
+归档，当前代码不再提供旧藏品显示或内部 Lab。
 
 ### 3D 与性能
 

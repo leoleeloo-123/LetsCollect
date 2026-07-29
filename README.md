@@ -14,13 +14,15 @@ the product into chat, dating, or a virtual world.
 - Production URL: `https://lets-collect.vercel.app/`
 - Current entry: React + Vite application in `src/`
 - Archived React MVP: `archive/react-mvp-v1/`
-- Legacy prototype: `legacy/hero-prototype/hero-jelly-jade-toy.html`
+- Retired single-file Hero: removed from the working tree after the React
+  replacement; recoverable from Git commit `d34f28c` if a historical rollback
+  is required
 - Active collectible assets: twenty-four mobile matte Color Animals, nine
   regular colorways, and thirteen six-ticket special series, registered in
   `src/features/toys/catalog.ts` and `src/features/collect/collectSeries.ts`
-- Archived compatibility assets: Diamond Unicorn and Diamond Dog remain
-  renderable for historical local collections and internal Labs, but cannot be
-  drawn by the current product
+- Offline archive assets: all Jelly Jade, Diamond Unicorn, and Diamond Dog
+  source/runtime GLBs live under `assets/models/archive/`; they are absent from
+  the active catalog, browser runtime, stored-item compatibility, and Labs
 - Source model assets: `assets/models/source/`
 - Model pipeline playbook: `playbooks/model-asset-pipeline.md`
 - Supabase project: `fpfmtmykncuknwlnakiv`

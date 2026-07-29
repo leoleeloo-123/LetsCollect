@@ -1,7 +1,7 @@
 # Asset and Capability Registry
 
 Status: current product contract
-Last verified: 2026-07-28
+Last verified: 2026-07-29
 
 ## Purpose
 
@@ -21,7 +21,7 @@ The executable sources of truth are:
 - `src/features/toys/catalog.ts`: model IDs, runtime paths, palette IDs,
   framing, recolor mode, masks, and named material targets;
 - `src/features/toys/activeSeries.ts`: active series membership, material
-  labels, palette membership, and archived compatibility boundaries;
+  labels and palette membership;
 - `src/features/collect/collectSeries.ts`: the current Collect shelf,
   explicit theme membership, palette policy, and ticket cost;
 - `src/features/toys/generator.ts`: draw selection, generated metadata, and
@@ -30,8 +30,7 @@ The executable sources of truth are:
   the registered recolor contract;
 - `src/three/material/createColor*Materials.ts`: model-specific matte-series
   recolor implementations;
-- `src/three/material/createDiamondUnicornMaterial.ts`: Diamond Unicorn tint
-  and faceted material implementation;
+
 - `src/three/ThumbnailRenderer/renderer.ts`: thumbnail rendering, which must
   mirror the live viewer's model and recolor contract.
 
@@ -120,28 +119,29 @@ and uniformly:
   4.1667%;
 - each regular model-and-primary-palette combination has an absolute
   probability of `100% / 216`, approximately 0.4630%.
-## Archived compatibility assets: two crystal studies
+## Fully offline archives: Jelly Jade and two crystal studies
 
-Diamond Unicorn and Diamond Dog are archived, not current product assets:
+Jelly Jade, Diamond Unicorn, and Diamond Dog are archive material, not current
+runtime or compatibility assets. Their GLBs are stored only under
+`assets/models/archive/{toy-slug}/`; no active ID, palette, route, preload, or
+viewer branch resolves them.
 
-| Product name | Model ID | Archived source | Compatibility runtime | Status |
-| --- | --- | --- | --- | --- |
-| Diamond Unicorn / 钻石独角兽 | `diamond-unicorn` | `assets/models/archive/diamond-unicorn/source/` | `/models/toys/diamond-unicorn/model-mobile-v001.glb` | Historical local collection and internal Lab rendering only |
-| Diamond Dog / 水晶小狗 | `diamond-dog` | `assets/models/archive/diamond-dog/source/` | `/models/toys/diamond-dog/model-mobile-v001.glb` | Historical local collection and internal Lab rendering only |
+| Retired family | Archived payloads | Browser/runtime status |
+| --- | --- | --- |
+| Jelly Jade (six runtime groups) | `assets/models/archive/jelly-jade-*/` | Offline; not deployed or loaded |
+| Diamond Unicorn | `assets/models/archive/diamond-unicorn/` | Offline; not deployed or loaded |
+| Diamond Dog | `assets/models/archive/diamond-dog/` | Offline; not deployed or loaded |
 
-The special-exhibit draw probability is `0`. Five historical crystal tint IDs
-remain in the compatibility renderer so an old local item can still be opened,
-but no current Collect series, legacy `/draw`, campaign, or Agent proposal may
-generate either model.
-## Current runtime capabilities
+Per-folder manifests record byte sizes, SHA-256 identities, and restore paths.
+Historical local items from these families are filtered by the active-state
+loader; the application does not promise compatibility rendering.
+## Current runtime capabilities## Current runtime capabilities
 
 | Capability | Availability | Boundary |
 | --- | --- | --- |
 | Load and inspect the twenty-four active matte-series GLBs | `available` | Shared `ToyViewer`; local Draco decoder |
 | Apply the nine registered model-specific colorways | `available` | Only the approved target for each model may change |
-| Load and inspect Diamond Unicorn and Diamond Dog | `legacy` | Historical local collection and internal Lab rendering only |
-| Apply five native crystal tints | `legacy` | Retained only to render historical local items |
-| Apply nine regular tints to crystal models | `legacy` | Preserved rendering compatibility; no active Collect pool references it |
+| Resolve a retired Jelly Jade or Diamond runtime | `unavailable` | Payloads are local-only archives; restoration requires a new implementation decision |
 | Draw from the thirteen registered special series | `available` | Explicit members, random registered matte colorway, six tickets per draw |
 | Client-side V3 mock draw | `available` | Old `/draw` uses the twenty-four regular models only; not an authoritative server draw |
 | Persist the demo collection and recent draws | `available` | Browser local storage; not cloud ownership |
@@ -156,9 +156,9 @@ generate either model.
 
 ### Legacy
 
-- The earlier Jelly Jade model family (`unicorn`, `kitty`, `bunny`, `bird`,
-  `doggy`, and `karpy`) and its palettes remain a rollback path. They are not
-  members of the active V3 draw pool.
+- The earlier Jelly Jade model family and palettes are fully offline under
+  `assets/models/archive/`; their IDs and rendering branches are absent from
+  active code.
 - The eight-material prototype catalog, including wood and metal treatments,
   remains implementation history. A material ID or prototype implementation
   is not evidence that the material is currently collectible.
@@ -168,9 +168,9 @@ generate either model.
 - Color Teddy was a temporary full-coat recoloring test. Its source, runtime,
   mask, builder, and dedicated Lab/material code are archived locally and
   ignored by Git; no current code or browser URL references it.
-- Diamond Unicorn and Diamond Dog source assets are archived under
-  `assets/models/archive/`; compact runtimes remain only for old local items
-  and internal material inspection.
+- Diamond Unicorn and Diamond Dog sources and runtimes are fully offline under
+  `assets/models/archive/`; old local items and internal Labs are no longer
+  supported by the active application.
 
 ### Experimental
 

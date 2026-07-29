@@ -1,4 +1,4 @@
-# Diamond Unicorn archive
+# Jelly Jade Unicorn archive
 
 Status: fully archived offline on 2026-07-29.
 
@@ -9,12 +9,14 @@ their local identity and recovery location.
 
 ## Archived payloads
 
-- Source: retained notes only; no standalone high-resolution source GLB is available.
-- Runtime: `runtime/model-mobile-v001.glb` — 174984 bytes — SHA-256 `397D45BB055258A23F9E92204E68E33AB7A7F9252599B6999A3BD8ADA348B639`
+- Source: unavailable; the retained runtime exports are the only archived geometry.
+- Runtime: `runtime/model-mobile-v001.glb` — 164940 bytes — SHA-256 `DD4308592170841FDA3373F3896A2E0252BBDAD210197DA80518D09E7C33A841`
+- Runtime: `runtime/model-web-v001.glb` — 2349356 bytes — SHA-256 `94F31AAE3996AF9301152471218ADEA68A26BDA7FFC937A7F71908D5416D1E79`
+- Runtime: `runtime/model-web-v002.glb` — 306776 bytes — SHA-256 `8B0942195003BD5CA126F3A117CC928F700CA2606B4DE19E1DC4ED6E2FB63E3D`
 
 Previous browser location:
 
-- `public/models/toys/diamond-unicorn/` (removed)
+- `public/models/toys/jelly-jade-unicorn/` (removed)
 
 ## Restore boundary
 

@@ -1,4 +1,4 @@
-# Diamond Unicorn archive
+# Jelly Jade Doggy archive
 
 Status: fully archived offline on 2026-07-29.
 
@@ -9,12 +9,14 @@ their local identity and recovery location.
 
 ## Archived payloads
 
-- Source: retained notes only; no standalone high-resolution source GLB is available.
-- Runtime: `runtime/model-mobile-v001.glb` — 174984 bytes — SHA-256 `397D45BB055258A23F9E92204E68E33AB7A7F9252599B6999A3BD8ADA348B639`
+- Source: `source/model-source-v001.glb` — 48005368 bytes — SHA-256 `25427168447D937BF2AB0317897AC9BCEA5CEEA2E7BF456DF41DD66F1C82DF77`
+- Runtime: `runtime/model-mobile-v001.glb` — 145276 bytes — SHA-256 `1CB690A93220412939198065898EDE7DA286A7B5F6B6BB10615A477F3CC5E4DF`
+- Runtime: `runtime/model-web-v001.glb` — 274220 bytes — SHA-256 `957ACAC309853051FA99635E4825BFCFDC6CDFF33959BE9BB8A9306805786907`
 
 Previous browser location:
 
-- `public/models/toys/diamond-unicorn/` (removed)
+- `public/models/toys/jelly-jade-doggy/` (removed)
+- `assets/models/source/jelly-jade-doggy/model-source-v001.glb` (moved)
 
 ## Restore boundary
 

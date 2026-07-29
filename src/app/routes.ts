@@ -9,7 +9,7 @@ export const routes = {
   onboarding: "/onboarding",
   login: "/login",
   register: "/register",
-  materialLab: "/material-lab",
+
   colorBunnyLab: "/color-bunny-lab",
   colorPandaLab: "/color-panda-lab",
   colorOtterLab: "/color-otter-lab",
@@ -34,6 +34,6 @@ export const routes = {
   colorFoxLab: "/color-fox-lab",
   colorRacoonLab: "/color-racoon-lab",
   colorSealLab: "/color-seal-lab",
-  diamondDogLab: "/diamond-dog-lab",
-  diamondUnicornLab: "/diamond-unicorn-lab",
+
+
 } as const;

@@ -1,6 +1,6 @@
 # Material System V2
 
-Status: accepted for local MVP integration
+Status: historical V2 experiment; retired from the active runtime on 2026-07-29
 
 ## Product Decision
 
@@ -80,30 +80,21 @@ Mythic       1.00%
 Observed material distribution stayed within normal sampling distance of the
 configured 30 / 24 / 19 / 13 / 7 / 3 / 3 / 1 weights.
 
-## Runtime Integration
+## Retirement boundary
 
-- `createToyMaterial` is the shared material boundary for live 3D and cached
-  thumbnails.
-- Legacy `jade` delegates to `createJadeMaterial` without changing its shader or
-  appearance signature.
-- V2 materials use the shared prototype registry plus collectible craft traits.
-- Mobile stages retain environment reflection for V2 metals, glass, and crystal.
-- Thumbnail render version 4 invalidates earlier material previews without changing
-  collectible identity.
-- The unlisted `/material-lab` route remains available for same-light comparison.
+This document records the earlier eight-material experiment. The active V3
+product now generates only the twenty-four Color Animals with `plastic` / soft
+matte resin. The Jelly Jade identifier, Jade shader, legacy generator,
+Material Lab route, and historical stored-item compatibility were removed from
+active code on 2026-07-29. Generic prototype helpers remain only as reusable
+rendering infrastructure; their presence does not make those materials
+collectible.
 
-## Compatibility
-
-`generationVersion = 2` applies to newly generated collectibles. Existing stored
-V1 collectibles are normalized at the local repository boundary:
-
-- missing `materialId` becomes `jade`;
-- the original ID, public code, seed, generation version, and appearance
-  signature remain unchanged;
-- V1 jade grades and five-dimensional appearance remain visible;
-- V1 collectibles are never silently converted to crystal or another V2 material.
-
-## Known Asset Limits
+Restoring any retired material family requires a new product decision, current
+assets, an explicit type/catalog contract, mobile rendering validation, and a
+new storage migration. Archived binary assets must not be served directly from
+`assets/models/archive/`.
+## Known Asset Limits## Known Asset Limits
 
 Current runtime GLBs contain positions and normals, but no UVs, textures, vertex
 colors, or semantic material slots.

@@ -32,7 +32,8 @@ TypeScript SPA，并跟踪同名 GitHub 远程分支。`main` 仍是 Vercel Prod
 - 抽取结果和票券仍由客户端 Demo 逻辑产生，不是权威后端；
 - 共享 Three.js `ToyViewer`、本地 Draco、模型解码缓存、加载与错误状态；
 - Collection 缩略图网格、Favorite、Representative、Signature 和选中藏品 3D 详情；
-- Legacy Hero 保留在 `legacy/hero-prototype/` 作为视觉与行为参考。
+- 已退役的单文件 Hero 已从工作树移除，需要历史对照时从 Git 提交
+  `d34f28c` 恢复。
 
 当前 C 端路由：
 
@@ -54,19 +55,19 @@ Agent Console 已有本地演示实现，但票券、所有权、Echo 和 Agent 
 当前 active 内容为：
 
 - 二十四个 Color Animals matte / 柔雾树脂 Companion；
-- 九个注册常规 colorway，以及仅供历史兼容渲染的五个原生 Crystal tint；
+- 九个注册常规 colorway；
 - Collect 首页的色彩系列：选择九色之一后，在二十四个 matte 模型中严格等概率
   `1 / 24` 抽取；
 - Collect 首页的特殊系列：`collectSeries.ts` 注册的十三个特殊系列各自
   使用独立、可审计的模型池，全部每次六张券；
-- Diamond Unicorn 与 Diamond Dog 两只 Crystal Companion 已归档，不在
-  Collect 货架、色彩系列或新抽取中；已有本地藏品、详情与 Lab 继续兼容；
+- Diamond Unicorn、Diamond Dog 与 Jelly Jade 已完全离线归档，不在
+  `public/`、当前类型、catalog、旧藏品详情或 Lab 中；
 - 兼容 `/draw` 现在只从二十四只 matte 伙伴中均等抽取，不再生成 Crystal。
 
 二十四个普通模型使用不同的真实换色目标，不能统一描述为“全身换色”。
-ZZZ 复用小猫、海豹和考拉三款现有睡姿。五个原生 Crystal tint 只用于已有
-本地水晶藏品与内部 Lab 的兼容渲染，任何当前抽取都不会生成水晶；完整路径、大小、palette、实现方式和
-availability 见 `docs/ASSET_CAPABILITY_REGISTRY.md`。
+ZZZ 复用小猫、海豹和考拉三款现有睡姿。Crystal 与 Jelly Jade 仅作为
+本地离线归档存在；完整当前路径、大小、palette、实现方式和 availability
+见 `docs/ASSET_CAPABILITY_REGISTRY.md`。
 
 旧 Jelly Jade、八材质、归档模型和 Lab 实验是 legacy / experimental，不是当前可抽取内容。
 

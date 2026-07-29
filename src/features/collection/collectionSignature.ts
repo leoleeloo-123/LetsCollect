@@ -1,5 +1,4 @@
 import { colorMoods } from "../collect/collectPreferences";
-import { isSpecialExhibitCollectible } from "../toys/activeSeries";
 import { getToyModel } from "../toys/catalog";
 import type { ColorMoodId } from "../../types/taste";
 import type { Collectible, ToyModelId } from "../../types/toy";
@@ -94,8 +93,7 @@ export function deriveCollectionSignature({
     const mood = colorMoods.find((entry) => entry.id === dominantMood);
     return mood?.paletteIds.includes(toy.paletteId);
   }).length;
-  const crystalCount = collection.filter(isSpecialExhibitCollectible).length;
-  const matteCount = collection.length - crystalCount;
+  const matteCount = collection.length;
   const distinctPaletteCount = new Set(
     collection.map((toy) => toy.paletteId)
   ).size;
@@ -111,12 +109,7 @@ export function deriveCollectionSignature({
   };
 
   addTag(moodCopy[dominantMood].tag);
-  if (matteCount / collection.length >= 0.6) addTag("Matte Lover");
-  if (crystalCount > 0 && crystalCount / collection.length < 0.5) {
-    addTag("Unicorn Curious");
-  } else if (crystalCount / collection.length >= 0.5) {
-    addTag("Crystal Focus");
-  }
+  addTag("Matte Lover");
   if (dominantModelCount >= 2) {
     addTag(`${getToyModel(dominantModel).name} Affinity`);
   }
@@ -130,19 +123,13 @@ export function deriveCollectionSignature({
   if (validFavoriteCount >= 2) addTag("Favorite Finds");
   if (tags.length < 2) addTag("Growing Collection");
 
-  const materialDescription = crystalCount === 0
-    ? "目前以柔雾树脂为主"
-    : matteCount === 0
-      ? "目前更常选择 Diamond Unicorn 的切面光感"
-      : matteCount >= crystalCount
-        ? "以柔雾树脂为主，也对 Diamond Unicorn 保留了一点好奇"
-        : "切面光感最近出现得更多，同时仍保留柔雾树脂藏品";
+  const materialDescription = "目前以柔雾树脂为主";
   const modelDescription = dominantModelCount >= 2
     ? `，其中${getToyModel(dominantModel).name}出现得最频繁`
     : "";
   const evidence = [
     `${dominantMoodItemCount} 件藏品落在当前最明显的配色组`,
-    `${matteCount} 件柔雾树脂 · ${crystalCount} 件切面钻石`
+    `${matteCount} 件柔雾树脂`
   ];
 
   if (validFavoriteCount > 0) {

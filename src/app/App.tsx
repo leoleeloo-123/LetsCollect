@@ -9,7 +9,7 @@ const HomePage = lazy(() => import("../pages/home/HomePage").then((module) => ({
 const OnboardingPage = lazy(() => import("../pages/auth/OnboardingPage").then((module) => ({ default: module.OnboardingPage })));
 const EchoPage = lazy(() => import("../pages/echo/EchoPage").then((module) => ({ default: module.EchoPage })));
 const AgentConsolePage = lazy(() => import("../pages/agent/AgentConsolePage").then((module) => ({ default: module.AgentConsolePage })));
-const MaterialLabPage = lazy(() => import("../pages/material-lab/MaterialLabPage").then((module) => ({ default: module.MaterialLabPage })));
+
 const ColorBunnyLabPage = lazy(() => import("../pages/color-bunny-lab/ColorBunnyLabPage").then((module) => ({ default: module.ColorBunnyLabPage })));
 const ColorPandaLabPage = lazy(() => import("../pages/color-panda-lab/ColorPandaLabPage").then((module) => ({ default: module.ColorPandaLabPage })));
 const ColorOtterLabPage = lazy(() => import("../pages/color-otter-lab/ColorOtterLabPage").then((module) => ({ default: module.ColorOtterLabPage })));
@@ -34,8 +34,8 @@ const ColorSlothLabPage = lazy(() => import("../pages/color-sloth-lab/ColorSloth
 const ColorFoxLabPage = lazy(() => import("../pages/color-fox-lab/ColorFoxLabPage").then((module) => ({ default: module.ColorFoxLabPage })));
 const ColorRacoonLabPage = lazy(() => import("../pages/color-racoon-lab/ColorRacoonLabPage").then((module) => ({ default: module.ColorRacoonLabPage })));
 const ColorSealLabPage = lazy(() => import("../pages/color-seal-lab/ColorSealLabPage").then((module) => ({ default: module.ColorSealLabPage })));
-const DiamondDogLabPage = lazy(() => import("../pages/diamond-dog-lab/DiamondDogLabPage").then((module) => ({ default: module.DiamondDogLabPage })));
-const DiamondUnicornLabPage = lazy(() => import("../pages/diamond-unicorn-lab/DiamondUnicornLabPage").then((module) => ({ default: module.DiamondUnicornLabPage })));
+
+
 const NotFoundPage = lazy(() => import("../pages/not-found/NotFoundPage").then((module) => ({ default: module.NotFoundPage })));
 
 function RouteLoading() {
@@ -53,7 +53,7 @@ export function App() {
         <Route path="auth/register" element={<Navigate to="/onboarding" replace />} />
         <Route path="agent" element={<AgentConsolePage />} />
         <Route path="agent-console" element={<Navigate to="/agent" replace />} />
-        <Route path="material-lab" element={<MaterialLabPage />} />
+
         <Route path="color-bunny-lab" element={<ColorBunnyLabPage />} />
         <Route path="color-panda-lab" element={<ColorPandaLabPage />} />
         <Route path="color-otter-lab" element={<ColorOtterLabPage />} />
@@ -78,8 +78,8 @@ export function App() {
         <Route path="color-fox-lab" element={<ColorFoxLabPage />} />
         <Route path="color-racoon-lab" element={<ColorRacoonLabPage />} />
         <Route path="color-seal-lab" element={<ColorSealLabPage />} />
-        <Route path="diamond-dog-lab" element={<DiamondDogLabPage />} />
-        <Route path="diamond-unicorn-lab" element={<DiamondUnicornLabPage />} />
+
+
         <Route element={<RequireProfile />}>
           <Route element={<AppLayout />}>
             <Route index element={<HomePage />} />

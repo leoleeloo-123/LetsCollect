@@ -1,4 +1,4 @@
-# Diamond Unicorn archive
+# Jelly Jade Karpy archive
 
 Status: fully archived offline on 2026-07-29.
 
@@ -9,12 +9,14 @@ their local identity and recovery location.
 
 ## Archived payloads
 
-- Source: retained notes only; no standalone high-resolution source GLB is available.
-- Runtime: `runtime/model-mobile-v001.glb` — 174984 bytes — SHA-256 `397D45BB055258A23F9E92204E68E33AB7A7F9252599B6999A3BD8ADA348B639`
+- Source: `source/model-source-v001.glb` — 47979956 bytes — SHA-256 `C7A775BACB025043243600C1BE9695AFE6C2087FDEF68A76529031AA5341F409`
+- Runtime: `runtime/model-mobile-v001.glb` — 142600 bytes — SHA-256 `B01B41B67B97F975718199348BE8DAA967CD3AC657ACD5774D2BA2506F1D6B4F`
+- Runtime: `runtime/model-web-v001.glb` — 265876 bytes — SHA-256 `87AB7C4069DC87D40477F54EDC39F1071A0E3CB67EB3F6377D5BC7A42802F62F`
 
 Previous browser location:
 
-- `public/models/toys/diamond-unicorn/` (removed)
+- `public/models/toys/jelly-jade-karpy/` (removed)
+- `assets/models/source/jelly-jade-karpy/model-source-v001.glb` (moved)
 
 ## Restore boundary
 

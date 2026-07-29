@@ -1,8 +1,6 @@
 import type * as Three from "three";
 import { getToyPalette } from "../../features/toys/catalog";
 import type { Collectible } from "../../types/toy";
-import { createJadeMaterial } from "./createJadeMaterial";
-import { createDiamondUnicornMaterial } from "./createDiamondUnicornMaterial";
 import {
   createPrototypeMaterial,
   type MaterialPrototypeId
@@ -21,14 +19,6 @@ export type ToyMaterialResult = {
 };
 
 export function getCollectibleRenderTraits(toy: Collectible) {
-  if (toy.materialId === "jade") {
-    return {
-      hydration: toy.appearance.hydration / 100,
-      luster: toy.appearance.luster / 100,
-      glow: toy.appearance.glow / 100
-    };
-  }
-
   return {
     hydration: toy.materialTraits.finish / 100,
     luster: toy.materialTraits.brilliance / 100,
@@ -41,20 +31,7 @@ export function createToyMaterial(
   toy: Collectible,
   options: ToyMaterialOptions = {}
 ): ToyMaterialResult {
-  if (toy.materialId === "jade") {
-    return createJadeMaterial(THREE, toy, options);
-  }
-
   const palette = getToyPalette(toy.paletteId);
-  if (toy.modelId === "diamond-unicorn" || toy.modelId === "diamond-dog") {
-    const material = createDiamondUnicornMaterial(THREE, palette.color, options);
-    return {
-      material,
-      glowColor: new THREE.Color(palette.glow),
-      attenuationColor: material.attenuationColor.clone()
-    };
-  }
-
   const material = createPrototypeMaterial(
     THREE,
     toy.materialId as MaterialPrototypeId,

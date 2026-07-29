@@ -56,7 +56,7 @@ Let's Collect 当前使用统一的「Rose Frost / 粉色磨砂玻璃」主题�
 - 边界：轻边框与聚焦轮廓；
 - 品牌：保留现有 brand / brand deep / brand soft；
 - Echo：独立 `echo` accent，用于低压力共鸣提示与状态；
-- Crystal：独立 `crystal` accent，只服务 Diamond Unicorn 与特殊展品；
+- Crystal：仅为未来能力保留的 planned 语义，不对应当前模型或页面；
 - 状态：统一 `success` 与 `warning`，不直接复用品牌粉；
 - 动效：保留 fast / standard，并为 reveal / drift 使用统一 easing。
 

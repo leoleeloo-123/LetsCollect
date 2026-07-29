@@ -5,7 +5,7 @@ import { useMvpState } from "../../app/MvpState";
 import { routes } from "../../app/routes";
 import { ToyViewer } from "../../three/ToyViewer";
 import type { Collectible } from "../../types/toy";
-import { isSpecialExhibitCollectible } from "../toys/activeSeries";
+
 import { getToyModel, getToyPalette } from "../toys/catalog";
 import {
   getCollectibleMaterialLabel,
@@ -60,10 +60,7 @@ export function DrawReveal({
         >
           <X size={20} />
         </button>
-        <p className="eyebrow">
-          {isSpecialExhibitCollectible(toy)
-            ? "水晶伙伴出现了"
-            : "新的伙伴出现了"}
+        <p className="eyebrow">新的伙伴出现了
         </p>
         <div className="reveal-sheet__stage">
           <ToyViewer toy={toy} variant="inspect" />

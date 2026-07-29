@@ -41,7 +41,6 @@ import {
   isColorAccessoryRendering,
   prepareColorAccessoryModel
 } from "../material/prepareColorAccessoryModel";
-import { applyDiamondUnicornTint } from "../material/createDiamondUnicornMaterial";
 import { loadToyModel } from "../ToyViewer/runtime";
 
 type ThreeRuntime = typeof import("three");
@@ -355,16 +354,9 @@ export async function prepareSeriesToy(
     });
     updateAppearance = (nextToy) => {
       const palette = getToyPalette(nextToy.paletteId);
-      if (
-        nextToy.modelId === "diamond-unicorn"
-        || nextToy.modelId === "diamond-dog"
-      ) {
-        applyDiamondUnicornTint(THREE, material, palette.color);
-      } else {
-        material.color.set(palette.color);
-        material.attenuationColor.set(palette.attenuation);
-        material.emissive.set(palette.emissive);
-      }
+      material.color.set(palette.color);
+      material.attenuationColor.set(palette.attenuation);
+      material.emissive.set(palette.emissive);
     };
   }
 

@@ -8,7 +8,6 @@ import type {
 } from "../../types/toy";
 import {
   colorAnimalPalettes,
-  diamondUnicornPalettes,
   getToyModel,
   getToyPalette,
   getToyRenderingAssetKey
@@ -16,9 +15,7 @@ import {
 import {
   COLOR_ANIMALS_GENERATION_VERSION,
   colorAnimalsSeries,
-  getColorAnimalGrade,
-  getSpecialExhibitGrade,
-  specialExhibitsSeries
+  getColorAnimalGrade
 } from "./activeSeries";
 import { materialTraitWeights } from "./materialCatalog";
 
@@ -74,15 +71,6 @@ function createColorAnimalTraits(rolls: number[]): MaterialTraits {
   };
 }
 
-function createSpecialExhibitTraits(rolls: number[]): MaterialTraits {
-  return {
-    craftsmanship: clampScore(88 + rolls[3] * 10),
-    finish: 95,
-    purity: clampScore(90 + rolls[7] * 8),
-    character: clampScore(80 + rolls[8] * 18),
-    brilliance: 96
-  };
-}
 export function getMaterialCraftScore(traits: MaterialTraits) {
   return Math.round(
     traits.craftsmanship * materialTraitWeights.craftsmanship
@@ -121,12 +109,6 @@ function createColorAnimalAppearance(traits: MaterialTraits): AppearanceVector {
 }
 
 function getCollectibleDescription(modelId: ToyModelId, paletteName: string) {
-  if (modelId === "diamond-unicorn") {
-    return `一只采用${paletteName}色泽的水晶独角兽，拥有高折射率、清晰切面与明亮火彩。`;
-  }
-  if (modelId === "diamond-dog") {
-    return `一只采用${paletteName}色泽的水晶小狗，通透晶体与细密切面会在转动时呈现明亮火彩。`;
-  }
   if (modelId === "color-bird") {
     return `一只戴着${paletteName}皇冠的软萌小鸟，身体、眼睛、喙部、腮红和脚部保持原色。`;
   }
@@ -202,75 +184,37 @@ function getCollectibleDescription(modelId: ToyModelId, paletteName: string) {
   return `一只采用${paletteName}配色的软萌伙伴，保留原始五官与角色细节。`;
 }
 
-function createSpecialExhibitAppearance(traits: MaterialTraits): AppearanceVector {
-  return {
-    transparency: 95,
-    colorDepth: traits.character,
-    hydration: traits.purity,
-    luster: traits.finish,
-    glow: traits.brilliance
-  };
-}
-
-/** Active V3 generator with a low-probability special-exhibit branch. */
+/** Active V3 generator for the 24-model Color Animals roster. */
 export function generateCollectible(options: GenerateCollectibleOptions = {}): Collectible {
   const seed = options.seed ?? randomSeed();
   const random = createSeededRandom(seed);
   const rolls = Array.from({ length: 10 }, () => random());
-  const activeModelIds = [
-    ...colorAnimalsSeries.modelIds
-  ] as readonly ToyModelId[];
-  const requestedModel = options.modelId && activeModelIds.includes(options.modelId)
+  const requestedModel = options.modelId
+    && colorAnimalsSeries.modelIds.includes(options.modelId)
     ? options.modelId
     : null;
-  const isSpecialRoll = rolls[0] < specialExhibitsSeries.drawProbability;
-  const regularRoll = Math.max(
-    0,
-    (rolls[0] - specialExhibitsSeries.drawProbability)
-      / (1 - specialExhibitsSeries.drawProbability)
-  );
-  const regularModelIndex = Math.min(
+  const modelIndex = Math.min(
     colorAnimalsSeries.drawModelIds.length - 1,
-    Math.floor(regularRoll * colorAnimalsSeries.drawModelIds.length)
+    Math.floor(rolls[0] * colorAnimalsSeries.drawModelIds.length)
   );
-  const specialModelIndex = Math.min(
-    specialExhibitsSeries.drawModelIds.length - 1,
-    Math.floor(rolls[2] * specialExhibitsSeries.drawModelIds.length)
-  );
-  const modelId = requestedModel
-    ?? (isSpecialRoll
-      ? specialExhibitsSeries.drawModelIds[specialModelIndex]
-      : colorAnimalsSeries.drawModelIds[regularModelIndex]);
-  const isSpecialExhibit = specialExhibitsSeries.modelIds.includes(modelId);
-  const palettePool = isSpecialExhibit ? diamondUnicornPalettes : colorAnimalPalettes;
-  const allowedRequestedPaletteIds = isSpecialExhibit
-    ? specialExhibitsSeries.explicitPaletteIds
-    : colorAnimalsSeries.paletteIds;
+  const modelId = requestedModel ?? colorAnimalsSeries.drawModelIds[modelIndex];
   const requestedPalette = options.paletteId
-    && allowedRequestedPaletteIds.includes(options.paletteId)
+    && colorAnimalsSeries.paletteIds.includes(options.paletteId)
     ? options.paletteId
     : null;
   const paletteId = requestedPalette
-    ?? palettePool[Math.floor(rolls[1] * palettePool.length)].id;
+    ?? colorAnimalPalettes[Math.floor(rolls[1] * colorAnimalPalettes.length)].id;
   const model = getToyModel(modelId);
   const palette = getToyPalette(paletteId);
-  const materialId = isSpecialExhibit
-    ? specialExhibitsSeries.materialId
-    : colorAnimalsSeries.materialId;
-  const materialTraits = isSpecialExhibit
-    ? createSpecialExhibitTraits(rolls)
-    : createColorAnimalTraits(rolls);
+  const materialId = colorAnimalsSeries.materialId;
+  const materialTraits = createColorAnimalTraits(rolls);
   const qualityScore = getMaterialCraftScore(materialTraits);
-  const rarity: RarityCode = isSpecialExhibit ? "mythic" : getRarityForQuality(qualityScore);
+  const rarity = getRarityForQuality(qualityScore);
   const id = options.id ?? createId();
-  const appearance = isSpecialExhibit
-    ? createSpecialExhibitAppearance(materialTraits)
-    : createColorAnimalAppearance(materialTraits);
-  const seriesId = isSpecialExhibit ? specialExhibitsSeries.id : colorAnimalsSeries.id;
-  const seriesName = isSpecialExhibit ? specialExhibitsSeries.name : colorAnimalsSeries.name;
+  const appearance = createColorAnimalAppearance(materialTraits);
   const appearanceSignature = [
     GENERATION_VERSION,
-    seriesId,
+    colorAnimalsSeries.id,
     modelId,
     paletteId,
     materialId,
@@ -285,11 +229,11 @@ export function generateCollectible(options: GenerateCollectibleOptions = {}): C
     modelId,
     paletteId,
     materialId,
-    materialGrade: isSpecialExhibit ? getSpecialExhibitGrade() : getColorAnimalGrade(rarity),
+    materialGrade: getColorAnimalGrade(rarity),
     materialTraits,
     name: palette.name + model.name,
-    seriesId,
-    seriesName,
+    seriesId: colorAnimalsSeries.id,
+    seriesName: colorAnimalsSeries.name,
     rarity,
     qualityScore,
     appearanceSeed: seed,
