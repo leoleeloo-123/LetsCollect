@@ -64,7 +64,7 @@ Let's Collect 是一个围绕数字 Companion 展开的治愈系收藏体验。�
 - 九个常规 colorway；
 - 首页色彩系列的二十四个 matte 模型 × 九色显式组合；
 - `collectSeries.ts` 注册的十三个独立特殊系列池，全部六券一次；
-- Diamond Unicorn 与 Diamond Dog 已归档，五种原生 Crystal tint 只保留给已有本地藏品与内部验证；
+- Diamond Unicorn、Diamond Dog 与 Jelly Jade 已完全离线归档，不保留当前旧藏品或 Lab 运行兼容；
 - 共享 `ToyViewer`、本地 Draco、按 URL 的模型解码缓存；
 - IndexedDB WebP 缩略图缓存；
 - Collect / Collection / Echo 三个 C 端入口，以及独立 Agent Console；

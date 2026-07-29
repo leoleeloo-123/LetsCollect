@@ -9,18 +9,22 @@ the Companion + Echo frontend redesign on 2026-07-24.
 - the Vite entry document and TypeScript/Vite configuration;
 - the package manifest and Vercel routing configuration.
 
-## What is intentionally shared
+## Asset dependency warning
 
-Large GLB files and other public assets are not duplicated here. The archived
-source keeps its original root-relative paths and therefore refers to the
-repository-level `public/` assets. This avoids shipping two identical copies of
-the model library.
+Large GLBs are not duplicated here. This snapshot still contains its original
+root-relative Jelly Jade and Diamond URLs, but those runtimes moved out of the
+repository-level `public/` tree on 2026-07-29. The snapshot therefore does not
+run against the current root assets as-is.
+
+To inspect it, use a temporary branch and copy the required files from
+`assets/models/archive/{toy-slug}/runtime/` back to their historical
+`public/models/toys/{toy-slug}/` paths. Never do that on the active branch or in
+a production build.
 
 ## Restore or inspect
 
-The archive is a historical snapshot, not a second maintained application.
-To restore it, copy the archived source and configuration back to the repository
-root on a temporary branch while keeping the root `public/` directory in place.
-The Git history remains the authoritative rollback path.
+The archive is a historical snapshot, not a second maintained application. Git
+history remains the authoritative code rollback path, while the tracked archive
+manifests record local binary hashes and restore locations.
 
 Do not edit this snapshot when changing the active application.

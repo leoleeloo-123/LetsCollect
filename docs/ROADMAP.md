@@ -159,7 +159,7 @@
 - 将 `src/config/capabilityRegistry.ts` 同步到全部二十四个 active 模型；
 - 通过 Preview 远程验证；
 - 经明确确认后再修改生产导航或推送 `main`；
-- 保留 Legacy Hero 与旧路由回滚。
+- 保留 React MVP archive，并记录已退役单文件 Hero 的 Git 恢复点。
 
 验收问题：目标体验是否在真实手机、生产资产和失败状态下仍然稳定？
 

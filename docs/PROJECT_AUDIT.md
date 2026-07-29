@@ -2,7 +2,7 @@
 
 Audit date: 2026-07-13
 
-This file is a historical baseline audit from before the React MVP became the production `main` application. For the current project entry, deployment state, routes, and development rules, start with `docs/START_HERE.md`.
+This file is a historical baseline audit from before the React MVP became the production `main` application. For the current project entry, deployment state, routes, and development rules, start with `docs/START_HERE.md`. The later working-tree copy of this single-file Hero was removed on 2026-07-29 and remains recoverable from Git commit `d34f28c`.
 
 ## Current Directory Tree
 

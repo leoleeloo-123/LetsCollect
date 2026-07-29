@@ -18,14 +18,13 @@ C:\Users\licunhongyu\Desktop\LetsCollect
 |       |-- source/{toy-slug}/model-source-v001.glb
 |       `-- archive/{toy-slug}/
 |-- docs/
-|-- legacy/hero-prototype/
 |-- playbooks/
 |   |-- model-asset-pipeline.md
 |   `-- collectible-generation-architecture.md
 |-- public/
 |   |-- draco/
 |   `-- models/toys/
-|       `-- jelly-jade-*/model-{web,mobile}-v*.glb
+|       `-- color-*/model-mobile-v*.glb
 |-- scripts/
 |-- src/
 |-- supabase/
@@ -79,15 +78,16 @@ src/
 
 ## Migration Map
 
-- `legacy/hero-prototype/` preserves the old HTML prototype as reference only.
+- The retired single-file Hero was removed from the working tree after the
+  React replacement; Git commit `d34f28c` remains the recovery point.
 - `public/models/toys/color-*/` contains only current active matte runtimes;
   product availability still comes from the catalog and asset registry, not
   folder presence.
-- `public/models/toys/jelly-jade-*/` contains legacy compatibility runtimes and
-  is not part of the active draw pool.
+- `public/models/toys/` contains exactly the twenty-four formal Color Animals;
+  retired Jelly Jade and Diamond runtimes live only under `assets/models/archive/`.
 - `assets/models/source/*/model-source-v001.glb` contains local source assets that are not pushed.
 - `src/three/ToyViewer/` owns Three.js rendering, loading, interaction, and disposal.
-- `src/features/toys/catalog.ts` owns model URLs, palettes, and transparency grades.
+- `src/features/toys/catalog.ts` owns current model URLs, palettes, and recolor metadata.
 - `src/features/toys/generator.ts` owns current V3 demo collectible generation.
 
 ## Directory Responsibilities

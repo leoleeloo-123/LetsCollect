@@ -214,7 +214,7 @@ function createDerivedSignals(
       sourceMaterialIds: [sharedMaterial],
       summary: isCrystal ? "A crystal detail in common" : "A shared matte softness",
       detail: isCrystal
-        ? "Diamond Unicorn appears as a crystal point of light in both collecting paths."
+        ? "A future crystal material preference appears in both collecting paths."
         : "Both collecting paths currently make room for softly finished matte Companions."
     });
   }

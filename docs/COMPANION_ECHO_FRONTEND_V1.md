@@ -74,8 +74,8 @@ The redesign does not replace the proven rendering stack.
 - The Color series contains those twenty-four matte models only. Thirteen
   configured special-series cards use explicit model pools and cost six tickets
   per draw.
-- Diamond Unicorn and Diamond Dog are archived. Five native crystal tints remain
-  only for historical local collections and internal Labs; no new draw can select them.
+- Diamond Unicorn, Diamond Dog, and Jelly Jade are fully offline archives. The
+  current frontend has no historical-item renderer, tint IDs, or retired Labs.
 
 The initial frontend migration did not change a GLB, material shader, mask
 texture, or probability constant. The subsequent Collect series iteration adds
@@ -227,7 +227,9 @@ Safe rollback options are:
    `archive/react-mvp-v1/` to the repository root while retaining the shared
    `public/` assets.
 
-The historical single-file hero under `legacy/hero-prototype/` remains untouched.
+The historical single-file Hero was removed from the working tree after the
+React replacement was verified. It remains recoverable from Git commit
+`d34f28c` for a documented historical rollback.
 
 ## Deliberate limits
 

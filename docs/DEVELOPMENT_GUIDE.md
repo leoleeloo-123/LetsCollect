@@ -2,7 +2,9 @@
 
 ## Current Approach
 
-The formal product shell now uses React + Vite + TypeScript. The production legacy HTML entry remains active until the React shell is promoted through a separate deployment step.
+The formal product shell uses React + Vite + TypeScript. The retired
+single-file HTML Hero has been removed from the working tree after the React
+replacement and is available only through Git history.
 
 ## Local React Development
 
@@ -20,9 +22,10 @@ If using the Codex bundled runtime, ensure the bundled Node directory is on `PAT
 ## Change Strategy
 
 - Keep changes small and documented.
-- Preserve the working hero page until a replacement is verified.
+- Treat the root `index.html` and `src/` application as the active entry.
 - Extract before expanding: ThreeViewer, data, config, styles, then pages.
-- Avoid adding product logic directly inside `hero-jelly-jade-toy.html`.
+- Restore the retired single-file Hero from commit `d34f28c` only for a
+  documented rollback or historical comparison.
 - Avoid adding Three.js into page components before the ToyViewer boundary is defined.
 
 ## Verification Checklist

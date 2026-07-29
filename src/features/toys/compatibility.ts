@@ -1,5 +1,5 @@
 import type { Collectible, MaterialTraits } from "../../types/toy";
-import { colorAnimalsSeries, specialExhibitsSeries } from "./activeSeries";
+import { colorAnimalsSeries, getColorAnimalGrade } from "./activeSeries";
 import { getToyModel, getToyPalette } from "./catalog";
 
 type StoredCollectible = Omit<
@@ -7,7 +7,7 @@ type StoredCollectible = Omit<
   "materialId" | "materialGrade" | "materialTraits"
 > & Partial<Pick<Collectible, "materialId" | "materialGrade" | "materialTraits">>;
 
-function deriveLegacyTraits(toy: StoredCollectible): MaterialTraits {
+function deriveStoredTraits(toy: StoredCollectible): MaterialTraits {
   return {
     craftsmanship: toy.qualityScore,
     finish: toy.appearance.luster,
@@ -17,24 +17,21 @@ function deriveLegacyTraits(toy: StoredCollectible): MaterialTraits {
   };
 }
 
-/** Adds the V2 material boundary without changing a V1 collectible identity. */
+/** Normalizes a stored active collectible; retired model families are filtered elsewhere. */
 export function normalizeStoredCollectible(toy: StoredCollectible): Collectible {
-  const materialId = toy.materialId ?? "jade";
-  const activeModelIds = [...colorAnimalsSeries.modelIds, ...specialExhibitsSeries.modelIds];
-  const name = activeModelIds.includes(toy.modelId)
+  const isCurrentModel = colorAnimalsSeries.modelIds.includes(toy.modelId);
+  const name = isCurrentModel
     ? getToyPalette(toy.paletteId).name + getToyModel(toy.modelId).name
     : toy.name;
   return {
     ...toy,
     name,
-    materialId,
-    materialGrade: toy.materialGrade ?? toy.jadeGrade ?? "果冻玉",
-    materialTraits: toy.materialTraits ?? deriveLegacyTraits(toy)
+    materialId: "plastic",
+    materialGrade: toy.materialGrade ?? getColorAnimalGrade(toy.rarity),
+    materialTraits: toy.materialTraits ?? deriveStoredTraits(toy)
   };
 }
 
 export function getCollectibleGradeLabel(toy: Collectible) {
-  return toy.materialId === "jade"
-    ? toy.jadeGrade ?? toy.materialGrade
-    : toy.materialGrade;
+  return toy.materialGrade;
 }

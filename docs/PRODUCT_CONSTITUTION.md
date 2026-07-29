@@ -133,8 +133,8 @@ Echo 不依赖并且不应展示：
 - 固定的柔雾树脂表现；
 - 色彩系列中的二十四款 matte 模型与九个常规色值；
 - `collectSeries.ts` 注册的十三个特殊池，全部每次消耗六张券；
-- Diamond Unicorn 与 Diamond Dog 两只水晶 Companion 及五个运行时 tint 已归档，
-  仅保留给已有本地藏品、详情与内部 Lab；当前 Collect 货架和新抽取都不使用；
+- Diamond Unicorn、Diamond Dog、Jelly Jade 及其旧 tint 已完全离线归档，
+  当前应用不再提供已有本地藏品、详情或 Lab 兼容；
 - 当前抽取、收藏、缩略图与 3D 详情能力。
 
 二十四个普通模型的换色目标不同；“colorway”不等于每只模型都改变完整身体颜色。
@@ -189,7 +189,8 @@ Agent 可以提出使用当前模型、颜色、权重、活动时长、任务�
 - GLB 保持移动端优化并使用版本化路径；
 - 必须有 loading、error、retry 和首次访问可用的静态 fallback；
 - 动效尊重 `prefers-reduced-motion`；
-- Legacy Hero 继续保留为视觉和行为参考，直到迁移文档明确替代与回滚。
+- React + Vite 应用已经替代单文件 Hero；旧实现不再保留在工作树，只通过
+  Git 历史提供有记录的回滚。
 
 ## 十、视觉原则
 

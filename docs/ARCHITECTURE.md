@@ -105,7 +105,7 @@ Collect -> Collection -> Echo
 
 `Collect` remains the dominant experience. `Echo` is a small, quiet layer derived from collection behavior; it is not a friend list, feed, chat, dating, presence, follower, or match-rate system. An Evolution Agent console may live on a separate clearly marked internal/demo route such as `/agent`.
 
-Existing 3D, draw, reveal, collection, responsive shell, and theme foundations should be evolved in place. The working Legacy Hero remains a visual reference until a documented migration step explicitly replaces its remaining role.
+Existing 3D, draw, reveal, collection, responsive shell, and theme foundations should be evolved in place. The React + Vite application has replaced the retired single-file Hero; the old implementation is no longer kept in the working tree and is available only through Git history for a documented rollback.
 
 ## Target Adapter And Service Boundaries
 

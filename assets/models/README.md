@@ -62,30 +62,24 @@ byte-identical.
 | `color-black-cat` | `model-source-v001.glb` | `model-mobile-v001.glb` |
 | `color-cool-wolf` | `model-source-v001.glb` | `model-mobile-v001.glb` |
 
-## Legacy Source Coverage
+## Fully Archived Jelly Jade and Crystal Models
 
-| Toy slug | Source status | Runtime status |
-| --- | --- | --- |
-| `jelly-jade-bird` | `model-source-v001.glb` present | Legacy runtime present |
-| `jelly-jade-bunny` | `model-source-v001.glb` present | Legacy runtime present |
-| `jelly-jade-doggy` | `model-source-v001.glb` present | Legacy runtime present |
-| `jelly-jade-karpy` | `model-source-v001.glb` present | Legacy runtime present |
-| `jelly-jade-kitty` | `model-source-v001.glb` present | Legacy runtime present |
-| `jelly-jade-unicorn` | Source GLB missing | Legacy runtime present |
+| Toy slug | Archived source | Archived runtime | Browser status |
+| --- | --- | --- | --- |
+| `jelly-jade-bird` | `assets/models/archive/jelly-jade-bird/source/` | `assets/models/archive/jelly-jade-bird/runtime/` | Offline |
+| `jelly-jade-bunny` | `assets/models/archive/jelly-jade-bunny/source/` | `assets/models/archive/jelly-jade-bunny/runtime/` | Offline |
+| `jelly-jade-doggy` | `assets/models/archive/jelly-jade-doggy/source/` | `assets/models/archive/jelly-jade-doggy/runtime/` | Offline |
+| `jelly-jade-karpy` | `assets/models/archive/jelly-jade-karpy/source/` | `assets/models/archive/jelly-jade-karpy/runtime/` | Offline |
+| `jelly-jade-kitty` | `assets/models/archive/jelly-jade-kitty/source/` | `assets/models/archive/jelly-jade-kitty/runtime/` | Offline |
+| `jelly-jade-unicorn` | Source GLB unavailable | `assets/models/archive/jelly-jade-unicorn/runtime/` | Offline |
+| `diamond-dog` | `assets/models/archive/diamond-dog/source/` | `assets/models/archive/diamond-dog/runtime/` | Offline |
+| `diamond-unicorn` | Retained notes only | `assets/models/archive/diamond-unicorn/runtime/` | Offline |
 
-The remaining missing source GLB is a known legacy gap. Do not infer that a runtime
-GLB is the editable source unless that provenance is documented.
-
-## Archived Crystal Studies
-
-| Toy slug | Archived source | Compatibility runtime |
-| --- | --- | --- |
-| `diamond-dog` | `assets/models/archive/diamond-dog/source/` | Retained for historical local collections and the internal Lab |
-| `diamond-unicorn` | `assets/models/archive/diamond-unicorn/source/` (notes only) | Retained for historical local collections and the internal Lab |
-
-Neither crystal model is active or eligible for a new draw.
-
-Color Teddy is archived locally under `assets/models/archive/color-teddy/`.
+The archived payloads are Git-ignored and never browser-served. Each folder's
+tracked `README.md` records byte sizes, SHA-256 values, previous paths, and the
+restore boundary. The Jelly Jade Unicorn source GLB remains a known provenance
+gap; do not infer source status from its runtime exports.
+Color Teddy is archived locallyColor Teddy is archived locally under `assets/models/archive/color-teddy/`.
 It has no production runtime, catalog entry, draw eligibility, or compatibility
 contract.
 

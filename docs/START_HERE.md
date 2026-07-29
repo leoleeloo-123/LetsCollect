@@ -78,7 +78,8 @@ GitHub：
 - 当前改造分支是 `codex/companion-echo-frontend`；
 - 推送 `main` 会触发 Vercel Production；
 - `archive/react-mvp-v1/` 保存改造前 React MVP；
-- `legacy/hero-prototype/` 保存更早的 HTML Hero；
+- 更早的单文件 HTML Hero 已在 React 替代完成后从工作树移除；如需历史回滚，
+  从 Git 提交 `d34f28c` 恢复；
 - 未经用户明确确认，不推送 `main`、不改变线上根入口。
 
 ## Current reality：当前分支应用
@@ -121,8 +122,8 @@ Primary navigation 只有 Collect、Collection、Echo。Agent 入口被明确标
 - 二十四个 active matte Color Animals，包含皇冠小鸟与耳罩企鹅；
 - 奶油小熊已整体归档，不进入 catalog、运行时、Lab 或抽取池；
 - 九个常规 colorway；
-- Diamond Unicorn 与 Diamond Dog 已归档，只保留旧藏品运行兼容；
-- 五个旧晶体 tint 只保留给历史藏品与内部 Lab；
+- Diamond Unicorn、Diamond Dog 与全部 Jelly Jade 已完全离线归档；
+- 当前代码不保留旧晶体 tint、历史藏品渲染或对应 Lab；
 - 色彩系列包含二十四个柔雾模型，每个色系严格 `1 / 24`；
 - 十三个特殊系列按集中配置组合，全部使用 6 张券；
 - 旧 `/draw` 与系列抽取都只生成二十四只正式柔雾伙伴。
@@ -220,7 +221,8 @@ pnpm run build
 4. 真实抽取和票券写入必须由可信服务端负责；
 5. current、target、planned 不得混写；
 6. Agent 不得生成不存在的资产或跳过人工批准；
-7. Legacy Hero 和 React MVP archive 在替代流程完成远程验证前继续保留；
+7. React MVP archive 继续保留；已退役的单文件 Hero 只通过 Git 历史恢复，
+   不再保留在当前工作树；
 8. 未经用户明确确认，不修改线上根入口或推送到 `main`。
 
 藏品生成与未来数据边界见：

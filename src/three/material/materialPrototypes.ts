@@ -15,7 +15,7 @@ export const materialPrototypeIds = [
   "crystal"
 ] as const;
 
-export type MaterialPrototypeId = Exclude<ToyMaterialId, "jade">;
+export type MaterialPrototypeId = ToyMaterialId;
 
 export const materialPrototypes = drawableMaterials.map(({ id, name, swatch, fidelity }) => ({
   id: id as MaterialPrototypeId,

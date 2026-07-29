@@ -18,9 +18,7 @@ export function ToyVisual({ toy, size = "medium" }: ToyVisualProps) {
   const style: ToyVisualStyle = {
     "--toy-saturation": 0.78 + toy.appearance.colorDepth * 0.006,
     "--toy-brightness": 1.1 - toy.appearance.colorDepth * 0.002,
-    "--toy-body-opacity": toy.materialId === "jade"
-      ? 0.72 + toy.appearance.transparency * 0.0025
-      : toy.materialId === "glass" ? 0.72 : toy.materialId === "crystal" ? 0.82 : 1
+    "--toy-body-opacity": toy.materialId === "glass" ? 0.72 : toy.materialId === "crystal" ? 0.82 : 1
   };
 
   return (

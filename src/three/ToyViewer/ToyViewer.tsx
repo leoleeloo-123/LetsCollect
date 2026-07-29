@@ -124,14 +124,13 @@ export function ToyViewer({
 
       const isCompactDevice = window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 760;
       const isTile = variant === "tile";
-      const isDiamondUnicorn = toy.modelId === "diamond-unicorn";
       const useLightweightStage = materialProfile === "compact" || isTile || (isCompactDevice && variant !== "inspect");
       const materialLightScale = toy.materialId === "glass" ? 0.5 : 1;
       const materialExposure = toy.materialId === "glass" ? 0.82 : 1.12;
       const resolvedModelUrl = isCompactDevice
         ? modelDefinition.assets.mobileModelUrl ?? availableModelUrl
         : modelDefinition.assets.modelUrl ?? availableModelUrl;
-      const needsEnvironment = !isTile && (!useLightweightStage || toy.materialId !== "jade");
+      const needsEnvironment = !isTile;
       const [{ THREE }, RoomEnvironment] = await Promise.all([
         loadToyViewerRuntime(),
         needsEnvironment ? loadRoomEnvironment() : Promise.resolve(null)
@@ -159,35 +158,6 @@ export function ToyViewer({
       currentHost.replaceChildren(renderer.domElement);
 
       const scene = new THREE.Scene();
-      const diamondBackdropResources: Array<{
-        geometry: import("three").BufferGeometry;
-        material: import("three").Material;
-      }> = [];
-      if (isDiamondUnicorn) {
-        scene.background = new THREE.Color(0xe4eae7);
-        const backdropGeometry = new THREE.PlaneGeometry(12, 9);
-        const backdropMaterial = new THREE.MeshBasicMaterial({ color: 0xdce4e1 });
-        const backdrop = new THREE.Mesh(backdropGeometry, backdropMaterial);
-        backdrop.position.z = -3.6;
-        scene.add(backdrop);
-        diamondBackdropResources.push({ geometry: backdropGeometry, material: backdropMaterial });
-
-        const accentGeometryLeft = new THREE.PlaneGeometry(2.35, 9);
-        const accentMaterialLeft = new THREE.MeshBasicMaterial({ color: 0xc8dedc });
-        const accentLeft = new THREE.Mesh(accentGeometryLeft, accentMaterialLeft);
-        accentLeft.position.set(-3.35, 0.1, -3.5);
-        accentLeft.rotation.z = -0.08;
-        scene.add(accentLeft);
-        diamondBackdropResources.push({ geometry: accentGeometryLeft, material: accentMaterialLeft });
-
-        const accentGeometryRight = new THREE.PlaneGeometry(2.35, 9);
-        const accentMaterialRight = new THREE.MeshBasicMaterial({ color: 0xe6d2db });
-        const accentRight = new THREE.Mesh(accentGeometryRight, accentMaterialRight);
-        accentRight.position.set(3.35, -0.12, -3.48);
-        accentRight.rotation.z = 0.09;
-        scene.add(accentRight);
-        diamondBackdropResources.push({ geometry: accentGeometryRight, material: accentMaterialRight });
-      }
       const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
       camera.position.set(0, variant === "tile" ? 0.48 : 0.72, variant === "inspect" ? 7.35 : variant === "hero" ? 6.85 : variant === "tile" ? 7.35 : 8.05);
       camera.lookAt(0, 0.08, 0);
@@ -451,10 +421,6 @@ export function ToyViewer({
         colorKarpyMask?.dispose();
         colorKoalaMask?.dispose();
         environmentTexture?.dispose();
-        diamondBackdropResources.forEach(({ geometry, material }) => {
-          geometry.dispose();
-          material.dispose();
-        });
         pedestal.geometry.dispose();
         (pedestal.material as import("three").Material).dispose();
         contactShadow.geometry.dispose();

@@ -9,7 +9,9 @@ assets/models/source/{toy-slug}/
 ```
 
 Source GLBs are local-only rebuild inputs. They are ignored by Git and must
-never be imported by React, Three.js, or a browser URL.
+never be imported by React, Three.js, or a browser URL. The canonical source
+area is reserved for current formal models; retired families belong under
+`assets/models/archive/{toy-slug}/source/` with a tracked archive manifest.
 
 When a new GLB arrives:
 

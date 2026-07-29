@@ -6,7 +6,7 @@ export type MaterialDefinition = {
   probability: number;
   baseQuality: number;
   swatch: string;
-  fidelity: "legacy" | "ready" | "approximate";
+  fidelity: "ready" | "approximate";
   traitLabels: Record<keyof MaterialTraits, string>;
 };
 
@@ -19,7 +19,6 @@ const genericTraitLabels: Record<keyof MaterialTraits, string> = {
 };
 
 export const toyMaterials: MaterialDefinition[] = [
-  { id: "jade", name: "果冻玉", probability: 0, baseQuality: 50, swatch: "#78d9b7", fidelity: "legacy", traitLabels: { craftsmanship: "综合品质", finish: "光泽度", purity: "通透度", character: "色泽度", brilliance: "荧光度" } },
   { id: "plastic", name: "塑料", probability: 30, baseQuality: 15, swatch: "#ef6f86", fidelity: "ready", traitLabels: { craftsmanship: "注塑工艺", finish: "光洁度", purity: "透明度", character: "色彩度", brilliance: "亮片度" } },
   { id: "glass", name: "玻璃", probability: 24, baseQuality: 20, swatch: "#f3fbff", fidelity: "ready", traitLabels: { craftsmanship: "熔制工艺", finish: "平整度", purity: "澄净度", character: "无瑕度", brilliance: "透光度" } },
   { id: "wood", name: "木头", probability: 19, baseQuality: 32, swatch: "#9a5d35", fidelity: "approximate", traitLabels: { craftsmanship: "雕刻工艺", finish: "细腻度", purity: "完整度", character: "纹理度", brilliance: "包浆度" } },
@@ -35,7 +34,7 @@ export const drawableMaterials = toyMaterials.filter((material) => material.prob
 const materialById = new Map(toyMaterials.map((material) => [material.id, material]));
 
 export function getToyMaterial(id: ToyMaterialId) {
-  return materialById.get(id) ?? materialById.get("jade") ?? toyMaterials[0];
+  return materialById.get(id) ?? toyMaterials[0];
 }
 
 export function getMaterialGrade(rarity: RarityCode) {

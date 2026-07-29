@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { AppearanceVector } from "../../components/collectibles/AppearanceVector";
 import { ToyViewerPanel } from "../../components/three-viewer/ToyViewerPanel";
 import { getToyModel, getToyPalette, rarityLabels } from "../toys/catalog";
-import { isColorAnimalCollectible, isSpecialExhibitCollectible } from "../toys/activeSeries";
+
 import { getCollectibleGradeLabel } from "../toys/compatibility";
 import { getCollectibleMaterialLabel, getCollectiblePaletteLabel } from "../toys/presentation";
 import type { Collectible } from "../../types/toy";
@@ -19,11 +19,7 @@ export function ToyDetailSheet({ toy, onClose }: ToyDetailSheetProps) {
   const materialLabel = getCollectibleMaterialLabel(toy);
   const paletteFieldLabel = getCollectiblePaletteLabel(toy);
   const grade = getCollectibleGradeLabel(toy);
-  const gradeFieldLabel = isSpecialExhibitCollectible(toy)
-    ? "展品等级"
-    : isColorAnimalCollectible(toy)
-      ? "配色等级"
-      : toy.materialId === "jade" ? "通透档位" : "品相";
+  const gradeFieldLabel = "配色等级";
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
@@ -68,7 +64,7 @@ export function ToyDetailSheet({ toy, onClose }: ToyDetailSheetProps) {
               <div><dt>造型</dt><dd>{model.name}</dd></div>
               <div><dt>表面</dt><dd>{materialLabel}</dd></div>
               <div><dt>{paletteFieldLabel}</dt><dd>{palette.name}</dd></div>
-              <div><dt>{gradeFieldLabel}</dt><dd>{toy.materialId === "jade" ? ["T", toy.transparencyGrade ?? "-", " · ", grade].join("") : grade}</dd></div>
+              <div><dt>{gradeFieldLabel}</dt><dd>{grade}</dd></div>
               <div><dt>外观种子</dt><dd>{toy.appearanceSeed}</dd></div>
               <div><dt>生成规则</dt><dd>V{toy.generationVersion}</dd></div>
             </dl>

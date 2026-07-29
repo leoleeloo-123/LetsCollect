@@ -61,9 +61,9 @@ export const echoCandidateFixtures: EchoCandidateFixture[] = [
         seed: 4102
       }),
       representative({
-        id: "moss-unicorn",
-        modelId: "diamond-unicorn",
-        paletteId: "diamond-mint",
+        id: "moss-koala",
+        modelId: "color-koala",
+        paletteId: "candy-mint",
         seed: 4103
       })
     ],
@@ -85,13 +85,12 @@ export const echoCandidateFixtures: EchoCandidateFixture[] = [
         detail: "You both chose Companions whose tiny carried objects hold the strongest color."
       }),
       signal({
-        id: "moss-crystal-curiosity",
-        kind: "material",
-        sourceModelIds: ["diamond-unicorn"],
-        sourcePaletteIds: ["diamond-mint"],
-        sourceMaterialIds: ["crystal"],
-        summary: "A little crystal curiosity",
-        detail: "A mint-tinted crystal piece appears as a quiet exception in both collecting paths."
+        id: "moss-accessory-focus",
+        kind: "representative",
+        sourceModelIds: ["color-koala"],
+        sourcePaletteIds: ["candy-mint"],
+        summary: "A shared accessory focus",
+        detail: "A mint sleep cap becomes a small, calm signature in both collecting paths."
       })
     ],
     collectTogether: task({
@@ -121,9 +120,9 @@ export const echoCandidateFixtures: EchoCandidateFixture[] = [
         seed: 4202
       }),
       representative({
-        id: "moon-unicorn",
-        modelId: "diamond-unicorn",
-        paletteId: "diamond-ice",
+        id: "moon-owl",
+        modelId: "color-owl",
+        paletteId: "sky",
         seed: 4203
       })
     ],
@@ -137,13 +136,12 @@ export const echoCandidateFixtures: EchoCandidateFixture[] = [
         detail: "Your recent choices both lean toward sky blue and quiet berry tones."
       }),
       signal({
-        id: "moon-blue-crystal",
-        kind: "material",
-        sourceModelIds: ["diamond-unicorn"],
-        sourcePaletteIds: ["diamond-ice"],
-        sourceMaterialIds: ["crystal"],
-        summary: "An icy crystal accent",
-        detail: "Each collection makes space for one clear, cool crystal highlight."
+        id: "moon-academic-accent",
+        kind: "representative",
+        sourceModelIds: ["color-owl"],
+        sourcePaletteIds: ["sky"],
+        summary: "A quiet academic accent",
+        detail: "A sky-blue academic accessory adds one calm focal point to each collection."
       })
     ],
     collectTogether: task({
@@ -275,9 +273,9 @@ export const echoCandidateFixtures: EchoCandidateFixture[] = [
         seed: 4502
       }),
       representative({
-        id: "grape-unicorn",
-        modelId: "diamond-unicorn",
-        paletteId: "diamond-rose",
+        id: "grape-fox",
+        modelId: "color-fox",
+        paletteId: "grape",
         seed: 4503
       })
     ],
@@ -291,13 +289,12 @@ export const echoCandidateFixtures: EchoCandidateFixture[] = [
         detail: "Both collections use grape and berry as calm accents rather than statement colors."
       }),
       signal({
-        id: "grape-soft-sparkle",
-        kind: "material",
-        sourceModelIds: ["diamond-unicorn"],
-        sourcePaletteIds: ["diamond-rose"],
-        sourceMaterialIds: ["crystal"],
-        summary: "One soft sparkle",
-        detail: "A rose-tinted crystal piece gives each matte collection one restrained point of light."
+        id: "grape-feather-accent",
+        kind: "representative",
+        sourceModelIds: ["color-fox"],
+        sourcePaletteIds: ["grape"],
+        summary: "A feathered purple accent",
+        detail: "A grape-colored feather gives each collection one restrained focal detail."
       })
     ],
     collectTogether: task({

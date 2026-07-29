@@ -46,13 +46,14 @@ Do not create empty source or runtime directories as placeholders.
 Current source model area:
 
 ```text
-assets/models/source/{color-*,diamond-*,jelly-jade-*}/model-source-v*.glb
+assets/models/source/{color-*}/model-source-v*.glb
+assets/models/archive/{diamond-*,jelly-jade-*}/source/model-source-v*.glb
 ```
 
 Current runtime model area:
 
 ```text
-public/models/toys/{color-*,diamond-*,jelly-jade-*}/model-*.glb
+public/models/toys/{color-*}/model-*.glb
 ```
 
 The active runtime version for each model is declared in
@@ -63,18 +64,18 @@ Only files under `public/` are served to the browser. Source files under
 `assets/` are for editing, audit, and re-export.
 
 Keep `public/models/toys/{toy-slug}/` limited to files referenced by the active
-catalog or a documented cache-safe rollback. Move intermediate masks and unused
-runtime experiments to `assets/models/archive/`.
+catalog. Move intermediate masks, unused exports, and rollback runtimes to
+`assets/models/archive/`.
 
 ## Naming Rules
 
-- Toy slug: lowercase kebab-case, for example `jelly-jade-kitty`.
+- Toy slug: lowercase kebab-case, for example `color-karpy`.
 - Source file: `model-source-v001.glb`.
 - Runtime file: `model-web-v001.glb`.
 - Mobile-specific file: `model-mobile-v001.glb`.
 - Do not overwrite a shipped runtime model without increasing the version.
-- Superseded runtime files may remain for cache-safe rollbacks, but the catalog
-  must reference only the active version.
+- Move superseded runtime files to `assets/models/archive/{toy-slug}/runtime/`;
+  unreferenced rollback GLBs must not remain under `public/`.
 
 ## Visual Consistency Checklist
 
@@ -82,7 +83,7 @@ Before compression, make sure the model follows the collectible style:
 
 - Cute blind-box proportions: large head, compact body, soft limbs.
 - Rounded silhouette, no thin spikes or fragile details.
-- Jelly jade material direction: translucent, glossy, softly colored.
+- Current Color Animals direction: soft matte resin, readable silhouette, and protected authored details.
 - Similar perceived scale to existing unicorn in `ToyViewer`.
 - Origin near the center bottom or model center, with predictable rotation.
 - No embedded cameras or lights required by the frontend.
@@ -123,7 +124,7 @@ Avoid shipping unused textures, baked lights, or editor metadata.
 Install nothing permanently at first. Use `npx` so the repo stays light:
 
 ```bash
-npx @gltf-transform/cli@latest inspect assets/models/source/jelly-jade-kitty/model-source-v001.glb
+npx @gltf-transform/cli@latest inspect assets/models/source/color-cat/model-source-v002.glb
 ```
 
 For deeper inspection, use:
