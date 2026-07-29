@@ -1,4 +1,5 @@
 import { colorAnimalPalettes } from "../toys/catalog";
+import { formalColorAnimalModelIds } from "../toys/formalRoster";
 import { generateCollectible } from "../toys/generator";
 import type {
   Collectible,
@@ -58,32 +59,7 @@ const regularPaletteIds = colorAnimalPalettes.map(
   (palette) => palette.id
 ) as readonly ToyPaletteId[];
 
-const regularModelIds = [
-  "color-otter",
-  "color-bird",
-  "color-penguin",
-  "color-bunny",
-  "color-cat",
-  "color-panda",
-  "color-bear-singer",
-  "color-dog-camera",
-  "color-dog-drum",
-  "color-seal",
-  "color-karpy",
-  "color-koala",
-  "color-racoon",
-  "color-hamster-icecream",
-  "color-dino",
-  "color-fox",
-  "color-deer",
-  "color-sheep",
-  "color-sloth",
-  "color-owl",
-  "color-duck",
-  "color-guinea-pig",
-  "color-black-cat",
-  "color-cool-wolf"
-] as const satisfies readonly [ToyModelId, ...ToyModelId[]];
+const regularModelIds = formalColorAnimalModelIds;
 
 export const colorSpectrumSeries = {
   id: "color-spectrum",

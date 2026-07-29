@@ -1,4 +1,5 @@
-import type { ToyModelId, ToyPaletteId } from "../types/toy";
+import type { ToyPaletteId } from "../types/toy";
+import { formalColorAnimalModelIds } from "../features/toys/formalRoster";
 
 export type CapabilityAvailability = "available" | "planned" | "experimental";
 export type CapabilityCategory = "asset" | "experience" | "platform" | "agent" | "reward";
@@ -29,32 +30,7 @@ export const crystalAvailableColorIds = [
   ...matteColorIds
 ] as const satisfies readonly ToyPaletteId[];
 
-export const currentAssetIds = [
-  "color-otter",
-  "color-bird",
-  "color-penguin",
-  "color-bunny",
-  "color-cat",
-  "color-panda",
-  "color-bear-singer",
-  "color-dog-camera",
-  "color-dog-drum",
-  "color-seal",
-  "color-karpy",
-  "color-koala",
-  "color-racoon",
-  "color-hamster-icecream",
-  "color-dino",
-  "color-fox",
-  "color-deer",
-  "color-sheep",
-  "color-sloth",
-  "color-owl",
-  "color-duck",
-  "color-guinea-pig",
-  "color-black-cat",
-  "color-cool-wolf"
-] as const satisfies readonly ToyModelId[];
+export const currentAssetIds = formalColorAnimalModelIds;
 
 export type CurrentAssetId = (typeof currentAssetIds)[number];
 

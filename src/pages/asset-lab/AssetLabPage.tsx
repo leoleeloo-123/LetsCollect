@@ -1,4 +1,4 @@
-import { ArrowLeft, Boxes, Palette, Rotate3D } from "lucide-react";
+import { ArrowLeft, Grid3X3, Palette, Rotate3D } from "lucide-react";
 import { useMemo, useState, type ChangeEvent } from "react";
 import { Link } from "react-router-dom";
 import { routes } from "../../app/routes";
@@ -217,10 +217,10 @@ export function AssetLabPage() {
           <ArrowLeft size={18} aria-hidden="true" />
           返回 Collect
         </Link>
-        <span className="asset-lab-header__mark">
-          <Boxes size={15} aria-hidden="true" />
-          Let's Collect · ASSET LAB
-        </span>
+        <Link className="asset-lab-header__mark" to={routes.appearanceLab}>
+          <Grid3X3 size={15} aria-hidden="true" />
+          24 × 9 外观矩阵
+        </Link>
       </header>
 
       <section className="asset-lab-intro" aria-labelledby="asset-lab-title">

@@ -5,6 +5,7 @@ import type {
   ToyPaletteDefinition,
   ToyPaletteId
 } from "../../types/toy";
+import { formalColorAnimalModelIds } from "./formalRoster";
 
 export const toyModels: ToyModelDefinition[] = [
   {
@@ -532,7 +533,7 @@ export const specialExhibitModels = [
   diamondDogModel
 ] as const;
 
-export const colorAnimalModels = [
+const availableColorAnimalModels = [
   colorOtterModel,
   colorBirdModel,
   colorPenguinModel,
@@ -558,6 +559,29 @@ export const colorAnimalModels = [
   colorBlackCatModel,
   colorCoolWolfModel
 ] as const;
+
+const availableColorAnimalModelById = new Map(
+  availableColorAnimalModels.map((model) => [model.id, model])
+);
+
+if (
+  new Set(formalColorAnimalModelIds).size !== formalColorAnimalModelIds.length
+) {
+  throw new Error("正式 Color Animal 阵容包含重复 ID");
+}
+
+export const colorAnimalModels = formalColorAnimalModelIds.map((id) => {
+  const model = availableColorAnimalModelById.get(id);
+  if (!model) {
+    throw new Error(`正式 Color Animal 阵容缺少模型定义：${id}`);
+  }
+  return model;
+});
+
+if (colorAnimalModels.length !== availableColorAnimalModels.length) {
+  throw new Error("存在未加入正式阵容的 Color Animal 模型定义");
+}
+
 export const toyPalettes: ToyPaletteDefinition[] = [
   { id: "rose", name: "樱花粉", color: "#ff789e", attenuation: "#8f2346", emissive: "#c83464", glow: "#ff7da5" },
   { id: "mint", name: "薄荷绿", color: "#78d9b7", attenuation: "#145f4b", emissive: "#29936f", glow: "#78e6bf" },

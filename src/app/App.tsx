@@ -36,6 +36,7 @@ const ColorRacoonLabPage = lazy(() => import("../pages/color-racoon-lab/ColorRac
 const ColorSealLabPage = lazy(() => import("../pages/color-seal-lab/ColorSealLabPage").then((module) => ({ default: module.ColorSealLabPage })));
 const DiamondDogLabPage = lazy(() => import("../pages/diamond-dog-lab/DiamondDogLabPage").then((module) => ({ default: module.DiamondDogLabPage })));
 const DiamondUnicornLabPage = lazy(() => import("../pages/diamond-unicorn-lab/DiamondUnicornLabPage").then((module) => ({ default: module.DiamondUnicornLabPage })));
+const AppearanceLabPage = lazy(() => import("../pages/appearance-lab/AppearanceLabPage").then((module) => ({ default: module.AppearanceLabPage })));
 const AssetLabPage = lazy(() => import("../pages/asset-lab/AssetLabPage").then((module) => ({ default: module.AssetLabPage })));
 const NotFoundPage = lazy(() => import("../pages/not-found/NotFoundPage").then((module) => ({ default: module.NotFoundPage })));
 
@@ -81,6 +82,7 @@ export function App() {
         <Route path="color-seal-lab" element={<ColorSealLabPage />} />
         <Route path="diamond-dog-lab" element={<DiamondDogLabPage />} />
         <Route path="diamond-unicorn-lab" element={<DiamondUnicornLabPage />} />
+        <Route path="appearance-lab" element={<AppearanceLabPage />} />
         <Route path="asset-lab" element={<AssetLabPage />} />
         <Route element={<RequireProfile />}>
           <Route element={<AppLayout />}>

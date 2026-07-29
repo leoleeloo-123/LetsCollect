@@ -11,6 +11,10 @@
   concise archive manifests.
 - Synchronized the TypeScript capability registry with all twenty-four active
   models.
+- Added a canonical formal-roster contract shared by the catalog, draw series,
+  and capability registry.
+- Added `/appearance-lab` with a lazy 24-by-9 matte comparison matrix, palette
+  and model filters, and one live 3D inspector.
 
 ## 2026-07-28
 
