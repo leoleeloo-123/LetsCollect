@@ -117,9 +117,9 @@ export function AppearanceLabPage() {
   return (
     <main className="appearance-lab">
       <header className="appearance-lab__header">
-        <Link className="appearance-lab__back" to="/asset-lab">
+        <Link className="appearance-lab__back" to="/">
           <ArrowLeft size={17} />
-          资产实验室
+          返回首页
         </Link>
 
         <div className="appearance-lab__heading">

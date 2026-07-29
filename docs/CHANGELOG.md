@@ -15,6 +15,8 @@
   and capability registry.
 - Added `/appearance-lab` with a lazy 24-by-9 matte comparison matrix, palette
   and model filters, and one live 3D inspector.
+- Removed the duplicate multi-canvas Asset Lab implementation and redirected
+  its legacy route to Appearance Lab.
 
 ## 2026-07-28
 

@@ -37,6 +37,7 @@
   3D 检查器；
 - 216 个缩略图按可视区域进入串行队列，不创建 216 个 WebGL context；
 - 手机端全阵容视图固定为 4 列，桌面端按模型展示 9 色横向对照；
+- 旧 `/asset-lab` 多画布页面已删除，原地址只重定向到 `/appearance-lab`；
 - 金属与珠光闪粉仍须等待阶段 2 的生产渲染入口收敛。
 
 - 正式范围只读取 `colorAnimalModels`，不显示 Jelly Jade、Crystal 或 archive。
