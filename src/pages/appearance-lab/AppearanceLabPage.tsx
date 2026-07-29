@@ -1,5 +1,12 @@
 import { useMemo, useState } from "react";
-import { ArrowLeft, Check, Grid3X3, Palette, Rotate3D } from "lucide-react";
+import {
+  ArrowLeft,
+  Check,
+  Grid3X3,
+  Palette,
+  Rotate3D,
+  Sparkles
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { ToyThumbnail } from "../../components/toys/ToyThumbnail";
 import {
@@ -8,6 +15,10 @@ import {
   getToyModel,
   getToyPalette
 } from "../../features/toys/catalog";
+import {
+  getToySurfaceStyle,
+  toySurfaceStyles
+} from "../../features/toys/surfaceStyles";
 import {
   formalColorAnimalModelIds,
   type FormalColorAnimalModelId
@@ -18,7 +29,11 @@ import {
   type AvailableCollectSeriesId
 } from "../../features/collect/collectSeries";
 import { ToyViewer } from "../../three/ToyViewer/ToyViewer";
-import type { Collectible, ToyPaletteId } from "../../types/toy";
+import type {
+  Collectible,
+  ToyPaletteId,
+  ToySurfaceStyleId
+} from "../../types/toy";
 
 type SeriesFilter = "all" | AvailableCollectSeriesId;
 type ModelFilter = "all" | FormalColorAnimalModelId;
@@ -53,6 +68,22 @@ function createAppearanceMatrix() {
   return toys;
 }
 
+function applySurfaceStyleToMatrix(
+  matrix: Map<string, Collectible>,
+  surfaceStyleId: ToySurfaceStyleId
+) {
+  if (surfaceStyleId === "matte") return matrix;
+
+  const surfaced = new Map<string, Collectible>();
+  matrix.forEach((toy, key) => {
+    surfaced.set(key, {
+      ...toy,
+      surfaceStyleId,
+      appearanceSignature: `${toy.appearanceSignature}:surface:${surfaceStyleId}`
+    });
+  });
+  return surfaced;
+}
 type AppearanceCellProps = {
   toy: Collectible;
   label: string;
@@ -101,14 +132,22 @@ export function AppearanceLabPage() {
   const [paletteFilter, setPaletteFilter] = useState<PaletteFilter>(
     colorAnimalPalettes[0].id
   );
+  const [surfaceStyleId, setSurfaceStyleId] =
+    useState<ToySurfaceStyleId>("matte");
   const [selectedKey, setSelectedKey] = useState(() =>
     getMatrixKey(formalColorAnimalModelIds[0], colorAnimalPalettes[0].id)
   );
 
-  const selectedToy = matrix.get(selectedKey)
-    ?? matrix.values().next().value as Collectible;
+  const displayMatrix = useMemo(
+    () => applySurfaceStyleToMatrix(matrix, surfaceStyleId),
+    [matrix, surfaceStyleId]
+  );
+  const selectedToy = displayMatrix.get(selectedKey)
+    ?? displayMatrix.values().next().value as Collectible;
   const selectedModel = getToyModel(selectedToy.modelId);
   const selectedPalette = getToyPalette(selectedToy.paletteId);
+  const selectedSurface = getToySurfaceStyle(surfaceStyleId);
+  const surfaceUsesFixedColor = selectedSurface.colorOverride !== null;
   const selectedSeries = seriesFilter === "all"
     ? null
     : collectSeries.find((series) => series.id === seriesFilter) ?? null;
@@ -118,9 +157,11 @@ export function AppearanceLabPage() {
   const visibleModels = modelFilter === "all"
     ? seriesModels
     : seriesModels.filter((model) => model.id === modelFilter);
-  const visiblePalettes = paletteFilter === "all"
-    ? colorAnimalPalettes
-    : colorAnimalPalettes.filter((palette) => palette.id === paletteFilter);
+  const visiblePalettes = surfaceUsesFixedColor
+    ? [getToyPalette(colorAnimalPalettes[0].id)]
+    : paletteFilter === "all"
+      ? colorAnimalPalettes
+      : colorAnimalPalettes.filter((palette) => palette.id === paletteFilter);
   const visibleCombinationCount = visibleModels.length * visiblePalettes.length;
 
   const selectToy = (
@@ -128,6 +169,13 @@ export function AppearanceLabPage() {
     paletteId: ToyPaletteId
   ) => {
     setSelectedKey(getMatrixKey(modelId, paletteId));
+  };
+
+  const selectSurface = (nextSurfaceStyleId: ToySurfaceStyleId) => {
+    setSurfaceStyleId(nextSurfaceStyleId);
+    if (getToySurfaceStyle(nextSurfaceStyleId).colorOverride) {
+      setPaletteFilter(colorAnimalPalettes[0].id);
+    }
   };
 
   const selectSeries = (nextSeriesFilter: SeriesFilter) => {
@@ -159,8 +207,8 @@ export function AppearanceLabPage() {
             <Grid3X3 size={15} />
             APPEARANCE LAB
           </p>
-          <h1>24 只玩偶，全配色基线</h1>
-          <p>正式阵容 · 柔雾树脂 · 9 组配色</p>
+          <h1>24 只玩偶，外观实验室</h1>
+          <p>正式阵容 · 柔雾树脂 / 金属金 · 9 组配色</p>
         </div>
 
         <dl className="appearance-lab__metrics">
@@ -169,12 +217,14 @@ export function AppearanceLabPage() {
             <dd>{formalColorAnimalModelIds.length}</dd>
           </div>
           <div>
-            <dt>配色</dt>
-            <dd>{colorAnimalPalettes.length}</dd>
+            <dt>表面</dt>
+            <dd>{toySurfaceStyles.length}</dd>
           </div>
           <div>
             <dt>组合</dt>
-            <dd>{formalColorAnimalModelIds.length * colorAnimalPalettes.length}</dd>
+            <dd>
+              {formalColorAnimalModelIds.length * (colorAnimalPalettes.length + 1)}
+            </dd>
           </div>
         </dl>
       </header>
@@ -218,16 +268,42 @@ export function AppearanceLabPage() {
           </select>
         </label>
 
+        <div className="appearance-lab__palette-filter appearance-lab__surface-filter">
+          <span className="appearance-lab__filter-label">
+            <Sparkles size={15} />
+            表面
+          </span>
+          <div className="appearance-lab__palette-options">
+            {toySurfaceStyles.map((surface) => (
+              <button
+                type="button"
+                key={surface.id}
+                className={surfaceStyleId === surface.id ? "is-active" : ""}
+                aria-pressed={surfaceStyleId === surface.id}
+                onClick={() => selectSurface(surface.id)}
+              >
+                <span
+                  className="appearance-lab__swatch"
+                  style={{ backgroundColor: surface.swatch }}
+                  aria-hidden="true"
+                />
+                {surface.name}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <div className="appearance-lab__palette-filter">
           <span className="appearance-lab__filter-label">
             <Palette size={15} />
-            配色
+            {surfaceUsesFixedColor ? "固定配色" : "配色"}
           </span>
           <div className="appearance-lab__palette-options">
             <button
               type="button"
               className={paletteFilter === "all" ? "is-active" : ""}
               aria-pressed={paletteFilter === "all"}
+              disabled={surfaceUsesFixedColor}
               onClick={() => setPaletteFilter("all")}
             >
               <Grid3X3 size={14} />
@@ -239,6 +315,7 @@ export function AppearanceLabPage() {
                 key={palette.id}
                 className={paletteFilter === palette.id ? "is-active" : ""}
                 aria-pressed={paletteFilter === palette.id}
+                disabled={surfaceUsesFixedColor}
                 onClick={() => setPaletteFilter(palette.id)}
               >
                 <span
@@ -260,7 +337,7 @@ export function AppearanceLabPage() {
               <Rotate3D size={15} />
               实时检查
             </span>
-            <span>柔雾</span>
+            <span>{selectedSurface.shortName}</span>
           </div>
           <div className="appearance-inspector__viewer">
             <ToyViewer
@@ -275,12 +352,19 @@ export function AppearanceLabPage() {
           <div className="appearance-inspector__meta">
             <span
               className="appearance-inspector__swatch"
-              style={{ backgroundColor: selectedPalette.color }}
+              style={{
+                backgroundColor: selectedSurface.colorOverride
+                  ?? selectedPalette.color
+              }}
               aria-hidden="true"
             />
             <div>
               <strong>{selectedModel.name}</strong>
-              <span>{selectedPalette.name}</span>
+              <span>
+                {surfaceUsesFixedColor
+                  ? selectedSurface.name
+                  : `${selectedSurface.name} · ${selectedPalette.name}`}
+              </span>
             </div>
           </div>
         </aside>
@@ -293,14 +377,14 @@ export function AppearanceLabPage() {
                   ? `${selectedSeries.category === "color"
                       ? selectedSeries.eyebrow
                       : selectedSeries.title}系列`
-                  : "柔雾树脂基线"}
+                  : `${selectedSurface.name}基线`}
               </span>
               <strong>{visibleCombinationCount} 个组合</strong>
             </div>
             <span>{visibleModels.length} × {visiblePalettes.length}</span>
           </div>
 
-          {paletteFilter === "all" ? (
+          {paletteFilter === "all" && !surfaceUsesFixedColor ? (
             <div className="appearance-model-rows">
               {visibleModels.map((model, modelIndex) => (
                 <section className="appearance-model-row" key={model.id}>
@@ -315,7 +399,7 @@ export function AppearanceLabPage() {
                         model.id as FormalColorAnimalModelId,
                         palette.id
                       );
-                      const toy = matrix.get(key);
+                      const toy = displayMatrix.get(key);
                       if (!toy) return null;
                       return (
                         <AppearanceCell
@@ -344,14 +428,18 @@ export function AppearanceLabPage() {
                   model.id as FormalColorAnimalModelId,
                   palette.id
                 );
-                const toy = matrix.get(key);
+                const toy = displayMatrix.get(key);
                 if (!toy) return null;
                 return (
                   <AppearanceCell
                     key={key}
                     toy={toy}
                     label={model.name}
-                    sublabel={palette.name}
+                    sublabel={
+                      surfaceUsesFixedColor
+                        ? selectedSurface.name
+                        : palette.name
+                    }
                     eager
                     selected={selectedKey === key}
                     onSelect={() =>
