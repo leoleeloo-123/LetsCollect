@@ -38,6 +38,13 @@
   enters the thumbnail queue before the optional full-color matrix.
 - Removed the duplicate multi-canvas Asset Lab and excluded Appearance Lab
   routes, chunks, and styles from the production SPA build.
+- Centralized collectible-specific model preparation across `ToyViewer`,
+  `SeriesToyViewer`, and `ThumbnailRenderer`.
+- Added an optional surface-style layer with a matte-compatible default and a
+  localized metallic-gold treatment for all twenty-four active models.
+- Expanded Appearance Lab with matte/metallic-gold controls, surface-aware
+  cache identities, and a 240-combination summary without adding the Lab to
+  the production SPA bundle.
 
 ## 2026-07-28
 

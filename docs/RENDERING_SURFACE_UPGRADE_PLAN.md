@@ -1,6 +1,6 @@
 # 渲染与表面效果升级计划
 
-状态：阶段 1 已完成，准备阶段 2
+状态：阶段 2 已完成；阶段 3 的首个金属金样本已完成
 基线日期：2026-07-29
 
 ## 当前基线
@@ -34,14 +34,14 @@
 
 - 24 只正式模型 ID 已收敛到 `formalColorAnimalModelIds`，目录、抽取池与能力
   注册表共享这一清单；
-- `/appearance-lab/` 已提供 24 × 9 柔雾基线、模型筛选、配色筛选及单个实时
-  3D 检查器；
+- `/appearance-lab/` 已提供 24 × 9 柔雾基线、24 个金属金样本、系列/模型/
+  配色/表面筛选及单个实时 3D 检查器；
 - 默认先加载同一配色下的 24 只模型，确认全阵容后再手动展开全部 9 色；
 - 216 个缩略图按可视区域进入串行队列，不创建 216 个 WebGL context；
 - 手机端全阵容视图固定为 4 列，桌面端按模型展示 9 色横向对照；
 - 旧 `/asset-lab` 多画布页面与产品路由均已删除；
 - Lab 使用独立 HTML 与 React 入口，正式首页构建不包含 Lab chunk 或样式；
-- 金属与珠光闪粉仍须等待阶段 2 的生产渲染入口收敛。
+- 金属金首个样本已完成；银色、珠光闪粉与奖励规则仍待后续阶段。
 
 - 正式范围只读取 `colorAnimalModels`，不显示 Jelly Jade、Crystal 或 archive。
 - 支持按模型、颜色和表面类型筛选。
@@ -104,6 +104,21 @@ type ToyPaletteDefinition = {
 
 第一轮只做金、银和一个低强度珠光闪粉样本，不直接进入抽取经济。先在
 本地 `/appearance-lab/` 做 24 模型覆盖检查，再决定奖励与 Echo 解锁规则。
+
+### 本轮实现状态（2026-07-29）
+
+- `ToyViewer`、`SeriesToyViewer` 与 `ThumbnailRenderer` 已统一调用
+  `prepareToyAppearance`，模型分支、资源释放和调色更新不再维护三份。
+- `Collectible.surfaceStyleId` 为可选字段；缺省值始终回退到 `matte`，已有收藏
+  和普通柔雾画面不发生迁移或视觉变化。
+- `metal-gold` 使用固定金色和按 detail / compact / tile / thumbnail 分档的
+  metalness、roughness 与 envMapIntensity。
+- 金属参数复用各模型现有 shader 遮罩表达式，只覆盖已批准的皇冠、帽子、包、
+  杯子、衣服、书本、气球等改色区域，不覆盖动物主体与五官。
+- shader program cache key 与缩略图 appearance signature 均包含表面身份，避免
+  柔雾和金属金互相串用缓存。
+- 本地 Lab 已完成柔雾 24/24、金属金 24/24、桌面和 390px 手机视口检查。
+- 尚未开始：银色、珠光闪粉、奖励/Echo 解锁规则和静态 WebP 预渲染。
 
 ## 阶段 4：静态优先缩略图
 
