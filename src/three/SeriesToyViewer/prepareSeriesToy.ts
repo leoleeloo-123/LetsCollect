@@ -1,19 +1,10 @@
 import type * as Three from "three";
 import {
-  getColorBirdAccentPalette,
   getToyModel,
   getToyPalette
 } from "../../features/toys/catalog";
 import type { Collectible } from "../../types/toy";
 import { createToyMaterial } from "../material/createToyMaterial";
-import {
-  cloneColorBirdMaterials,
-  prepareColorBirdZoneTexture
-} from "../material/createColorBirdMaterials";
-import {
-  cloneColorTeddyMaterials,
-  prepareColorTeddyProtectTexture
-} from "../material/createColorTeddyMaterials";
 import {
   cloneColorBunnyMaterials,
   prepareColorBunnyProtectTexture
@@ -125,8 +116,6 @@ export async function prepareSeriesToy(
   const modelUrl = modelDefinition.assets.mobileModelUrl
     ?? modelDefinition.assets.modelUrl;
 
-  const colorBirdZones = rendering?.mode === "color-bird-zones" ? rendering : null;
-  const colorTeddyCoat = rendering?.mode === "color-teddy-coat" ? rendering : null;
   const colorBunnyBag = rendering?.mode === "color-bunny-bag" ? rendering : null;
   const colorCatYarn = rendering?.mode === "color-cat-yarn" ? rendering : null;
   const colorPandaHat = rendering?.mode === "color-panda-hat" ? rendering : null;
@@ -145,8 +134,6 @@ export async function prepareSeriesToy(
 
   const [
     gltf,
-    colorBirdZoneMap,
-    colorTeddyProtectMap,
     colorBunnyProtectMap,
     colorPandaProtectMap,
     colorBearSingerMask,
@@ -157,8 +144,6 @@ export async function prepareSeriesToy(
     colorKoalaMask
   ] = await Promise.all([
     loadToyModel(modelUrl),
-    nullableTexture(THREE, colorBirdZones?.zoneMaskUrl ?? null),
-    nullableTexture(THREE, colorTeddyCoat?.protectMaskUrl ?? null),
     nullableTexture(THREE, colorBunnyBag?.protectMaskUrl ?? null),
     nullableTexture(THREE, colorPandaHat?.protectMaskUrl ?? null),
     nullableTexture(THREE, colorBearSingerAfro?.maskUrl ?? null),
@@ -169,8 +154,6 @@ export async function prepareSeriesToy(
     nullableTexture(THREE, colorKoalaHat?.maskUrl ?? null)
   ]);
 
-  if (colorBirdZoneMap) prepareColorBirdZoneTexture(THREE, colorBirdZoneMap);
-  if (colorTeddyProtectMap) prepareColorTeddyProtectTexture(THREE, colorTeddyProtectMap);
   if (colorBunnyProtectMap) prepareColorBunnyProtectTexture(THREE, colorBunnyProtectMap);
   if (colorPandaProtectMap) prepareColorPandaProtectTexture(THREE, colorPandaProtectMap);
   if (colorBearSingerMask) prepareColorBearSingerMaskTexture(THREE, colorBearSingerMask);
@@ -195,8 +178,6 @@ export async function prepareSeriesToy(
     : null;
   const materials: Three.Material[] = [];
   const disposableTextures = [
-    colorBirdZoneMap,
-    colorTeddyProtectMap,
     colorBunnyProtectMap,
     colorPandaProtectMap,
     colorBearSingerMask,
@@ -215,44 +196,6 @@ export async function prepareSeriesToy(
     materials.push(...colorAccessory.materials);
     updateAppearance = (nextToy) => {
       colorAccessory.updateColor(getToyPalette(nextToy.paletteId).color);
-    };
-  } else if (colorBirdZones && colorBirdZoneMap) {
-    const bodyColor = new THREE.Color();
-    const capColor = new THREE.Color();
-    materials.push(...cloneColorBirdMaterials(
-      THREE,
-      root,
-      {
-        body: bodyColor,
-        cap: capColor,
-        blush: new THREE.Color(colorBirdZones.blushColor),
-        feet: new THREE.Color(colorBirdZones.feetColor)
-      },
-      colorBirdZoneMap,
-      maxAnisotropy
-    ));
-    updateAppearance = (nextToy) => {
-      const palette = getToyPalette(nextToy.paletteId);
-      const accent = getColorBirdAccentPalette(
-        nextToy.paletteId,
-        nextToy.appearanceSeed
-      );
-      bodyColor.set(palette.color).multiplyScalar(colorBirdZones.bodyColorScale);
-      capColor.set(accent.color).multiplyScalar(colorBirdZones.capColorScale);
-    };
-  } else if (colorTeddyCoat && colorTeddyProtectMap) {
-    const coatColor = new THREE.Color();
-    materials.push(...cloneColorTeddyMaterials(
-      THREE,
-      root,
-      coatColor,
-      colorTeddyProtectMap,
-      maxAnisotropy
-    ));
-    updateAppearance = (nextToy) => {
-      coatColor
-        .set(getToyPalette(nextToy.paletteId).color)
-        .multiplyScalar(colorTeddyCoat.coatColorScale);
     };
   } else if (colorBunnyBag && colorBunnyProtectMap) {
     const bagColor = new THREE.Color();

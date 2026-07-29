@@ -29,10 +29,10 @@ export const crystalAvailableColorIds = [
   ...matteColorIds
 ] as const satisfies readonly ToyPaletteId[];
 
-const currentAssetIds = [
+export const currentAssetIds = [
   "color-otter",
   "color-bird",
-  "color-teddy",
+  "color-penguin",
   "color-bunny",
   "color-cat",
   "color-panda",
@@ -41,7 +41,19 @@ const currentAssetIds = [
   "color-dog-drum",
   "color-seal",
   "color-karpy",
-  "color-koala"
+  "color-koala",
+  "color-racoon",
+  "color-hamster-icecream",
+  "color-dino",
+  "color-fox",
+  "color-deer",
+  "color-sheep",
+  "color-sloth",
+  "color-owl",
+  "color-duck",
+  "color-guinea-pig",
+  "color-black-cat",
+  "color-cool-wolf"
 ] as const satisfies readonly ToyModelId[];
 
 export type CurrentAssetId = (typeof currentAssetIds)[number];
@@ -56,116 +68,43 @@ export type CurrentAssetRegistryEntry = {
   drawRole: "regular" | "special_exhibit";
 };
 
-export const currentAssetRegistry = [
-  {
-    id: "color-otter",
-    name: "Color Otter",
+const currentAssetNames: Record<CurrentAssetId, string> = {
+  "color-otter": "Color Otter",
+  "color-bird": "Color Bird",
+  "color-penguin": "Color Penguin",
+  "color-bunny": "Color Bunny",
+  "color-cat": "Color Cat",
+  "color-panda": "Color Panda",
+  "color-bear-singer": "Color Bear Singer",
+  "color-dog-camera": "Color Dog Camera",
+  "color-dog-drum": "Color Dog Drum",
+  "color-seal": "Color Seal",
+  "color-karpy": "Color Karpy",
+  "color-koala": "Color Koala",
+  "color-racoon": "Color Racoon",
+  "color-hamster-icecream": "Color Hamster Ice Cream",
+  "color-dino": "Color Dino",
+  "color-fox": "Color Fox",
+  "color-deer": "Color Deer",
+  "color-sheep": "Color Sheep",
+  "color-sloth": "Color Sloth",
+  "color-owl": "Color Owl",
+  "color-duck": "Color Duck",
+  "color-guinea-pig": "Color Guinea Pig",
+  "color-black-cat": "Color Black Cat",
+  "color-cool-wolf": "Color Cool Wolf"
+};
+
+export const currentAssetRegistry: readonly CurrentAssetRegistryEntry[] =
+  currentAssetIds.map((id) => ({
+    id,
+    name: currentAssetNames[id],
     material: "matte",
     availability: "available",
     availableColorIds: matteColorIds,
     defaultDrawColorIds: matteColorIds,
     drawRole: "regular"
-  },
-  {
-    id: "color-bird",
-    name: "Color Bird",
-    material: "matte",
-    availability: "available",
-    availableColorIds: matteColorIds,
-    defaultDrawColorIds: matteColorIds,
-    drawRole: "regular"
-  },
-  {
-    id: "color-teddy",
-    name: "Color Teddy",
-    material: "matte",
-    availability: "available",
-    availableColorIds: matteColorIds,
-    defaultDrawColorIds: matteColorIds,
-    drawRole: "regular"
-  },
-  {
-    id: "color-bunny",
-    name: "Color Bunny",
-    material: "matte",
-    availability: "available",
-    availableColorIds: matteColorIds,
-    defaultDrawColorIds: matteColorIds,
-    drawRole: "regular"
-  },
-  {
-    id: "color-cat",
-    name: "Color Cat",
-    material: "matte",
-    availability: "available",
-    availableColorIds: matteColorIds,
-    defaultDrawColorIds: matteColorIds,
-    drawRole: "regular"
-  },
-  {
-    id: "color-panda",
-    name: "Color Panda",
-    material: "matte",
-    availability: "available",
-    availableColorIds: matteColorIds,
-    defaultDrawColorIds: matteColorIds,
-    drawRole: "regular"
-  },
-  {
-    id: "color-bear-singer",
-    name: "Color Bear Singer",
-    material: "matte",
-    availability: "available",
-    availableColorIds: matteColorIds,
-    defaultDrawColorIds: matteColorIds,
-    drawRole: "regular"
-  },
-  {
-    id: "color-dog-camera",
-    name: "Color Dog Camera",
-    material: "matte",
-    availability: "available",
-    availableColorIds: matteColorIds,
-    defaultDrawColorIds: matteColorIds,
-    drawRole: "regular"
-  },
-  {
-    id: "color-dog-drum",
-    name: "Color Dog Drum",
-    material: "matte",
-    availability: "available",
-    availableColorIds: matteColorIds,
-    defaultDrawColorIds: matteColorIds,
-    drawRole: "regular"
-  },
-  {
-    id: "color-seal",
-    name: "Color Seal",
-    material: "matte",
-    availability: "available",
-    availableColorIds: matteColorIds,
-    defaultDrawColorIds: matteColorIds,
-    drawRole: "regular"
-  },
-  {
-    id: "color-karpy",
-    name: "Color Karpy",
-    material: "matte",
-    availability: "available",
-    availableColorIds: matteColorIds,
-    defaultDrawColorIds: matteColorIds,
-    drawRole: "regular"
-  },
-  {
-    id: "color-koala",
-    name: "Color Koala",
-    material: "matte",
-    availability: "available",
-    availableColorIds: matteColorIds,
-    defaultDrawColorIds: matteColorIds,
-    drawRole: "regular"
-  }
-] as const satisfies readonly CurrentAssetRegistryEntry[];
+  }));
 
 export type CapabilityRegistryEntry = {
   id: string;
@@ -179,17 +118,17 @@ export type CapabilityRegistryEntry = {
 export const capabilityRegistry = [
   {
     id: "matte_companion_models",
-    label: "Twelve matte Companion models",
+    label: "Twenty-four matte Companion models",
     availability: "available",
     category: "asset",
-    description: "Twelve matte Companions share the approved nine-color palette."
+    description: "Twenty-four matte Companions share the approved nine-color palette."
   },
   {
     id: "matte_color_variants",
     label: "Configurable matte colors",
     availability: "available",
     category: "asset",
-    description: "Nine approved palettes rendered on the twelve current matte models."
+    description: "Nine approved palettes rendered on the twenty-four current matte models."
   },
   {
     id: "crystal_unicorn_exhibit",

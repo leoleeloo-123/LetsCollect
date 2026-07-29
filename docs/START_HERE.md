@@ -12,15 +12,18 @@ Let's Collect 是一个围绕数字 Companion 展开的、手机优先的治愈�
 
 ## 当前实施状态
 
-`codex/companion-echo-frontend` 分支已经实现第一版 Collect / Collection / Echo 前端和独立 Agent Console。`main` 与 Vercel Production 尚未被这个分支替换。
+`main` 已包含第一版 Collect / Collection / Echo 前端和独立 Agent Console。
 
-截至 2026-07-28，Collect 第一页使用“按系列选择、在当前页揭晓”的第四轮：
+截至 2026-07-29，Collect 第一页使用“按系列选择、在当前页揭晓”的第四轮：
 首页是一张可切 9 色、包含 24 个正式柔雾模型的「色彩系列」卡，以及按角色、
 状态与兴趣组成的 13 张特殊系列卡。所有特殊系列统一为 6 张券；每张系列卡
 只使用一个受控 WebGL 舞台，让卡内模型同步原地旋转。色彩系列固定为 4 列 ×
-6 行并按 6 只一批渐进加载。围巾企鹅继续留在 Lab 调整，奶油小熊暂时保留；
+6 行并按 6 只一批渐进加载。新企鹅已替换测试用奶油小熊进入正式阵容；
+新小鸟只改变皇冠颜色，企鹅只改变耳罩顶部与杯子；
 两只水晶资产继续归档。首次注册依次收集昵称、伙伴、颜色和质感偏好。
 完整决定与回滚见 `docs/COLLECT_SERIES_V2.md`。
+下一阶段渲染收敛、全模型检查页、金银与珠光闪粉计划见
+`docs/RENDERING_SURFACE_UPGRADE_PLAN.md`。
 
 改造前的 React MVP 已完整归档到：
 
@@ -113,8 +116,8 @@ Primary navigation 只有 Collect、Collection、Echo。Agent 入口被明确标
 
 ## 当前真实资产
 
-- 二十四个 active matte Color Animals，奶油小熊暂时保留；
-- 围巾企鹅为 experimental Lab 资产，不进入 catalog 或抽取池；
+- 二十四个 active matte Color Animals，包含皇冠小鸟与耳罩企鹅；
+- 奶油小熊已整体归档，不进入 catalog、运行时、Lab 或抽取池；
 - 九个常规 colorway；
 - Diamond Unicorn 与 Diamond Dog 已归档，只保留旧藏品运行兼容；
 - 五个旧晶体 tint 只保留给历史藏品与内部 Lab；
@@ -179,7 +182,6 @@ Observe
 - 新的 fuzzy / metallic / porcelain 材质；
 - pending draw-result transaction；
 - Collection metadata / acquisition date 筛选与 Representative 排序；
-- `src/config/capabilityRegistry.ts` 对全部二十四个 active 模型的同步登记；
 - lint 与自动化 test 工具链；
 - 首次访问可靠的静态 3D poster fallback。
 
@@ -193,9 +195,8 @@ Observe
   仍直接依赖 `MvpStateProvider`，Console 目前只演示 proposal / approve；
 - 下一阶段：服务端权威抽取、票券和所有权，user-scoped 云端状态，生产 Echo / Campaign
   审计，以及 lint、自动化测试与真实移动设备性能加固；
-- 已知一致性债务：人类可读资产注册表和抽取代码是 24 模型，但
-  `src/config/capabilityRegistry.ts` 仍只登记早期 12 模型。在代码注册表修正前，
-  Agent feasibility 可能把后 12 个正式模型误判为未登记资产。
+- 资产 catalog、抽取池与 `src/config/capabilityRegistry.ts` 已同步为同一套
+  24 模型正式阵容。
 
 ## 常用命令
 

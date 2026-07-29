@@ -1,24 +1,8 @@
 .color-bird-page { max-width: 980px; }
 .color-bird-intro { align-items: end; }
-.color-bird-actions { display: flex; flex-wrap: wrap; gap: 10px; }
-.color-bird-zone-toggle { display: inline-flex; width: fit-content; min-height: 46px; align-items: center; justify-content: center; gap: 9px; padding: 0 18px; border: 1px solid rgba(79, 59, 47, 0.2); border-radius: 999px; color: #4d392f; font-weight: 850; background: rgba(255, 250, 245, 0.92); cursor: pointer; }
-.color-bird-zone-toggle:hover { transform: translateY(-1px); }
-.color-bird-zone-toggle[aria-pressed="true"] { border-color: rgba(65, 99, 183, 0.36); color: #304a8e; background: #eef2ff; box-shadow: 0 10px 28px rgba(65, 99, 183, 0.14); }
-.color-bird-zone-toggle:focus-visible { outline: 3px solid rgba(85, 111, 188, 0.28); outline-offset: 3px; }
 .color-bird-viewer { aspect-ratio: 4 / 5; cursor: grab; }
 .color-bird-viewer:active { cursor: grabbing; }
-.color-bird-viewer__palette, .color-bird-viewer__hint { position: absolute; z-index: 2; display: inline-flex; align-items: center; border: 1px solid rgba(255, 255, 255, 0.84); color: #3e2c24; background: rgba(255, 251, 247, 0.86); box-shadow: 0 8px 22px rgba(70, 50, 39, 0.1); backdrop-filter: blur(12px); pointer-events: none; }
-.color-bird-viewer__palette { left: 50%; bottom: 18px; gap: 7px; padding: 8px 13px; border-radius: 999px; transform: translateX(-50%); white-space: nowrap; }
-.color-bird-viewer__palette span { width: 12px; height: 12px; border: 1px solid rgba(62, 44, 36, 0.18); border-radius: 50%; }
-.color-bird-viewer__palette strong { margin-left: 2px; font-size: 13px; }
-.color-bird-viewer__hint { top: 14px; left: 50%; gap: 7px; padding: 7px 11px; border-radius: 10px; color: #77655a; font-size: 11px; transform: translateX(-50%); white-space: nowrap; }
 
 @media (min-width: 700px) {
-  .color-bird-actions { justify-content: flex-end; }
   .color-bird-viewer { aspect-ratio: 16 / 10; }
-  .color-bird-viewer__palette { bottom: 22px; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .color-bird-zone-toggle:hover { transform: none; }
 }

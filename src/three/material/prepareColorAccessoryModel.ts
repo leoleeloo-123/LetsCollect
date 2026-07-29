@@ -6,6 +6,10 @@ import {
   prepareColorBlackCatMaskTexture
 } from "./createColorBlackCatMaterials";
 import {
+  cloneColorBirdCrownMaterials,
+  prepareColorBirdCrownMaskTexture
+} from "./createColorBirdCrownMaterials";
+import {
   cloneColorCoolWolfMaterials,
   prepareColorCoolWolfMaskTexture
 } from "./createColorCoolWolfMaterials";
@@ -30,6 +34,10 @@ import {
   cloneColorOwlMaterials,
   prepareColorOwlMaskTexture
 } from "./createColorOwlMaterials";
+import {
+  cloneColorPenguinMaterials,
+  prepareColorPenguinMaskTexture
+} from "./createColorPenguinMaterials";
 import {
   cloneColorSheepMaterials,
   prepareColorSheepMaskTexture
@@ -58,6 +66,15 @@ export function isColorAccessoryRendering(
   return rendering?.mode === "color-accessory-mask";
 }
 
+async function loadTriangleMask(url: string | undefined) {
+  if (!url) return null;
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`三角面遮罩加载失败：${response.status}`);
+  }
+  return new Uint8Array(await response.arrayBuffer());
+}
+
 export async function prepareColorAccessoryModel(
   THREE: ThreeRuntime,
   renderer: Three.WebGLRenderer,
@@ -66,11 +83,12 @@ export async function prepareColorAccessoryModel(
   paletteColor: string
 ): Promise<PreparedColorAccessoryModel> {
   const loader = new THREE.TextureLoader();
-  const [mask, secondaryMask] = await Promise.all([
+  const [mask, secondaryMask, triangleMask] = await Promise.all([
     loader.loadAsync(rendering.maskUrl),
     rendering.secondaryMaskUrl
       ? loader.loadAsync(rendering.secondaryMaskUrl)
-      : Promise.resolve(null)
+      : Promise.resolve(null),
+    loadTriangleMask(rendering.triangleMaskUrl)
   ]);
   const textures = secondaryMask ? [mask, secondaryMask] : [mask];
   const accessoryColor = new THREE.Color(paletteColor)
@@ -78,7 +96,35 @@ export async function prepareColorAccessoryModel(
   const maxAnisotropy = renderer.capabilities.getMaxAnisotropy();
   let materials: Three.Material[];
 
-  if (
+  if (rendering.profile === "bird-crown") {
+    if (!triangleMask) {
+      textures.forEach((texture) => texture.dispose());
+      throw new Error("Color Bird 缺少皇冠三角面遮罩");
+    }
+    prepareColorBirdCrownMaskTexture(THREE, mask);
+    materials = cloneColorBirdCrownMaterials(
+      THREE,
+      root,
+      accessoryColor,
+      mask,
+      triangleMask,
+      maxAnisotropy
+    );
+  } else if (rendering.profile === "penguin-accessories") {
+    if (!triangleMask) {
+      textures.forEach((texture) => texture.dispose());
+      throw new Error("Color Penguin 缺少配件三角面遮罩");
+    }
+    prepareColorPenguinMaskTexture(THREE, mask);
+    materials = cloneColorPenguinMaterials(
+      THREE,
+      root,
+      accessoryColor,
+      mask,
+      triangleMask,
+      maxAnisotropy
+    );
+  } else if (
     rendering.profile === "racoon-tanghulu"
     || rendering.profile === "hamster-icecream"
     || rendering.profile === "dino-scarf"

@@ -150,10 +150,8 @@ Model / Colorway / Material / Date 筛选、Representative 排序和真实 profi
 - typed analytics 后端；
 - lint 与自动化测试工具链。
 
-此外，`src/config/capabilityRegistry.ts` 的 `currentAssetRegistry` 仍停留在
-早期十二模型列表，与当前二十四模型 catalog / draw pool 不一致。这不会改变
-当前抽取池，但会影响 Agent feasibility 对后十二个模型的判断，属于明确的代码
-一致性修复项。
+`src/config/capabilityRegistry.ts` 的 `currentAssetRegistry` 已与当前二十四
+模型 catalog / draw pool 同步，Agent feasibility 使用同一套正式资产边界。
 
 ## 迁移原则
 

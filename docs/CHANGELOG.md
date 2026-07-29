@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-07-29
+
+- Replaced the retired full-body Color Bird with the v002 crown-only model.
+- Promoted Color Penguin v003 into the formal twenty-four-model roster and the
+  Monochrome series.
+- Retired Color Teddy completely from catalog, draw, runtime, Labs, mock data,
+  and production rendering.
+- Made archived model payloads local-only and Git-ignored while preserving
+  concise archive manifests.
+- Synchronized the TypeScript capability registry with all twenty-four active
+  models.
+
 ## 2026-07-28
 
 - Synchronized the current project documentation with the active

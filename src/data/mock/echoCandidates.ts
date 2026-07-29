@@ -161,8 +161,8 @@ export const echoCandidateFixtures: EchoCandidateFixture[] = [
     anonymousName: "Apricot Thread",
     representativeCompanions: [
       representative({
-        id: "thread-teddy",
-        modelId: "color-teddy",
+        id: "thread-penguin",
+        modelId: "color-penguin",
         paletteId: "apricot",
         seed: 4301
       }),
@@ -183,7 +183,7 @@ export const echoCandidateFixtures: EchoCandidateFixture[] = [
       signal({
         id: "thread-warm-matte",
         kind: "material",
-        sourceModelIds: ["color-teddy", "color-cat", "color-otter"],
+        sourceModelIds: ["color-penguin", "color-cat", "color-otter"],
         sourcePaletteIds: ["apricot", "cream-rose", "cocoa"],
         summary: "Warm matte companions",
         detail: "Both collections favor warm, softly finished Companions over brighter contrasts."
@@ -191,7 +191,7 @@ export const echoCandidateFixtures: EchoCandidateFixture[] = [
       signal({
         id: "thread-gentle-warmth",
         kind: "trajectory",
-        sourceModelIds: ["color-teddy", "color-cat"],
+        sourceModelIds: ["color-penguin", "color-cat"],
         sourcePaletteIds: ["apricot", "cream-rose"],
         summary: "A gentle warming path",
         detail: "Recently, both collecting paths have been moving from cream toward apricot and rose."
@@ -269,8 +269,8 @@ export const echoCandidateFixtures: EchoCandidateFixture[] = [
         seed: 4501
       }),
       representative({
-        id: "grape-teddy",
-        modelId: "color-teddy",
+        id: "grape-penguin",
+        modelId: "color-penguin",
         paletteId: "berry",
         seed: 4502
       }),
@@ -285,7 +285,7 @@ export const echoCandidateFixtures: EchoCandidateFixture[] = [
       signal({
         id: "grape-muted-purple",
         kind: "palette",
-        sourceModelIds: ["color-cat", "color-teddy"],
+        sourceModelIds: ["color-cat", "color-penguin"],
         sourcePaletteIds: ["grape", "berry"],
         summary: "Muted purple notes",
         detail: "Both collections use grape and berry as calm accents rather than statement colors."

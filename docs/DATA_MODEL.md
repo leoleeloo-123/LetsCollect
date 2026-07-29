@@ -85,10 +85,8 @@ within the chosen material branch. Older Jelly Jade models and material
 definitions remain for compatibility and rollback; they are not active V3
 inventory.
 
-The TypeScript campaign capability registry is temporarily incomplete: its
-`currentAssetRegistry` still contains twelve entries. Collection and draw truth
-comes from the active catalog / series modules; capability feasibility must not
-be treated as complete until all twenty-four active IDs are registered there.
+The TypeScript campaign capability registry, active catalog, and series modules
+now contain the same twenty-four active model IDs.
 
 ### Draw Record
 

@@ -98,35 +98,38 @@ export const colorBirdModel: ToyModelDefinition = {
   name: "小鸟",
   fallbackShape: "bird",
   assets: {
-    modelUrl: "/models/toys/color-bird/model-mobile-v001.glb",
-    mobileModelUrl: "/models/toys/color-bird/model-mobile-v001.glb"
+    modelUrl: "/models/toys/color-bird/model-mobile-v002.glb",
+    mobileModelUrl: "/models/toys/color-bird/model-mobile-v002.glb"
   },
   viewer: { scaleMultiplier: 0.96, yOffset: 0, rotationY: -0.08 },
   rendering: {
-    mode: "color-bird-zones",
-    zoneMaskUrl: "/models/toys/color-bird/protect-mask-mobile-v014.webp",
-    bodyColorScale: 0.92,
-    capColorScale: 0.92,
-    blushColor: "#ef8797",
-    feetColor: "#efa04f"
+    mode: "color-accessory-mask",
+    profile: "bird-crown",
+    maskUrl: "/models/toys/color-bird/crown-mask-mobile-v001.webp?v=11",
+    triangleMaskUrl:
+      "/models/toys/color-bird/crown-triangle-mask-mobile-v001.bin?v=11",
+    colorScale: 0.92
   }
 };
 
 
-export const colorTeddyModel: ToyModelDefinition = {
-  id: "color-teddy",
-  slug: "color-teddy",
-  name: "小熊",
+export const colorPenguinModel: ToyModelDefinition = {
+  id: "color-penguin",
+  slug: "color-penguin",
+  name: "企鹅",
   fallbackShape: "blob",
   assets: {
-    modelUrl: "/models/toys/color-teddy/model-mobile-v001.glb",
-    mobileModelUrl: "/models/toys/color-teddy/model-mobile-v001.glb"
+    modelUrl: "/models/toys/color-penguin/model-mobile-v003.glb",
+    mobileModelUrl: "/models/toys/color-penguin/model-mobile-v003.glb"
   },
-  viewer: { scaleMultiplier: 0.94, yOffset: -0.02, rotationY: -0.24 },
+  viewer: { scaleMultiplier: 0.94, yOffset: -0.02, rotationY: -0.22 },
   rendering: {
-    mode: "color-teddy-coat",
-    protectMaskUrl: "/models/toys/color-teddy/protect-mask-mobile-v001.webp",
-    coatColorScale: 0.86
+    mode: "color-accessory-mask",
+    profile: "penguin-accessories",
+    maskUrl: "/models/toys/color-penguin/accessory-mask-mobile-v003.webp?v=3",
+    triangleMaskUrl:
+      "/models/toys/color-penguin/zone-triangle-mask-mobile-v003.bin?v=3",
+    colorScale: 0.92
   }
 };
 
@@ -532,7 +535,7 @@ export const specialExhibitModels = [
 export const colorAnimalModels = [
   colorOtterModel,
   colorBirdModel,
-  colorTeddyModel,
+  colorPenguinModel,
   colorBunnyModel,
   colorCatModel,
   colorPandaModel,
@@ -627,18 +630,10 @@ export function getToyPalette(id: ToyPaletteId) {
   return toyPaletteById.get(id) ?? toyPalettes[0];
 }
 
-export function getColorBirdAccentPalette(bodyPaletteId: ToyPaletteId, appearanceSeed: number) {
-  const bodyIndex = Math.max(0, colorAnimalPalettes.findIndex((palette) => palette.id === bodyPaletteId));
-  const accentOffset = 2 + Math.abs(appearanceSeed % 3);
-  return colorAnimalPalettes[(bodyIndex + accentOffset) % colorAnimalPalettes.length];
-}
-
 export function getToyRenderingAssetKey(model: ToyModelDefinition) {
   if (model.id === "diamond-unicorn" || model.id === "diamond-dog") {
     return "diamond-unicorn-material-v1";
   }
-  if (model.rendering?.mode === "color-bird-zones") return model.rendering.zoneMaskUrl;
-  if (model.rendering?.mode === "color-teddy-coat") return model.rendering.protectMaskUrl;
   if (model.rendering?.mode === "color-bunny-bag") return model.rendering.protectMaskUrl;
   if (model.rendering?.mode === "color-cat-yarn") return model.rendering.materialName;
   if (model.rendering?.mode === "color-panda-hat") return model.rendering.protectMaskUrl;

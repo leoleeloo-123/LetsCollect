@@ -80,9 +80,9 @@ src/
 ## Migration Map
 
 - `legacy/hero-prototype/` preserves the old HTML prototype as reference only.
-- `public/models/toys/color-*/` contains the active matte runtimes plus the
-  experimental Color Penguin Lab runtime; product availability still comes
-  from the catalog and asset registry, not folder presence.
+- `public/models/toys/color-*/` contains only current active matte runtimes;
+  product availability still comes from the catalog and asset registry, not
+  folder presence.
 - `public/models/toys/jelly-jade-*/` contains legacy compatibility runtimes and
   is not part of the active draw pool.
 - `assets/models/source/*/model-source-v001.glb` contains local source assets that are not pushed.

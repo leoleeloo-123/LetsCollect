@@ -9,7 +9,7 @@ export type ToyModelId =
   | "karpy"
   | "color-otter"
   | "color-bird"
-  | "color-teddy"
+  | "color-penguin"
   | "color-bunny"
   | "color-cat"
   | "color-panda"
@@ -76,19 +76,6 @@ export type ToyModelDefinition = {
   };
   rendering?:
     | {
-        mode: "color-bird-zones";
-        zoneMaskUrl: string;
-        bodyColorScale: number;
-        capColorScale: number;
-        blushColor: string;
-        feetColor: string;
-      }
-    | {
-        mode: "color-teddy-coat";
-        protectMaskUrl: string;
-        coatColorScale: number;
-      }
-    | {
         mode: "color-bunny-bag";
         protectMaskUrl: string;
         bagColorScale: number;
@@ -141,6 +128,8 @@ export type ToyModelDefinition = {
     | {
         mode: "color-accessory-mask";
         profile:
+          | "bird-crown"
+          | "penguin-accessories"
           | "racoon-tanghulu"
           | "hamster-icecream"
           | "dino-scarf"
@@ -154,6 +143,7 @@ export type ToyModelDefinition = {
           | "black-cat-logo"
           | "cool-wolf-studs";
         maskUrl: string;
+        triangleMaskUrl?: string;
         secondaryMaskUrl?: string;
         colorScale: number;
       };

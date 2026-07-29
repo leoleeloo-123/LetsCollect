@@ -40,12 +40,8 @@ runtime code, stop product work, verify the intended behavior, and update code
 and documentation together. Do not infer availability by scanning
 `public/models/`, `assets/models/`, `ToyModelId`, or `ToyMaterialId`.
 
-Known 2026-07-28 consistency issue: the executable draw sources listed above
-contain all twenty-four active matte models, but
-`src/config/capabilityRegistry.ts` still registers only the earlier twelve
-assets for Agent feasibility. That TypeScript registry must be expanded before
-it can be treated as a complete campaign-asset source; it does not reduce or
-change the active draw pool documented here.
+The executable catalog, draw sources, human-readable registry, and
+`src/config/capabilityRegistry.ts` now share the same twenty-four-model roster.
 
 ## Availability vocabulary
 
@@ -71,8 +67,8 @@ below for these twenty-four entries.
 | Product name | Model ID | Runtime GLB | GLB bytes | Approved recolor target | Runtime implementation |
 | --- | --- | --- | ---: | --- | --- |
 | Color Otter / 水獭 | `color-otter` | `/models/toys/color-otter/model-mobile-v008.glb` | 359,492 | Lollipop only; otter body and authored face colors stay unchanged | Clone the named `Lollipop_Color` material, remove its color map, and set its PBR color directly; no mask |
-| Color Bird / 小鸟 | `color-bird` | `/models/toys/color-bird/model-mobile-v001.glb` | 310,308 | Main body uses the selected palette; cap uses a deterministic accent palette derived from the selected palette and appearance seed; eyes, beak, feet, and blush remain protected | `onBeforeCompile` zone shader plus `/models/toys/color-bird/protect-mask-mobile-v014.webp` (17,840 bytes) and semantic geometry zones |
-| Color Teddy / 小熊 | `color-teddy` | `/models/toys/color-teddy/model-mobile-v001.glb` | 356,132 | Coat/body; facial details, muzzle, and blush remain protected | `onBeforeCompile` protection shader plus `/models/toys/color-teddy/protect-mask-mobile-v001.webp` (7,404 bytes) |
+| Color Bird / 小鸟 | `color-bird` | `/models/toys/color-bird/model-mobile-v002.glb` | 295,428 | Crown only; head, body, wings, eyes, beak, blush, feet, and every other authored color stay unchanged | Standard `color-accessory-mask` path using `/models/toys/color-bird/crown-mask-mobile-v001.webp` (4,292 bytes), an encoded exact-face/shared-edge/proximity topology mask (59,958 bytes), an original gold texture gate, and a tight local crown gate |
+| Color Penguin / 企鹅 | `color-penguin` | `/models/toys/color-penguin/model-mobile-v003.glb` | 322,324 | Earmuff top and cup only; feathers, face, blush, beak, feet, eyes, white pads, emblem, and other authored details stay unchanged | Standard `color-accessory-mask` path using `/models/toys/color-penguin/accessory-mask-mobile-v003.webp` (7,914 bytes) and a topology-zone triangle mask (59,966 bytes) |
 | Color Bunny / 小兔 | `color-bunny` | `/models/toys/color-bunny/model-mobile-v002.glb` | 381,284 | Suitcase only; bunny body and face stay in authored colors | `onBeforeCompile` protection shader plus `/models/toys/color-bunny/protect-mask-mobile-v001.webp` (52,372 bytes) |
 | Color Cat / 小猫 | `color-cat` | `/models/toys/color-cat/model-mobile-v002.glb` | 656,900 | Yarn ball only; cat body, face, ears, paws, and blush stay in authored colors | Apply an `onBeforeCompile` recolor shader only to the named `color_cat_new_yarn` material; no mask |
 | Color Panda / 熊猫 | `color-panda` | `/models/toys/color-panda/model-mobile-v002.glb` | 430,628 | Hat only; panda body, markings, face, and blush stay in authored colors | `onBeforeCompile` protection shader plus `/models/toys/color-panda/hat-mask-mobile-v001.webp` (6,024 bytes) |
@@ -95,8 +91,8 @@ below for these twenty-four entries.
 | Color Black Cat / 黑盒猫猫 | `color-black-cat` | `/models/toys/color-black-cat/model-mobile-v001.glb` | 359,448 | Fish logo only | Logo mask plus local position gates |
 | Color Cool Wolf / 酷酷狼人 | `color-cool-wolf` | `/models/toys/color-cool-wolf/model-mobile-v001.glb` | 349,456 | Ear studs only | Stud mask plus local position gates |
 
-The twenty-four regular GLBs total 9,106,220 bytes. Their selected runtime masks
-total 412,952 bytes. Color Bear Singer v006 is a documented 1.376 MB exception
+The twenty-four regular GLBs total 9,072,412 bytes. Their selected runtime masks
+total 473,428 bytes. Color Bear Singer v006 is a documented 1.376 MB exception
 to the normal 1 MB mobile target and remains an optimization follow-up.
 
 ### Shared regular colorways
@@ -169,13 +165,14 @@ generate either model.
 - The former generic Color Dog and the retired Color Cat v001 are archived
   assets. The dedicated Camera Dog and Drum Dog listed above are current
   product models.
+- Color Teddy was a temporary full-coat recoloring test. Its source, runtime,
+  mask, builder, and dedicated Lab/material code are archived locally and
+  ignored by Git; no current code or browser URL references it.
 - Diamond Unicorn and Diamond Dog source assets are archived under
   `assets/models/archive/`; compact runtimes remain only for old local items
   and internal material inspection.
 
 ### Experimental
-
-- Color Penguin / 围巾企鹅 has a processed runtime and accessory-mask Lab, but remains under adjustment and is not in the active catalog or draw pool.
 
 - Color Unicorn recolor experiments under `assets/models/archive/` are not an
   active Companion or a second crystal exhibit.

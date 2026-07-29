@@ -255,9 +255,8 @@ hardening, and consistency cleanup.
   presentation are not implemented.
 - Campaign Edit, Archive, Apply, durable Measure, and production publishing are
   not implemented; the current Console demonstrates proposal and approval only.
-- `src/config/capabilityRegistry.ts` still lists twelve current assets while the
-  active catalog and draw pool contain twenty-four, so Agent feasibility is
-  incomplete for the latter twelve.
+- `src/config/capabilityRegistry.ts`, the active catalog, and the draw pool now
+  share the same twenty-four-model roster.
 - The package still has no lint or automated test scripts.
 - The fourteen-context full-scroll series shelf needs real mobile-device budget
   verification and may require renderer recycling before production cutover.

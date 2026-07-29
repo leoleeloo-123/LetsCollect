@@ -3,8 +3,8 @@ import {
   featuredBunny,
   featuredCat,
   featuredPanda,
-  featuredTeddy,
+  featuredPenguin,
   featuredOtter
 } from "./toys";
 
-export const homeSeriesToys = [featuredBunny, featuredOtter, featuredBird, featuredTeddy, featuredCat, featuredPanda];
+export const homeSeriesToys = [featuredBunny, featuredOtter, featuredBird, featuredPenguin, featuredCat, featuredPanda];

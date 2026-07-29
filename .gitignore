@@ -14,8 +14,20 @@ temp-optimized.glb
 # Original uncompressed GLB (kept locally, not pushed)
 *-original.glb
 /assets/models/source/**/*.glb
-/assets/models/archive/**/source/**/*.glb
 /*.glb
+
+# Retired model payloads are local rollback material. Keep only the archive
+# README manifests in Git; never publish archived source, runtime, masks,
+# builders, or implementation snapshots.
+/assets/models/archive/**/source/
+/assets/models/archive/**/runtime/
+/assets/models/archive/**/runtime-history/
+/assets/models/archive/**/runtime-experiment/
+/assets/models/archive/**/code/
+/assets/models/archive/**/builders/
+/assets/models/archive/**/mask-builders/
+/assets/models/archive/**/masks/
+/assets/models/archive/**/protect-masks/
 
 # OS files
 Thumbs.db

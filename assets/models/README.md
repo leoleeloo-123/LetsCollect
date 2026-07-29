@@ -22,8 +22,9 @@ public/models/toys/
 
 - `source/` contains the high-resolution input used to rebuild runtime assets.
   Source GLBs are local-only and ignored by Git.
-- `archive/` contains superseded experiments, masks, builders, and rollback
-  history. Archived files must never be referenced by production URLs.
+- `archive/` contains local superseded experiments and rollback history.
+  Git tracks only top-level archive manifests; payloads are ignored and must
+  never be referenced by production URLs.
 - `public/models/toys/` contains only optimized browser runtime assets and
   masks.
 - Raw GLB drops must not remain in the repository root.
@@ -37,8 +38,8 @@ byte-identical.
 | Toy slug | Canonical source | Active runtime |
 | --- | --- | --- |
 | `color-otter` | `model-source-v001.glb` | `model-mobile-v008.glb` |
-| `color-bird` | `model-source-v001.glb` | `model-mobile-v001.glb` |
-| `color-teddy` | `model-source-v001.glb` | `model-mobile-v001.glb` |
+| `color-bird` | `model-source-v002.glb` | `model-mobile-v002.glb` |
+| `color-penguin` | `model-source-v003.glb` | `model-mobile-v003.glb` |
 | `color-bunny` | `model-source-v001.glb` | `model-mobile-v002.glb` |
 | `color-cat` | `model-source-v002.glb` | `model-mobile-v002.glb` |
 | `color-panda` | `model-source-v001.glb` | `model-mobile-v002.glb` |
@@ -48,20 +49,23 @@ byte-identical.
 | `color-seal` | `model-source-v001.glb` | `model-mobile-v001.glb` |
 | `color-karpy` | `model-source-v001.glb` | `model-mobile-v001.glb` |
 | `color-koala` | `model-source-v001.glb` | `model-mobile-v001.glb` |
+| `color-racoon` | `model-source-v001.glb` | `model-mobile-v001.glb` |
+| `color-hamster-icecream` | `model-source-v001.glb` | `model-mobile-v001.glb` |
+| `color-dino` | `model-source-v001.glb` | `model-mobile-v001.glb` |
+| `color-fox` | `model-source-v001.glb` | `model-mobile-v001.glb` |
+| `color-deer` | `model-source-v001.glb` | `model-mobile-v001.glb` |
+| `color-sheep` | `model-source-v001.glb` | `model-mobile-v001.glb` |
+| `color-sloth` | `model-source-v001.glb` | `model-mobile-v001.glb` |
+| `color-owl` | `model-source-v001.glb` | `model-mobile-v001.glb` |
+| `color-duck` | `model-source-v001.glb` | `model-mobile-v001.glb` |
+| `color-guinea-pig` | `model-source-v001.glb` | `model-mobile-v001.glb` |
+| `color-black-cat` | `model-source-v001.glb` | `model-mobile-v001.glb` |
+| `color-cool-wolf` | `model-source-v001.glb` | `model-mobile-v001.glb` |
 
-## Additional Source Coverage
+## Legacy Source Coverage
 
 | Toy slug | Source status | Runtime status |
 | --- | --- | --- |
-| `color-racoon` | `model-source-v001.glb` present | Mobile runtime and mask present |
-| `color-penguin` | `model-source-v001.glb` present | Experimental Lab mobile runtime and three-channel accessory mask present; still adjusting |
-| `color-sheep` | `model-source-v001.glb` present | Experimental Lab mobile runtime and mask present |
-| `color-sloth` | `model-source-v001.glb` present | Experimental Lab mobile runtime and hat mask present |
-| `color-owl` | `model-source-v001.glb` present | Experimental Lab mobile runtime and academic mask present |
-| `color-duck` | `model-source-v001.glb` present | Experimental Lab mobile runtime and bath mask present |
-| `color-guinea-pig` | `model-source-v001.glb` present | Experimental Lab mobile runtime and three-balloon zone mask present |
-
-
 | `jelly-jade-bird` | `model-source-v001.glb` present | Legacy runtime present |
 | `jelly-jade-bunny` | `model-source-v001.glb` present | Legacy runtime present |
 | `jelly-jade-doggy` | `model-source-v001.glb` present | Legacy runtime present |
@@ -80,6 +84,10 @@ GLB is the editable source unless that provenance is documented.
 | `diamond-unicorn` | `assets/models/archive/diamond-unicorn/source/` (notes only) | Retained for historical local collections and the internal Lab |
 
 Neither crystal model is active or eligible for a new draw.
+
+Color Teddy is archived locally under `assets/models/archive/color-teddy/`.
+It has no production runtime, catalog entry, draw eligibility, or compatibility
+contract.
 
 ## Required Notes
 

@@ -13,8 +13,8 @@ The mobile draw page repeated the ticket balance already shown in the global rib
 - The page header keeps one short line of supporting copy and removes the duplicate ticket balance.
 - The draw stage uses the same plain rose background and non-interactive, slowly rotating hero viewer as the home feature.
 - Hero mode removes the Three.js pedestal, contact shadow, and glow ring; the CSS halo and secondary stage copy are also removed.
-- The active draw pool contains Color Otter, Color Bird, Color Teddy, Color Bunny, Color Cat, and Color Panda. Model and palette are selected independently, giving each model an equal chance and each approved palette an equal chance.
-- The rule panel and draw button copy describe all six models.
+- At the time of this historical change, the draw pool contained six models.
+  That roster has since been superseded by the formal twenty-four-model pool.
 
 ## Impact
 
@@ -25,8 +25,8 @@ The global ticket ribbon, draw cost, local persistence, reveal sheet, protected-
 - Verify the draw action is visible without excessive scrolling at a 390 x 844 viewport.
 - Confirm the preview has no halo, pedestal, floor shadow, or drag hint.
 - Confirm the duplicate ticket balance is absent and the global ribbon remains visible.
-- Confirm generated model IDs can be `color-otter`, `color-bird`, `color-teddy`, `color-bunny`, `color-cat`, or `color-panda`.
-- Confirm all six models use their mobile GLBs, validated recoloring path, and shared thumbnail renderer.
+- Confirm generated model IDs come only from the current twenty-four-model catalog.
+- Confirm all active models use their mobile GLBs, validated recoloring path, and shared thumbnail renderer.
 - Run TypeScript and the production build.
 
 ## Rollback

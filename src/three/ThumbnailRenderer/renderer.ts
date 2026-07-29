@@ -1,18 +1,10 @@
 import type * as Three from "three";
-import { getColorBirdAccentPalette, getToyModel, getToyPalette, getToyRenderingAssetKey } from "../../features/toys/catalog";
+import { getToyModel, getToyPalette, getToyRenderingAssetKey } from "../../features/toys/catalog";
 import type { Collectible } from "../../types/toy";
 import {
   createToyMaterial,
   getCollectibleRenderTraits
 } from "../material/createToyMaterial";
-import {
-  cloneColorBirdMaterials,
-  prepareColorBirdZoneTexture
-} from "../material/createColorBirdMaterials";
-import {
-  cloneColorTeddyMaterials,
-  prepareColorTeddyProtectTexture
-} from "../material/createColorTeddyMaterials";
 import {
   cloneColorBunnyMaterials,
   prepareColorBunnyProtectTexture
@@ -162,12 +154,6 @@ async function renderThumbnail(toy: Collectible) {
   camera.position.set(0, 0.58, 7.15);
   camera.lookAt(0, 0.05, 0);
 
-  const colorBirdZones = modelDefinition.rendering?.mode === "color-bird-zones"
-    ? modelDefinition.rendering
-    : null;
-  const colorTeddyCoat = modelDefinition.rendering?.mode === "color-teddy-coat"
-    ? modelDefinition.rendering
-    : null;
   const colorBunnyBag = modelDefinition.rendering?.mode === "color-bunny-bag"
     ? modelDefinition.rendering
     : null;
@@ -203,9 +189,7 @@ async function renderThumbnail(toy: Collectible) {
   )
     ? modelDefinition.rendering
     : null;
-  const standardMaterialResult = colorBirdZones
-    || colorTeddyCoat
-    || colorBunnyBag
+  const standardMaterialResult = colorBunnyBag
     || colorCatYarn
     || colorPandaHat
     || colorOtterLollipop
@@ -220,18 +204,6 @@ async function renderThumbnail(toy: Collectible) {
     : createToyMaterial(THREE, toy);
   const material = standardMaterialResult?.material ?? null;
   const glowColor = standardMaterialResult?.glowColor ?? new THREE.Color(palette.glow);
-  const colorBirdZoneMap = colorBirdZones
-    ? prepareColorBirdZoneTexture(
-        THREE,
-        await new THREE.TextureLoader().loadAsync(colorBirdZones.zoneMaskUrl)
-      )
-    : null;
-  const colorTeddyProtectMap = colorTeddyCoat
-    ? prepareColorTeddyProtectTexture(
-        THREE,
-        await new THREE.TextureLoader().loadAsync(colorTeddyCoat.protectMaskUrl)
-      )
-    : null;
   const colorBunnyProtectMap = colorBunnyBag
     ? prepareColorBunnyProtectTexture(
         THREE,
@@ -293,32 +265,6 @@ async function renderThumbnail(toy: Collectible) {
     : null;
   const thumbnailRotationOffset = modelDefinition.id === "color-cat" ? -0.3 : 0;
   model.rotation.y = modelDefinition.viewer.rotationY + thumbnailRotationOffset;
-  const accentPalette = colorBirdZones
-    ? getColorBirdAccentPalette(toy.paletteId, toy.appearanceSeed)
-    : null;
-  const colorBirdMaterials = colorBirdZones && colorBirdZoneMap && accentPalette
-    ? cloneColorBirdMaterials(
-        THREE,
-        model,
-        {
-          body: new THREE.Color(palette.color).multiplyScalar(colorBirdZones.bodyColorScale),
-          cap: new THREE.Color(accentPalette.color).multiplyScalar(colorBirdZones.capColorScale),
-          blush: new THREE.Color(colorBirdZones.blushColor),
-          feet: new THREE.Color(colorBirdZones.feetColor)
-        },
-        colorBirdZoneMap,
-        renderer.capabilities.getMaxAnisotropy()
-      )
-    : [];
-  const colorTeddyMaterials = colorTeddyCoat && colorTeddyProtectMap
-    ? cloneColorTeddyMaterials(
-        THREE,
-        model,
-        new THREE.Color(palette.color).multiplyScalar(colorTeddyCoat.coatColorScale),
-        colorTeddyProtectMap,
-        renderer.capabilities.getMaxAnisotropy()
-      )
-    : [];
   const colorBunnyMaterials = colorBunnyBag && colorBunnyProtectMap
     ? cloneColorBunnyMaterials(
         THREE,
@@ -410,9 +356,7 @@ async function renderThumbnail(toy: Collectible) {
       )
     : [];
   if (
-    !colorBirdZones
-    && !colorTeddyCoat
-    && !colorBunnyBag
+    !colorBunnyBag
     && !colorCatYarn
     && !colorPandaHat
     && !colorOtterLollipop
@@ -470,8 +414,6 @@ async function renderThumbnail(toy: Collectible) {
   } finally {
     disposeModel(THREE, model);
     material?.dispose();
-    colorBirdMaterials.forEach((item) => item.dispose());
-    colorTeddyMaterials.forEach((item) => item.dispose());
     colorBunnyMaterials.forEach((item) => item.dispose());
     colorCatMaterials.forEach((item) => item.dispose());
     colorPandaMaterials.forEach((item) => item.dispose());
@@ -483,8 +425,6 @@ async function renderThumbnail(toy: Collectible) {
     colorKarpyMaterials.forEach((item) => item.dispose());
     colorKoalaMaterials.forEach((item) => item.dispose());
     colorAccessory?.materials.forEach((item) => item.dispose());
-    colorBirdZoneMap?.dispose();
-    colorTeddyProtectMap?.dispose();
     colorBunnyProtectMap?.dispose();
     colorPandaProtectMap?.dispose();
     colorBearSingerMask?.dispose();

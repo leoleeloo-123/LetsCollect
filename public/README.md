@@ -21,16 +21,35 @@ The active mobile-first Color Animals pool is:
 ```text
 color-otter
 color-bird
-color-teddy
+color-penguin
 color-bunny
 color-cat
 color-panda
+color-bear-singer
+color-dog-camera
+color-dog-drum
+color-seal
+color-karpy
+color-koala
+color-racoon
+color-hamster-icecream
+color-dino
+color-fox
+color-deer
+color-sheep
+color-sloth
+color-owl
+color-duck
+color-guinea-pig
+color-black-cat
+color-cool-wolf
 ```
 
-The draw-only special-exhibit pool is:
+Archived compatibility runtimes, excluded from all new draws, are:
 
 ```text
 diamond-unicorn
+diamond-dog
 ```
 
 ```text

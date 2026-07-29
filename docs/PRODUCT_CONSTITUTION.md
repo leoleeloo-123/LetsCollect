@@ -127,8 +127,8 @@ Echo 不依赖并且不应展示：
 
 当前可用资产以 `docs/ASSET_CAPABILITY_REGISTRY.md` 为准。当前 C 端只可使用：
 
-- 二十四个 active Color Animals；奶油小熊暂时保留；
-- 围巾企鹅仍为 experimental Lab 资产，不进入正式 catalog 或抽取池；
+- 二十四个 active Color Animals，包含皇冠小鸟与耳罩企鹅；
+- 测试用奶油小熊已整体归档，不进入正式 catalog、运行时、Lab 或抽取池；
 - 九个注册的常规 colorway；
 - 固定的柔雾树脂表现；
 - 色彩系列中的二十四款 matte 模型与九个常规色值；

@@ -48,9 +48,9 @@ export function ColorPenguinLabPage() {
       <section className="color-animal-intro color-penguin-intro">
         <div>
           <p className="eyebrow">COLOR PENGUIN · ACCESSORY STUDY</p>
-          <h1>企鹅保持原色，只给粉色耳罩顶部、围巾和杯子换色。</h1>
+          <h1>企鹅保持原色，只给粉色耳罩顶部和杯子换色。</h1>
           <p>
-            随机按钮会同步改变耳罩顶部、围巾与杯子。企鹅羽毛、脸部、腮红、嘴、脚和其余细节继续使用原始贴图。
+            随机按钮会同步改变耳罩顶部与杯子。企鹅羽毛、脸部、腮红、嘴、脚和其余细节继续使用原始贴图。
           </p>
         </div>
         <div className="color-lab-actions">
@@ -61,7 +61,7 @@ export function ColorPenguinLabPage() {
             onClick={() => setShowZones((value) => !value)}
           >
             <Palette size={18} />
-            {showZones ? "查看成品" : "检查三个配件区域"}
+            {showZones ? "查看成品" : "检查两个配件区域"}
           </button>
           <button
             className="color-animal-randomize"
@@ -69,7 +69,7 @@ export function ColorPenguinLabPage() {
             onClick={randomize}
           >
             <Dices size={18} />
-            随机耳罩、围巾与杯子颜色
+            随机耳罩与杯子颜色
           </button>
         </div>
       </section>
@@ -79,10 +79,10 @@ export function ColorPenguinLabPage() {
       <section className="color-animal-notes" aria-label="技术说明">
         <Info size={19} />
         <p>
-          <strong>标准化资产：</strong> 原始 79,708,140
-          字节、1,998,438 三角面的 GLB 已压缩为 330,292
-          字节、59,948 三角面的移动端模型。独立 RGB
-          遮罩标记耳罩顶部、围巾与杯子，三个区域使用同一套颜色变体。
+          <strong>标准化资产：</strong> 原始 77,606,960
+          字节、1,999,282 三角面的 GLB 已压缩为 322,324
+          字节、59,966 三角面的移动端模型。粉色像素与网格连通块交集只标记
+          粉色耳罩顶部与粉色杯子，两个区域使用同一套颜色变体。
         </p>
       </section>
     </main>

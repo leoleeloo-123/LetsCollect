@@ -128,10 +128,10 @@ function getCollectibleDescription(modelId: ToyModelId, paletteName: string) {
     return `一只采用${paletteName}色泽的水晶小狗，通透晶体与细密切面会在转动时呈现明亮火彩。`;
   }
   if (modelId === "color-bird") {
-    return `一只采用${paletteName}配色的软萌小鸟，保留灵动眼睛、喙部和脚部原色。`;
+    return `一只戴着${paletteName}皇冠的软萌小鸟，身体、眼睛、喙部、腮红和脚部保持原色。`;
   }
-  if (modelId === "color-teddy") {
-    return `一只采用${paletteName}配色的软萌小熊，保留眼睛、鼻子、嘴巴和脚掌细节。`;
+  if (modelId === "color-penguin") {
+    return `一只戴着${paletteName}耳罩、捧着同色杯子的企鹅，羽毛、五官、腮红、嘴和脚保持原色。`;
   }
   if (modelId === "color-bunny") {
     return `一只带着${paletteName}行李箱的软萌小兔，身体与面部细节保留原始配色。`;

@@ -61,7 +61,7 @@ const regularPaletteIds = colorAnimalPalettes.map(
 const regularModelIds = [
   "color-otter",
   "color-bird",
-  "color-teddy",
+  "color-penguin",
   "color-bunny",
   "color-cat",
   "color-panda",
@@ -144,10 +144,10 @@ export const specialCollectSeries = [
     category: "special",
     eyebrow: "黑白主题",
     title: "黑白配",
-    description: "熊猫与摄影小狗先行入队，围巾企鹅完成后再加入。",
-    memberSummary: "2 款伙伴 · 企鹅待加入",
+    description: "熊猫、摄影小狗和企鹅，组成黑白分明的小队。",
+    memberSummary: "3 款伙伴 · 每款 1 / 3",
     ticketCost: 6,
-    modelIds: ["color-panda", "color-dog-camera"],
+    modelIds: ["color-panda", "color-dog-camera", "color-penguin"],
     palettePolicy: randomPalettePolicy
   },
   {
@@ -244,11 +244,10 @@ export const specialCollectSeries = [
     category: "special",
     eyebrow: "熊熊主题",
     title: "熊熊队",
-    description: "奶油小熊、熊猫、歌手小熊和糖葫芦浣熊，组成四熊阵容。",
-    memberSummary: "4 款伙伴 · 每款 1 / 4",
+    description: "熊猫、歌手小熊和糖葫芦浣熊，组成三位圆滚滚伙伴。",
+    memberSummary: "3 款伙伴 · 每款 1 / 3",
     ticketCost: 6,
     modelIds: [
-      "color-teddy",
       "color-panda",
       "color-bear-singer",
       "color-racoon"

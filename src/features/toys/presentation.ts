@@ -42,6 +42,9 @@ export function getCollectibleMaterialDescription(toy: Collectible) {
   if (toy.modelId === "color-koala") {
     return "柔雾树脂保持低反光、柔和触感；换色只作用于睡帽帽身，考拉身体、五官、帽顶绒球、树枝与叶片继续保留原色。";
   }
+  if (toy.modelId === "color-penguin") {
+    return "柔雾树脂保持低反光、柔和触感；换色只作用于耳罩顶部和杯子，企鹅羽毛、五官、腮红、嘴与脚继续保留原色。";
+  }
   if (isColorAnimalCollectible(toy)) {
     return "柔雾树脂保持低反光、柔和触感；模型只改变已验证的着色区域，五官与角色细节继续保留。";
   }
@@ -63,6 +66,7 @@ export function getCollectiblePaletteLabel(toy: Collectible) {
   if (toy.modelId === "color-seal") return "海星配色";
   if (toy.modelId === "color-karpy") return "帽子配色";
   if (toy.modelId === "color-koala") return "帽子配色";
+  if (toy.modelId === "color-penguin") return "耳罩与杯子配色";
   return "主体配色";
 }
 

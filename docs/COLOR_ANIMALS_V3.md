@@ -37,8 +37,10 @@ The authoritative human-readable inventory, exact runtime sizes, recolor targets
 - `generationVersion = 3` identifies active collectibles.
 - Active model and palette choices live in a shared series configuration, never in page components.
 - Color Otter uses `model-mobile-v008.glb`; only the named `Lollipop_Color` material changes the lollipop colorway, with no additional mask request.
-- Color Bird uses `model-mobile-v001.glb`; its selected palette controls the main body, a deterministic accent controls the cap, and the production zone mask protects the face, feet, and blush.
-- Color Teddy uses `model-mobile-v001.glb`; `protect-mask-mobile-v001.webp` limits recoloring to the coat target and protects the face, muzzle, and blush.
+- Color Bird uses `model-mobile-v002.glb`; only the crown accepts the selected palette through topology-locked crown faces, an encoded shared-edge/proximity feather, an original gold texture gate, the crown UV region, and a local crown gate. The bird, eyes, beak, blush, wings, and feet remain authored.
+- Color Penguin uses `model-mobile-v003.glb`; a texture mask and topology-locked
+  triangle mask recolor only the earmuff top and cup while preserving feathers,
+  face, blush, beak, feet, eyes, white earmuff pads, and cup emblem.
 - Color Bunny uses `model-mobile-v002.glb`; only its suitcase is recolored through `protect-mask-mobile-v001.webp`.
 - Color Cat uses `model-mobile-v002.glb`; only the named `color_cat_new_yarn` material changes the yarn colorway, with no additional mask request.
 - Color Panda uses `model-mobile-v002.glb`; only its hat is recolored through `hat-mask-mobile-v001.webp`.
@@ -68,8 +70,8 @@ The Color Animals demo uses a dedicated local-storage key. Earlier material-show
 
 - Mobile GLB target: below 1 MB per active model.
 - Color Otter mobile GLB: about 360 KB; no protection mask is required.
-- Color Bird mobile GLB remains below the 1 MB target and uses a compact zone mask.
-- Color Teddy mobile GLB: about 356 KB; protection mask: about 7 KB.
+- Color Bird v002 mobile GLB: about 295 KB; crown UV mask: about 4 KB; exact triangle mask: about 60 KB.
+- Color Penguin mobile GLB: about 322 KB; texture and topology masks total about 68 KB.
 - Color Bunny mobile GLB: about 381 KB; protection mask: about 52 KB.
 - Color Cat mobile GLB: about 657 KB; no protection mask is required.
 - Color Panda mobile GLB: about 431 KB; hat mask: about 6 KB.

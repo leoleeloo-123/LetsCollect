@@ -38,7 +38,7 @@ const LAB_CREATED_AT = "2026-07-24T00:00:00.000Z";
 type AssetLabModelId =
   | "color-otter"
   | "color-bird"
-  | "color-teddy"
+  | "color-penguin"
   | "color-bunny"
   | "color-cat"
   | "color-panda"
@@ -57,7 +57,7 @@ const initialPaletteSelection = Object.fromEntries(
 const seedByModel: Record<AssetLabModelId, number> = {
   "color-otter": 1801,
   "color-bird": 1811,
-  "color-teddy": 1823,
+  "color-penguin": 1823,
   "color-bunny": 1831,
   "color-cat": 1847,
   "color-panda": 1861,
@@ -72,13 +72,11 @@ function getPaletteOptions(modelId: AssetLabModelId): ToyPaletteDefinition[] {
 
 function getRecolorTarget(model: (typeof assetLabModels)[number]) {
   if (model.id === "diamond-unicorn") return "整体钻石 tint";
+  if (model.id === "color-bird") return "皇冠";
+  if (model.id === "color-penguin") return "耳罩顶部与杯子";
   switch (model.rendering?.mode) {
     case "color-otter-lollipop":
       return "棒棒糖";
-    case "color-bird-zones":
-      return "身体与帽子分区";
-    case "color-teddy-coat":
-      return "皮毛";
     case "color-bunny-bag":
       return "行李箱";
     case "color-cat-yarn":

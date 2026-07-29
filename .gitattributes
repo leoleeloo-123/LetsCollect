@@ -1,2 +1,1 @@
 assets/models/source/**/*.glb filter=lfs diff=lfs merge=lfs -text
-assets/models/archive/**/source/**/*.glb filter=lfs diff=lfs merge=lfs -text

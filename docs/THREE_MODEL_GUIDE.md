@@ -2,12 +2,11 @@
 
 ## Current Model Pool
 
-The active mobile-first matte pool contains Color Otter, Color Bird, Color Teddy,
-Color Bunny, Color Cat, Color Panda, Color Bear Singer, Color Dog Camera,
-Color Dog Drum, Color Seal, Color Karpy, and Color Koala. Diamond Unicorn and
-Diamond Dog remain compatibility assets, but their Collect shelf card is
-temporarily removed. Runtime GLBs and their protection masks live under
-`public/models/toys/{toy-slug}/`.
+The active mobile-first matte pool contains the twenty-four models registered
+in `src/features/toys/catalog.ts`, including Color Bird v002 and Color Penguin
+v003. Color Teddy is retired. Diamond Unicorn and Diamond Dog remain
+compatibility assets, but their Collect shelf card is removed. Runtime GLBs and
+their protection masks live under `public/models/toys/{toy-slug}/`.
 
 Color Karpy's 315,240-byte Draco GLB uses an 18,474-byte mask and a local
 upper-head gate so only its beret changes color; the rice ball and character

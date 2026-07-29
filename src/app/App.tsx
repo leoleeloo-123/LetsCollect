@@ -34,7 +34,6 @@ const ColorSlothLabPage = lazy(() => import("../pages/color-sloth-lab/ColorSloth
 const ColorFoxLabPage = lazy(() => import("../pages/color-fox-lab/ColorFoxLabPage").then((module) => ({ default: module.ColorFoxLabPage })));
 const ColorRacoonLabPage = lazy(() => import("../pages/color-racoon-lab/ColorRacoonLabPage").then((module) => ({ default: module.ColorRacoonLabPage })));
 const ColorSealLabPage = lazy(() => import("../pages/color-seal-lab/ColorSealLabPage").then((module) => ({ default: module.ColorSealLabPage })));
-const ColorTeddyLabPage = lazy(() => import("../pages/color-teddy-lab/ColorTeddyLabPage").then((module) => ({ default: module.ColorTeddyLabPage })));
 const DiamondDogLabPage = lazy(() => import("../pages/diamond-dog-lab/DiamondDogLabPage").then((module) => ({ default: module.DiamondDogLabPage })));
 const DiamondUnicornLabPage = lazy(() => import("../pages/diamond-unicorn-lab/DiamondUnicornLabPage").then((module) => ({ default: module.DiamondUnicornLabPage })));
 const AssetLabPage = lazy(() => import("../pages/asset-lab/AssetLabPage").then((module) => ({ default: module.AssetLabPage })));
@@ -80,7 +79,6 @@ export function App() {
         <Route path="color-fox-lab" element={<ColorFoxLabPage />} />
         <Route path="color-racoon-lab" element={<ColorRacoonLabPage />} />
         <Route path="color-seal-lab" element={<ColorSealLabPage />} />
-        <Route path="color-teddy-lab" element={<ColorTeddyLabPage />} />
         <Route path="diamond-dog-lab" element={<DiamondDogLabPage />} />
         <Route path="diamond-unicorn-lab" element={<DiamondUnicornLabPage />} />
         <Route path="asset-lab" element={<AssetLabPage />} />

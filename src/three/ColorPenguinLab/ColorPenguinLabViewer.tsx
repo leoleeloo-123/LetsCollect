@@ -29,26 +29,16 @@ type PenguinControls = {
   invalidate: () => void;
 };
 
-const MODEL_URL = "/models/toys/color-penguin/model-mobile-v001.glb";
+const MODEL_URL = "/models/toys/color-penguin/model-mobile-v003.glb";
 const MASK_URL =
-  "/models/toys/color-penguin/accessory-mask-mobile-v001.webp?v=19";
-const CUP_TRIANGLE_MASK_URL =
-  "/models/toys/color-penguin/cup-triangle-mask-mobile-v001.bin?v=5";
-const SCARF_TRIANGLE_MASK_URL =
-  "/models/toys/color-penguin/scarf-triangle-mask-mobile-v001.bin?v=2";
+  "/models/toys/color-penguin/accessory-mask-mobile-v003.webp";
+const ZONE_TRIANGLE_MASK_URL =
+  "/models/toys/color-penguin/zone-triangle-mask-mobile-v003.bin";
 
-async function loadCupTriangleMask() {
-  const response = await fetch(CUP_TRIANGLE_MASK_URL);
+async function loadZoneTriangleMask() {
+  const response = await fetch(ZONE_TRIANGLE_MASK_URL);
   if (!response.ok) {
     throw new Error(`杯子三角遮罩加载失败：${response.status}`);
-  }
-  return new Uint8Array(await response.arrayBuffer());
-}
-
-async function loadScarfTriangleMask() {
-  const response = await fetch(SCARF_TRIANGLE_MASK_URL);
-  if (!response.ok) {
-    throw new Error(`Scarf triangle mask failed to load: ${response.status}`);
   }
   return new Uint8Array(await response.arrayBuffer());
 }
@@ -82,6 +72,7 @@ export function ColorPenguinLabViewer({ variant, showZones }: Props) {
     setProgress(0);
 
     async function setup() {
+      const urlParams = new URLSearchParams(window.location.search);
       const compact =
         window.matchMedia("(pointer: coarse)").matches ||
         window.innerWidth < 760;
@@ -96,12 +87,10 @@ export function ColorPenguinLabViewer({ variant, showZones }: Props) {
       ]);
       if (cancelled || !hostRef.current) return;
 
-      const [accessoryMask, cupTriangleMask, scarfTriangleMask] =
-        await Promise.all([
-          new THREE.TextureLoader().loadAsync(MASK_URL),
-          loadCupTriangleMask(),
-          loadScarfTriangleMask()
-        ]);
+      const [accessoryMask, triangleZones] = await Promise.all([
+        new THREE.TextureLoader().loadAsync(MASK_URL),
+        loadZoneTriangleMask()
+      ]);
       if (cancelled || !hostRef.current) {
         accessoryMask.dispose();
         return;
@@ -150,9 +139,7 @@ export function ColorPenguinLabViewer({ variant, showZones }: Props) {
       scene.add(rim);
 
       let needsRender = true;
-      const rotationParam = new URLSearchParams(window.location.search).get(
-        "rotation"
-      );
+      const rotationParam = urlParams.get("rotation");
       const rotationValue =
         rotationParam === null ? Number.NaN : Number(rotationParam);
       const inspectionRotation = Number.isFinite(rotationValue)
@@ -173,8 +160,7 @@ export function ColorPenguinLabViewer({ variant, showZones }: Props) {
         model,
         controls.color,
         accessoryMask,
-        cupTriangleMask,
-        scarfTriangleMask,
+        triangleZones,
         renderer.capabilities.getMaxAnisotropy(),
         controls.debugMode
       );
@@ -422,7 +408,7 @@ export function ColorPenguinLabViewer({ variant, showZones }: Props) {
       <div ref={hostRef} className="color-animal-viewer__host" />
       <div
         className="color-animal-single__palette"
-        aria-label="当前耳罩顶部、围巾与杯子颜色"
+        aria-label="当前耳罩顶部与杯子颜色"
       >
         <span style={{ background: variant.swatch }} />
         <strong>{showZones ? "配件区域" : variant.name}</strong>

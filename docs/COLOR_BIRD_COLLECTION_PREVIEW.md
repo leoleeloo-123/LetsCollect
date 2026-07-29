@@ -1,30 +1,36 @@
 # Color Bird collection preview
 
-Status: historical preview, superseded by `docs/COLOR_ANIMALS_V3.md`.
+Status: archived full-body preview, superseded by the crown-only Color Bird v002
+contract in `docs/COLOR_ANIMALS_V3.md`.
 
 ## Scope
 
-Color Bird is available as a collection-only mobile preview in the Color Animals V3 series. Two seeded variants appear in a fresh demo collection, while random draws continue to use Color Dog until the bird is approved on real phones.
+This document records the retired 2026-07-19 full-body recolor experiment. The
+active `color-bird` product ID now resolves to the new source v002 model and only
+its crown accepts the selected palette.
 
 ## Runtime profile
 
-- Mobile GLB: `/models/toys/color-bird/model-mobile-v001.glb` (about 310 KB)
-- Active zone mask: `/models/toys/color-bird/protect-mask-mobile-v014.webp` (about 18 KB)
+- Archived mobile GLB: `assets/models/archive/color-bird/runtime/model-mobile-v001.glb` (310,308 bytes)
+- Archived zone mask: `assets/models/archive/color-bird/masks/protect-mask-mobile-v014.webp` (17,840 bytes)
+- Active replacement: `/models/toys/color-bird/model-mobile-v002.glb` with `/models/toys/color-bird/crown-mask-mobile-v001.webp` and `/models/toys/color-bird/crown-triangle-mask-mobile-v001.bin`
 - List rendering: cached WebP thumbnails; no live WebGL canvas per collection item
 - Detail rendering: one interactive WebGL viewer is created only after opening a collectible
 
 ## Rendering boundary
 
-The product catalog declares a `color-bird-zones` rendering mode. The shader uses the authored texture plus a multi-channel mask to recolor the body and cap while retaining the eye and beak details. A lightweight geometry attribute keeps the feet in their authored orange tone where the UV layout is shared with the body.
+The retired catalog declared a `color-bird-zones` rendering mode. Its shader
+recolored the body and cap through a multi-channel mask while retaining the eye,
+beak, feet, and blush. The active v002 catalog instead uses the shared
+`color-accessory-mask` path and isolates only the crown.
 
 ## Validation
 
 - TypeScript typecheck and production build must pass.
-- A fresh mobile-width session must show two dogs and two birds in the collection.
-- Both bird thumbnails must render from the mobile GLB.
-- Opening a bird must load the interactive model and preserve the protected details.
-- The draw generator must continue to choose from `drawModelIds`, currently Color Dog only.
+- The archived code, source, runtime, and mask must remain available for local rollback.
+- No browser URL may reference an asset under `assets/models/archive/color-bird/`.
 
 ## Rollback
 
-Remove Color Bird from `colorAnimalsSeries.modelIds` and from `starterCollectionToys`, then restore the previous local demo storage key. The Color Dog rendering path and draw pool remain independent and require no asset rollback.
+Restore the archived runtime and full-body shader only through a new versioned
+catalog change. Do not overwrite the active v002 runtime or crown mask.

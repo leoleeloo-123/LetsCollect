@@ -1,20 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { Rotate3D } from "lucide-react";
 import { ToyThumbnail } from "../../components/toys/ToyThumbnail";
-import { getColorBirdAccentPalette, getToyModel, getToyPalette } from "../../features/toys/catalog";
+import { getToyModel, getToyPalette } from "../../features/toys/catalog";
 import type { Collectible } from "../../types/toy";
 import {
   createToyMaterial,
   getCollectibleRenderTraits
 } from "../material/createToyMaterial";
-import {
-  cloneColorBirdMaterials,
-  prepareColorBirdZoneTexture
-} from "../material/createColorBirdMaterials";
-import {
-  cloneColorTeddyMaterials,
-  prepareColorTeddyProtectTexture
-} from "../material/createColorTeddyMaterials";
 import {
   cloneColorBunnyMaterials,
   prepareColorBunnyProtectTexture
@@ -215,12 +207,6 @@ export function ToyViewer({
       scene.add(toyGroup);
 
       // Model-specific materials preserve authored details and recolor only approved zones.
-      const colorBirdZones = modelDefinition.rendering?.mode === "color-bird-zones"
-        ? modelDefinition.rendering
-        : null;
-      const colorTeddyCoat = modelDefinition.rendering?.mode === "color-teddy-coat"
-        ? modelDefinition.rendering
-        : null;
       const colorBunnyBag = modelDefinition.rendering?.mode === "color-bunny-bag"
         ? modelDefinition.rendering
         : null;
@@ -256,9 +242,7 @@ export function ToyViewer({
       )
         ? modelDefinition.rendering
         : null;
-      const standardMaterialResult = colorBirdZones
-        || colorTeddyCoat
-        || colorBunnyBag
+      const standardMaterialResult = colorBunnyBag
         || colorCatYarn
         || colorPandaHat
         || colorOtterLollipop
@@ -273,18 +257,6 @@ export function ToyViewer({
         : createToyMaterial(THREE, toy, { lightweight: useLightweightStage });
       const toyMaterial = standardMaterialResult?.material ?? null;
       const glowColor = standardMaterialResult?.glowColor ?? new THREE.Color(palette.glow);
-      const colorBirdZoneMap = colorBirdZones
-        ? prepareColorBirdZoneTexture(
-            THREE,
-            await new THREE.TextureLoader().loadAsync(colorBirdZones.zoneMaskUrl)
-          )
-        : null;
-      const colorTeddyProtectMap = colorTeddyCoat
-        ? prepareColorTeddyProtectTexture(
-            THREE,
-            await new THREE.TextureLoader().loadAsync(colorTeddyCoat.protectMaskUrl)
-          )
-        : null;
       const colorBunnyProtectMap = colorBunnyBag
         ? prepareColorBunnyProtectTexture(
             THREE,
@@ -333,8 +305,6 @@ export function ToyViewer({
       if (colorKoalaMask) {
         prepareColorKoalaMaskTexture(THREE, colorKoalaMask);
       }
-      let colorBirdMaterials: import("three").Material[] = [];
-      let colorTeddyMaterials: import("three").Material[] = [];
       let colorBunnyMaterials: import("three").Material[] = [];
       let colorCatMaterials: import("three").Material[] = [];
       let colorPandaMaterials: import("three").Material[] = [];
@@ -459,8 +429,6 @@ export function ToyViewer({
         if (staticResourcesDisposed) return;
         staticResourcesDisposed = true;
         toyMaterial?.dispose();
-        colorBirdMaterials.forEach((material) => material.dispose());
-        colorTeddyMaterials.forEach((material) => material.dispose());
         colorBunnyMaterials.forEach((material) => material.dispose());
         colorCatMaterials.forEach((material) => material.dispose());
         colorPandaMaterials.forEach((material) => material.dispose());
@@ -474,8 +442,6 @@ export function ToyViewer({
         colorAccessoryMaterials.forEach((material) => material.dispose());
         colorAccessoryTextures.forEach((texture) => texture.dispose());
         tileTextureCopies.forEach((texture) => texture.dispose());
-        colorBirdZoneMap?.dispose();
-        colorTeddyProtectMap?.dispose();
         colorBunnyProtectMap?.dispose();
         colorPandaProtectMap?.dispose();
         colorBearSingerMask?.dispose();
@@ -526,28 +492,6 @@ export function ToyViewer({
         );
         colorAccessoryMaterials = preparedAccessory.materials;
         colorAccessoryTextures = preparedAccessory.textures;
-      } else if (colorBirdZones && colorBirdZoneMap) {
-        const accentPalette = getColorBirdAccentPalette(toy.paletteId, toy.appearanceSeed);
-        colorBirdMaterials = cloneColorBirdMaterials(
-          THREE,
-          model,
-          {
-            body: new THREE.Color(palette.color).multiplyScalar(colorBirdZones.bodyColorScale),
-            cap: new THREE.Color(accentPalette.color).multiplyScalar(colorBirdZones.capColorScale),
-            blush: new THREE.Color(colorBirdZones.blushColor),
-            feet: new THREE.Color(colorBirdZones.feetColor)
-          },
-          colorBirdZoneMap,
-          renderer.capabilities.getMaxAnisotropy()
-        );
-      } else if (colorTeddyCoat && colorTeddyProtectMap) {
-        colorTeddyMaterials = cloneColorTeddyMaterials(
-          THREE,
-          model,
-          new THREE.Color(palette.color).multiplyScalar(colorTeddyCoat.coatColorScale),
-          colorTeddyProtectMap,
-          renderer.capabilities.getMaxAnisotropy()
-        );
       } else if (colorBunnyBag && colorBunnyProtectMap) {
         colorBunnyMaterials = cloneColorBunnyMaterials(
           THREE,
@@ -638,8 +582,6 @@ export function ToyViewer({
       }
 
       applyTileMaterialProfile([
-        ...colorBirdMaterials,
-        ...colorTeddyMaterials,
         ...colorBunnyMaterials,
         ...colorCatMaterials,
         ...colorPandaMaterials,

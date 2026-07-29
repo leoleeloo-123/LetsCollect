@@ -3,6 +3,7 @@ import type {
   CampaignProposalDraft,
   CommunitySignal
 } from "../../types/agent";
+import { currentAssetIds } from "../../config/capabilityRegistry";
 
 export const evolutionSignals = [
   {
@@ -19,13 +20,13 @@ export const evolutionSignals = [
   {
     id: "signal_matte_model_breadth",
     label: "Matte model breadth",
-    value: 4.2,
+    value: 17.6,
     unit: "ratio",
-    displayValue: "4.2 / 6",
-    deltaLabel: "+0.6 models",
+    displayValue: "17.6 / 24",
+    deltaLabel: "+2.1 models",
     trend: "up",
     period: "Last 7 days",
-    description: "Active demo collectors encountered a wider mix of the six current matte models."
+    description: "Active demo collectors encountered a wider mix of the twenty-four current matte models."
   },
   {
     id: "signal_crystal_draw_share",
@@ -61,7 +62,7 @@ export const evolutionCampaignDrafts = [
   {
     id: "campaign_calm_green_week",
     title: "Calm Green Week",
-    insight: "Use a temporary palette emphasis across all six current matte models.",
+    insight: "Use a temporary palette emphasis across all twenty-four current matte models.",
     sourceInsightIds: ["insight_calm_green"],
     targetAudience: "Collectors recently drawn to Candy Mint or Lime",
     requiredCapabilities: [
@@ -73,14 +74,7 @@ export const evolutionCampaignDrafts = [
       "shared_collection_tasks",
       "extra_draw_rewards"
     ],
-    eligibleAssetIds: [
-      "color-otter",
-      "color-bird",
-      "color-teddy",
-      "color-bunny",
-      "color-cat",
-      "color-panda"
-    ],
+    eligibleAssetIds: currentAssetIds,
     featuredColorIds: ["candy-mint", "lime"],
     configurationChanges: [
       {

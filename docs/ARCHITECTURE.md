@@ -123,11 +123,9 @@ React pages and feature components
 
 A centralized registry must distinguish `available`, `experimental`, `planned`, `legacy`, and `unavailable`. Runtime files existing in `public/` or `assets/` do not by themselves make a capability available. The twenty-four active matte Companions and two archived crystal studies must be declared explicitly, with their real model IDs, palettes, material behavior, and rendering constraints.
 
-Known consistency debt: `catalog.ts`, `activeSeries.ts`, `collectSeries.ts`, and
-`ASSET_CAPABILITY_REGISTRY.md` describe the current twenty-four-model product,
-while `src/config/capabilityRegistry.ts` still registers only the first twelve
-assets for Agent feasibility. Until that TypeScript registry is updated, it is
-not an authoritative complete list of the active draw pool.
+`catalog.ts`, `activeSeries.ts`, `collectSeries.ts`,
+`ASSET_CAPABILITY_REGISTRY.md`, and `src/config/capabilityRegistry.ts` share the
+same twenty-four-model product roster.
 
 ### Collection Service And Repository
 
