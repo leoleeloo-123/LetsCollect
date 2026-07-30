@@ -9,6 +9,10 @@ export type {
   SeriesMemberQueryOptions
 } from "./registry";
 export {
+  localAssetRegistry,
+  localAssetRegistrySnapshot
+} from "./localTables";
+export {
   validateAssetRegistrySnapshot
 } from "./validation";
 export type {

@@ -30,6 +30,56 @@ const errors = [];
 const tables = {};
 const idPattern = /^[a-z0-9][a-z0-9_-]*(?:-[a-z0-9_-]+)*$/;
 const colorPattern = /^#[0-9a-f]{6}$/i;
+const fallbackShapes = new Set(["unicorn", "cat", "bunny", "bird", "dog", "blob"]);
+const rendererProfileIds = new Set([
+  "color-bunny-bag",
+  "color-cat-yarn",
+  "color-panda-hat",
+  "color-otter-lollipop",
+  "color-bear-singer-afro",
+  "color-dog-camera-accessories",
+  "color-dog-drum",
+  "color-seal-starfish",
+  "color-karpy-hat",
+  "color-koala-hat",
+  "color-accessory-mask"
+]);
+const accessoryProfileIds = new Set([
+  "bird-crown",
+  "penguin-accessories",
+  "racoon-tanghulu",
+  "hamster-icecream",
+  "dino-scarf",
+  "fox-hat",
+  "deer-accessories",
+  "sheep-accessories",
+  "sloth-hat",
+  "owl-academic",
+  "duck-bath",
+  "guinea-pig-balloons",
+  "black-cat-logo",
+  "cool-wolf-studs"
+]);
+const maskTypes = new Set([
+  "material-name",
+  "protect-mask",
+  "texture-mask",
+  "texture-and-triangle-mask",
+  "texture-and-object-mask",
+  "material-parameters"
+]);
+const expectedMaskTypeByRenderer = {
+  "color-bunny-bag": "protect-mask",
+  "color-cat-yarn": "material-name",
+  "color-panda-hat": "protect-mask",
+  "color-otter-lollipop": "material-name",
+  "color-bear-singer-afro": "texture-mask",
+  "color-dog-camera-accessories": "texture-mask",
+  "color-dog-drum": "material-parameters",
+  "color-seal-starfish": "texture-and-object-mask",
+  "color-karpy-hat": "texture-mask",
+  "color-koala-hat": "texture-mask"
+};
 
 function fail(path, message) {
   errors.push(`${path}: ${message}`);
@@ -133,6 +183,14 @@ function validateColor(value, path, nullable = false) {
   }
 }
 
+function requireNonEmptyString(record, key, path) {
+  if (typeof record[key] !== "string" || !record[key].trim()) {
+    fail(`${path}.${key}`, `${key} must be a non-empty string`);
+    return false;
+  }
+  return true;
+}
+
 function validatePalettePolicy(
   policy,
   path,
@@ -195,6 +253,7 @@ const paletteIds = idSet(tables.palettes);
 const activePaletteIds = enabledIdSet(tables.palettes);
 const surfaceIds = idSet(tables.surfaces);
 const profileIds = idSet(tables.recolorProfiles);
+const activeProfileIds = enabledIdSet(tables.recolorProfiles);
 const modelIds = idSet(tables.toyModels);
 const seriesIds = idSet(tables.series);
 
@@ -246,6 +305,11 @@ const seriesIds = idSet(tables.series);
 
 (tables.toyModels ?? []).forEach((model, index) => {
   const path = `toyModels[${index}]`;
+  requireNonEmptyString(model, "name", path);
+  if (!fallbackShapes.has(model.fallbackShape)) {
+    fail(`${path}.fallbackShape`, `unknown fallback shape ${model.fallbackShape}`);
+  }
+  validateFinite(model.sortOrder, `${path}.sortOrder`, 0, 10000);
   if (!isRecord(model.assets)) {
     fail(`${path}.assets`, "assets must be an object");
   } else {
@@ -262,15 +326,33 @@ const seriesIds = idSet(tables.series);
     validateFinite(model.calibration.rotationYDeg, `${path}.calibration.rotationYDeg`, -360, 360);
   }
   if (
-    tables.recolorProfiles
-    && model.recolorProfileId !== null
-    && !profileIds.has(model.recolorProfileId)
+    model.recolorProfileId !== null
+    && (typeof model.recolorProfileId !== "string"
+      || !profileIds.has(model.recolorProfileId))
   ) {
     fail(`${path}.recolorProfileId`, `unknown recolor profile ${model.recolorProfileId}`);
+  } else if (
+    model.enabled !== false
+    && model.recolorProfileId
+    && !activeProfileIds.has(model.recolorProfileId)
+  ) {
+    fail(`${path}.recolorProfileId`, "active model references a disabled recolor profile");
   }
 });
 
 (tables.recolorProfiles ?? []).forEach((profile, index) => {
+  const path = `recolorProfiles[${index}]`;
+  if (!rendererProfileIds.has(profile.rendererProfileId)) {
+    fail(`${path}.rendererProfileId`, `unknown renderer profile ${profile.rendererProfileId}`);
+  }
+  if (!maskTypes.has(profile.maskType)) {
+    fail(`${path}.maskType`, `unknown mask type ${profile.maskType}`);
+  }
+  if (typeof profile.supportsSurfaceOverride !== "boolean") {
+    fail(`${path}.supportsSurfaceOverride`, "supportsSurfaceOverride must be a boolean");
+  }
+  validateFinite(profile.colorScale, `${path}.colorScale`, 0, 4);
+
   for (const key of [
     "maskUrl",
     "protectMaskUrl",
@@ -279,7 +361,55 @@ const seriesIds = idSet(tables.series);
     "objectMaskUrl"
   ]) {
     if (profile[key] !== undefined) {
-      validateAssetPath(profile[key], `recolorProfiles[${index}].${key}`);
+      validateAssetPath(profile[key], `${path}.${key}`);
+    }
+  }
+
+  const expectedMaskType = profile.rendererProfileId === "color-accessory-mask"
+    ? (
+        ["bird-crown", "penguin-accessories"].includes(profile.accessoryProfileId)
+          ? "texture-and-triangle-mask"
+          : "texture-mask"
+      )
+    : expectedMaskTypeByRenderer[profile.rendererProfileId];
+  if (expectedMaskType && profile.maskType !== expectedMaskType) {
+    fail(`${path}.maskType`, `${profile.rendererProfileId} requires ${expectedMaskType}`);
+  }
+
+  if (
+    ["color-cat-yarn", "color-otter-lollipop"].includes(profile.rendererProfileId)
+  ) {
+    requireNonEmptyString(profile, "materialName", path);
+  }
+  if (
+    ["color-bunny-bag", "color-panda-hat"].includes(profile.rendererProfileId)
+  ) {
+    requireNonEmptyString(profile, "protectMaskUrl", path);
+  }
+  if (
+    [
+      "color-bear-singer-afro",
+      "color-dog-camera-accessories",
+      "color-seal-starfish",
+      "color-karpy-hat",
+      "color-koala-hat",
+      "color-accessory-mask"
+    ].includes(profile.rendererProfileId)
+  ) {
+    requireNonEmptyString(profile, "maskUrl", path);
+  }
+  if (profile.rendererProfileId === "color-seal-starfish") {
+    requireNonEmptyString(profile, "objectMaskUrl", path);
+  }
+  if (profile.rendererProfileId === "color-accessory-mask") {
+    if (!accessoryProfileIds.has(profile.accessoryProfileId)) {
+      fail(`${path}.accessoryProfileId`, `unknown accessory profile ${profile.accessoryProfileId}`);
+    }
+    if (["bird-crown", "penguin-accessories"].includes(profile.accessoryProfileId)) {
+      requireNonEmptyString(profile, "triangleMaskUrl", path);
+    }
+    if (profile.accessoryProfileId === "duck-bath") {
+      requireNonEmptyString(profile, "secondaryMaskUrl", path);
     }
   }
 });

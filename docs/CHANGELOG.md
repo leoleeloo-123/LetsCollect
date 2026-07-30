@@ -21,8 +21,14 @@
 - Migrated nine palettes, four surfaces, four backgrounds, fourteen series, and
   sixty series memberships to validated JSON tables while preserving the
   existing catalog, Lab, series, and draw-facing APIs.
-- Added Phase 2 Registry validation to the production build; toy models and
-  recolor profiles remain on the existing TypeScript source until Phase 3.
+- Added Phase 2 Registry validation to the production build.
+- Migrated all 24 formal toy models and 24 recolor profiles to JSON without
+  moving GLB, mask, material factory, or shader assets.
+- Reduced `catalog.ts` to a compatibility adapter, derived the active formal
+  roster from Registry records, and enabled complete seven-table strict
+  validation in the production build.
+- Verified migration parity for all model definitions and loaded 24/24 models
+  through the Appearance Lab realtime viewer.
 
 ## 2026-07-29
 

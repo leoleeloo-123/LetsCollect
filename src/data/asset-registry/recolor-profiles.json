@@ -1,0 +1,235 @@
+[
+  {
+    "id": "color-otter-recolor",
+    "enabled": true,
+    "rendererProfileId": "color-otter-lollipop",
+    "supportsSurfaceOverride": true,
+    "maskType": "material-name",
+    "materialName": "Lollipop_Color",
+    "colorScale": 0.92
+  },
+  {
+    "id": "color-bird-recolor",
+    "enabled": true,
+    "rendererProfileId": "color-accessory-mask",
+    "supportsSurfaceOverride": true,
+    "accessoryProfileId": "bird-crown",
+    "maskType": "texture-and-triangle-mask",
+    "maskUrl": "/models/toys/color-bird/crown-mask-mobile-v001.webp?v=11",
+    "triangleMaskUrl": "/models/toys/color-bird/crown-triangle-mask-mobile-v001.bin?v=11",
+    "colorScale": 0.92
+  },
+  {
+    "id": "color-penguin-recolor",
+    "enabled": true,
+    "rendererProfileId": "color-accessory-mask",
+    "supportsSurfaceOverride": true,
+    "accessoryProfileId": "penguin-accessories",
+    "maskType": "texture-and-triangle-mask",
+    "maskUrl": "/models/toys/color-penguin/accessory-mask-mobile-v003.webp?v=3",
+    "triangleMaskUrl": "/models/toys/color-penguin/zone-triangle-mask-mobile-v003.bin?v=3",
+    "colorScale": 0.92
+  },
+  {
+    "id": "color-bunny-recolor",
+    "enabled": true,
+    "rendererProfileId": "color-bunny-bag",
+    "supportsSurfaceOverride": true,
+    "maskType": "protect-mask",
+    "protectMaskUrl": "/models/toys/color-bunny/protect-mask-mobile-v001.webp",
+    "colorScale": 0.92
+  },
+  {
+    "id": "color-cat-recolor",
+    "enabled": true,
+    "rendererProfileId": "color-cat-yarn",
+    "supportsSurfaceOverride": true,
+    "maskType": "material-name",
+    "materialName": "color_cat_new_yarn",
+    "colorScale": 0.88
+  },
+  {
+    "id": "color-panda-recolor",
+    "enabled": true,
+    "rendererProfileId": "color-panda-hat",
+    "supportsSurfaceOverride": true,
+    "maskType": "protect-mask",
+    "protectMaskUrl": "/models/toys/color-panda/hat-mask-mobile-v001.webp",
+    "colorScale": 0.92
+  },
+  {
+    "id": "color-bear-singer-recolor",
+    "enabled": true,
+    "rendererProfileId": "color-bear-singer-afro",
+    "supportsSurfaceOverride": true,
+    "maskType": "texture-mask",
+    "maskUrl": "/models/toys/color-bear-singer/afro-mask-mobile-v001.webp",
+    "colorScale": 0.9
+  },
+  {
+    "id": "color-dog-camera-recolor",
+    "enabled": true,
+    "rendererProfileId": "color-dog-camera-accessories",
+    "supportsSurfaceOverride": true,
+    "maskType": "texture-mask",
+    "maskUrl": "/models/toys/color-dog-camera/accessory-mask-mobile-v001.webp",
+    "colorScale": 0.9
+  },
+  {
+    "id": "color-dog-drum-recolor",
+    "enabled": true,
+    "rendererProfileId": "color-dog-drum",
+    "supportsSurfaceOverride": true,
+    "maskType": "material-parameters",
+    "colorScale": 0.9
+  },
+  {
+    "id": "color-seal-recolor",
+    "enabled": true,
+    "rendererProfileId": "color-seal-starfish",
+    "supportsSurfaceOverride": true,
+    "maskType": "texture-and-object-mask",
+    "maskUrl": "/models/toys/color-seal/starfish-mask-mobile-v001.webp",
+    "objectMaskUrl": "/models/toys/color-seal/starfish-object-mask-mobile-v001.webp",
+    "colorScale": 0.9
+  },
+  {
+    "id": "color-karpy-recolor",
+    "enabled": true,
+    "rendererProfileId": "color-karpy-hat",
+    "supportsSurfaceOverride": true,
+    "maskType": "texture-mask",
+    "maskUrl": "/models/toys/color-karpy/hat-mask-mobile-v001.webp",
+    "colorScale": 0.92
+  },
+  {
+    "id": "color-koala-recolor",
+    "enabled": true,
+    "rendererProfileId": "color-koala-hat",
+    "supportsSurfaceOverride": true,
+    "maskType": "texture-mask",
+    "maskUrl": "/models/toys/color-koala/hat-mask-mobile-v001.webp",
+    "colorScale": 0.92
+  },
+  {
+    "id": "color-racoon-recolor",
+    "enabled": true,
+    "rendererProfileId": "color-accessory-mask",
+    "supportsSurfaceOverride": true,
+    "accessoryProfileId": "racoon-tanghulu",
+    "maskType": "texture-mask",
+    "maskUrl": "/models/toys/color-racoon/tanghulu-mask-mobile-v001.webp?v=1",
+    "colorScale": 0.92
+  },
+  {
+    "id": "color-hamster-icecream-recolor",
+    "enabled": true,
+    "rendererProfileId": "color-accessory-mask",
+    "supportsSurfaceOverride": true,
+    "accessoryProfileId": "hamster-icecream",
+    "maskType": "texture-mask",
+    "maskUrl": "/models/toys/color-hamster-icecream/icecream-mask-mobile-v001.webp?v=1",
+    "colorScale": 0.92
+  },
+  {
+    "id": "color-dino-recolor",
+    "enabled": true,
+    "rendererProfileId": "color-accessory-mask",
+    "supportsSurfaceOverride": true,
+    "accessoryProfileId": "dino-scarf",
+    "maskType": "texture-mask",
+    "maskUrl": "/models/toys/color-dino/scarf-mask-mobile-v001.webp?v=2",
+    "colorScale": 0.92
+  },
+  {
+    "id": "color-fox-recolor",
+    "enabled": true,
+    "rendererProfileId": "color-accessory-mask",
+    "supportsSurfaceOverride": true,
+    "accessoryProfileId": "fox-hat",
+    "maskType": "texture-mask",
+    "maskUrl": "/models/toys/color-fox/hat-feather-mask-mobile-v001.webp?v=4",
+    "colorScale": 0.92
+  },
+  {
+    "id": "color-deer-recolor",
+    "enabled": true,
+    "rendererProfileId": "color-accessory-mask",
+    "supportsSurfaceOverride": true,
+    "accessoryProfileId": "deer-accessories",
+    "maskType": "texture-mask",
+    "maskUrl": "/models/toys/color-deer/accessory-mask-mobile-v001.webp?v=22",
+    "colorScale": 0.92
+  },
+  {
+    "id": "color-sheep-recolor",
+    "enabled": true,
+    "rendererProfileId": "color-accessory-mask",
+    "supportsSurfaceOverride": true,
+    "accessoryProfileId": "sheep-accessories",
+    "maskType": "texture-mask",
+    "maskUrl": "/models/toys/color-sheep/accessory-mask-mobile-v001.webp?v=4",
+    "colorScale": 0.92
+  },
+  {
+    "id": "color-sloth-recolor",
+    "enabled": true,
+    "rendererProfileId": "color-accessory-mask",
+    "supportsSurfaceOverride": true,
+    "accessoryProfileId": "sloth-hat",
+    "maskType": "texture-mask",
+    "maskUrl": "/models/toys/color-sloth/hat-mask-mobile-v001.webp?v=4",
+    "colorScale": 0.92
+  },
+  {
+    "id": "color-owl-recolor",
+    "enabled": true,
+    "rendererProfileId": "color-accessory-mask",
+    "supportsSurfaceOverride": true,
+    "accessoryProfileId": "owl-academic",
+    "maskType": "texture-mask",
+    "maskUrl": "/models/toys/color-owl/hat-book-mask-mobile-v001.webp?v=2",
+    "colorScale": 0.92
+  },
+  {
+    "id": "color-duck-recolor",
+    "enabled": true,
+    "rendererProfileId": "color-accessory-mask",
+    "supportsSurfaceOverride": true,
+    "accessoryProfileId": "duck-bath",
+    "maskType": "texture-mask",
+    "maskUrl": "/models/toys/color-duck/bath-mask-mobile-v003.webp?v=1",
+    "secondaryMaskUrl": "/models/toys/color-duck/foam-cleanup-mask-mobile-v001.webp?v=1",
+    "colorScale": 0.92
+  },
+  {
+    "id": "color-guinea-pig-recolor",
+    "enabled": true,
+    "rendererProfileId": "color-accessory-mask",
+    "supportsSurfaceOverride": true,
+    "accessoryProfileId": "guinea-pig-balloons",
+    "maskType": "texture-mask",
+    "maskUrl": "/models/toys/color-guinea-pig/balloon-zones-mobile-v003.webp?v=3",
+    "colorScale": 0.94
+  },
+  {
+    "id": "color-black-cat-recolor",
+    "enabled": true,
+    "rendererProfileId": "color-accessory-mask",
+    "supportsSurfaceOverride": true,
+    "accessoryProfileId": "black-cat-logo",
+    "maskType": "texture-mask",
+    "maskUrl": "/models/toys/color-black-cat/fish-logo-mask-mobile-v001.webp?v=5",
+    "colorScale": 0.92
+  },
+  {
+    "id": "color-cool-wolf-recolor",
+    "enabled": true,
+    "rendererProfileId": "color-accessory-mask",
+    "supportsSurfaceOverride": true,
+    "accessoryProfileId": "cool-wolf-studs",
+    "maskType": "texture-mask",
+    "maskUrl": "/models/toys/color-cool-wolf/ear-stud-mask-mobile-v001.webp?v=3",
+    "colorScale": 0.92
+  }
+]

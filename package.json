@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/validate-assets.mjs --phase2 && tsc -b && vite build",
+    "build": "node scripts/validate-assets.mjs --strict && tsc -b && vite build",
     "preview": "vite preview",
     "typecheck": "tsc -p tsconfig.app.json --noEmit",
-    "validate:assets": "node scripts/validate-assets.mjs --phase2"
+    "validate:assets": "node scripts/validate-assets.mjs --strict"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.110.2",

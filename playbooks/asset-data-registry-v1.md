@@ -1,6 +1,6 @@
 # Asset Data Registry V1 Playbook
 
-- 状态：Phase 0–2 已完成，Phase 3 待实施
+- 状态：Phase 0–3 已完成，Phase 4 待实施
 - 适用阶段：Hackathon / 本地 JSON 数据源
 - 基线日期：2026-07-30
 
@@ -510,7 +510,7 @@ Phase 1 的 CLI 允许数据表暂缺；Phase 2 已切换为低风险五表必�
 实施状态（2026-07-30）：9 个 palette、4 个 surface、4 个 background、14 个
 series 和 60 条 series member 已迁入 JSON。`catalog.ts`、`surfaceStyles.ts`、
 `stageThemes.ts` 与 `collectSeries.ts` 继续提供原有 API；production build 现会先
-执行 Phase 2 Registry 校验。玩偶模型和 recolor profile 尚未迁移。
+执行 Registry 校验。
 
 ### Phase 3：迁移模型与换色配置
 
@@ -521,6 +521,12 @@ series 和 60 条 series member 已迁入 JSON。`catalog.ts`、`surfaceStyles.t
 - 保留所有材质工厂和 shader 算法；
 - 让 `catalog.ts` 降级为兼容 wrapper；
 - 让 `formalRoster.ts` 从 Registry 派生，或在验证稳定后删除。
+
+实施状态（2026-07-30）：24 个 model 与 24 个 recolor profile 已迁入 JSON；
+`catalog.ts` 现为兼容 adapter，`formalRoster.ts` 从 enabled model 记录派生。
+迁移前后 `ToyModelDefinition` 与渲染缓存键 parity 通过，24/24 实时模型在
+Appearance Lab 进入 ready，production build 已切换完整 `--strict` 七表校验。
+GLB、mask、材质工厂和 shader 算法均未移动或重写。
 
 ### Phase 4：调用方与兼容
 

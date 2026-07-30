@@ -326,7 +326,7 @@ export function AppearanceLabPage() {
             <Grid3X3 size={15} />
             APPEARANCE LAB
           </p>
-          <h1>24 只玩偶，外观实验室</h1>
+          <h1>{formalColorAnimalModelIds.length} 只玩偶，外观实验室</h1>
           <p>
             正式阵容 · {LAB_SURFACE_OPTIONS.length} 种表面材质 · {toyStageThemes.length} 组舞台背景
           </p>

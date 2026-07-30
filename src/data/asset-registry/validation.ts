@@ -11,7 +11,6 @@ export type AssetRegistryValidationIssue = {
 
 export type AssetRegistryValidationOptions = {
   requireActiveToyModels?: boolean;
-  allowUnknownToyModelReferences?: boolean;
 };
 
 export type AssetRegistryValidationResult = {
@@ -333,10 +332,7 @@ export function validateAssetRegistrySnapshot(
       if (!seriesIds.has(seriesId)) {
         addIssue(issues, "error", "series_member.unknown_series", `${path}.seriesId`, `Unknown series ID: ${seriesId}`);
       }
-      if (
-        !options.allowUnknownToyModelReferences
-        && !modelIds.has(modelId)
-      ) {
+      if (!modelIds.has(modelId)) {
         addIssue(issues, "error", "series_member.unknown_model", `${path}.modelId`, `Unknown model ID: ${modelId}`);
       }
 

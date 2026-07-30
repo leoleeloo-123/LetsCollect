@@ -1,0 +1,410 @@
+[
+  {
+    "id": "color-otter",
+    "enabled": true,
+    "name": "水獭",
+    "fallbackShape": "blob",
+    "assets": {
+      "modelUrl": "/models/toys/color-otter/model-mobile-v008.glb",
+      "mobileModelUrl": "/models/toys/color-otter/model-mobile-v008.glb"
+    },
+    "calibration": {
+      "scaleMultiplier": 0.94,
+      "yOffset": -0.02,
+      "rotationYDeg": -13.750987083139757
+    },
+    "recolorProfileId": "color-otter-recolor",
+    "sortOrder": 1
+  },
+  {
+    "id": "color-bird",
+    "enabled": true,
+    "name": "小鸟",
+    "fallbackShape": "bird",
+    "assets": {
+      "modelUrl": "/models/toys/color-bird/model-mobile-v002.glb",
+      "mobileModelUrl": "/models/toys/color-bird/model-mobile-v002.glb"
+    },
+    "calibration": {
+      "scaleMultiplier": 0.96,
+      "yOffset": 0,
+      "rotationYDeg": -4.583662361046586
+    },
+    "recolorProfileId": "color-bird-recolor",
+    "sortOrder": 2
+  },
+  {
+    "id": "color-penguin",
+    "enabled": true,
+    "name": "企鹅",
+    "fallbackShape": "blob",
+    "assets": {
+      "modelUrl": "/models/toys/color-penguin/model-mobile-v003.glb",
+      "mobileModelUrl": "/models/toys/color-penguin/model-mobile-v003.glb"
+    },
+    "calibration": {
+      "scaleMultiplier": 0.94,
+      "yOffset": -0.02,
+      "rotationYDeg": -12.605071492878112
+    },
+    "recolorProfileId": "color-penguin-recolor",
+    "sortOrder": 3
+  },
+  {
+    "id": "color-bunny",
+    "enabled": true,
+    "name": "小兔",
+    "fallbackShape": "bunny",
+    "assets": {
+      "modelUrl": "/models/toys/color-bunny/model-mobile-v002.glb",
+      "mobileModelUrl": "/models/toys/color-bunny/model-mobile-v002.glb"
+    },
+    "calibration": {
+      "scaleMultiplier": 0.94,
+      "yOffset": -0.02,
+      "rotationYDeg": -13.750987083139757
+    },
+    "recolorProfileId": "color-bunny-recolor",
+    "sortOrder": 4
+  },
+  {
+    "id": "color-cat",
+    "enabled": true,
+    "name": "小猫",
+    "fallbackShape": "cat",
+    "assets": {
+      "modelUrl": "/models/toys/color-cat/model-mobile-v002.glb",
+      "mobileModelUrl": "/models/toys/color-cat/model-mobile-v002.glb"
+    },
+    "calibration": {
+      "scaleMultiplier": 0.71,
+      "yOffset": -0.08,
+      "rotationYDeg": -6.875493541569878
+    },
+    "recolorProfileId": "color-cat-recolor",
+    "sortOrder": 5
+  },
+  {
+    "id": "color-panda",
+    "enabled": true,
+    "name": "熊猫",
+    "fallbackShape": "blob",
+    "assets": {
+      "modelUrl": "/models/toys/color-panda/model-mobile-v002.glb",
+      "mobileModelUrl": "/models/toys/color-panda/model-mobile-v002.glb"
+    },
+    "calibration": {
+      "scaleMultiplier": 0.94,
+      "yOffset": -0.02,
+      "rotationYDeg": -13.750987083139757
+    },
+    "recolorProfileId": "color-panda-recolor",
+    "sortOrder": 6
+  },
+  {
+    "id": "color-bear-singer",
+    "enabled": true,
+    "name": "爆炸头小熊",
+    "fallbackShape": "blob",
+    "assets": {
+      "modelUrl": "/models/toys/color-bear-singer/model-mobile-v006.glb",
+      "mobileModelUrl": "/models/toys/color-bear-singer/model-mobile-v006.glb"
+    },
+    "calibration": {
+      "scaleMultiplier": 0.94,
+      "yOffset": -0.02,
+      "rotationYDeg": -13.750987083139757
+    },
+    "recolorProfileId": "color-bear-singer-recolor",
+    "sortOrder": 7
+  },
+  {
+    "id": "color-dog-camera",
+    "enabled": true,
+    "name": "摄像狗",
+    "fallbackShape": "dog",
+    "assets": {
+      "modelUrl": "/models/toys/color-dog-camera/model-mobile-v001.glb",
+      "mobileModelUrl": "/models/toys/color-dog-camera/model-mobile-v001.glb"
+    },
+    "calibration": {
+      "scaleMultiplier": 0.94,
+      "yOffset": -0.02,
+      "rotationYDeg": -16.04281826366305
+    },
+    "recolorProfileId": "color-dog-camera-recolor",
+    "sortOrder": 8
+  },
+  {
+    "id": "color-dog-drum",
+    "enabled": true,
+    "name": "打鼓狗",
+    "fallbackShape": "dog",
+    "assets": {
+      "modelUrl": "/models/toys/color-dog-drum/model-mobile-v001.glb",
+      "mobileModelUrl": "/models/toys/color-dog-drum/model-mobile-v001.glb"
+    },
+    "calibration": {
+      "scaleMultiplier": 0.94,
+      "yOffset": -0.02,
+      "rotationYDeg": -13.750987083139757
+    },
+    "recolorProfileId": "color-dog-drum-recolor",
+    "sortOrder": 9
+  },
+  {
+    "id": "color-seal",
+    "enabled": true,
+    "name": "海豹",
+    "fallbackShape": "blob",
+    "assets": {
+      "modelUrl": "/models/toys/color-seal/model-mobile-v001.glb",
+      "mobileModelUrl": "/models/toys/color-seal/model-mobile-v001.glb"
+    },
+    "calibration": {
+      "scaleMultiplier": 0.94,
+      "yOffset": -0.02,
+      "rotationYDeg": -16.04281826366305
+    },
+    "recolorProfileId": "color-seal-recolor",
+    "sortOrder": 10
+  },
+  {
+    "id": "color-karpy",
+    "enabled": true,
+    "name": "饭团卡皮",
+    "fallbackShape": "blob",
+    "assets": {
+      "modelUrl": "/models/toys/color-karpy/model-mobile-v001.glb",
+      "mobileModelUrl": "/models/toys/color-karpy/model-mobile-v001.glb"
+    },
+    "calibration": {
+      "scaleMultiplier": 0.94,
+      "yOffset": -0.02,
+      "rotationYDeg": -13.750987083139757
+    },
+    "recolorProfileId": "color-karpy-recolor",
+    "sortOrder": 11
+  },
+  {
+    "id": "color-koala",
+    "enabled": true,
+    "name": "睡觉考拉",
+    "fallbackShape": "blob",
+    "assets": {
+      "modelUrl": "/models/toys/color-koala/model-mobile-v001.glb",
+      "mobileModelUrl": "/models/toys/color-koala/model-mobile-v001.glb"
+    },
+    "calibration": {
+      "scaleMultiplier": 0.94,
+      "yOffset": -0.02,
+      "rotationYDeg": -13.750987083139757
+    },
+    "recolorProfileId": "color-koala-recolor",
+    "sortOrder": 12
+  },
+  {
+    "id": "color-racoon",
+    "enabled": true,
+    "name": "糖葫芦浣熊",
+    "fallbackShape": "blob",
+    "assets": {
+      "modelUrl": "/models/toys/color-racoon/model-mobile-v001.glb",
+      "mobileModelUrl": "/models/toys/color-racoon/model-mobile-v001.glb"
+    },
+    "calibration": {
+      "scaleMultiplier": 0.94,
+      "yOffset": -0.02,
+      "rotationYDeg": -13.750987083139757
+    },
+    "recolorProfileId": "color-racoon-recolor",
+    "sortOrder": 13
+  },
+  {
+    "id": "color-hamster-icecream",
+    "enabled": true,
+    "name": "雪糕仓鼠",
+    "fallbackShape": "blob",
+    "assets": {
+      "modelUrl": "/models/toys/color-hamster-icecream/model-mobile-v001.glb",
+      "mobileModelUrl": "/models/toys/color-hamster-icecream/model-mobile-v001.glb"
+    },
+    "calibration": {
+      "scaleMultiplier": 0.94,
+      "yOffset": -0.02,
+      "rotationYDeg": -13.750987083139757
+    },
+    "recolorProfileId": "color-hamster-icecream-recolor",
+    "sortOrder": 14
+  },
+  {
+    "id": "color-dino",
+    "enabled": true,
+    "name": "围巾恐龙",
+    "fallbackShape": "blob",
+    "assets": {
+      "modelUrl": "/models/toys/color-dino/model-mobile-v001.glb",
+      "mobileModelUrl": "/models/toys/color-dino/model-mobile-v001.glb"
+    },
+    "calibration": {
+      "scaleMultiplier": 0.94,
+      "yOffset": -0.02,
+      "rotationYDeg": -13.750987083139757
+    },
+    "recolorProfileId": "color-dino-recolor",
+    "sortOrder": 15
+  },
+  {
+    "id": "color-fox",
+    "enabled": true,
+    "name": "羽毛帽狐狸",
+    "fallbackShape": "blob",
+    "assets": {
+      "modelUrl": "/models/toys/color-fox/model-mobile-v001.glb",
+      "mobileModelUrl": "/models/toys/color-fox/model-mobile-v001.glb"
+    },
+    "calibration": {
+      "scaleMultiplier": 0.94,
+      "yOffset": -0.02,
+      "rotationYDeg": -13.750987083139757
+    },
+    "recolorProfileId": "color-fox-recolor",
+    "sortOrder": 16
+  },
+  {
+    "id": "color-deer",
+    "enabled": true,
+    "name": "蝴蝶结小鹿",
+    "fallbackShape": "blob",
+    "assets": {
+      "modelUrl": "/models/toys/color-deer/model-mobile-v001.glb",
+      "mobileModelUrl": "/models/toys/color-deer/model-mobile-v001.glb"
+    },
+    "calibration": {
+      "scaleMultiplier": 0.94,
+      "yOffset": -0.02,
+      "rotationYDeg": -13.750987083139757
+    },
+    "recolorProfileId": "color-deer-recolor",
+    "sortOrder": 17
+  },
+  {
+    "id": "color-sheep",
+    "enabled": true,
+    "name": "披风小羊",
+    "fallbackShape": "blob",
+    "assets": {
+      "modelUrl": "/models/toys/color-sheep/model-mobile-v001.glb",
+      "mobileModelUrl": "/models/toys/color-sheep/model-mobile-v001.glb"
+    },
+    "calibration": {
+      "scaleMultiplier": 0.94,
+      "yOffset": -0.02,
+      "rotationYDeg": -13.750987083139757
+    },
+    "recolorProfileId": "color-sheep-recolor",
+    "sortOrder": 18
+  },
+  {
+    "id": "color-sloth",
+    "enabled": true,
+    "name": "针织帽树懒",
+    "fallbackShape": "blob",
+    "assets": {
+      "modelUrl": "/models/toys/color-sloth/model-mobile-v001.glb",
+      "mobileModelUrl": "/models/toys/color-sloth/model-mobile-v001.glb"
+    },
+    "calibration": {
+      "scaleMultiplier": 0.94,
+      "yOffset": -0.02,
+      "rotationYDeg": -13.750987083139757
+    },
+    "recolorProfileId": "color-sloth-recolor",
+    "sortOrder": 19
+  },
+  {
+    "id": "color-owl",
+    "enabled": true,
+    "name": "博士猫头鹰",
+    "fallbackShape": "bird",
+    "assets": {
+      "modelUrl": "/models/toys/color-owl/model-mobile-v001.glb",
+      "mobileModelUrl": "/models/toys/color-owl/model-mobile-v001.glb"
+    },
+    "calibration": {
+      "scaleMultiplier": 0.94,
+      "yOffset": -0.02,
+      "rotationYDeg": -13.750987083139757
+    },
+    "recolorProfileId": "color-owl-recolor",
+    "sortOrder": 20
+  },
+  {
+    "id": "color-duck",
+    "enabled": true,
+    "name": "浴缸小鸭",
+    "fallbackShape": "bird",
+    "assets": {
+      "modelUrl": "/models/toys/color-duck/model-mobile-v001.glb",
+      "mobileModelUrl": "/models/toys/color-duck/model-mobile-v001.glb"
+    },
+    "calibration": {
+      "scaleMultiplier": 0.94,
+      "yOffset": -0.02,
+      "rotationYDeg": -13.750987083139757
+    },
+    "recolorProfileId": "color-duck-recolor",
+    "sortOrder": 21
+  },
+  {
+    "id": "color-guinea-pig",
+    "enabled": true,
+    "name": "气球豚鼠",
+    "fallbackShape": "blob",
+    "assets": {
+      "modelUrl": "/models/toys/color-guinea-pig/model-mobile-v001.glb",
+      "mobileModelUrl": "/models/toys/color-guinea-pig/model-mobile-v001.glb"
+    },
+    "calibration": {
+      "scaleMultiplier": 0.94,
+      "yOffset": -0.03,
+      "rotationYDeg": -14.32394487827058
+    },
+    "recolorProfileId": "color-guinea-pig-recolor",
+    "sortOrder": 22
+  },
+  {
+    "id": "color-black-cat",
+    "enabled": true,
+    "name": "黑盒猫猫",
+    "fallbackShape": "cat",
+    "assets": {
+      "modelUrl": "/models/toys/color-black-cat/model-mobile-v001.glb",
+      "mobileModelUrl": "/models/toys/color-black-cat/model-mobile-v001.glb"
+    },
+    "calibration": {
+      "scaleMultiplier": 0.94,
+      "yOffset": -0.02,
+      "rotationYDeg": -12.605071492878112
+    },
+    "recolorProfileId": "color-black-cat-recolor",
+    "sortOrder": 23
+  },
+  {
+    "id": "color-cool-wolf",
+    "enabled": true,
+    "name": "酷酷狼人",
+    "fallbackShape": "dog",
+    "assets": {
+      "modelUrl": "/models/toys/color-cool-wolf/model-mobile-v001.glb",
+      "mobileModelUrl": "/models/toys/color-cool-wolf/model-mobile-v001.glb"
+    },
+    "calibration": {
+      "scaleMultiplier": 0.94,
+      "yOffset": -0.02,
+      "rotationYDeg": -12.605071492878112
+    },
+    "recolorProfileId": "color-cool-wolf-recolor",
+    "sortOrder": 24
+  }
+]
