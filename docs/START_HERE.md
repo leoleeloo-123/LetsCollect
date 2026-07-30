@@ -30,8 +30,10 @@ Lab 另有初冬、暖春、淡绿与淡紫四组独立舞台背景，共 1,152 
 Lab 使用独立 HTML，不进入正式首页或默认生产构建；珠光闪粉与静态预渲染见
 `docs/RENDERING_SURFACE_UPGRADE_PLAN.md`。
 
-Asset Registry V1 已建立数据契约、snapshot factory、getter、路径 resolver 和校验 CLI；
-当前尚未迁移 JSON 或切换任何生产调用方，运行时真实数据源仍是现有 TypeScript catalog。
+Asset Registry V1 已建立数据契约、snapshot factory、getter、路径 resolver 和校验 CLI。
+9 个配色、4 个表面、4 个背景、14 个系列与 60 条系列成员关系现以
+`src/data/asset-registry/*.json` 为真实数据源，并继续通过原 compatibility getter 服务页面。
+玩偶模型、GLB、遮罩和 recolor profile 仍由现有 TypeScript catalog 管理，尚未进入 Phase 3。
 实施边界与阶段状态见 `playbooks/asset-data-registry-v1.md`。
 
 改造前的 React MVP 已完整归档到：

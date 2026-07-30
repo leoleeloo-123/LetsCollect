@@ -1,0 +1,602 @@
+[
+  {
+    "id": "color-spectrum--color-otter",
+    "enabled": true,
+    "seriesId": "color-spectrum",
+    "modelId": "color-otter",
+    "displayOrder": 1,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "color-spectrum--color-bird",
+    "enabled": true,
+    "seriesId": "color-spectrum",
+    "modelId": "color-bird",
+    "displayOrder": 2,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "color-spectrum--color-penguin",
+    "enabled": true,
+    "seriesId": "color-spectrum",
+    "modelId": "color-penguin",
+    "displayOrder": 3,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "color-spectrum--color-bunny",
+    "enabled": true,
+    "seriesId": "color-spectrum",
+    "modelId": "color-bunny",
+    "displayOrder": 4,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "color-spectrum--color-cat",
+    "enabled": true,
+    "seriesId": "color-spectrum",
+    "modelId": "color-cat",
+    "displayOrder": 5,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "color-spectrum--color-panda",
+    "enabled": true,
+    "seriesId": "color-spectrum",
+    "modelId": "color-panda",
+    "displayOrder": 6,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "color-spectrum--color-bear-singer",
+    "enabled": true,
+    "seriesId": "color-spectrum",
+    "modelId": "color-bear-singer",
+    "displayOrder": 7,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "color-spectrum--color-dog-camera",
+    "enabled": true,
+    "seriesId": "color-spectrum",
+    "modelId": "color-dog-camera",
+    "displayOrder": 8,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "color-spectrum--color-dog-drum",
+    "enabled": true,
+    "seriesId": "color-spectrum",
+    "modelId": "color-dog-drum",
+    "displayOrder": 9,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "color-spectrum--color-seal",
+    "enabled": true,
+    "seriesId": "color-spectrum",
+    "modelId": "color-seal",
+    "displayOrder": 10,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "color-spectrum--color-karpy",
+    "enabled": true,
+    "seriesId": "color-spectrum",
+    "modelId": "color-karpy",
+    "displayOrder": 11,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "color-spectrum--color-koala",
+    "enabled": true,
+    "seriesId": "color-spectrum",
+    "modelId": "color-koala",
+    "displayOrder": 12,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "color-spectrum--color-racoon",
+    "enabled": true,
+    "seriesId": "color-spectrum",
+    "modelId": "color-racoon",
+    "displayOrder": 13,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "color-spectrum--color-hamster-icecream",
+    "enabled": true,
+    "seriesId": "color-spectrum",
+    "modelId": "color-hamster-icecream",
+    "displayOrder": 14,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "color-spectrum--color-dino",
+    "enabled": true,
+    "seriesId": "color-spectrum",
+    "modelId": "color-dino",
+    "displayOrder": 15,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "color-spectrum--color-fox",
+    "enabled": true,
+    "seriesId": "color-spectrum",
+    "modelId": "color-fox",
+    "displayOrder": 16,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "color-spectrum--color-deer",
+    "enabled": true,
+    "seriesId": "color-spectrum",
+    "modelId": "color-deer",
+    "displayOrder": 17,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "color-spectrum--color-sheep",
+    "enabled": true,
+    "seriesId": "color-spectrum",
+    "modelId": "color-sheep",
+    "displayOrder": 18,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "color-spectrum--color-sloth",
+    "enabled": true,
+    "seriesId": "color-spectrum",
+    "modelId": "color-sloth",
+    "displayOrder": 19,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "color-spectrum--color-owl",
+    "enabled": true,
+    "seriesId": "color-spectrum",
+    "modelId": "color-owl",
+    "displayOrder": 20,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "color-spectrum--color-duck",
+    "enabled": true,
+    "seriesId": "color-spectrum",
+    "modelId": "color-duck",
+    "displayOrder": 21,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "color-spectrum--color-guinea-pig",
+    "enabled": true,
+    "seriesId": "color-spectrum",
+    "modelId": "color-guinea-pig",
+    "displayOrder": 22,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "color-spectrum--color-black-cat",
+    "enabled": true,
+    "seriesId": "color-spectrum",
+    "modelId": "color-black-cat",
+    "displayOrder": 23,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "color-spectrum--color-cool-wolf",
+    "enabled": true,
+    "seriesId": "color-spectrum",
+    "modelId": "color-cool-wolf",
+    "displayOrder": 24,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "foodies--color-otter",
+    "enabled": true,
+    "seriesId": "foodies",
+    "modelId": "color-otter",
+    "displayOrder": 1,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "foodies--color-karpy",
+    "enabled": true,
+    "seriesId": "foodies",
+    "modelId": "color-karpy",
+    "displayOrder": 2,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "foodies--color-racoon",
+    "enabled": true,
+    "seriesId": "foodies",
+    "modelId": "color-racoon",
+    "displayOrder": 3,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "foodies--color-hamster-icecream",
+    "enabled": true,
+    "seriesId": "foodies",
+    "modelId": "color-hamster-icecream",
+    "displayOrder": 4,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "zzz--color-cat",
+    "enabled": true,
+    "seriesId": "zzz",
+    "modelId": "color-cat",
+    "displayOrder": 1,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "zzz--color-seal",
+    "enabled": true,
+    "seriesId": "zzz",
+    "modelId": "color-seal",
+    "displayOrder": 2,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "zzz--color-koala",
+    "enabled": true,
+    "seriesId": "zzz",
+    "modelId": "color-koala",
+    "displayOrder": 3,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "monochrome--color-panda",
+    "enabled": true,
+    "seriesId": "monochrome",
+    "modelId": "color-panda",
+    "displayOrder": 1,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "monochrome--color-dog-camera",
+    "enabled": true,
+    "seriesId": "monochrome",
+    "modelId": "color-dog-camera",
+    "displayOrder": 2,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "monochrome--color-penguin",
+    "enabled": true,
+    "seriesId": "monochrome",
+    "modelId": "color-penguin",
+    "displayOrder": 3,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "outlaws--color-dino",
+    "enabled": true,
+    "seriesId": "outlaws",
+    "modelId": "color-dino",
+    "displayOrder": 1,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "outlaws--color-fox",
+    "enabled": true,
+    "seriesId": "outlaws",
+    "modelId": "color-fox",
+    "displayOrder": 2,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "outlaws--color-cool-wolf",
+    "enabled": true,
+    "seriesId": "outlaws",
+    "modelId": "color-cool-wolf",
+    "displayOrder": 3,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "dogs--color-dog-camera",
+    "enabled": true,
+    "seriesId": "dogs",
+    "modelId": "color-dog-camera",
+    "displayOrder": 1,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "dogs--color-dog-drum",
+    "enabled": true,
+    "seriesId": "dogs",
+    "modelId": "color-dog-drum",
+    "displayOrder": 2,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "artists--color-bear-singer",
+    "enabled": true,
+    "seriesId": "artists",
+    "modelId": "color-bear-singer",
+    "displayOrder": 1,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "artists--color-dog-camera",
+    "enabled": true,
+    "seriesId": "artists",
+    "modelId": "color-dog-camera",
+    "displayOrder": 2,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "artists--color-dog-drum",
+    "enabled": true,
+    "seriesId": "artists",
+    "modelId": "color-dog-drum",
+    "displayOrder": 3,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "street--color-bunny",
+    "enabled": true,
+    "seriesId": "street",
+    "modelId": "color-bunny",
+    "displayOrder": 1,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "street--color-deer",
+    "enabled": true,
+    "seriesId": "street",
+    "modelId": "color-deer",
+    "displayOrder": 2,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "street--color-sheep",
+    "enabled": true,
+    "seriesId": "street",
+    "modelId": "color-sheep",
+    "displayOrder": 3,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "flyers--color-bird",
+    "enabled": true,
+    "seriesId": "flyers",
+    "modelId": "color-bird",
+    "displayOrder": 1,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "flyers--color-owl",
+    "enabled": true,
+    "seriesId": "flyers",
+    "modelId": "color-owl",
+    "displayOrder": 2,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "flyers--color-guinea-pig",
+    "enabled": true,
+    "seriesId": "flyers",
+    "modelId": "color-guinea-pig",
+    "displayOrder": 3,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "splash-sisters--color-otter",
+    "enabled": true,
+    "seriesId": "splash-sisters",
+    "modelId": "color-otter",
+    "displayOrder": 1,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "splash-sisters--color-seal",
+    "enabled": true,
+    "seriesId": "splash-sisters",
+    "modelId": "color-seal",
+    "displayOrder": 2,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "splash-sisters--color-duck",
+    "enabled": true,
+    "seriesId": "splash-sisters",
+    "modelId": "color-duck",
+    "displayOrder": 3,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "cats--color-cat",
+    "enabled": true,
+    "seriesId": "cats",
+    "modelId": "color-cat",
+    "displayOrder": 1,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "cats--color-black-cat",
+    "enabled": true,
+    "seriesId": "cats",
+    "modelId": "color-black-cat",
+    "displayOrder": 2,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "bears--color-panda",
+    "enabled": true,
+    "seriesId": "bears",
+    "modelId": "color-panda",
+    "displayOrder": 1,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "bears--color-bear-singer",
+    "enabled": true,
+    "seriesId": "bears",
+    "modelId": "color-bear-singer",
+    "displayOrder": 2,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "bears--color-racoon",
+    "enabled": true,
+    "seriesId": "bears",
+    "modelId": "color-racoon",
+    "displayOrder": 3,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "travelers--color-sloth",
+    "enabled": true,
+    "seriesId": "travelers",
+    "modelId": "color-sloth",
+    "displayOrder": 1,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "travelers--color-dog-camera",
+    "enabled": true,
+    "seriesId": "travelers",
+    "modelId": "color-dog-camera",
+    "displayOrder": 2,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "potatoes--color-hamster-icecream",
+    "enabled": true,
+    "seriesId": "potatoes",
+    "modelId": "color-hamster-icecream",
+    "displayOrder": 1,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  },
+  {
+    "id": "potatoes--color-guinea-pig",
+    "enabled": true,
+    "seriesId": "potatoes",
+    "modelId": "color-guinea-pig",
+    "displayOrder": 2,
+    "drawWeight": 1,
+    "palettePolicyOverride": null,
+    "surfacePolicyOverride": null
+  }
+]

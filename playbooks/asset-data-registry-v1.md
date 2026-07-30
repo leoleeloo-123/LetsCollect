@@ -1,6 +1,6 @@
 # Asset Data Registry V1 Playbook
 
-- 状态：Phase 0–1 已完成，Phase 2 待实施
+- 状态：Phase 0–2 已完成，Phase 3 待实施
 - 适用阶段：Hackathon / 本地 JSON 数据源
 - 基线日期：2026-07-30
 
@@ -488,10 +488,10 @@ JSON Schema 和自动生成类型是 P1。P0 可以先使用 TypeScript 类型�
 - 暂不切换生产调用方。
 
 实施状态（2026-07-30）：Registry 类型、运行时校验、snapshot factory、稳定 getter、
-展示参数 resolver、相对路径 resolver 和 `validate:assets` CLI 已建立；尚未创建或迁移
-任何 JSON 数据表，生产调用方仍使用现有 TypeScript 数据源。
-Phase 1 的 CLI 允许数据表暂缺；
-Phase 2 全表迁移后将默认切换为 strict 校验。
+展示参数 resolver、相对路径 resolver 和 `validate:assets` CLI 已建立。Phase 1 完成时尚未
+创建或迁移任何 JSON 数据表，生产调用方仍使用现有 TypeScript 数据源。
+Phase 1 的 CLI 允许数据表暂缺；Phase 2 已切换为低风险五表必需校验，完整
+`--strict` 校验将在 Phase 3 的模型和换色表迁移完成后启用。
 
 ### Phase 2：迁移低风险数据
 
@@ -506,6 +506,11 @@ Phase 2 全表迁移后将默认切换为 strict 校验。
 以上记录同步加入缺省为 `true` 的 `enabled`。
 
 每一类迁移后继续通过原 getter 对外服务。
+
+实施状态（2026-07-30）：9 个 palette、4 个 surface、4 个 background、14 个
+series 和 60 条 series member 已迁入 JSON。`catalog.ts`、`surfaceStyles.ts`、
+`stageThemes.ts` 与 `collectSeries.ts` 继续提供原有 API；production build 现会先
+执行 Phase 2 Registry 校验。玩偶模型和 recolor profile 尚未迁移。
 
 ### Phase 3：迁移模型与换色配置
 

@@ -66,7 +66,13 @@ The current system is deliberately hybrid:
 
 ## Current 3D Boundary
 
-`src/features/toys/catalog.ts` centralizes model paths, palettes, viewer settings, and model-specific rendering modes. `src/features/toys/activeSeries.ts` defines the currently active draw series.
+`src/data/asset-registry/` is now the source of truth for palettes, surfaces,
+backgrounds, series metadata, and series membership. Compatibility modules
+`catalog.ts`, `surfaceStyles.ts`, `stageThemes.ts`, and `collectSeries.ts`
+keep their existing public APIs. Model paths, viewer calibration, and
+model-specific recolor modes remain in `src/features/toys/catalog.ts` until the
+Phase 3 model migration. `src/features/toys/activeSeries.ts` still defines the
+current generation rules.
 
 `src/three/ToyViewer/` is the reusable live viewer. It owns:
 
@@ -123,9 +129,12 @@ React pages and feature components
 
 A centralized registry must distinguish `available`, `experimental`, `planned`, `legacy`, and `unavailable`. Runtime files existing in `public/` or `assets/` do not by themselves make a capability available. The twenty-four active matte Companions and two archived crystal studies must be declared explicitly, with their real model IDs, palettes, material behavior, and rendering constraints.
 
-`catalog.ts`, `activeSeries.ts`, `collectSeries.ts`,
-`ASSET_CAPABILITY_REGISTRY.md`, and `src/config/capabilityRegistry.ts` share the
-same twenty-four-model product roster.
+The local Asset Registry currently owns five validated JSON tables. Pages do
+not import those files directly; compatibility modules normalize `enabled`,
+validate cross-table references, and expose typed getters. The twenty-four model
+records and recolor profiles remain in `catalog.ts` for the next migration
+phase. `activeSeries.ts`, `ASSET_CAPABILITY_REGISTRY.md`, and
+`src/config/capabilityRegistry.ts` continue to share the same formal roster.
 
 ### Collection Service And Repository
 

@@ -17,7 +17,12 @@
   combinations.
 - Added the Asset Registry V1 contract shell: typed snapshot records, runtime
   validation, stable getters, presentation and asset-path resolvers, plus a
-  validation CLI. No production data source has been switched yet.
+  validation CLI.
+- Migrated nine palettes, four surfaces, four backgrounds, fourteen series, and
+  sixty series memberships to validated JSON tables while preserving the
+  existing catalog, Lab, series, and draw-facing APIs.
+- Added Phase 2 Registry validation to the production build; toy models and
+  recolor profiles remain on the existing TypeScript source until Phase 3.
 
 ## 2026-07-29
 

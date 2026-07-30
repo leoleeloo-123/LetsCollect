@@ -16,7 +16,10 @@ import {
   getToyModel,
   getToyPalette
 } from "../../features/toys/catalog";
-import { getToySurfaceStyle } from "../../features/toys/surfaceStyles";
+import {
+  getToySurfaceStyle,
+  toySurfaceStyles
+} from "../../features/toys/surfaceStyles";
 import {
   getToyStageTheme,
   toyStageThemes,
@@ -49,19 +52,37 @@ type MetalSurfaceStyleId =
   | "metal-rose-gold";
 
 const FIXED_CREATED_AT = "2026-07-29T00:00:00.000Z";
-const METAL_SURFACE_STYLE_IDS = [
+const CONFIGURED_METAL_SURFACE_STYLE_IDS = [
   "metal-gold",
   "metal-silver",
   "metal-rose-gold"
 ] as const satisfies readonly MetalSurfaceStyleId[];
-const LAB_SURFACE_OPTIONS = [
-  { id: "matte", name: "柔雾树脂", swatch: "#d7a27f" },
-  { id: "metal", name: "金属", swatch: "#d8a72d" }
-] as const satisfies readonly {
+const ACTIVE_METAL_SURFACE_STYLE_IDS =
+  CONFIGURED_METAL_SURFACE_STYLE_IDS.filter((styleId) =>
+    toySurfaceStyles.some((surface) => surface.id === styleId)
+  );
+const HAS_MATTE_SURFACE = toySurfaceStyles.some(
+  (surface) => surface.id === "matte"
+);
+const LAB_SURFACE_OPTIONS: readonly {
   id: SurfaceMode;
   name: string;
   swatch: string;
-}[];
+}[] = [
+  ...(HAS_MATTE_SURFACE
+    ? [{ id: "matte" as const, name: "柔雾树脂", swatch: "#d7a27f" }]
+    : []),
+  ...(ACTIVE_METAL_SURFACE_STYLE_IDS.length > 0
+    ? [{
+        id: "metal" as const,
+        name: "金属",
+        swatch: getToySurfaceStyle(ACTIVE_METAL_SURFACE_STYLE_IDS[0]).swatch
+      }]
+    : [])
+];
+const DEFAULT_SURFACE_MODE = LAB_SURFACE_OPTIONS[0].id;
+const DEFAULT_METAL_SURFACE_STYLE_ID =
+  ACTIVE_METAL_SURFACE_STYLE_IDS[0] ?? "metal-gold";
 const STAGE_THEME_GROUPS = [
   {
     id: "dynamic",
@@ -74,8 +95,14 @@ const STAGE_THEME_GROUPS = [
     themes: toyStageThemes.filter((theme) => theme.group === "static")
   }
 ] as const;
+const DEFAULT_STAGE_THEME_ID = toyStageThemes.find(
+  (theme) => theme.id === "soft-green"
+)?.id ?? toyStageThemes[0].id;
 const TOTAL_APPEARANCE_COMBINATION_COUNT = formalColorAnimalModelIds.length
-  * (colorAnimalPalettes.length + METAL_SURFACE_STYLE_IDS.length)
+  * (
+    (HAS_MATTE_SURFACE ? colorAnimalPalettes.length : 0)
+    + ACTIVE_METAL_SURFACE_STYLE_IDS.length
+  )
   * toyStageThemes.length;
 
 function getMatrixKey(modelId: FormalColorAnimalModelId, paletteId: ToyPaletteId) {
@@ -196,11 +223,14 @@ export function AppearanceLabPage() {
   const [paletteFilter, setPaletteFilter] = useState<PaletteFilter>(
     colorAnimalPalettes[0].id
   );
-  const [surfaceMode, setSurfaceMode] = useState<SurfaceMode>("matte");
-  const [stageThemeId, setStageThemeId] =
-    useState<ToyStageThemeId>("soft-green");
+  const [surfaceMode, setSurfaceMode] = useState<SurfaceMode>(
+    DEFAULT_SURFACE_MODE
+  );
+  const [stageThemeId, setStageThemeId] = useState<ToyStageThemeId>(
+    DEFAULT_STAGE_THEME_ID
+  );
   const [metalSurfaceStyleId, setMetalSurfaceStyleId] =
-    useState<MetalSurfaceStyleId>("metal-gold");
+    useState<MetalSurfaceStyleId>(DEFAULT_METAL_SURFACE_STYLE_ID);
   const [selectedKey, setSelectedKey] = useState(() =>
     getMatrixKey(formalColorAnimalModelIds[0], colorAnimalPalettes[0].id)
   );
@@ -297,7 +327,9 @@ export function AppearanceLabPage() {
             APPEARANCE LAB
           </p>
           <h1>24 只玩偶，外观实验室</h1>
-          <p>正式阵容 · 2 种表面材质 · 4 组舞台背景</p>
+          <p>
+            正式阵容 · {LAB_SURFACE_OPTIONS.length} 种表面材质 · {toyStageThemes.length} 组舞台背景
+          </p>
         </div>
 
         <dl className="appearance-lab__metrics">
@@ -393,7 +425,7 @@ export function AppearanceLabPage() {
           </span>
           <div className="appearance-lab__palette-options">
             {surfaceMode === "metal" ? (
-              METAL_SURFACE_STYLE_IDS.map((styleId) => {
+              ACTIVE_METAL_SURFACE_STYLE_IDS.map((styleId) => {
                 const style = getToySurfaceStyle(styleId);
                 return (
                   <button

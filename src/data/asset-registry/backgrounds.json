@@ -1,0 +1,46 @@
+[
+  {
+    "id": "early-winter",
+    "enabled": true,
+    "name": "初冬",
+    "group": "dynamic",
+    "background": "#e5f1f6",
+    "swatch": "#d8ebf3",
+    "particlePresetId": "snow",
+    "groundId": null,
+    "sortOrder": 1
+  },
+  {
+    "id": "warm-spring",
+    "enabled": true,
+    "name": "暖春",
+    "group": "dynamic",
+    "background": "#e5f1e5",
+    "swatch": "#cfe5d2",
+    "particlePresetId": "leaf",
+    "groundId": null,
+    "sortOrder": 2
+  },
+  {
+    "id": "soft-green",
+    "enabled": true,
+    "name": "淡绿",
+    "group": "static",
+    "background": "#e8f2ed",
+    "swatch": "#d7e9df",
+    "particlePresetId": null,
+    "groundId": null,
+    "sortOrder": 3
+  },
+  {
+    "id": "soft-lavender",
+    "enabled": true,
+    "name": "淡紫",
+    "group": "static",
+    "background": "#eee9f6",
+    "swatch": "#ddd3ee",
+    "particlePresetId": null,
+    "groundId": null,
+    "sortOrder": 4
+  }
+]

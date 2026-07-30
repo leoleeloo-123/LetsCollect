@@ -1,3 +1,5 @@
+import { localBackgroundRecords } from "../../data/asset-registry/localTables";
+
 export type ToyStageThemeId =
   | "early-winter"
   | "warm-spring"
@@ -13,40 +15,38 @@ export type ToyStageThemeDefinition = {
   particle: "snow" | "leaf" | null;
 };
 
-export const toyStageThemes: readonly ToyStageThemeDefinition[] = [
-  {
-    id: "early-winter",
-    name: "初冬",
-    group: "dynamic",
-    background: "#e5f1f6",
-    swatch: "#d8ebf3",
-    particle: "snow"
-  },
-  {
-    id: "warm-spring",
-    name: "暖春",
-    group: "dynamic",
-    background: "#e5f1e5",
-    swatch: "#cfe5d2",
-    particle: "leaf"
-  },
-  {
-    id: "soft-green",
-    name: "淡绿",
-    group: "static",
-    background: "#e8f2ed",
-    swatch: "#d7e9df",
-    particle: null
-  },
-  {
-    id: "soft-lavender",
-    name: "淡紫",
-    group: "static",
-    background: "#eee9f6",
-    swatch: "#ddd3ee",
-    particle: null
+const knownStageThemeIds = new Set<ToyStageThemeId>([
+  "early-winter",
+  "warm-spring",
+  "soft-green",
+  "soft-lavender"
+]);
+
+const sortedBackgroundRecords = [...localBackgroundRecords].sort(
+  (left, right) => left.sortOrder - right.sortOrder
+);
+
+for (const background of sortedBackgroundRecords) {
+  if (!knownStageThemeIds.has(background.id as ToyStageThemeId)) {
+    throw new Error(`Unknown toy background ID in Registry: ${background.id}`);
   }
-];
+}
+
+export const toyStageThemes: readonly ToyStageThemeDefinition[] =
+  sortedBackgroundRecords
+    .filter((background) => background.enabled !== false)
+    .map((background) => ({
+      id: background.id as ToyStageThemeId,
+      name: background.name,
+      group: background.group,
+      background: background.background,
+      swatch: background.swatch,
+      particle: background.particlePresetId
+    }));
+
+if (toyStageThemes.length === 0) {
+  throw new Error("Asset Registry must expose at least one active background.");
+}
 
 const toyStageThemeById = new Map(
   toyStageThemes.map((theme) => [theme.id, theme])
