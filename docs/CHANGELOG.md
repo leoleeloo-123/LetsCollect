@@ -15,6 +15,9 @@
   animation or WebGL work.
 - Updated the Lab summary to 1,152 surface, color, model, and background
   combinations.
+- Added the Asset Registry V1 contract shell: typed snapshot records, runtime
+  validation, stable getters, presentation and asset-path resolvers, plus a
+  validation CLI. No production data source has been switched yet.
 
 ## 2026-07-29
 
