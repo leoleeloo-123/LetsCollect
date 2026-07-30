@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Echo - Let's Collect</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-fixed": "#101f17",
+                      "error": "#ba1a1a",
+                      "primary": "#061b0e",
+                      "sage-border": "#C5D3C9",
+                      "secondary": "#9e3f41",
+                      "pale-blue": "#D9EAF2",
+                      "surface": "#f8faf8",
+                      "error-container": "#ffdad6",
+                      "tertiary-fixed": "#d5e7da",
+                      "on-error": "#ffffff",
+                      "on-secondary-fixed": "#410007",
+                      "on-tertiary-fixed-variant": "#3b4a41",
+                      "inverse-on-surface": "#eff1ef",
+                      "background": "#f8faf8",
+                      "on-primary-container": "#819986",
+                      "on-error-container": "#93000a",
+                      "primary-container": "#1b3022",
+                      "surface-container-highest": "#e1e3e1",
+                      "outline": "#737973",
+                      "secondary-fixed-dim": "#ffb3b1",
+                      "on-secondary": "#ffffff",
+                      "on-tertiary-container": "#86978c",
+                      "outline-variant": "#c3c8c1",
+                      "surface-container-low": "#f2f4f2",
+                      "primary-fixed-dim": "#b4cdb8",
+                      "tertiary-fixed-dim": "#b9cbbe",
+                      "tertiary": "#0b1a13",
+                      "inverse-primary": "#b4cdb8",
+                      "surface-container-high": "#e6e9e7",
+                      "on-surface": "#191c1b",
+                      "surface-container": "#eceeec",
+                      "inverse-surface": "#2e3130",
+                      "surface-container-lowest": "#ffffff",
+                      "on-secondary-fixed-variant": "#7f282b",
+                      "on-primary-fixed": "#0b2013",
+                      "on-surface-variant": "#434843",
+                      "blush": "#FCE4EC",
+                      "surface-bright": "#f8faf8",
+                      "on-secondary-container": "#752125",
+                      "tertiary-container": "#202f26",
+                      "on-primary-fixed-variant": "#364c3c",
+                      "on-tertiary": "#ffffff",
+                      "surface-tint": "#4d6453",
+                      "secondary-container": "#fe8988",
+                      "surface-dim": "#d8dad9",
+                      "on-primary": "#ffffff",
+                      "surface-variant": "#e1e3e1",
+                      "primary-fixed": "#d0e9d4",
+                      "secondary-fixed": "#ffdad8",
+                      "on-background": "#191c1b",
+                      "cream": "#FFF9E5"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "section-gap": "40px",
+                      "gutter": "16px",
+                      "container-margin": "24px",
+                      "unit": "8px",
+                      "card-padding": "20px"
+              },
+              "fontFamily": {
+                      "body-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "label-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-lg-mobile": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "display-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "label-sm": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "headline-md": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "body-lg": [
+                              "Hanken Grotesk"
+                      ]
+              },
+              "fontSize": {
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "28px",
+                              {
+                                      "lineHeight": "36px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body { font-family: 'Hanken Grotesk', sans-serif; background-color: #f8faf8; }
+        h1, h2, h3, h4, h5, h6, .headline { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .material-symbols-outlined[data-weight="fill"] { font-variation-settings: 'FILL' 1; }
+        
+        /* Soft shadows */
+        .ambient-shadow { box-shadow: 0 4px 20px rgba(27, 48, 34, 0.08); }
+        .ambient-shadow-sm { box-shadow: 0 2px 10px rgba(27, 48, 34, 0.05); }
+        .ambient-shadow-lg { box-shadow: 0 10px 40px rgba(27, 48, 34, 0.12); }
+        
+        /* Modal Backdrop */
+        .modal-backdrop { background-color: rgba(25, 28, 27, 0.4); backdrop-filter: blur(2px); }
+        
+        /* Animation for bottom sheet */
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        .slide-up { animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-on-surface min-h-screen flex flex-col relative pb-[80px]">
+<!-- Top App Bar -->
+<header class="bg-surface border-b border-sage-border/50 sticky top-0 z-40 w-full">
+<div class="flex justify-between items-center w-full px-container-margin py-unit h-16 max-w-7xl mx-auto">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-pale-blue ambient-shadow-sm flex items-center justify-center">
+<img class="w-full h-full object-cover" data-alt="A soft, textured 3D avatar of a small, cute companion character with a gentle pastel color palette. The aesthetic is premium, calming, and minimalist, rendered in high quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBT0gwMzkDKRl5Xeqw6fTxWWcijRzPn_FIKTvm7_inqKALbWpwiMoV7puh5rzHpbJijwwU2dGtX5r-CeFaR908kaHWMbvJotO-IjQuC9Lph_UVSPdNdpdKvI9PDIsTfrIonP0LaWaXRku0kaW8t_qIbSabifWyQ-h3fagK94SokCo6-DXX-MI6Tgpolf8rauLrPaDRJnWxfrW8WIlh0MxK68EDc4UmI_hKvhF2z5PkBYFS-qtc136C89w"/>
+</div>
+</div>
+<div class="font-headline-md text-headline-md font-bold text-primary">
+                Let's Collect
+            </div>
+<div class="flex items-center gap-3">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors text-primary">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content (Dimmed in background) -->
+<main class="flex-1 max-w-7xl mx-auto w-full px-container-margin py-section-gap grid grid-cols-4 md:grid-cols-12 gap-gutter opacity-40 transition-opacity duration-300 relative pointer-events-none">
+<!-- Discover Card Background Example -->
+<div class="col-span-4 md:col-start-4 md:col-span-6 bg-surface-container-lowest rounded-3xl ambient-shadow p-card-padding border border-sage-border/50 flex flex-col items-center">
+<div class="w-full h-80 rounded-xl overflow-hidden mb-6 relative">
+<img class="w-full h-full object-cover" data-alt="A beautifully curated digital display shelf showing three highly detailed, minimalist vinyl toy collectibles. Soft, ambient lighting creates a premium, tactile feel against a pale mint background. The mood is calm and aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCU7xzjFKj-672LolgGkpZw4UkzW7WABB5hOQtRIh7Gp8vKiYG5tnGLtDRr8ZVrE1uB0sNmqlD0hkYyH99_9244yKbnNxmMEHtJ4aRsdGrLiDcuViWZhf9f3_rIK0Be6ny_SjvJlsoNBm7TqQ-wMgcoCQyIThzWz3wgdL-14pwhIM8R4Gpn2JdEihyDtpn8qbpjSAzE_hzLlFNsV5F_yz-hCn-77E74DE9f-HerIz-YO1Iwcky4_nCVXA"/>
+<div class="absolute top-4 left-4 bg-blush px-3 py-1 rounded-full text-primary font-label-sm text-label-sm shadow-sm">Featured Cabinet</div>
+</div>
+<h2 class="font-headline-md text-headline-md text-primary mb-2 text-center">Luna's Starry Collection</h2>
+<p class="font-body-md text-body-md text-on-surface-variant text-center mb-6 max-w-sm">A serene gathering of celestial-themed companions.</p>
+<button class="w-full h-12 bg-secondary text-white rounded-xl font-label-md text-label-md flex items-center justify-center gap-2 mb-3">
+<span class="material-symbols-outlined" data-icon="favorite" data-weight="fill">favorite</span>
+                Send an Echo
+            </button>
+</div>
+</main>
+<!-- Modal Backdrop -->
+<div class="fixed inset-0 modal-backdrop z-50 flex items-end justify-center sm:items-center p-0 sm:p-container-margin">
+<!-- Bottom Sheet / Modal -->
+<div class="bg-surface-container-lowest w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl ambient-shadow-lg p-6 sm:p-8 slide-up border border-sage-border/50 relative">
+<!-- Drag Handle (Mobile) -->
+<div class="w-12 h-1.5 bg-surface-variant rounded-full mx-auto mb-6 sm:hidden"></div>
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-md text-headline-md text-primary">Send an Echo</h3>
+<button class="w-8 h-8 flex items-center justify-center rounded-full bg-surface-container-low text-on-surface-variant hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Share a thoughtful reaction with the collector.</p>
+<!-- Expressions Grid -->
+<div class="flex flex-col gap-3">
+<button class="w-full py-4 px-5 rounded-2xl bg-cream hover:bg-surface-container-low transition-colors border border-transparent hover:border-sage-border flex items-center justify-between group">
+<span class="font-body-md text-body-md text-primary group-hover:text-secondary transition-colors">Same taste</span>
+<span class="material-symbols-outlined text-secondary opacity-0 group-hover:opacity-100 transition-opacity" data-icon="arrow_forward">arrow_forward</span>
+</button>
+<button class="w-full py-4 px-5 rounded-2xl bg-cream hover:bg-surface-container-low transition-colors border border-transparent hover:border-sage-border flex items-center justify-between group">
+<span class="font-body-md text-body-md text-primary group-hover:text-secondary transition-colors">Sending a tiny wave</span>
+<span class="material-symbols-outlined text-secondary opacity-0 group-hover:opacity-100 transition-opacity" data-icon="arrow_forward">arrow_forward</span>
+</button>
+<button class="w-full py-4 px-5 rounded-2xl bg-cream hover:bg-surface-container-low transition-colors border border-transparent hover:border-sage-border flex items-center justify-between group">
+<span class="font-body-md text-body-md text-primary group-hover:text-secondary transition-colors">I love your companion</span>
+<span class="material-symbols-outlined text-secondary opacity-0 group-hover:opacity-100 transition-opacity" data-icon="arrow_forward">arrow_forward</span>
+</button>
+<button class="w-full py-4 px-5 rounded-2xl bg-cream hover:bg-surface-container-low transition-colors border border-transparent hover:border-sage-border flex items-center justify-between group">
+<span class="font-body-md text-body-md text-primary group-hover:text-secondary transition-colors">Your collection feels comforting</span>
+<span class="material-symbols-outlined text-secondary opacity-0 group-hover:opacity-100 transition-opacity" data-icon="arrow_forward">arrow_forward</span>
+</button>
+<button class="w-full py-4 px-5 rounded-2xl bg-cream hover:bg-surface-container-low transition-colors border border-transparent hover:border-sage-border flex items-center justify-between group">
+<span class="font-body-md text-body-md text-primary group-hover:text-secondary transition-colors">We should collect this series together</span>
+<span class="material-symbols-outlined text-secondary opacity-0 group-hover:opacity-100 transition-opacity" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Bottom Navigation -->
+<nav class="bg-surface/90 border-t border-sage-border/30 backdrop-blur-md shadow-sm fixed bottom-0 left-0 w-full z-40 flex justify-around items-center px-4 pt-2 pb-safe rounded-t-xl md:hidden">
+<!-- Collect -->
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-5 py-1.5 w-24">
+<span class="material-symbols-outlined mb-1" data-icon="grid_view">grid_view</span>
+<span class="font-label-sm text-label-sm">Collect</span>
+</div>
+<!-- Cabinet -->
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-5 py-1.5 w-24">
+<span class="material-symbols-outlined mb-1" data-icon="shelves">shelves</span>
+<span class="font-label-sm text-label-sm">Cabinet</span>
+</div>
+<!-- Echo (Active) -->
+<div class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-5 py-1.5 transition-all w-24 scale-[0.95]">
+<span class="material-symbols-outlined mb-1" data-icon="waves" data-weight="fill">waves</span>
+<span class="font-label-sm text-label-sm font-bold">Echo</span>
+</div>
+</nav>
+<!-- Desktop Navigation Placeholder (Hidden on mobile) -->
+<div class="hidden md:flex fixed top-16 left-0 w-64 h-[calc(100vh-64px)] bg-surface border-r border-sage-border/50 p-6 flex-col gap-2">
+<a class="flex items-center gap-3 p-3 rounded-xl text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="font-label-md text-label-md">Collect</span>
+</a>
+<a class="flex items-center gap-3 p-3 rounded-xl text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="shelves">shelves</span>
+<span class="font-label-md text-label-md">Cabinet</span>
+</a>
+<a class="flex items-center gap-3 p-3 rounded-xl bg-secondary-container text-on-secondary-container font-bold" href="#">
+<span class="material-symbols-outlined" data-icon="waves" data-weight="fill">waves</span>
+<span class="font-label-md text-label-md">Echo</span>
+</a>
+</div>
+</body></html>

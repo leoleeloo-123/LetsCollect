@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Echoes</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed": "#101f17",
+                        "error": "#ba1a1a",
+                        "primary": "#061b0e",
+                        "sage-border": "#C5D3C9",
+                        "secondary": "#9e3f41",
+                        "pale-blue": "#D9EAF2",
+                        "surface": "#f8faf8",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed": "#d5e7da",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed": "#410007",
+                        "on-tertiary-fixed-variant": "#3b4a41",
+                        "inverse-on-surface": "#eff1ef",
+                        "background": "#f8faf8",
+                        "on-primary-container": "#819986",
+                        "on-error-container": "#93000a",
+                        "primary-container": "#1b3022",
+                        "surface-container-highest": "#e1e3e1",
+                        "outline": "#737973",
+                        "secondary-fixed-dim": "#ffb3b1",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-container": "#86978c",
+                        "outline-variant": "#c3c8c1",
+                        "surface-container-low": "#f2f4f2",
+                        "primary-fixed-dim": "#b4cdb8",
+                        "tertiary-fixed-dim": "#b9cbbe",
+                        "tertiary": "#0b1a13",
+                        "inverse-primary": "#b4cdb8",
+                        "surface-container-high": "#e6e9e7",
+                        "on-surface": "#191c1b",
+                        "surface-container": "#eceeec",
+                        "inverse-surface": "#2e3130",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed-variant": "#7f282b",
+                        "on-primary-fixed": "#0b2013",
+                        "on-surface-variant": "#434843",
+                        "blush": "#FCE4EC",
+                        "surface-bright": "#f8faf8",
+                        "on-secondary-container": "#752125",
+                        "tertiary-container": "#202f26",
+                        "on-primary-fixed-variant": "#364c3c",
+                        "on-tertiary": "#ffffff",
+                        "surface-tint": "#4d6453",
+                        "secondary-container": "#fe8988",
+                        "surface-dim": "#d8dad9",
+                        "on-primary": "#ffffff",
+                        "surface-variant": "#e1e3e1",
+                        "primary-fixed": "#d0e9d4",
+                        "secondary-fixed": "#ffdad8",
+                        "on-background": "#191c1b",
+                        "cream": "#FFF9E5"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "section-gap": "40px",
+                        "gutter": "16px",
+                        "container-margin": "24px",
+                        "unit": "8px",
+                        "card-padding": "20px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Hanken Grotesk"],
+                        "label-md": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "label-sm": ["Hanken Grotesk"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "body-lg": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        .ambient-shadow {
+            box-shadow: 0 4px 20px rgba(27, 48, 34, 0.08);
+        }
+        
+        .soft-card {
+            background-color: #FFFFFF;
+            border: 1px solid rgba(197, 211, 201, 0.5);
+            border-radius: 1.5rem; /* 24px+ */
+            padding: 20px;
+        }
+
+        .tactile-hover:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 30px rgba(27, 48, 34, 0.12);
+            transition: all 0.3s ease;
+        }
+        
+        .progress-track {
+            background-color: #d0e9d4; /* primary-fixed */
+            border-radius: 9999px;
+            overflow: hidden;
+            height: 12px;
+        }
+        
+        .progress-fill {
+            background-color: #D16666; /* Raspberry accent, falling back to secondary for config matching */
+            height: 100%;
+            border-radius: 9999px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface border-b border-sage-border/50 docked full-width top-0 sticky z-40">
+<div class="flex justify-between items-center w-full px-container-margin py-unit">
+<div class="w-10 h-10 rounded-full bg-pale-blue overflow-hidden flex items-center justify-center">
+<img class="w-full h-full object-cover" data-alt="A soft-textured companion avatar, looking like a cute, minimal, plush toy against a pale background. Warm, premium, calming aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXcPaTbSBsZFsq_Q9CwtUOFCcVVv_3SJ8TOSGl8e5MeqTNzetqK49ZJ9n27_V9f1M49_5rlNoMvdgpoODwDxUqSl09TusVeTYRLyBLlg-43Y7P7OaAJF6OQilxUSELXwmJZtQsSFN5TfKFHR0EEzu_5EFNd8katWmGgqqrcoDY1Vn2nTd7fEeGCErZVhVH4eHI_9QRWpAUUlXBvuv_QuBPKW6-VFG4BXKh66qRjAPyTYR8KLxtHH8EZg"/>
+</div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-on-surface">Let's Collect</h1>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-primary dark:text-inverse-primary hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</div>
+</header>
+<main class="max-w-[1200px] mx-auto px-container-margin py-8 md:grid md:grid-cols-12 md:gap-gutter">
+<!-- Segmented Control -->
+<div class="md:col-span-12 mb-8">
+<div class="bg-surface-container-low rounded-full p-1 flex w-full max-w-md mx-auto">
+<button class="flex-1 py-2 px-4 rounded-full bg-white ambient-shadow text-primary font-label-md text-label-md transition-all">My Echoes</button>
+<button class="flex-1 py-2 px-4 rounded-full text-on-surface-variant font-label-md text-label-md transition-all hover:bg-white/50">Discover</button>
+</div>
+</div>
+<!-- Established Connections (Cards) -->
+<div class="md:col-span-8 md:col-start-3 space-y-6">
+<!-- Connection Card 1 (Mia) -->
+<div class="soft-card ambient-shadow tactile-hover flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-primary">Mia</h2>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-high px-3 py-1 rounded-full">Resonated 2 days ago</span>
+</div>
+<div class="flex items-center gap-4 py-2">
+<div class="w-16 h-16 rounded-full bg-blush overflow-hidden border-2 border-white shadow-sm z-10">
+<img class="w-full h-full object-cover" data-alt="User's companion avatar, a soft, plush-like figure in light pastel colors. Gentle studio lighting, minimal background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBylw5P5NomQMQATzhDmky08BJupzXCUYx8Dh0OEnMhtlOXEV_HCDq3cKBw1Q0pqK3SMPevZj4KaTE2nqUiD6SZYOcy1-exHITGHXhPrr2z8nHf7YHgDdt0b6tdQFg9rlhycqhDsyRFWCnH69xQeSDgBFyehvPn0VP5na_ufmLn-6paBqrPcq8WLpNWyU9aGDg9SLknF0YS_xAeWKSCOPFVCQSE9Jp-UIdYrZjFKTGSU5EUt6qFKC93JQ"/>
+</div>
+<div class="w-16 h-16 rounded-full bg-cream overflow-hidden border-2 border-white shadow-sm -ml-8 z-0">
+<img class="w-full h-full object-cover" data-alt="Friend's companion avatar (Mia), a delicate, fuzzy figure with warm cream and pink tones. Gentle studio lighting, minimal background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4qmq5fcFHkuVvbVFxggQexK3la7h7WRREKascjAa4CmyedILBqyrt40oSd8qdF6BwcpVBBY9h0zsQJShlQdhAMlDKQqgkYF4x3FCgnTxqKjKy57NgM-pUFnAeTFE2US-x9jFKc4IdFpmN7QGiTkQpkupkmzoPGkofJ0W1HuFzznRzICF0MPDS0CR9EDFnv-3uHlfjSufrAf3Iy0Xcx1IeBCyF4qSp9k-Lt9P9mqM1iDmtmdpgMX1-2w"/>
+</div>
+</div>
+<div class="bg-cream rounded-xl p-4 mt-2">
+<div class="flex justify-between items-center mb-2">
+<span class="font-label-md text-label-md text-primary">Current Mission: Cabinet Exchange</span>
+<span class="font-label-md text-label-md text-secondary">1/2</span>
+</div>
+<div class="progress-track w-full">
+<div class="progress-fill w-1/2 bg-secondary"></div>
+</div>
+</div>
+<button class="w-full mt-4 h-12 bg-secondary text-white font-label-md text-label-md rounded-xl hover:bg-on-secondary-container transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[20px]" data-icon="sensor_door">sensor_door</span>
+                    Open Shared Space
+                </button>
+</div>
+<!-- Connection Card 2 -->
+<div class="soft-card ambient-shadow tactile-hover flex flex-col gap-4 opacity-90">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-primary">Oliver</h2>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-high px-3 py-1 rounded-full">Resonated 1 week ago</span>
+</div>
+<div class="flex items-center gap-4 py-2">
+<div class="w-12 h-12 rounded-full bg-blush overflow-hidden border-2 border-white shadow-sm z-10">
+<img class="w-full h-full object-cover" data-alt="User's companion avatar, a soft, plush-like figure in light pastel colors. Gentle studio lighting, minimal background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNYtkjfI8-Nc_cZaBvRVWgwZLVTWo3D2JStaHORWAzQx-Wr4N5LoJJfislbT03YQnTxZ0TQsgnt9WcMEHID1DikIyEwq3lsY4IPNpleX86tTdLPDUnKRW4CFSiTmKtyVR6aiRNTNq_u1YRp-KXvrvtNf3ZLtugHZsBmTTlhGe3y8J7rCrwIPNK9J0s_JYbG-nqqdYKgLoZ0XIBApRkbHkfdAI9yGyNzBtv9SXelwguCmvZFjBPDZ5z1Q"/>
+</div>
+<div class="w-12 h-12 rounded-full bg-pale-blue overflow-hidden border-2 border-white shadow-sm -ml-6 z-0">
+<img class="w-full h-full object-cover" data-alt="Friend's companion avatar (Oliver), a calm, round figure with soft blue tones. Gentle studio lighting, minimal background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRipk0kTckTvytYn6RCF5a5TItDxEpb2ZXW_D_ESbyAeHD3yAWNDlgaXEj2-O3AUyGNTyVJt5YRoQy0G3oKlBK7y_cywRYNAB52qy_Z0mPZmjcvSbf_jESkecVXQIvnjuDDprHytusolR5u5lLhUzjrH9fJLrpIzZzqFwd00r1D26kWGts3eOR7HJtJao1Ba7TsmANjVZJuvbXYgRqlG-CRddfWgIpXCbPyrVligatatN0sjklw6JgMQ"/>
+</div>
+</div>
+<button class="w-full mt-2 h-12 bg-surface text-primary border border-sage-border font-label-md text-label-md rounded-xl hover:bg-surface-container-low transition-colors flex items-center justify-center gap-2">
+                    View Echo
+                </button>
+</div>
+<!-- Pending Section -->
+<div class="mt-section-gap">
+<h3 class="font-headline-md text-headline-md text-primary mb-4 border-b border-sage-border/30 pb-2">Pending Returns</h3>
+<div class="space-y-3">
+<div class="bg-surface-container-low rounded-xl p-4 flex items-center justify-between border border-transparent hover:border-sage-border/50 transition-colors cursor-pointer">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-outline">
+<span class="material-symbols-outlined" data-icon="send">send</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-primary">Sent to 'Silent Forest'</p>
+<p class="font-body-md text-body-md text-sm text-on-surface-variant">3 days ago</p>
+</div>
+</div>
+<span class="font-label-sm text-label-sm text-outline px-2 py-1 bg-surface rounded-md">Waiting</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pt-2 pb-safe bg-surface/90 dark:bg-surface-dim/90 border-t border-sage-border/30 backdrop-blur-md shadow-sm rounded-t-xl md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-5 py-1.5 hover:text-primary dark:hover:text-primary-fixed-dim" href="#">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="font-label-sm text-label-sm mt-1">Collect</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-5 py-1.5 hover:text-primary dark:hover:text-primary-fixed-dim" href="#">
+<span class="material-symbols-outlined" data-icon="shelves">shelves</span>
+<span class="font-label-sm text-label-sm mt-1">Cabinet</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container dark:bg-secondary-fixed text-on-secondary-container dark:text-on-secondary-fixed rounded-full px-5 py-1.5 transition-all scale-[0.95]" href="#">
+<span class="material-symbols-outlined fill" data-icon="waves">waves</span>
+<span class="font-label-sm text-label-sm mt-1">Echo</span>
+</a>
+</nav>
+</body></html>

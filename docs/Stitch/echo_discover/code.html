@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Echo Discover - Let's Collect</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-fixed": "#101f17",
+                      "error": "#ba1a1a",
+                      "primary": "#061b0e",
+                      "sage-border": "#C5D3C9",
+                      "secondary": "#9e3f41",
+                      "pale-blue": "#D9EAF2",
+                      "surface": "#f8faf8",
+                      "error-container": "#ffdad6",
+                      "tertiary-fixed": "#d5e7da",
+                      "on-error": "#ffffff",
+                      "on-secondary-fixed": "#410007",
+                      "on-tertiary-fixed-variant": "#3b4a41",
+                      "inverse-on-surface": "#eff1ef",
+                      "background": "#f8faf8",
+                      "on-primary-container": "#819986",
+                      "on-error-container": "#93000a",
+                      "primary-container": "#1b3022",
+                      "surface-container-highest": "#e1e3e1",
+                      "outline": "#737973",
+                      "secondary-fixed-dim": "#ffb3b1",
+                      "on-secondary": "#ffffff",
+                      "on-tertiary-container": "#86978c",
+                      "outline-variant": "#c3c8c1",
+                      "surface-container-low": "#f2f4f2",
+                      "primary-fixed-dim": "#b4cdb8",
+                      "tertiary-fixed-dim": "#b9cbbe",
+                      "tertiary": "#0b1a13",
+                      "inverse-primary": "#b4cdb8",
+                      "surface-container-high": "#e6e9e7",
+                      "on-surface": "#191c1b",
+                      "surface-container": "#eceeec",
+                      "inverse-surface": "#2e3130",
+                      "surface-container-lowest": "#ffffff",
+                      "on-secondary-fixed-variant": "#7f282b",
+                      "on-primary-fixed": "#0b2013",
+                      "on-surface-variant": "#434843",
+                      "blush": "#FCE4EC",
+                      "surface-bright": "#f8faf8",
+                      "on-secondary-container": "#752125",
+                      "tertiary-container": "#202f26",
+                      "on-primary-fixed-variant": "#364c3c",
+                      "on-tertiary": "#ffffff",
+                      "surface-tint": "#4d6453",
+                      "secondary-container": "#fe8988",
+                      "surface-dim": "#d8dad9",
+                      "on-primary": "#ffffff",
+                      "surface-variant": "#e1e3e1",
+                      "primary-fixed": "#d0e9d4",
+                      "secondary-fixed": "#ffdad8",
+                      "on-background": "#191c1b",
+                      "cream": "#FFF9E5"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px",
+                      "2xl": "1.5rem",
+                      "3xl": "2rem"
+              },
+              "spacing": {
+                      "section-gap": "40px",
+                      "gutter": "16px",
+                      "container-margin": "24px",
+                      "unit": "8px",
+                      "card-padding": "20px"
+              },
+              "fontFamily": {
+                      "body-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "label-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-lg-mobile": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "display-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "label-sm": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "headline-md": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "body-lg": [
+                              "Hanken Grotesk"
+                      ]
+              },
+              "fontSize": {
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "28px",
+                              {
+                                      "lineHeight": "36px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .squishy-card {
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s ease;
+        }
+        .squishy-card:active {
+            transform: scale(0.98);
+        }
+        .ambient-shadow {
+            box-shadow: 0 10px 30px -10px rgba(27, 48, 34, 0.08);
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-surface font-body-md text-on-surface h-full flex flex-col md:max-w-[1200px] md:mx-auto">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface border-b border-sage-border/50 docked full-width top-0 z-40 hidden md:flex flex-col">
+<div class="flex justify-between items-center w-full px-container-margin py-unit h-[64px]">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container-high border border-sage-border/30">
+<img class="w-full h-full object-cover" data-alt="A small avatar image featuring a soft, pastel-colored abstract shape resembling a cute companion creature. High quality, light mode, clean and minimal." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDf085UFS5juWJPLPRV2gBa48m1kshvuXzl02zZ3uVpLmgxB9aX_8WUWdcuVOOuGkQJaOmj35k71pChkpdRrffaKyqn1SUmlmzYZP7nbAXve4f4RwJkbuEc8ETtBS94acghiTrOxaILHcP9axM7RwbjWOH7JN1Ih7TIOqfhWfFgGw8i-UxXKO7dQDwJfNhhIw5A_Euat48D5KDW_fczpalFe0hEvNJv0n3eAIkaPjiFKLmS3w_9XdWrpQ"/>
+</div>
+</div>
+<div class="font-headline-md text-headline-md font-bold text-primary dark:text-on-surface">
+                Let's Collect
+            </div>
+<button aria-label="Settings" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors text-primary dark:text-inverse-primary">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+<!-- Desktop Nav Items -->
+<nav class="flex justify-center gap-8 py-2">
+<a class="text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low px-4 py-2 rounded-full transition-colors flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-[20px]">grid_view</span> Collect
+            </a>
+<a class="text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low px-4 py-2 rounded-full transition-colors flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-[20px]">shelves</span> Cabinet
+            </a>
+<a class="text-primary font-bold font-label-md text-label-md hover:bg-surface-container-low px-4 py-2 rounded-full transition-colors flex items-center gap-2 bg-surface-container-low" href="#">
+<span class="material-symbols-outlined text-[20px]">waves</span> Echo
+            </a>
+</nav>
+</header>
+<!-- Mobile Header Context -->
+<div class="md:hidden pt-8 px-container-margin pb-4 bg-surface/90 backdrop-blur-md sticky top-0 z-30">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary">Discover</h1>
+</div>
+<!-- Main Content Area -->
+<main class="flex-grow pb-[100px] md:pb-container-margin flex flex-col items-center pt-2 md:pt-8 w-full max-w-lg mx-auto">
+<!-- Segmented Control -->
+<div class="w-full px-container-margin mb-8">
+<div class="flex p-1 bg-surface-container-high rounded-full w-full border border-sage-border/30">
+<button class="flex-1 py-2 text-center rounded-full bg-surface shadow-sm font-label-md text-label-md text-primary transition-all">
+                    Discover
+                </button>
+<button class="flex-1 py-2 text-center rounded-full text-on-surface-variant hover:text-primary font-label-md text-label-md transition-all">
+                    My Echoes
+                </button>
+</div>
+</div>
+<div class="w-full px-container-margin mb-4 flex justify-between items-end">
+<h2 class="font-headline-md text-headline-md text-primary">Today's Resonance</h2>
+</div>
+<!-- Carousel Container -->
+<div class="w-full overflow-x-auto scrollbar-hide snap-x snap-mandatory px-container-margin flex gap-4 pb-8">
+<!-- Main Echo Card -->
+<div class="snap-center shrink-0 w-full flex flex-col bg-cream border border-sage-border/50 rounded-[32px] p-card-padding ambient-shadow squishy-card relative overflow-hidden">
+<!-- Decorative Elements -->
+<div class="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-white/40 to-transparent pointer-events-none rounded-t-[32px]"></div>
+<!-- Paired Comparison Avatars -->
+<div class="flex justify-center items-center gap-4 mb-6 mt-4 relative z-10">
+<div class="flex flex-col items-center gap-2">
+<div class="w-20 h-20 rounded-full border-4 border-surface shadow-sm overflow-hidden bg-pale-blue relative">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuANE5VAS6fox4bEcY0cBS7XYsv9cBUsw5lEBHD96RI_PK52bXhurYsQmoYs9yYuF4UW01Msoby3gHFpQKMlUWfg_erK3uHS_uqzgV_eEf23WYS151P3gxqMgWNnisXiZtQAfpnA-Y6xAfgVfOpgvB2UR4sacZC5HHS9FnhPvafDb5_OyvMnzpN6oOEZ5dYg5lq_NaWk_Lz8necRab56mExpxdZ-TUBSzZ7A9t1JbMSug8SFlWqTyoqZrxIn9pZehim7sBg"/>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">You</span>
+</div>
+<div class="flex items-center justify-center w-10 h-10 rounded-full bg-surface shadow-sm text-secondary z-10">
+<span class="material-symbols-outlined animate-pulse" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-24 h-24 rounded-full border-4 border-surface shadow-md overflow-hidden bg-tertiary-fixed scale-110 relative">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUYwRyMlS_4SrVXYarv_Dz9LSwKoZ_xJ1th00LE1d3tBkhFclDajl9OB8jbbZVIo1RbMD17YJi0ZeQIwgsk4nqlSo9vuFT-1BZzQJ793fxQmgmOtw5Lw6cK0HEbmRjyZS3_WMGfLgZqUn5ldWCV5ba0A8QhtoIv6zB42uZ5FR_BDi-DUoawPqCw6SdzGHA2ZvvDO6IJVf3yu5Di607urKyZVHLJI1txPsGLbrX0gF1RR01O7-15Iz1-03OZRqEvdnbB-c"/>
+</div>
+<span class="font-label-md text-label-md text-primary">Mia</span>
+</div>
+</div>
+<!-- Headline -->
+<h3 class="font-headline-md text-headline-md text-center text-primary mb-6 leading-tight">
+                    Mia may resonate with your collection.
+                </h3>
+<!-- Traits List -->
+<div class="flex flex-col gap-3 mb-8">
+<div class="flex items-center gap-3 bg-surface/60 rounded-2xl p-3 border border-sage-border/20">
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container shrink-0">
+<span class="material-symbols-outlined text-[18px]">palette</span>
+</div>
+<div class="flex-1">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-0.5 text-[10px]">Shared Trait</p>
+<p class="font-body-md text-body-md text-primary font-medium">Soft Palettes</p>
+</div>
+</div>
+<div class="flex items-center gap-3 bg-surface/60 rounded-2xl p-3 border border-sage-border/20">
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed shrink-0">
+<span class="material-symbols-outlined text-[18px]">pets</span>
+</div>
+<div class="flex-1">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-0.5 text-[10px]">Shared Focus</p>
+<p class="font-body-md text-body-md text-primary font-medium">Comforting Companions</p>
+</div>
+</div>
+<div class="flex items-center gap-3 bg-pale-blue/40 rounded-2xl p-3 border border-sage-border/20">
+<div class="w-8 h-8 rounded-full bg-pale-blue flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[18px]">nightlight</span>
+</div>
+<div class="flex-1">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-0.5 text-[10px]">Complementary</p>
+<p class="font-body-md text-body-md text-primary font-medium">Mia enjoys sleepy collections</p>
+</div>
+</div>
+</div>
+<!-- Actions -->
+<div class="mt-auto flex flex-col gap-3">
+<button class="w-full h-12 rounded-full bg-secondary text-on-secondary font-label-md text-label-md flex items-center justify-center gap-2 hover:bg-secondary/90 transition-colors squishy-card">
+<span class="material-symbols-outlined">waving_hand</span>
+                        Send an Echo
+                    </button>
+<button class="w-full h-12 rounded-full bg-transparent border-2 border-primary-container/20 text-primary-container font-label-md text-label-md flex items-center justify-center hover:bg-primary-container/5 transition-colors squishy-card">
+                        View Collection
+                    </button>
+</div>
+</div>
+<!-- Peek Next Card -->
+<div class="snap-center shrink-0 w-[90%] md:w-full flex flex-col bg-surface border border-sage-border/30 rounded-[32px] p-card-padding opacity-50 scale-95 relative overflow-hidden pointer-events-none">
+<div class="absolute inset-0 flex items-center justify-center blur-sm">
+<span class="material-symbols-outlined text-display-lg text-sage-border">lock</span>
+</div>
+</div>
+</div>
+<!-- Pagination Dots -->
+<div class="flex items-center justify-center gap-2 mt-2 pb-8">
+<div class="w-8 h-2 rounded-full bg-primary"></div>
+<div class="w-2 h-2 rounded-full bg-sage-border"></div>
+<div class="w-2 h-2 rounded-full bg-sage-border"></div>
+<div class="w-2 h-2 rounded-full bg-sage-border"></div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pt-2 pb-6 bg-surface/90 dark:bg-surface-dim/90 border-t border-sage-border/30 backdrop-blur-md shadow-sm">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-5 py-1.5 hover:text-primary dark:hover:text-primary-fixed-dim transition-colors group" href="#">
+<span class="material-symbols-outlined mb-1 group-hover:scale-110 transition-transform">grid_view</span>
+<span class="font-label-sm text-label-sm">Collect</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-5 py-1.5 hover:text-primary dark:hover:text-primary-fixed-dim transition-colors group" href="#">
+<span class="material-symbols-outlined mb-1 group-hover:scale-110 transition-transform">shelves</span>
+<span class="font-label-sm text-label-sm">Cabinet</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container dark:bg-secondary-fixed text-on-secondary-container dark:text-on-secondary-fixed rounded-full px-5 py-1.5 transition-all scale-95 hover:text-primary dark:hover:text-primary-fixed-dim" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">waves</span>
+<span class="font-label-sm text-label-sm font-semibold">Echo</span>
+</a>
+</nav>
+</body></html>

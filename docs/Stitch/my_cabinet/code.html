@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cabinet - Let's Collect</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700&amp;family=Hanken+Grotesk:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "error-container": "#ffdad6",
+                      "pale-blue": "#D9EAF2",
+                      "on-primary-fixed-variant": "#364c3c",
+                      "surface-variant": "#e1e3e1",
+                      "surface-container-lowest": "#ffffff",
+                      "on-background": "#191c1b",
+                      "on-secondary-fixed": "#410007",
+                      "surface-dim": "#d8dad9",
+                      "tertiary-fixed-dim": "#b9cbbe",
+                      "outline": "#737973",
+                      "background": "#f8faf8",
+                      "error": "#ba1a1a",
+                      "sage-border": "#C5D3C9",
+                      "secondary-fixed-dim": "#ffb3b1",
+                      "on-tertiary-fixed": "#101f17",
+                      "on-error-container": "#93000a",
+                      "surface-container-low": "#f2f4f2",
+                      "surface": "#f8faf8",
+                      "on-primary-fixed": "#0b2013",
+                      "on-surface": "#191c1b",
+                      "on-primary-container": "#819986",
+                      "surface-container-high": "#e6e9e7",
+                      "inverse-surface": "#2e3130",
+                      "on-tertiary-container": "#86978c",
+                      "tertiary-container": "#202f26",
+                      "secondary": "#9e3f41",
+                      "secondary-container": "#fe8988",
+                      "cream": "#FFF9E5",
+                      "surface-container-highest": "#e1e3e1",
+                      "primary-fixed": "#d0e9d4",
+                      "on-primary": "#ffffff",
+                      "primary-container": "#1b3022",
+                      "on-tertiary-fixed-variant": "#3b4a41",
+                      "on-tertiary": "#ffffff",
+                      "outline-variant": "#c3c8c1",
+                      "on-secondary-container": "#752125",
+                      "primary": "#061b0e",
+                      "on-surface-variant": "#434843",
+                      "primary-fixed-dim": "#b4cdb8",
+                      "surface-tint": "#4d6453",
+                      "secondary-fixed": "#ffdad8",
+                      "on-secondary-fixed-variant": "#7f282b",
+                      "blush": "#FCE4EC",
+                      "surface-bright": "#f8faf8",
+                      "on-secondary": "#ffffff",
+                      "inverse-on-surface": "#eff1ef",
+                      "tertiary": "#0b1a13",
+                      "inverse-primary": "#b4cdb8",
+                      "on-error": "#ffffff",
+                      "surface-container": "#eceeec",
+                      "tertiary-fixed": "#d5e7da"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "16px",
+                      "container-margin": "24px",
+                      "card-padding": "20px",
+                      "section-gap": "40px",
+                      "unit": "8px"
+              },
+              "fontFamily": {
+                      "headline-md": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "label-sm": [
+                              "Hanken Grotesk"
+                      ],
+                      "display-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "label-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-lg-mobile": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "body-lg": [
+                              "Hanken Grotesk"
+                      ],
+                      "body-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-lg": [
+                              "Plus Jakarta Sans"
+                      ]
+              },
+              "fontSize": {
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "28px",
+                              {
+                                      "lineHeight": "36px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .soft-shadow {
+            box-shadow: 0 4px 20px rgba(27, 48, 34, 0.08);
+        }
+        .card-hover:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 24px rgba(27, 48, 34, 0.12);
+        }
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom, 16px); }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col pt-[72px] pb-[90px] md:pb-8">
+<!-- TopAppBar -->
+<header class="bg-surface border-b border-sage-border/50 fixed top-0 w-full z-50">
+<div class="flex justify-between items-center w-full px-container-margin py-unit h-[72px]">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-cream border border-sage-border/50 flex items-center justify-center">
+<img class="w-full h-full object-cover" data-alt="A soft-textured companion avatar, perhaps a cute animal face, with gentle lighting and pastel colors. Very minimal and premium." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBes_7fEU-dV0al2fb9p6QDcQsN5pmkD0UnJi4Ekr1tLkhidykMu2bv2TjqtRyC5bvnIgLR5aDyp8cNPARD5FzoXhylNFQjtDoiP_OxLfkXoj-FiTwc-07BviB-u5q67936RIpuJsdPwycYaKvM91cqFs_J-cfrcrBtCOUtIdhKKkbtoKtDSneVY9VZQaAnGq0KfkOA_bhLPxx5pvxvSOBfX8Ht51lBJJQ1XhKeTsZjvllS7Ec0VIBRwg"/>
+</div>
+</div>
+<div class="font-headline-md text-headline-md font-bold text-primary">Let's Collect</div>
+<button class="text-primary hover:bg-surface-container-low transition-colors p-2 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow max-w-[1200px] w-full mx-auto px-container-margin md:px-gutter pt-8">
+<!-- Personal Identity Card -->
+<section class="mb-section-gap">
+<div class="bg-surface-container-lowest rounded-[24px] border border-sage-border/50 soft-shadow p-[24px] md:p-[40px] flex flex-col md:flex-row items-center md:items-start gap-8">
+<!-- Avatar & Titles -->
+<div class="flex flex-col items-center text-center md:items-start md:text-left flex-shrink-0">
+<div class="w-32 h-32 md:w-40 md:w-40 rounded-full overflow-hidden bg-blush border-[3px] border-surface mb-4 shadow-sm relative">
+<img class="w-full h-full object-cover" data-alt="A soft, clay-like 3D rendering of a personal avatar. Calm, pastel tones, gentle lighting. Premium designer toy aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwdiiQDSCV1B_hq-ua6bNJuwGXM9F8b-2qC1lrdQRwy5Bu3FAHTt1Vo0Fw75qdErECNmFcypBLGufmqtLJT6NbWY2Boc3inqaeiEB2n90RbjiLjP1v0MoohZWqjpg0N42v6RGBA3f2cq86CDrsbgJgLPaFLD8kB1wJURMcxSBqwzsJEcWw14swIEnGMd8XqHl84-ktbvk35S7yFfdrpvEN1F7eF_z6v3q47QS6_8loY7b7XPVkhKOZvQ"/>
+</div>
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-1">Collector Luna</h1>
+<div class="font-label-md text-label-md text-on-surface-variant bg-cream px-3 py-1 rounded-full inline-block border border-sage-border/50">
+                        Color Enthusiast
+                    </div>
+</div>
+<!-- Stats & Summary -->
+<div class="flex-grow w-full flex flex-col justify-center">
+<div class="grid grid-cols-2 gap-4 mb-8">
+<div class="bg-surface p-4 rounded-xl border border-sage-border/30 text-center">
+<div class="font-headline-md text-headline-md text-primary mb-1">1</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Total</div>
+</div>
+<div class="bg-surface p-4 rounded-xl border border-sage-border/30 text-center">
+<div class="font-headline-md text-headline-md text-primary mb-1">0</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Echoes</div>
+</div>
+</div>
+<div class="bg-pale-blue/30 rounded-[20px] p-6 border border-sage-border/20">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary-container mt-1">auto_awesome</span>
+<div>
+<h3 class="font-label-md text-label-md text-primary-container mb-2">Collection Taste</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">"You often choose mint green colors. Your collection feels calm."</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Featured Companion -->
+<div class="flex-shrink-0 flex flex-col items-center">
+<h3 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-3">Featured Companion</h3>
+<div class="w-[180px] h-[220px] rounded-[20px] bg-cream border border-sage-border/50 soft-shadow overflow-hidden p-2">
+<div class="w-full h-full rounded-[14px] overflow-hidden relative">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBca-iy-qSsjJAP18v_x1XwhNP4DJ2U_7LF1SzLl95ZKO8jPXT2ZvS1s5JMn8Ux1lHyZ12duqypQ3-ND1i1HEx7yn0W_YiIdA8-arr2JWyCa9h2JmFRLFlkSnLbcVR6D_1X8_BSvexspwabZwv1yFgQo-WQKyGvNSvt4BIVD7yIL6D4reH_uJkM-fTy8IBMshO4FDZK-ocAVGb7JYjlCfk1-zHAvULoK92FnyPYmtqTm4U0q8ZUGkIZr5tOvv7Aw4K66og"/>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Full Collection Grid -->
+<section class="mb-section-gap">
+<div class="flex justify-between items-end mb-6">
+<h2 class="font-headline-md text-headline-md text-primary">Full Collection</h2>
+<div class="font-label-sm text-label-sm text-on-surface-variant">1 Item</div>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+<!-- Otter Card -->
+<div class="bg-surface-container-lowest rounded-[24px] border border-sage-border/50 soft-shadow p-2 transition-all card-hover cursor-pointer group">
+<div class="aspect-square w-full bg-surface rounded-[18px] overflow-hidden relative mb-3">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAZA8r5vZwy2BGb7VnRNJ7XcgDx6wShaVpnNXsBOofeSwWMcC0CcPWHQfTt5jdrZr5qHeQ0oOfy4bvugj_4zkqtt4RqkFPGcsFjfs43wwQObmu3-CSU_cQh1j-rLwbS-8JSUDVW7L6dt_FCrR0GUQ4B8bvDMyHzxTXN540hAYe3FkHzoteU9Vq569DbhJ2CgXz3GlwLqdk449CVMKZl5ZgxctYXR-l365Y29gzu15F8HiyaeNV2kKo_Cz6RF35-Mqx3PI"/>
+<div class="absolute top-2 right-2 bg-surface/80 backdrop-blur-sm px-2 py-1 rounded-full">
+<span class="font-label-sm text-label-sm text-primary">#001</span>
+</div>
+</div>
+<div class="px-3 pb-3">
+<h3 class="font-label-md text-label-md text-primary mb-1">Minty Otter</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Soft &amp; Calm</p>
+</div>
+</div>
+<!-- Empty Slots for visual balance (Optional, but adds to the 'cabinet' feel) -->
+<div class="bg-surface/50 border border-sage-border/30 rounded-[24px] border-dashed p-2 flex flex-col items-center justify-center min-h-[250px]">
+<span class="material-symbols-outlined text-outline/40 text-4xl mb-2">add</span>
+<span class="font-label-sm text-label-sm text-outline/60">Empty Slot</span>
+</div>
+<div class="bg-surface/50 border border-sage-border/30 rounded-[24px] border-dashed p-2 flex flex-col items-center justify-center min-h-[250px] hidden md:flex">
+<span class="material-symbols-outlined text-outline/40 text-4xl mb-2">add</span>
+<span class="font-label-sm text-label-sm text-outline/60">Empty Slot</span>
+</div>
+<div class="bg-surface/50 border border-sage-border/30 rounded-[24px] border-dashed p-2 flex flex-col items-center justify-center min-h-[250px] hidden md:flex">
+<span class="material-symbols-outlined text-outline/40 text-4xl mb-2">add</span>
+<span class="font-label-sm text-label-sm text-outline/60">Empty Slot</span>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pt-2 pb-safe bg-surface/90 border-t border-sage-border/30 backdrop-blur-md shadow-sm rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-5 py-1.5 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined mb-1">grid_view</span>
+<span class="font-label-sm text-label-sm">Collect</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-5 py-1.5 transition-all scale-95" href="#">
+<span class="material-symbols-outlined mb-1 icon-fill">shelves</span>
+<span class="font-label-sm text-label-sm font-semibold">Cabinet</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-5 py-1.5 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined mb-1">waves</span>
+<span class="font-label-sm text-label-sm">Echo</span>
+</a>
+</nav>
+</body></html>

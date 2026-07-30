@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Resonance Formed</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-fixed": "#101f17",
+                      "error": "#ba1a1a",
+                      "primary": "#061b0e",
+                      "sage-border": "#C5D3C9",
+                      "secondary": "#9e3f41",
+                      "pale-blue": "#D9EAF2",
+                      "surface": "#f8faf8",
+                      "error-container": "#ffdad6",
+                      "tertiary-fixed": "#d5e7da",
+                      "on-error": "#ffffff",
+                      "on-secondary-fixed": "#410007",
+                      "on-tertiary-fixed-variant": "#3b4a41",
+                      "inverse-on-surface": "#eff1ef",
+                      "background": "#f8faf8",
+                      "on-primary-container": "#819986",
+                      "on-error-container": "#93000a",
+                      "primary-container": "#1b3022",
+                      "surface-container-highest": "#e1e3e1",
+                      "outline": "#737973",
+                      "secondary-fixed-dim": "#ffb3b1",
+                      "on-secondary": "#ffffff",
+                      "on-tertiary-container": "#86978c",
+                      "outline-variant": "#c3c8c1",
+                      "surface-container-low": "#f2f4f2",
+                      "primary-fixed-dim": "#b4cdb8",
+                      "tertiary-fixed-dim": "#b9cbbe",
+                      "tertiary": "#0b1a13",
+                      "inverse-primary": "#b4cdb8",
+                      "surface-container-high": "#e6e9e7",
+                      "on-surface": "#191c1b",
+                      "surface-container": "#eceeec",
+                      "inverse-surface": "#2e3130",
+                      "surface-container-lowest": "#ffffff",
+                      "on-secondary-fixed-variant": "#7f282b",
+                      "on-primary-fixed": "#0b2013",
+                      "on-surface-variant": "#434843",
+                      "blush": "#FCE4EC",
+                      "surface-bright": "#f8faf8",
+                      "on-secondary-container": "#752125",
+                      "tertiary-container": "#202f26",
+                      "on-primary-fixed-variant": "#364c3c",
+                      "on-tertiary": "#ffffff",
+                      "surface-tint": "#4d6453",
+                      "secondary-container": "#fe8988",
+                      "surface-dim": "#d8dad9",
+                      "on-primary": "#ffffff",
+                      "surface-variant": "#e1e3e1",
+                      "primary-fixed": "#d0e9d4",
+                      "secondary-fixed": "#ffdad8",
+                      "on-background": "#191c1b",
+                      "cream": "#FFF9E5"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "section-gap": "40px",
+                      "gutter": "16px",
+                      "container-margin": "24px",
+                      "unit": "8px",
+                      "card-padding": "20px"
+              },
+              "fontFamily": {
+                      "body-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "label-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-lg-mobile": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "display-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "label-sm": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "headline-md": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "body-lg": [
+                              "Hanken Grotesk"
+                      ]
+              },
+              "fontSize": {
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "28px",
+                              {
+                                      "lineHeight": "36px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        .animate-float-delayed {
+            animation: float 6s ease-in-out 3s infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .connection-line {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: drawLine 2s ease-out forwards;
+        }
+        @keyframes drawLine {
+            to { stroke-dashoffset: 0; }
+        }
+        .pulse-glow {
+            animation: pulseGlow 2s ease-in-out infinite alternate;
+        }
+        @keyframes pulseGlow {
+            from { box-shadow: 0 0 10px rgba(209, 102, 102, 0.2); }
+            to { box-shadow: 0 0 25px rgba(209, 102, 102, 0.6); }
+        }
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-300 { animation-delay: 0.3s; }
+        .delay-500 { animation-delay: 0.5s; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface h-screen w-screen overflow-hidden flex flex-col justify-center items-center relative font-body-md text-body-md">
+<!-- Abstract Background Elements -->
+<div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+<div class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-cream opacity-50 blur-[100px] animate-float"></div>
+<div class="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] rounded-full bg-pale-blue opacity-30 blur-[120px] animate-float-delayed"></div>
+</div>
+<!-- Main Content Container -->
+<main class="z-10 flex flex-col items-center max-w-4xl w-full px-container-margin relative">
+<!-- Typography Group -->
+<div class="text-center mb-12 fade-in-up">
+<h1 class="font-display-lg text-display-lg md:text-[64px] text-primary mb-4">A Resonance Formed</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-lg mx-auto">
+                Mia echoed back. Your collections found something in common.
+            </p>
+</div>
+<!-- Avatars & Connection -->
+<div class="relative flex items-center justify-center w-full max-w-2xl mb-16 h-48 fade-in-up delay-300">
+<!-- SVG Connection Line -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" preserveaspectratio="none" viewbox="0 0 100 100">
+<path class="connection-line" d="M 25 50 Q 50 20 75 50" fill="none" stroke="#D16666" stroke-width="2"></path>
+<path class="connection-line" d="M 25 50 Q 50 80 75 50" fill="none" stroke="#D16666" stroke-opacity="0.3" stroke-width="2" style="animation-delay: 0.5s;"></path>
+</svg>
+<!-- User Avatar (Minty Otter Placeholder) -->
+<div class="absolute left-[15%] md:left-[20%] animate-float">
+<div class="w-32 h-32 md:w-40 md:h-40 rounded-full bg-surface-container-lowest border border-sage-border/50 shadow-sm p-2 pulse-glow flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover rounded-full" data-alt="A premium 3D render of a soft, mint-green otter companion toy. The digital collectible is styled with rounded, organic shapes and a matte, tactile finish, evoking high-quality designer vinyl toys. The lighting is soft and warm, casting gentle ambient shadows on a light background, fitting a calm-tech minimalist aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBboAwGQdLnffEi-BOm9BNu8RlDupNSwO4wAIlNat6QtmGrnjYBsXEcaUBYWGV5oRcE4IJR7BgoGRI_A7MqfBVvct6UCR8Q5lj7YO4rhP8M4D57-67qRBKJit0lcREFh5rmyZ3wGcwTSIApgkRNGcKfi8bF0Wke1vn88F6a8GGVB47UWYkUH-UUdsBkZ0au1SeMgIwJC7Elm9iJ-H6Tm4RKy9WH3C1FywgVijiBspXenXuKR9gp3Z0TTg"/>
+</div>
+</div>
+<!-- Resonance Icon Center -->
+<div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
+<div class="w-16 h-16 rounded-full bg-blush flex items-center justify-center shadow-[0_0_20px_rgba(209,102,102,0.3)]">
+<span class="material-symbols-outlined text-secondary" style="font-size: 32px; font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+</div>
+<!-- Connected Avatar (Blue Panda Placeholder) -->
+<div class="absolute right-[15%] md:right-[20%] animate-float-delayed">
+<div class="w-32 h-32 md:w-40 md:h-40 rounded-full bg-surface-container-lowest border border-sage-border/50 shadow-sm p-2 pulse-glow flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover rounded-full" data-alt="A premium 3D render of a soft, pale-blue panda companion toy. The digital collectible is styled with rounded, organic shapes and a smooth, slightly frosted tactile finish, resembling a high-end designer art toy. Soft, warm directional lighting highlights its gentle curves against a minimalist ivory background, enhancing its premium feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXsrpqYFud6CG8B9kaybgVCKPpVsGFyqK_AqXI7eSnEds3cTee6C3emWkCRX--xqJhT3ymKkstwpk0XESHLYr4i2rVzNzLU677cNL41s40wneeEnipPKdRWXnFwj9yXow67Bbkq5P3KGYovHZBH9eiQaFFT8gPsaJarnPakFfL3bMsuCH9feRDZf2t6cMnidLPfEHGHmpfLYNMi54YM7DDS8Xb4G2xnWWKDohsMVMg4AaioC4cfBUKyQ"/>
+</div>
+</div>
+</div>
+<!-- CTA Action -->
+<div class="fade-in-up delay-500">
+<button class="bg-[#D16666] hover:bg-[#b85a5a] text-white font-label-md text-label-md px-8 py-4 rounded-full min-h-[48px] shadow-sm hover:shadow-md transition-all duration-300 transform hover:scale-105 flex items-center gap-2">
+<span>Enter Shared Space</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+</main>
+</body></html>
