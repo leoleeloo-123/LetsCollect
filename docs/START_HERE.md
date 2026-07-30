@@ -14,7 +14,7 @@ Let's Collect 是一个围绕数字 Companion 展开的、手机优先的治愈�
 
 `main` 已包含第一版 Collect / Collection / Echo 前端和独立 Agent Console。
 
-截至 2026-07-29，Collect 第一页使用“按系列选择、在当前页揭晓”的第四轮：
+截至 2026-07-30，Collect 第一页使用“按系列选择、在当前页揭晓”的第四轮：
 首页是一张可切 9 色、包含 24 个正式柔雾模型的「色彩系列」卡，以及按角色、
 状态与兴趣组成的 13 张特殊系列卡。所有特殊系列统一为 6 张券；每张系列卡
 只使用一个受控 WebGL 舞台，让卡内模型同步原地旋转。色彩系列固定为 4 列 ×
@@ -22,9 +22,12 @@ Let's Collect 是一个围绕数字 Companion 展开的、手机优先的治愈�
 新小鸟只改变皇冠颜色，企鹅只改变耳罩顶部与杯子；
 两只水晶资产继续归档。首次注册依次收集昵称、伙伴、颜色和质感偏好。
 完整决定与回滚见 `docs/COLLECT_SERIES_V2.md`。
-全模型检查页已在本地开发入口 `/appearance-lab/` 建立 24 × 9 柔雾视觉
-基线。它使用独立 HTML，不进入正式首页或默认生产构建；下一阶段的渲染入口
-收敛、金银与珠光闪粉计划见
+全模型检查页已在本地开发入口 `/appearance-lab/` 建立柔雾树脂与金属两类
+表面材质：柔雾支持 24 × 9 常规配色，金属支持金、银、玫瑰金各 24 个样本。
+Lab 另有初冬、暖春、淡绿与淡紫四组独立舞台背景，共 1,152 种组合；动态雪花
+与落叶只在单个实时检查器播放，缩略图只继承静态底色。详情、系列舞台和缩略图
+现共用同一外观准备层，金属只影响各模型已有的帽子、包、气球等改色区域。
+Lab 使用独立 HTML，不进入正式首页或默认生产构建；珠光闪粉与静态预渲染见
 `docs/RENDERING_SURFACE_UPGRADE_PLAN.md`。
 
 改造前的 React MVP 已完整归档到：
@@ -182,7 +185,7 @@ Observe
 - 生产 Campaign 应用、发布与测量；
 - 自由文本 Chat、私信、关注 / 粉丝与实时多人；
 - 已注册三只睡姿伙伴之外的更多 Sleepy / Quirky / Cool 模型；
-- 新的 fuzzy / metallic / porcelain 材质；
+- 新的 metallic / porcelain 材质；
 - pending draw-result transaction；
 - Collection metadata / acquisition date 筛选与 Representative 排序；
 - lint 与自动化 test 工具链；

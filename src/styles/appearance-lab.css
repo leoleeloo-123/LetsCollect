@@ -97,7 +97,7 @@
   top: 0;
   z-index: 20;
   display: grid;
-  grid-template-columns: 190px 190px minmax(0, 1fr);
+  grid-template-columns: 180px 180px 280px minmax(0, 1fr);
   gap: 16px;
   padding-block: 12px;
   border-bottom: 1px solid #d3dfda;

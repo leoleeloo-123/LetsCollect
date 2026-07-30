@@ -1,5 +1,21 @@
 # Changelog
 
+## 2026-07-30
+
+- Retired the localized plush prototype after review: approved recolor targets
+  span food, clothing, and accessories, so neither plush nor Jelly Jade is
+  retained as a universal surface.
+- Kept matte resin and metal as the two active Lab surface families; metal
+  continues to expose gold, silver, and rose gold.
+- Added four independent stage backgrounds to Appearance Lab: animated
+  `初冬` (pale blue with snow), animated `暖春` (pale green with leaves),
+  and static pale green and pale lavender.
+- Limited animated particles to the single live 3D inspector. The twenty-four
+  thumbnails inherit the selected static base color without creating extra
+  animation or WebGL work.
+- Updated the Lab summary to 1,152 surface, color, model, and background
+  combinations.
+
 ## 2026-07-29
 
 - Moved all six Jelly Jade runtime groups and both Diamond runtime groups out of
@@ -38,6 +54,13 @@
   enters the thumbnail queue before the optional full-color matrix.
 - Removed the duplicate multi-canvas Asset Lab and excluded Appearance Lab
   routes, chunks, and styles from the production SPA build.
+- Centralized collectible-specific model preparation across `ToyViewer`,
+  `SeriesToyViewer`, and `ThumbnailRenderer`.
+- Added an optional surface-style layer with a matte-compatible default and a
+  localized gold, silver, and rose-gold treatments for all twenty-four active models.
+- Expanded Appearance Lab with matte and three-metal controls, surface-aware
+  cache identities, and a 288-combination summary without adding the Lab to
+  the production SPA bundle.
 
 ## 2026-07-28
 

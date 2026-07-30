@@ -4,6 +4,7 @@
 
 # Screenshot / verification artifacts
 *.png
+!docs/Stitch/**/*.png
 screenshot.py
 
 # Compression scripts and temp files

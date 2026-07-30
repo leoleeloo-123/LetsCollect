@@ -35,7 +35,21 @@ export type ToyPaletteId =
   | "grape"
   | "coral"
   | "lime"
-  | "sky";export type ToyMaterialId = "plastic" | "glass" | "wood" | "iron" | "copper" | "silver" | "gold" | "crystal";
+  | "sky";
+export type ToySurfaceStyleId =
+  | "matte"
+  | "metal-gold"
+  | "metal-silver"
+  | "metal-rose-gold";
+export type ToyMaterialId =
+  | "plastic"
+  | "glass"
+  | "wood"
+  | "iron"
+  | "copper"
+  | "silver"
+  | "gold"
+  | "crystal";
 
 export type ToyModelDefinition = {
   id: ToyModelId;
@@ -168,6 +182,7 @@ export type Collectible = {
   generationVersion: number;
   appearance: AppearanceVector;
   appearanceSignature: string;
+  surfaceStyleId?: ToySurfaceStyleId;
   shortDescription: string;
   createdAt: string;
 };

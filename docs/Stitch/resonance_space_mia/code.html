@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Resonance Space</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-fixed": "#101f17",
+                      "error": "#ba1a1a",
+                      "primary": "#061b0e",
+                      "sage-border": "#C5D3C9",
+                      "secondary": "#9e3f41",
+                      "pale-blue": "#D9EAF2",
+                      "surface": "#f8faf8",
+                      "error-container": "#ffdad6",
+                      "tertiary-fixed": "#d5e7da",
+                      "on-error": "#ffffff",
+                      "on-secondary-fixed": "#410007",
+                      "on-tertiary-fixed-variant": "#3b4a41",
+                      "inverse-on-surface": "#eff1ef",
+                      "background": "#f8faf8",
+                      "on-primary-container": "#819986",
+                      "on-error-container": "#93000a",
+                      "primary-container": "#1b3022",
+                      "surface-container-highest": "#e1e3e1",
+                      "outline": "#737973",
+                      "secondary-fixed-dim": "#ffb3b1",
+                      "on-secondary": "#ffffff",
+                      "on-tertiary-container": "#86978c",
+                      "outline-variant": "#c3c8c1",
+                      "surface-container-low": "#f2f4f2",
+                      "primary-fixed-dim": "#b4cdb8",
+                      "tertiary-fixed-dim": "#b9cbbe",
+                      "tertiary": "#0b1a13",
+                      "inverse-primary": "#b4cdb8",
+                      "surface-container-high": "#e6e9e7",
+                      "on-surface": "#191c1b",
+                      "surface-container": "#eceeec",
+                      "inverse-surface": "#2e3130",
+                      "surface-container-lowest": "#ffffff",
+                      "on-secondary-fixed-variant": "#7f282b",
+                      "on-primary-fixed": "#0b2013",
+                      "on-surface-variant": "#434843",
+                      "blush": "#FCE4EC",
+                      "surface-bright": "#f8faf8",
+                      "on-secondary-container": "#752125",
+                      "tertiary-container": "#202f26",
+                      "on-primary-fixed-variant": "#364c3c",
+                      "on-tertiary": "#ffffff",
+                      "surface-tint": "#4d6453",
+                      "secondary-container": "#fe8988",
+                      "surface-dim": "#d8dad9",
+                      "on-primary": "#ffffff",
+                      "surface-variant": "#e1e3e1",
+                      "primary-fixed": "#d0e9d4",
+                      "secondary-fixed": "#ffdad8",
+                      "on-background": "#191c1b",
+                      "cream": "#FFF9E5"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "section-gap": "40px",
+                      "gutter": "16px",
+                      "container-margin": "24px",
+                      "unit": "8px",
+                      "card-padding": "20px"
+              },
+              "fontFamily": {
+                      "body-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "label-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-lg-mobile": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "display-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "label-sm": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "headline-md": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "body-lg": [
+                              "Hanken Grotesk"
+                      ]
+              },
+              "fontSize": {
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "28px",
+                              {
+                                      "lineHeight": "36px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        .shadow-ambient {
+            box-shadow: 0 4px 20px rgba(27, 48, 34, 0.08);
+        }
+        .trail-line {
+            background: linear-gradient(to right, rgba(197, 211, 201, 0) 0%, rgba(197, 211, 201, 1) 50%, rgba(197, 211, 201, 0) 100%);
+            height: 2px;
+            width: 100%;
+            position: absolute;
+            top: 50%;
+            z-index: 0;
+            opacity: 0.6;
+        }
+      </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen pb-24 md:pb-0">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface border-b border-sage-border/50 sticky top-0 z-40 w-full">
+<div class="flex justify-between items-center w-full px-container-margin py-unit mx-auto max-w-[1200px]">
+<button class="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-primary" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-on-surface">You &amp; Mia</h1>
+<button class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-primary" data-icon="settings">settings</span>
+</button>
+</div>
+</header>
+<main class="px-container-margin max-w-[1200px] mx-auto pt-8 flex flex-col gap-section-gap">
+<!-- Header Companions Section -->
+<section class="flex flex-col items-center">
+<div class="relative w-full max-w-sm flex items-center justify-between mx-auto mb-6">
+<div class="trail-line"></div>
+<div class="relative z-10 w-24 h-24 rounded-full border-4 border-surface shadow-ambient overflow-hidden bg-cream">
+<img alt="Your Companion" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmNQ_-V49LGTNnBssZcNCz-ZpRafg2Ai7AIB-VJaY4B2fKu6oimonf7EDQUD6XBGk4h3FCyKTNTconpIlWn8uI6PakG8OEkNQU9wcshVawo-a36PqvV9hUo_qpCBzGLgiKwYnrSvkglsVWBJTdascFX8WR5AYYdn4tM2RADvBv-PHbON4DrhGegD2CHafjyhMUJ4sYSgvC1NRG0gY4frA5ekFHAWxqVtdYshTz1muDpqzQhxah_gwARG8leHhLnS8uH2g"/>
+</div>
+<div class="relative z-10 bg-surface rounded-full px-4 py-1 shadow-sm border border-sage-border/50 flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="favorite" data-weight="fill" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+<div class="relative z-10 w-24 h-24 rounded-full border-4 border-surface shadow-ambient overflow-hidden bg-cream">
+<img alt="Mia's Companion" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmDlIeUKVRxx6ZbGlcxY553YY_I_IHm-uYIaeryZZFgMZ1mlPbBbn2Jz7lrqdxQYIZszNmMW3agMgBGpNDeMzZw5-8eOeU4WWOwOJxq5AOzRgiRGaXeLBeeWVyO24XVybTb6UzOY2jXusvFqWnwF-v5ic7wstrZ4DDrzGauNdQvSYgtpEfTS5VMgkYF0O9FDTWqwvKwKPhpy4F3k4oClwLZueMAikgl5Cjdgzz4qI0Eh1uaWNyrFLbeZmPeJTYwerv_f0"/>
+</div>
+</div>
+<div class="text-center">
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-1">Resonance Space</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">2 Echoes · 1 mission completed</p>
+</div>
+</section>
+<!-- Why you resonated -->
+<section class="bg-surface-container-lowest rounded-[24px] p-card-padding border border-sage-border/50 shadow-ambient">
+<h3 class="font-label-md text-label-md text-on-surface mb-4 uppercase tracking-wider text-primary-container">Why you resonated</h3>
+<div class="flex flex-wrap gap-2">
+<span class="px-4 py-2 bg-pale-blue/50 rounded-full font-label-sm text-label-sm text-tertiary-container flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="palette">palette</span>
+                    Soft color palettes
+                </span>
+<span class="px-4 py-2 bg-blush/50 rounded-full font-label-sm text-label-sm text-secondary-container flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="pets">pets</span>
+                    Comforting companions
+                </span>
+</div>
+</section>
+<!-- Main Card: Cabinet Exchange -->
+<section class="bg-surface-container-lowest rounded-[24px] p-card-padding border border-sage-border/50 shadow-ambient">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-headline-md text-headline-md text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="swap_horiz">swap_horiz</span>
+                    Cabinet Exchange
+                </h3>
+<span class="px-3 py-1 bg-surface-container-low rounded-full font-label-sm text-label-sm text-on-surface-variant border border-sage-border/30">Active Mission</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Each collector chooses one favorite toy from the other person’s Cabinet.</p>
+<div class="space-y-4 mb-6">
+<!-- You Progress -->
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-container text-sm" data-icon="check">check</span>
+</div>
+<div class="flex-1">
+<p class="font-label-md text-label-md text-primary">You chose Blue Panda</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Complete</p>
+</div>
+</div>
+<!-- Mia Progress -->
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center border border-sage-border border-dashed">
+<span class="material-symbols-outlined text-on-surface-variant text-sm" data-icon="more_horiz">more_horiz</span>
+</div>
+<div class="flex-1">
+<p class="font-label-md text-label-md text-on-surface-variant">Mia choosing...</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Incomplete</p>
+</div>
+</div>
+</div>
+<div class="bg-cream rounded-xl p-4 flex items-center justify-between border border-sage-border/30">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="local_activity">local_activity</span>
+<span class="font-label-md text-label-md text-primary">Reward: 6 special tickets</span>
+</div>
+</div>
+</section>
+<!-- Shared History -->
+<section class="mb-12">
+<h3 class="font-label-md text-label-md text-on-surface mb-6 uppercase tracking-wider text-primary-container pl-2">Shared History</h3>
+<div class="relative pl-6 space-y-8 border-l-2 border-sage-border/30 ml-2">
+<!-- Timeline Item 1 -->
+<div class="relative">
+<div class="absolute -left-[31px] top-1 w-6 h-6 rounded-full bg-surface border-2 border-sage-border flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[12px] text-primary" data-icon="waving_hand">waving_hand</span>
+</div>
+<div class="bg-surface-container-lowest rounded-xl p-4 shadow-sm border border-sage-border/30">
+<p class="font-label-md text-label-md text-primary">Echo sent</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">You sent a gentle wave to Mia</p>
+</div>
+</div>
+<!-- Timeline Item 2 -->
+<div class="relative">
+<div class="absolute -left-[31px] top-1 w-6 h-6 rounded-full bg-secondary border-2 border-surface flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[12px] text-on-secondary" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div class="bg-surface-container-lowest rounded-xl p-4 shadow-sm border border-sage-border/30">
+<p class="font-label-md text-label-md text-primary">Resonance created</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Mia responded to your Echo</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pt-2 pb-safe bg-surface/90 dark:bg-surface-dim/90 border-t border-sage-border/30 backdrop-blur-md shadow-sm md:hidden">
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-5 py-1.5 hover:text-primary transition-colors">
+<span class="material-symbols-outlined mb-1" data-icon="grid_view">grid_view</span>
+<span class="font-label-sm text-label-sm">Collect</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-5 py-1.5 hover:text-primary transition-colors">
+<span class="material-symbols-outlined mb-1" data-icon="shelves">shelves</span>
+<span class="font-label-sm text-label-sm">Cabinet</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-secondary-container dark:bg-secondary-fixed text-on-secondary-container dark:text-on-secondary-fixed rounded-full px-5 py-1.5 transition-all scale-[0.95]">
+<span class="material-symbols-outlined mb-1" data-icon="waves" data-weight="fill" style="font-variation-settings: 'FILL' 1;">waves</span>
+<span class="font-label-sm text-label-sm">Echo</span>
+</button>
+</nav>
+</body></html>

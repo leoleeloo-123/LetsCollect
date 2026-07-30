@@ -4,46 +4,11 @@ import { ToyThumbnail } from "../../components/toys/ToyThumbnail";
 import { getToyModel, getToyPalette } from "../../features/toys/catalog";
 import type { Collectible } from "../../types/toy";
 import {
-  createToyMaterial,
-  getCollectibleRenderTraits
-} from "../material/createToyMaterial";
-import {
-  cloneColorBunnyMaterials,
-  prepareColorBunnyProtectTexture
-} from "../material/createColorBunnyMaterials";
-import { cloneColorCatYarnMaterials } from "../material/createColorCatYarnMaterials";
-import {
-  cloneColorPandaMaterials,
-  prepareColorPandaProtectTexture
-} from "../material/createColorPandaMaterials";
-import { cloneColorOtterMaterials } from "../material/createColorOtterMaterials";
-import {
-  cloneColorBearSingerMaterials,
-  prepareColorBearSingerMaskTexture
-} from "../material/createColorBearSingerMaterials";
-import {
-  cloneColorDogCameraMaterials,
-  prepareColorDogCameraMaskTexture
-} from "../material/createColorDogCameraMaterials";
-import { cloneColorDogDrumMaterials } from "../material/createColorDogDrumMaterials";
-import {
-  cloneColorSealMaterials,
-  prepareColorSealMaskTexture,
-  prepareColorSealObjectMaskTexture
-} from "../material/createColorSealMaterials";
-import {
-  cloneColorKarpyMaterials,
-  prepareColorKarpyMaskTexture
-} from "../material/createColorKarpyMaterials";
-import {
-  cloneColorKoalaMaterials,
-  prepareColorKoalaMaskTexture
-} from "../material/createColorKoalaMaterials";
-import {
-  isColorAccessoryRendering,
-  prepareColorAccessoryModel
-} from "../material/prepareColorAccessoryModel";
-import { loadRoomEnvironment, loadToyModel, loadToyViewerRuntime } from "./runtime";
+  prepareToyAppearance,
+  type PreparedToyAppearance
+} from "../appearance/prepareToyAppearance";
+import { getCollectibleRenderTraits } from "../material/createToyMaterial";
+import { loadRoomEnvironment, loadToyViewerRuntime } from "./runtime";
 
 export type ToyRotationController = {
   getRotation: () => number;
@@ -176,150 +141,9 @@ export function ToyViewer({
       toyGroup.position.y = 0.08 + modelDefinition.viewer.yOffset;
       scene.add(toyGroup);
 
-      // Model-specific materials preserve authored details and recolor only approved zones.
-      const colorBunnyBag = modelDefinition.rendering?.mode === "color-bunny-bag"
-        ? modelDefinition.rendering
-        : null;
-      const colorCatYarn = modelDefinition.rendering?.mode === "color-cat-yarn"
-        ? modelDefinition.rendering
-        : null;
-      const colorPandaHat = modelDefinition.rendering?.mode === "color-panda-hat"
-        ? modelDefinition.rendering
-        : null;
-      const colorOtterLollipop = modelDefinition.rendering?.mode === "color-otter-lollipop"
-        ? modelDefinition.rendering
-        : null;
-      const colorBearSingerAfro = modelDefinition.rendering?.mode === "color-bear-singer-afro"
-        ? modelDefinition.rendering
-        : null;
-      const colorDogCameraAccessories = modelDefinition.rendering?.mode === "color-dog-camera-accessories"
-        ? modelDefinition.rendering
-        : null;
-      const colorDogDrum = modelDefinition.rendering?.mode === "color-dog-drum"
-        ? modelDefinition.rendering
-        : null;
-      const colorSealStarfish = modelDefinition.rendering?.mode === "color-seal-starfish"
-        ? modelDefinition.rendering
-        : null;
-      const colorKarpyHat = modelDefinition.rendering?.mode === "color-karpy-hat"
-        ? modelDefinition.rendering
-        : null;
-      const colorKoalaHat = modelDefinition.rendering?.mode === "color-koala-hat"
-        ? modelDefinition.rendering
-        : null;
-      const colorAccessoryRendering = isColorAccessoryRendering(
-        modelDefinition.rendering
-      )
-        ? modelDefinition.rendering
-        : null;
-      const standardMaterialResult = colorBunnyBag
-        || colorCatYarn
-        || colorPandaHat
-        || colorOtterLollipop
-        || colorBearSingerAfro
-        || colorDogCameraAccessories
-        || colorDogDrum
-        || colorSealStarfish
-        || colorKarpyHat
-        || colorKoalaHat
-        || colorAccessoryRendering
-        ? null
-        : createToyMaterial(THREE, toy, { lightweight: useLightweightStage });
-      const toyMaterial = standardMaterialResult?.material ?? null;
-      const glowColor = standardMaterialResult?.glowColor ?? new THREE.Color(palette.glow);
-      const colorBunnyProtectMap = colorBunnyBag
-        ? prepareColorBunnyProtectTexture(
-            THREE,
-            await new THREE.TextureLoader().loadAsync(colorBunnyBag.protectMaskUrl)
-          )
-        : null;
-      const colorPandaProtectMap = colorPandaHat
-        ? prepareColorPandaProtectTexture(
-            THREE,
-            await new THREE.TextureLoader().loadAsync(colorPandaHat.protectMaskUrl)
-          )
-        : null;
-      const colorBearSingerMask = colorBearSingerAfro
-        ? await new THREE.TextureLoader().loadAsync(colorBearSingerAfro.maskUrl)
-        : null;
-      if (colorBearSingerMask) {
-        prepareColorBearSingerMaskTexture(THREE, colorBearSingerMask);
-      }
-      const colorDogCameraMask = colorDogCameraAccessories
-        ? await new THREE.TextureLoader().loadAsync(colorDogCameraAccessories.maskUrl)
-        : null;
-      if (colorDogCameraMask) {
-        prepareColorDogCameraMaskTexture(THREE, colorDogCameraMask);
-      }
-      const colorSealMasks = colorSealStarfish
-        ? await Promise.all([
-            new THREE.TextureLoader().loadAsync(colorSealStarfish.maskUrl),
-            new THREE.TextureLoader().loadAsync(colorSealStarfish.objectMaskUrl)
-          ])
-        : null;
-      const colorSealMask = colorSealMasks?.[0] ?? null;
-      const colorSealObjectMask = colorSealMasks?.[1] ?? null;
-      if (colorSealMask && colorSealObjectMask) {
-        prepareColorSealMaskTexture(THREE, colorSealMask);
-        prepareColorSealObjectMaskTexture(THREE, colorSealObjectMask);
-      }
-      const colorKarpyMask = colorKarpyHat
-        ? await new THREE.TextureLoader().loadAsync(colorKarpyHat.maskUrl)
-        : null;
-      if (colorKarpyMask) {
-        prepareColorKarpyMaskTexture(THREE, colorKarpyMask);
-      }
-      const colorKoalaMask = colorKoalaHat
-        ? await new THREE.TextureLoader().loadAsync(colorKoalaHat.maskUrl)
-        : null;
-      if (colorKoalaMask) {
-        prepareColorKoalaMaskTexture(THREE, colorKoalaMask);
-      }
-      let colorBunnyMaterials: import("three").Material[] = [];
-      let colorCatMaterials: import("three").Material[] = [];
-      let colorPandaMaterials: import("three").Material[] = [];
-      let colorOtterMaterials: import("three").Material[] = [];
-      let colorBearSingerMaterials: import("three").Material[] = [];
-      let colorDogCameraMaterials: import("three").Material[] = [];
-      let colorDogDrumMaterials: import("three").Material[] = [];
-      let colorSealMaterials: import("three").Material[] = [];
-      let colorKarpyMaterials: import("three").Material[] = [];
-      let colorKoalaMaterials: import("three").Material[] = [];
-      let colorAccessoryMaterials: import("three").Material[] = [];
-      let colorAccessoryTextures: import("three").Texture[] = [];
-      const tileTextureCopies: import("three").Texture[] = [];
-      const tileTextureCache = new Map<import("three").Texture, import("three").Texture>();
-      function applyTileMaterialProfile(materials: import("three").Material[]) {
-        if (!isTile) return;
-        materials.forEach((material) => {
-          if (!(material instanceof THREE.MeshStandardMaterial)) return;
-          material.normalMap = null;
-          material.roughness = 1;
-          material.envMapIntensity = Math.min(material.envMapIntensity, 0.05);
-          if (!material.map) {
-            material.needsUpdate = true;
-            return;
-          }
-          let tileMap = tileTextureCache.get(material.map);
-          if (!tileMap) {
-            tileMap = material.map.clone();
-            // The mobile atlases have black gutters with very little UV padding.
-            // Mipmaps blend those gutters into the islands at thumbnail sizes,
-            // which reads as dark seams across the toy. Linear sampling keeps
-            // the homepage tiles clean without changing larger viewer variants.
-            tileMap.generateMipmaps = false;
-            tileMap.minFilter = THREE.LinearFilter;
-            tileMap.magFilter = THREE.LinearFilter;
-            tileMap.anisotropy = 1;
-            tileMap.needsUpdate = true;
-            tileTextureCache.set(material.map, tileMap);
-            tileTextureCopies.push(tileMap);
-          }
-          material.map = tileMap;
-          material.needsUpdate = true;
-        });
-      }
-
+      const glowColor = new THREE.Color(palette.glow);
+      let preparedAppearance: PreparedToyAppearance | null = null;
+      let primaryMaterial: import("three").MeshPhysicalMaterial | null = null;
       scene.add(new THREE.HemisphereLight(0xffffff, palette.attenuation, (1.9 + hydration * 0.4) * materialLightScale));
 
       const keyLight = new THREE.DirectionalLight(0xffffff, (2.6 + luster * 0.9) * materialLightScale);
@@ -388,38 +212,10 @@ export function ToyViewer({
       const clock = new THREE.Clock();
       let staticResourcesDisposed = false;
 
-      function disposeObject(root: import("three").Object3D) {
-        root.traverse((child) => {
-          if (!(child instanceof THREE.Mesh)) return;
-          child.geometry.dispose();
-        });
-      }
-
       function disposeStaticResources() {
         if (staticResourcesDisposed) return;
         staticResourcesDisposed = true;
-        toyMaterial?.dispose();
-        colorBunnyMaterials.forEach((material) => material.dispose());
-        colorCatMaterials.forEach((material) => material.dispose());
-        colorPandaMaterials.forEach((material) => material.dispose());
-        colorOtterMaterials.forEach((material) => material.dispose());
-        colorBearSingerMaterials.forEach((material) => material.dispose());
-        colorDogCameraMaterials.forEach((material) => material.dispose());
-        colorDogDrumMaterials.forEach((material) => material.dispose());
-        colorSealMaterials.forEach((material) => material.dispose());
-        colorKarpyMaterials.forEach((material) => material.dispose());
-        colorKoalaMaterials.forEach((material) => material.dispose());
-        colorAccessoryMaterials.forEach((material) => material.dispose());
-        colorAccessoryTextures.forEach((texture) => texture.dispose());
-        tileTextureCopies.forEach((texture) => texture.dispose());
-        colorBunnyProtectMap?.dispose();
-        colorPandaProtectMap?.dispose();
-        colorBearSingerMask?.dispose();
-        colorDogCameraMask?.dispose();
-        colorSealMask?.dispose();
-        colorSealObjectMask?.dispose();
-        colorKarpyMask?.dispose();
-        colorKoalaMask?.dispose();
+        preparedAppearance?.dispose();
         environmentTexture?.dispose();
         pedestal.geometry.dispose();
         (pedestal.material as import("three").Material).dispose();
@@ -433,135 +229,40 @@ export function ToyViewer({
 
       disposeViewer = disposeStaticResources;
 
-      const gltf = await loadToyModel(resolvedModelUrl, (loaded, total) => {
-        if (!cancelled && total > 0) {
-          setProgress(Math.min(100, Math.round((loaded / total) * 100)));
+      preparedAppearance = await prepareToyAppearance(
+        THREE,
+        renderer,
+        toy,
+        {
+          profile: isTile
+            ? "tile"
+            : useLightweightStage
+              ? "compact"
+              : "detail",
+          modelUrl: resolvedModelUrl,
+          onProgress(loaded, total) {
+            if (!cancelled && total > 0) {
+              setProgress(Math.min(100, Math.round((loaded / total) * 100)));
+            }
+          }
         }
-      });
+      );
       recordTiming("model-ready");
 
       if (cancelled) {
-        disposeObject(gltf.scene);
         disposeStaticResources();
         return;
       }
 
-      const model = gltf.scene;
-      model.rotation.y = modelDefinition.viewer.rotationY;
-      if (colorAccessoryRendering) {
-        const preparedAccessory = await prepareColorAccessoryModel(
-          THREE,
-          renderer,
-          model,
-          colorAccessoryRendering,
-          palette.color
-        );
-        colorAccessoryMaterials = preparedAccessory.materials;
-        colorAccessoryTextures = preparedAccessory.textures;
-      } else if (colorBunnyBag && colorBunnyProtectMap) {
-        colorBunnyMaterials = cloneColorBunnyMaterials(
-          THREE,
-          model,
-          new THREE.Color(palette.color).multiplyScalar(colorBunnyBag.bagColorScale),
-          colorBunnyProtectMap,
-          renderer.capabilities.getMaxAnisotropy()
-        );
-      } else if (colorCatYarn) {
-        colorCatMaterials = cloneColorCatYarnMaterials(
-          THREE,
-          model,
-          new THREE.Color(palette.color).multiplyScalar(colorCatYarn.yarnColorScale),
-          colorCatYarn.materialName,
-          renderer.capabilities.getMaxAnisotropy()
-        );
-      } else if (colorPandaHat && colorPandaProtectMap) {
-        colorPandaMaterials = cloneColorPandaMaterials(
-          THREE,
-          model,
-          new THREE.Color(palette.color).multiplyScalar(colorPandaHat.hatColorScale),
-          colorPandaProtectMap,
-          renderer.capabilities.getMaxAnisotropy()
-        );
-      } else if (colorOtterLollipop) {
-        colorOtterMaterials = cloneColorOtterMaterials(
-          THREE,
-          model,
-          new THREE.Color(palette.color).multiplyScalar(colorOtterLollipop.lollipopColorScale),
-          colorOtterLollipop.materialName,
-          renderer.capabilities.getMaxAnisotropy()
-        );
-      } else if (colorBearSingerAfro && colorBearSingerMask) {
-        colorBearSingerMaterials = cloneColorBearSingerMaterials(
-          THREE,
-          model,
-          new THREE.Color(palette.color).multiplyScalar(colorBearSingerAfro.colorScale),
-          colorBearSingerMask,
-          renderer.capabilities.getMaxAnisotropy()
-        );
-      } else if (colorDogCameraAccessories && colorDogCameraMask) {
-        colorDogCameraMaterials = cloneColorDogCameraMaterials(
-          THREE,
-          model,
-          new THREE.Color(palette.color).multiplyScalar(colorDogCameraAccessories.colorScale),
-          colorDogCameraMask,
-          renderer.capabilities.getMaxAnisotropy()
-        );
-      } else if (colorDogDrum) {
-        colorDogDrumMaterials = cloneColorDogDrumMaterials(
-          THREE,
-          model,
-          new THREE.Color(palette.color).multiplyScalar(colorDogDrum.drumColorScale),
-          renderer.capabilities.getMaxAnisotropy()
-        );
-      } else if (colorSealStarfish && colorSealMask && colorSealObjectMask) {
-        colorSealMaterials = cloneColorSealMaterials(
-          THREE,
-          model,
-          new THREE.Color(palette.color).multiplyScalar(colorSealStarfish.colorScale),
-          colorSealMask,
-          colorSealObjectMask,
-          renderer.capabilities.getMaxAnisotropy()
-        );
-      } else if (colorKarpyHat && colorKarpyMask) {
-        colorKarpyMaterials = cloneColorKarpyMaterials(
-          THREE,
-          model,
-          new THREE.Color(palette.color).multiplyScalar(colorKarpyHat.colorScale),
-          colorKarpyMask,
-          renderer.capabilities.getMaxAnisotropy()
-        );
-      } else if (colorKoalaHat && colorKoalaMask) {
-        colorKoalaMaterials = cloneColorKoalaMaterials(
-          THREE,
-          model,
-          new THREE.Color(palette.color).multiplyScalar(colorKoalaHat.hatColorScale),
-          colorKoalaMask,
-          renderer.capabilities.getMaxAnisotropy()
-        );
-      } else {
-        model.traverse((child) => {
-          if (!(child instanceof THREE.Mesh) || !toyMaterial) return;
-          child.material = toyMaterial;
-          child.castShadow = false;
-          child.receiveShadow = false;
-        });
-      }
-
-      applyTileMaterialProfile([
-        ...colorBunnyMaterials,
-        ...colorCatMaterials,
-        ...colorPandaMaterials,
-        ...colorOtterMaterials,
-        ...colorBearSingerMaterials,
-        ...colorDogCameraMaterials,
-        ...colorDogDrumMaterials,
-        ...colorSealMaterials,
-        ...colorKarpyMaterials,
-        ...colorKoalaMaterials,
-        ...colorAccessoryMaterials,
-        ...(toyMaterial ? [toyMaterial] : [])
-      ]);
-
+      const model = preparedAppearance.root;
+      primaryMaterial = preparedAppearance.primaryMaterial;
+      mixer = preparedAppearance.mixer;
+      glowColor.copy(preparedAppearance.glowColor);
+      rimLight.color.copy(glowColor);
+      underGlow.color.copy(glowColor);
+      (glowRing.material as import("three").MeshBasicMaterial).color.copy(
+        glowColor
+      );
       const box = new THREE.Box3().setFromObject(model);
       const center = box.getCenter(new THREE.Vector3());
       const size = box.getSize(new THREE.Vector3());
@@ -570,11 +271,6 @@ export function ToyViewer({
       model.scale.setScalar(scaleFactor);
       model.position.set(-center.x * scaleFactor, -center.y * scaleFactor, -center.z * scaleFactor);
       toyGroup.add(model);
-
-      if (gltf.animations.length > 0) {
-        mixer = new THREE.AnimationMixer(model);
-        gltf.animations.forEach((clip) => mixer?.clipAction(clip).play());
-      }
 
       if (!cancelled) {
         setProgress(100);
@@ -675,8 +371,8 @@ export function ToyViewer({
         toyGroup.rotation.y = currentRotationY;
         glowRing.rotation.z += delta * 0.16;
         underGlow.intensity = baseUnderGlow + Math.abs(Math.sin(currentRotationY)) * (0.22 + glow * 0.62);
-        if (toyMaterial) {
-          toyMaterial.emissiveIntensity = baseEmissive + Math.abs(Math.sin(currentRotationY)) * (0.008 + glow * 0.026);
+        if (primaryMaterial) {
+          primaryMaterial.emissiveIntensity = baseEmissive + Math.abs(Math.sin(currentRotationY)) * (0.008 + glow * 0.026);
         }
         mixer?.update(delta);
         renderer.render(scene, camera);
@@ -716,10 +412,6 @@ export function ToyViewer({
         renderer.domElement.removeEventListener("pointermove", handlePointerMove);
         renderer.domElement.removeEventListener("pointerup", finishDrag);
         renderer.domElement.removeEventListener("pointercancel", finishDrag);
-        mixer?.stopAllAction();
-        model.traverse((child) => {
-          if (child instanceof THREE.Mesh) child.geometry.dispose();
-        });
         disposeStaticResources();
       };
     }
