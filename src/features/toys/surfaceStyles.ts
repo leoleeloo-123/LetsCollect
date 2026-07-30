@@ -1,3 +1,5 @@
+import { localSurfaceRecords } from "../../data/asset-registry/localTables";
+import type { SurfaceRenderValuesRecord } from "../../data/asset-registry/types";
 import type { ToySurfaceStyleId } from "../../types/toy";
 
 export type ToySurfaceRenderProfile =
@@ -5,12 +7,6 @@ export type ToySurfaceRenderProfile =
   | "compact"
   | "tile"
   | "thumbnail";
-
-type ToySurfaceRenderValues = {
-  metalness: number;
-  roughness: number;
-  envMapIntensity: number;
-};
 
 export type ToySurfaceStyleDefinition = {
   id: ToySurfaceStyleId;
@@ -21,79 +17,53 @@ export type ToySurfaceStyleDefinition = {
   colorOverride: string | null;
   glowOverride: string | null;
   swatch: string;
-  render: Record<ToySurfaceRenderProfile, ToySurfaceRenderValues>;
+  render: Record<ToySurfaceRenderProfile, SurfaceRenderValuesRecord>;
 };
 
-export const toySurfaceStyles: readonly ToySurfaceStyleDefinition[] = [
-  {
-    id: "matte",
-    kind: "matte",
-    name: "柔雾树脂",
-    shortName: "柔雾",
-    description: "保留当前柔和、低反射的收藏玩偶基线。",
-    colorOverride: null,
-    glowOverride: null,
-    swatch: "#d7a27f",
-    render: {
-      detail: { metalness: 0, roughness: 1, envMapIntensity: 0.12 },
-      compact: { metalness: 0, roughness: 1, envMapIntensity: 0.12 },
-      tile: { metalness: 0, roughness: 1, envMapIntensity: 0.05 },
-      thumbnail: { metalness: 0, roughness: 1, envMapIntensity: 0.12 }
-    }
-  },
-  {
-    id: "metal-gold",
-    kind: "metal",
-    name: "金属金",
-    shortName: "金属金",
-    description: "仅让原有改色部位呈现金色金属反射，动物主体保持不变。",
-    colorOverride: "#d8a72d",
-    glowOverride: "#f1c65f",
-    swatch: "#d8a72d",
-    render: {
-      detail: { metalness: 0.95, roughness: 0.18, envMapIntensity: 1.15 },
-      compact: { metalness: 0.92, roughness: 0.22, envMapIntensity: 1 },
-      tile: { metalness: 0.78, roughness: 0.34, envMapIntensity: 0.68 },
-      thumbnail: { metalness: 0.86, roughness: 0.28, envMapIntensity: 0.82 }
-    }
-  },
-  {
-    id: "metal-silver",
-    kind: "metal",
-    name: "金属银",
-    shortName: "金属银",
-    description: "仅让原有改色部位呈现冷调银色金属反射，动物主体保持不变。",
-    colorOverride: "#b7c0c8",
-    glowOverride: "#e2eaf0",
-    swatch: "#b7c0c8",
-    render: {
-      detail: { metalness: 0.97, roughness: 0.14, envMapIntensity: 1.2 },
-      compact: { metalness: 0.94, roughness: 0.2, envMapIntensity: 1.05 },
-      tile: { metalness: 0.8, roughness: 0.32, envMapIntensity: 0.72 },
-      thumbnail: { metalness: 0.88, roughness: 0.26, envMapIntensity: 0.88 }
-    }
-  },
-  {
-    id: "metal-rose-gold",
-    kind: "metal",
-    name: "玫瑰金",
-    shortName: "玫瑰金",
-    description: "仅让原有改色部位呈现暖粉色金属反射，动物主体保持不变。",
-    colorOverride: "#c77d70",
-    glowOverride: "#efb1a5",
-    swatch: "#c77d70",
-    render: {
-      detail: { metalness: 0.94, roughness: 0.2, envMapIntensity: 1.12 },
-      compact: { metalness: 0.91, roughness: 0.24, envMapIntensity: 0.98 },
-      tile: { metalness: 0.77, roughness: 0.35, envMapIntensity: 0.66 },
-      thumbnail: { metalness: 0.84, roughness: 0.3, envMapIntensity: 0.8 }
-    }
+const knownSurfaceStyleIds = new Set<ToySurfaceStyleId>([
+  "matte",
+  "metal-gold",
+  "metal-silver",
+  "metal-rose-gold"
+]);
+
+const sortedSurfaceRecords = [...localSurfaceRecords].sort(
+  (left, right) => left.sortOrder - right.sortOrder
+);
+
+for (const surface of sortedSurfaceRecords) {
+  if (!knownSurfaceStyleIds.has(surface.id as ToySurfaceStyleId)) {
+    throw new Error(`Unknown toy surface ID in Registry: ${surface.id}`);
   }
-];
+}
+
+export const toySurfaceStyles: readonly ToySurfaceStyleDefinition[] =
+  sortedSurfaceRecords
+    .filter((surface) => surface.enabled !== false)
+    .map((surface) => ({
+      id: surface.id as ToySurfaceStyleId,
+      kind: surface.kind,
+      name: surface.name,
+      shortName: surface.shortName,
+      description: surface.description,
+      colorOverride: surface.colorOverride,
+      glowOverride: surface.glowOverride,
+      swatch: surface.swatch,
+      render: surface.render
+    }));
+
+if (toySurfaceStyles.length === 0) {
+  throw new Error("Asset Registry must expose at least one active toy surface.");
+}
+
+const toySurfaceStyleById = new Map(
+  toySurfaceStyles.map((surface) => [surface.id, surface])
+);
 
 export function getToySurfaceStyle(
   id: ToySurfaceStyleId | undefined
 ): ToySurfaceStyleDefinition {
-  return toySurfaceStyles.find((style) => style.id === id)
+  return (id ? toySurfaceStyleById.get(id) : null)
+    ?? toySurfaceStyleById.get("matte")
     ?? toySurfaceStyles[0];
 }

@@ -6,6 +6,7 @@ import type {
   ToyPaletteId
 } from "../../types/toy";
 import { formalColorAnimalModelIds } from "./formalRoster";
+import { localPaletteRecords } from "../../data/asset-registry/localTables";
 
 export const colorOtterModel: ToyModelDefinition = {
   id: "color-otter",
@@ -484,17 +485,42 @@ if (colorAnimalModels.length !== availableColorAnimalModels.length) {
   throw new Error("存在未加入正式阵容的 Color Animal 模型定义");
 }
 
-export const colorAnimalPalettes: ToyPaletteDefinition[] = [
-  { id: "cocoa", name: "可可曲奇", color: "#9d6d54", attenuation: "#503326", emissive: "#6f4938", glow: "#d7aa91" },
-  { id: "apricot", name: "蜂蜜杏", color: "#d99052", attenuation: "#78431f", emissive: "#a95f2e", glow: "#f3bd8a" },
-  { id: "cream-rose", name: "玫瑰奶霜", color: "#db7f91", attenuation: "#803747", emissive: "#aa5063", glow: "#f2aeb9" },
-  { id: "berry", name: "蓝莓汽水", color: "#788bd1", attenuation: "#394776", emissive: "#5366a8", glow: "#adbaf0" },
-  { id: "candy-mint", name: "薄荷奶糖", color: "#6fba9f", attenuation: "#2e6855", emissive: "#4b8e76", glow: "#a7dfcc" },
-  { id: "grape", name: "葡萄软糖", color: "#a47ac2", attenuation: "#55406c", emissive: "#775590", glow: "#cdb0e3" },
-  { id: "coral", name: "珊瑚落日", color: "#df785f", attenuation: "#843c2c", emissive: "#ae523e", glow: "#f2aa96" },
-  { id: "lime", name: "青柠果冻", color: "#9db660", attenuation: "#526326", emissive: "#71863d", glow: "#c8dc91" },
-  { id: "sky", name: "晴空棉花", color: "#69a9c8", attenuation: "#315e75", emissive: "#477f9a", glow: "#a0d1e6" }
-];
+const knownToyPaletteIds = new Set<ToyPaletteId>([
+  "cocoa",
+  "apricot",
+  "cream-rose",
+  "berry",
+  "candy-mint",
+  "grape",
+  "coral",
+  "lime",
+  "sky"
+]);
+
+const sortedPaletteRecords = [...localPaletteRecords].sort(
+  (left, right) => left.sortOrder - right.sortOrder
+);
+
+for (const palette of sortedPaletteRecords) {
+  if (!knownToyPaletteIds.has(palette.id as ToyPaletteId)) {
+    throw new Error(`Unknown toy palette ID in Registry: ${palette.id}`);
+  }
+}
+
+export const colorAnimalPalettes: ToyPaletteDefinition[] = sortedPaletteRecords
+  .filter((palette) => palette.enabled !== false)
+  .map((palette) => ({
+    id: palette.id as ToyPaletteId,
+    name: palette.name,
+    color: palette.color,
+    attenuation: palette.attenuation,
+    emissive: palette.emissive,
+    glow: palette.glow
+  }));
+
+if (colorAnimalPalettes.length === 0) {
+  throw new Error("Asset Registry must expose at least one active toy palette.");
+}
 
 export const rarityLabels: Record<RarityCode, string> = {
   common: "普通",
