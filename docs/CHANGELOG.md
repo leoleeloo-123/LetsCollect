@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-07-30
+
+- Added a localized short-plush surface that reuses each model's approved color
+  mask, preserving the animal body and facial details.
+- Reorganized Appearance Lab into separate surface and color controls: matte
+  resin and plush use the nine regular palettes, while metal exposes gold,
+  silver, and rose gold.
+- Updated the Lab summary to 504 combinations and synchronized palette changes
+  with the live inspector.
+- Verified all twenty-four models in matte, plush, and metal modes, including a
+  359px mobile viewport with no page-level horizontal overflow.
+
 ## 2026-07-29
 
 - Moved all six Jelly Jade runtime groups and both Diamond runtime groups out of

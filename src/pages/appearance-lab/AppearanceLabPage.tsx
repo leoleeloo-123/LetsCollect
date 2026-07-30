@@ -15,10 +15,7 @@ import {
   getToyModel,
   getToyPalette
 } from "../../features/toys/catalog";
-import {
-  getToySurfaceStyle,
-  toySurfaceStyles
-} from "../../features/toys/surfaceStyles";
+import { getToySurfaceStyle } from "../../features/toys/surfaceStyles";
 import {
   formalColorAnimalModelIds,
   type FormalColorAnimalModelId
@@ -38,13 +35,29 @@ import type {
 type SeriesFilter = "all" | AvailableCollectSeriesId;
 type ModelFilter = "all" | FormalColorAnimalModelId;
 type PaletteFilter = "all" | ToyPaletteId;
+type SurfaceMode = "matte" | "metal" | "plush";
+type MetalSurfaceStyleId =
+  | "metal-gold"
+  | "metal-silver"
+  | "metal-rose-gold";
 
 const FIXED_CREATED_AT = "2026-07-29T00:00:00.000Z";
-const FIXED_METAL_SURFACE_COUNT = toySurfaceStyles.filter(
-  (surface) => surface.colorOverride !== null
-).length;
+const METAL_SURFACE_STYLE_IDS = [
+  "metal-gold",
+  "metal-silver",
+  "metal-rose-gold"
+] as const satisfies readonly MetalSurfaceStyleId[];
+const LAB_SURFACE_OPTIONS = [
+  { id: "matte", name: "柔雾树脂", swatch: "#d7a27f" },
+  { id: "metal", name: "金属", swatch: "#d8a72d" },
+  { id: "plush", name: "毛绒", swatch: "#d7a58b" }
+] as const satisfies readonly {
+  id: SurfaceMode;
+  name: string;
+  swatch: string;
+}[];
 const TOTAL_APPEARANCE_COMBINATION_COUNT = formalColorAnimalModelIds.length
-  * (colorAnimalPalettes.length + FIXED_METAL_SURFACE_COUNT);
+  * (colorAnimalPalettes.length * 2 + METAL_SURFACE_STYLE_IDS.length);
 
 function getMatrixKey(modelId: FormalColorAnimalModelId, paletteId: ToyPaletteId) {
   return `${modelId}:${paletteId}`;
@@ -89,6 +102,7 @@ function applySurfaceStyleToMatrix(
   });
   return surfaced;
 }
+
 type AppearanceCellProps = {
   toy: Collectible;
   label: string;
@@ -137,11 +151,15 @@ export function AppearanceLabPage() {
   const [paletteFilter, setPaletteFilter] = useState<PaletteFilter>(
     colorAnimalPalettes[0].id
   );
-  const [surfaceStyleId, setSurfaceStyleId] =
-    useState<ToySurfaceStyleId>("matte");
+  const [surfaceMode, setSurfaceMode] = useState<SurfaceMode>("matte");
+  const [metalSurfaceStyleId, setMetalSurfaceStyleId] =
+    useState<MetalSurfaceStyleId>("metal-gold");
   const [selectedKey, setSelectedKey] = useState(() =>
     getMatrixKey(formalColorAnimalModelIds[0], colorAnimalPalettes[0].id)
   );
+  const surfaceStyleId: ToySurfaceStyleId = surfaceMode === "metal"
+    ? metalSurfaceStyleId
+    : surfaceMode;
 
   const displayMatrix = useMemo(
     () => applySurfaceStyleToMatrix(matrix, surfaceStyleId),
@@ -176,11 +194,29 @@ export function AppearanceLabPage() {
     setSelectedKey(getMatrixKey(modelId, paletteId));
   };
 
-  const selectSurface = (nextSurfaceStyleId: ToySurfaceStyleId) => {
-    setSurfaceStyleId(nextSurfaceStyleId);
-    if (getToySurfaceStyle(nextSurfaceStyleId).colorOverride) {
-      setPaletteFilter(colorAnimalPalettes[0].id);
+  const selectSurface = (nextSurfaceMode: SurfaceMode) => {
+    setSurfaceMode(nextSurfaceMode);
+    if (nextSurfaceMode === "metal") {
+      const firstPaletteId = colorAnimalPalettes[0].id;
+      setPaletteFilter(firstPaletteId);
+      setSelectedKey(getMatrixKey(
+        selectedToy.modelId as FormalColorAnimalModelId,
+        firstPaletteId
+      ));
     }
+  };
+
+  const selectMetalColor = (nextStyleId: MetalSurfaceStyleId) => {
+    setMetalSurfaceStyleId(nextStyleId);
+  };
+
+  const selectPalette = (nextPaletteFilter: PaletteFilter) => {
+    setPaletteFilter(nextPaletteFilter);
+    if (nextPaletteFilter === "all") return;
+    setSelectedKey(getMatrixKey(
+      selectedToy.modelId as FormalColorAnimalModelId,
+      nextPaletteFilter
+    ));
   };
 
   const selectSeries = (nextSeriesFilter: SeriesFilter) => {
@@ -213,7 +249,7 @@ export function AppearanceLabPage() {
             APPEARANCE LAB
           </p>
           <h1>24 只玩偶，外观实验室</h1>
-          <p>正式阵容 · 柔雾树脂 / 三种金属 · 9 组配色</p>
+          <p>正式阵容 · 3 种表面材质 · 9 组常规配色 + 3 组金属配色</p>
         </div>
 
         <dl className="appearance-lab__metrics">
@@ -223,7 +259,7 @@ export function AppearanceLabPage() {
           </div>
           <div>
             <dt>表面</dt>
-            <dd>{toySurfaceStyles.length}</dd>
+            <dd>{LAB_SURFACE_OPTIONS.length}</dd>
           </div>
           <div>
             <dt>组合</dt>
@@ -276,15 +312,15 @@ export function AppearanceLabPage() {
         <div className="appearance-lab__palette-filter appearance-lab__surface-filter">
           <span className="appearance-lab__filter-label">
             <Sparkles size={15} />
-            表面
+            表面材质
           </span>
           <div className="appearance-lab__palette-options">
-            {toySurfaceStyles.map((surface) => (
+            {LAB_SURFACE_OPTIONS.map((surface) => (
               <button
                 type="button"
                 key={surface.id}
-                className={surfaceStyleId === surface.id ? "is-active" : ""}
-                aria-pressed={surfaceStyleId === surface.id}
+                className={surfaceMode === surface.id ? "is-active" : ""}
+                aria-pressed={surfaceMode === surface.id}
                 onClick={() => selectSurface(surface.id)}
               >
                 <span
@@ -301,36 +337,62 @@ export function AppearanceLabPage() {
         <div className="appearance-lab__palette-filter">
           <span className="appearance-lab__filter-label">
             <Palette size={15} />
-            {surfaceUsesFixedColor ? "固定配色" : "配色"}
+            配色
           </span>
           <div className="appearance-lab__palette-options">
-            <button
-              type="button"
-              className={paletteFilter === "all" ? "is-active" : ""}
-              aria-pressed={paletteFilter === "all"}
-              disabled={surfaceUsesFixedColor}
-              onClick={() => setPaletteFilter("all")}
-            >
-              <Grid3X3 size={14} />
-              全部
-            </button>
-            {colorAnimalPalettes.map((palette) => (
-              <button
-                type="button"
-                key={palette.id}
-                className={paletteFilter === palette.id ? "is-active" : ""}
-                aria-pressed={paletteFilter === palette.id}
-                disabled={surfaceUsesFixedColor}
-                onClick={() => setPaletteFilter(palette.id)}
-              >
-                <span
-                  className="appearance-lab__swatch"
-                  style={{ backgroundColor: palette.color }}
-                  aria-hidden="true"
-                />
-                {palette.name}
-              </button>
-            ))}
+            {surfaceMode === "metal" ? (
+              METAL_SURFACE_STYLE_IDS.map((styleId) => {
+                const style = getToySurfaceStyle(styleId);
+                return (
+                  <button
+                    type="button"
+                    key={styleId}
+                    className={
+                      metalSurfaceStyleId === styleId ? "is-active" : ""
+                    }
+                    aria-pressed={metalSurfaceStyleId === styleId}
+                    onClick={() => selectMetalColor(styleId)}
+                  >
+                    <span
+                      className="appearance-lab__swatch"
+                      style={{ backgroundColor: style.swatch }}
+                      aria-hidden="true"
+                    />
+                    {style.name}
+                  </button>
+                );
+              })
+            ) : (
+              <>
+                <button
+                  type="button"
+                  className={paletteFilter === "all" ? "is-active" : ""}
+                  aria-pressed={paletteFilter === "all"}
+                  onClick={() => selectPalette("all")}
+                >
+                  <Grid3X3 size={14} />
+                  全部
+                </button>
+                {colorAnimalPalettes.map((palette) => (
+                  <button
+                    type="button"
+                    key={palette.id}
+                    className={
+                      paletteFilter === palette.id ? "is-active" : ""
+                    }
+                    aria-pressed={paletteFilter === palette.id}
+                    onClick={() => selectPalette(palette.id)}
+                  >
+                    <span
+                      className="appearance-lab__swatch"
+                      style={{ backgroundColor: palette.color }}
+                      aria-hidden="true"
+                    />
+                    {palette.name}
+                  </button>
+                ))}
+              </>
+            )}
           </div>
         </div>
       </section>
