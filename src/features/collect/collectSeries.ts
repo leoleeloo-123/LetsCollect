@@ -12,7 +12,10 @@ import type {
   ToyPaletteId
 } from "../../types/toy";
 import { colorAnimalPalettes } from "../toys/catalog";
-import { formalColorAnimalModelIds } from "../toys/formalRoster";
+import {
+  allFormalColorAnimalModelIds,
+  formalColorAnimalModelIds
+} from "../toys/formalRoster";
 import { generateCollectible } from "../toys/generator";
 
 export const availableCollectSeriesIds = [
@@ -74,7 +77,8 @@ export type CollectSeriesDrawRequest = {
 };
 
 const knownSeriesIds = new Set<string>(availableCollectSeriesIds);
-const knownModelIds = new Set<string>(formalColorAnimalModelIds);
+const knownModelIds = new Set<string>(allFormalColorAnimalModelIds);
+const activeModelIds = new Set<string>(formalColorAnimalModelIds);
 const activePaletteIds = colorAnimalPalettes.map((palette) => palette.id);
 const activePaletteIdSet = new Set<string>(activePaletteIds);
 
@@ -149,7 +153,10 @@ function buildCollectSeries(record: SeriesRecord): AvailableCollectSeries {
   }
 
   const modelIds = members
-    .filter((member) => member.enabled !== false)
+    .filter(
+      (member) =>
+        member.enabled !== false && activeModelIds.has(member.modelId)
+    )
     .map((member) => member.modelId as ToyModelId);
 
   return {

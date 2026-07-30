@@ -1,18 +1,22 @@
 import backgroundsJson from "./backgrounds.json";
 import palettesJson from "./palettes.json";
+import recolorProfilesJson from "./recolor-profiles.json";
 import seriesMembersJson from "./series-members.json";
 import seriesJson from "./series.json";
 import surfacesJson from "./surfaces.json";
-import { AssetRegistryValidationError } from "./registry";
+import toyModelsJson from "./toy-models.json";
+import { createAssetRegistry } from "./registry";
 import type {
+  AssetRegistrySnapshot,
   BackgroundRecord,
   PaletteRecord,
+  RecolorProfileRecord,
   RegistryRecord,
   SeriesMemberRecord,
   SeriesRecord,
-  SurfaceRecord
+  SurfaceRecord,
+  ToyModelRecord
 } from "./types";
-import { validateAssetRegistrySnapshot } from "./validation";
 
 type UnknownRecord = Record<string, unknown>;
 
@@ -47,6 +51,11 @@ function normalizeTable<T extends RegistryRecord>(
   return Object.freeze(records);
 }
 
+export const localToyModelRecords = normalizeTable<ToyModelRecord>(
+  "toyModels",
+  toyModelsJson
+);
+
 export const localPaletteRecords = normalizeTable<PaletteRecord>(
   "palettes",
   palettesJson
@@ -62,6 +71,12 @@ export const localBackgroundRecords = normalizeTable<BackgroundRecord>(
   backgroundsJson
 );
 
+export const localRecolorProfileRecords =
+  normalizeTable<RecolorProfileRecord>(
+    "recolorProfiles",
+    recolorProfilesJson
+  );
+
 export const localSeriesRecords = normalizeTable<SeriesRecord>(
   "series",
   seriesJson
@@ -72,30 +87,16 @@ export const localSeriesMemberRecords = normalizeTable<SeriesMemberRecord>(
   seriesMembersJson
 );
 
-const validationResult = validateAssetRegistrySnapshot(
-  {
-    toyModels: [],
-    palettes: localPaletteRecords,
-    surfaces: localSurfaceRecords,
-    backgrounds: localBackgroundRecords,
-    recolorProfiles: [],
-    series: localSeriesRecords,
-    seriesMembers: localSeriesMemberRecords
-  },
-  {
-    requireActiveToyModels: false,
-    allowUnknownToyModelReferences: true
-  }
-);
-
-if (!validationResult.valid) {
-  throw new AssetRegistryValidationError(validationResult.errors);
-}
-
-export const localLowRiskRegistryTables = Object.freeze({
+export const localAssetRegistrySnapshot: AssetRegistrySnapshot = Object.freeze({
+  toyModels: localToyModelRecords,
   palettes: localPaletteRecords,
   surfaces: localSurfaceRecords,
   backgrounds: localBackgroundRecords,
+  recolorProfiles: localRecolorProfileRecords,
   series: localSeriesRecords,
   seriesMembers: localSeriesMemberRecords
 });
+
+export const localAssetRegistry = createAssetRegistry(
+  localAssetRegistrySnapshot
+);
