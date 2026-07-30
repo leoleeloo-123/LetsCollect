@@ -10,14 +10,11 @@ type ToySurfaceRenderValues = {
   metalness: number;
   roughness: number;
   envMapIntensity: number;
-  fiberScale?: number;
-  fuzzStrength?: number;
-  rimStrength?: number;
 };
 
 export type ToySurfaceStyleDefinition = {
   id: ToySurfaceStyleId;
-  kind: "matte" | "metal" | "plush";
+  kind: "matte" | "metal";
   name: string;
   shortName: string;
   description: string;
@@ -90,50 +87,6 @@ export const toySurfaceStyles: readonly ToySurfaceStyleDefinition[] = [
       compact: { metalness: 0.91, roughness: 0.24, envMapIntensity: 0.98 },
       tile: { metalness: 0.77, roughness: 0.35, envMapIntensity: 0.66 },
       thumbnail: { metalness: 0.84, roughness: 0.3, envMapIntensity: 0.8 }
-    }
-  },
-  {
-    id: "plush",
-    kind: "plush",
-    name: "短绒毛绒",
-    shortName: "毛绒",
-    description: "仅让原有改色部位呈现细密短绒与柔软边缘光，动物主体保持不变。",
-    colorOverride: null,
-    glowOverride: null,
-    swatch: "#d7a58b",
-    render: {
-      detail: {
-        metalness: 0,
-        roughness: 0.98,
-        envMapIntensity: 0.08,
-        fiberScale: 100,
-        fuzzStrength: 0.22,
-        rimStrength: 0.38
-      },
-      compact: {
-        metalness: 0,
-        roughness: 0.97,
-        envMapIntensity: 0.08,
-        fiberScale: 80,
-        fuzzStrength: 0.18,
-        rimStrength: 0.32
-      },
-      tile: {
-        metalness: 0,
-        roughness: 0.96,
-        envMapIntensity: 0.05,
-        fiberScale: 58,
-        fuzzStrength: 0.14,
-        rimStrength: 0.24
-      },
-      thumbnail: {
-        metalness: 0,
-        roughness: 0.97,
-        envMapIntensity: 0.07,
-        fiberScale: 70,
-        fuzzStrength: 0.16,
-        rimStrength: 0.28
-      }
     }
   }
 ];

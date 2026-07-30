@@ -190,7 +190,7 @@ metadata, rendering contracts, and validation exist:
   Bold, and Cool archetypes;
 - expansion of Cute and other animal shapes;
 - crystal Companions beyond the registered Unicorn and Dog;
-- fuzzy, metallic, and porcelain material families;
+- metallic and porcelain material families;
 - additional palettes outside the registered nine regular colorways and five
   native crystal tints;
 - richer shared collection missions and rewards.
@@ -217,7 +217,7 @@ Additional enforcement rules:
    and palette IDs marked `available` in this registry and active runtime code.
 2. Any `legacy`, `experimental`, `planned`, or `unavailable` dependency blocks
    publishing and must be named in `blockingReasons`.
-3. A proposal involving an unregistered Sleepy pose, Quirky, metallic, fuzzy,
+3. A proposal involving an unregistered Sleepy pose, Quirky, metallic,
    porcelain, a crystal Companion beyond the registered pair, or a new color
    is at least `requires_asset_creation`. The registered sleeping Cat, Seal,
    and Koala may be used without creating a new asset.

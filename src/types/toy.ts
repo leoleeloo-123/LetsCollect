@@ -40,8 +40,7 @@ export type ToySurfaceStyleId =
   | "matte"
   | "metal-gold"
   | "metal-silver"
-  | "metal-rose-gold"
-  | "plush";
+  | "metal-rose-gold";
 export type ToyMaterialId =
   | "plastic"
   | "glass"

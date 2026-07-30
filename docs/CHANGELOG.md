@@ -2,15 +2,19 @@
 
 ## 2026-07-30
 
-- Added a localized short-plush surface that reuses each model's approved color
-  mask, preserving the animal body and facial details.
-- Reorganized Appearance Lab into separate surface and color controls: matte
-  resin and plush use the nine regular palettes, while metal exposes gold,
-  silver, and rose gold.
-- Updated the Lab summary to 504 combinations and synchronized palette changes
-  with the live inspector.
-- Verified all twenty-four models in matte, plush, and metal modes, including a
-  359px mobile viewport with no page-level horizontal overflow.
+- Retired the localized plush prototype after review: approved recolor targets
+  span food, clothing, and accessories, so neither plush nor Jelly Jade is
+  retained as a universal surface.
+- Kept matte resin and metal as the two active Lab surface families; metal
+  continues to expose gold, silver, and rose gold.
+- Added four independent stage backgrounds to Appearance Lab: animated
+  `初冬` (pale blue with snow), animated `暖春` (pale green with leaves),
+  and static pale green and pale lavender.
+- Limited animated particles to the single live 3D inspector. The twenty-four
+  thumbnails inherit the selected static base color without creating extra
+  animation or WebGL work.
+- Updated the Lab summary to 1,152 surface, color, model, and background
+  combinations.
 
 ## 2026-07-29
 

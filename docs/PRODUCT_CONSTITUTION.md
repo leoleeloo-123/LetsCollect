@@ -140,7 +140,7 @@ Echo 不依赖并且不应展示：
 二十四个普通模型的换色目标不同；“colorway”不等于每只模型都改变完整身体颜色。
 
 ZZZ 已复用小猫、海豹和考拉三款现有睡姿。注册表以外的新姿态、新动物、
-新水晶、新金属、毛绒和陶瓷仍只能作为 planned capability。
+新水晶、新金属和陶瓷仍只能作为 planned capability。
 旧 Jelly Jade、八材质、Color Dog、Color Unicorn 实验、归档模型与 Lab 路由不是当前可抽取能力。
 
 文件存在于仓库不等于产品可用。代码 active registry 与人类可读资产注册表必须同时明确 availability。

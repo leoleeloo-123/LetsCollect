@@ -3,6 +3,7 @@ import {
   ArrowLeft,
   Check,
   Grid3X3,
+  Layers3,
   Palette,
   Rotate3D,
   Sparkles
@@ -16,6 +17,12 @@ import {
   getToyPalette
 } from "../../features/toys/catalog";
 import { getToySurfaceStyle } from "../../features/toys/surfaceStyles";
+import {
+  getToyStageTheme,
+  toyStageThemes,
+  type ToyStageThemeDefinition,
+  type ToyStageThemeId
+} from "../../features/toys/stageThemes";
 import {
   formalColorAnimalModelIds,
   type FormalColorAnimalModelId
@@ -35,7 +42,7 @@ import type {
 type SeriesFilter = "all" | AvailableCollectSeriesId;
 type ModelFilter = "all" | FormalColorAnimalModelId;
 type PaletteFilter = "all" | ToyPaletteId;
-type SurfaceMode = "matte" | "metal" | "plush";
+type SurfaceMode = "matte" | "metal";
 type MetalSurfaceStyleId =
   | "metal-gold"
   | "metal-silver"
@@ -49,15 +56,27 @@ const METAL_SURFACE_STYLE_IDS = [
 ] as const satisfies readonly MetalSurfaceStyleId[];
 const LAB_SURFACE_OPTIONS = [
   { id: "matte", name: "柔雾树脂", swatch: "#d7a27f" },
-  { id: "metal", name: "金属", swatch: "#d8a72d" },
-  { id: "plush", name: "毛绒", swatch: "#d7a58b" }
+  { id: "metal", name: "金属", swatch: "#d8a72d" }
 ] as const satisfies readonly {
   id: SurfaceMode;
   name: string;
   swatch: string;
 }[];
+const STAGE_THEME_GROUPS = [
+  {
+    id: "dynamic",
+    label: "动态",
+    themes: toyStageThemes.filter((theme) => theme.group === "dynamic")
+  },
+  {
+    id: "static",
+    label: "静态",
+    themes: toyStageThemes.filter((theme) => theme.group === "static")
+  }
+] as const;
 const TOTAL_APPEARANCE_COMBINATION_COUNT = formalColorAnimalModelIds.length
-  * (colorAnimalPalettes.length * 2 + METAL_SURFACE_STYLE_IDS.length);
+  * (colorAnimalPalettes.length + METAL_SURFACE_STYLE_IDS.length)
+  * toyStageThemes.length;
 
 function getMatrixKey(modelId: FormalColorAnimalModelId, paletteId: ToyPaletteId) {
   return `${modelId}:${paletteId}`;
@@ -103,10 +122,32 @@ function applySurfaceStyleToMatrix(
   return surfaced;
 }
 
+type StageAtmosphereProps = {
+  theme: ToyStageThemeDefinition;
+  layer: "back" | "front";
+};
+
+function StageAtmosphere({ theme, layer }: StageAtmosphereProps) {
+  if (!theme.particle) return null;
+  const particleCount = layer === "back" ? 10 : 8;
+
+  return (
+    <span
+      className={`appearance-stage-particles appearance-stage-particles--${layer} is-${theme.particle}`}
+      aria-hidden="true"
+    >
+      {Array.from({ length: particleCount }, (_, index) => (
+        <span key={`${layer}-${index}`} />
+      ))}
+    </span>
+  );
+}
+
 type AppearanceCellProps = {
   toy: Collectible;
   label: string;
   sublabel?: string;
+  background: string;
   eager?: boolean;
   selected: boolean;
   onSelect: () => void;
@@ -116,6 +157,7 @@ function AppearanceCell({
   toy,
   label,
   sublabel,
+  background,
   eager = false,
   selected,
   onSelect
@@ -128,7 +170,10 @@ function AppearanceCell({
       aria-pressed={selected}
       onClick={onSelect}
     >
-      <span className="appearance-cell__visual">
+      <span
+        className="appearance-cell__visual"
+        style={{ backgroundColor: background }}
+      >
         <ToyThumbnail toy={toy} size="card" eager={eager} />
         {selected ? (
           <span className="appearance-cell__selected" aria-hidden="true">
@@ -152,6 +197,8 @@ export function AppearanceLabPage() {
     colorAnimalPalettes[0].id
   );
   const [surfaceMode, setSurfaceMode] = useState<SurfaceMode>("matte");
+  const [stageThemeId, setStageThemeId] =
+    useState<ToyStageThemeId>("soft-green");
   const [metalSurfaceStyleId, setMetalSurfaceStyleId] =
     useState<MetalSurfaceStyleId>("metal-gold");
   const [selectedKey, setSelectedKey] = useState(() =>
@@ -170,6 +217,7 @@ export function AppearanceLabPage() {
   const selectedModel = getToyModel(selectedToy.modelId);
   const selectedPalette = getToyPalette(selectedToy.paletteId);
   const selectedSurface = getToySurfaceStyle(surfaceStyleId);
+  const selectedStageTheme = getToyStageTheme(stageThemeId);
   const surfaceUsesFixedColor = selectedSurface.colorOverride !== null;
   const selectedSeries = seriesFilter === "all"
     ? null
@@ -249,7 +297,7 @@ export function AppearanceLabPage() {
             APPEARANCE LAB
           </p>
           <h1>24 只玩偶，外观实验室</h1>
-          <p>正式阵容 · 3 种表面材质 · 9 组常规配色 + 3 组金属配色</p>
+          <p>正式阵容 · 2 种表面材质 · 4 组舞台背景</p>
         </div>
 
         <dl className="appearance-lab__metrics">
@@ -260,6 +308,10 @@ export function AppearanceLabPage() {
           <div>
             <dt>表面</dt>
             <dd>{LAB_SURFACE_OPTIONS.length}</dd>
+          </div>
+          <div>
+            <dt>背景</dt>
+            <dd>{toyStageThemes.length}</dd>
           </div>
           <div>
             <dt>组合</dt>
@@ -395,6 +447,35 @@ export function AppearanceLabPage() {
             )}
           </div>
         </div>
+        <div className="appearance-lab__background-filter">
+          <span className="appearance-lab__filter-label">
+            <Layers3 size={15} />
+            背景
+          </span>
+          <div className="appearance-lab__background-options">
+            {STAGE_THEME_GROUPS.map((group) => (
+              <div className="appearance-lab__background-group" key={group.id}>
+                <span>{group.label}</span>
+                {group.themes.map((theme) => (
+                  <button
+                    type="button"
+                    key={theme.id}
+                    className={stageThemeId === theme.id ? "is-active" : ""}
+                    aria-pressed={stageThemeId === theme.id}
+                    onClick={() => setStageThemeId(theme.id)}
+                  >
+                    <span
+                      className="appearance-lab__background-swatch"
+                      style={{ backgroundColor: theme.swatch }}
+                      aria-hidden="true"
+                    />
+                    {theme.name}
+                  </button>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
 
       <div className="appearance-lab__workspace">
@@ -404,9 +485,14 @@ export function AppearanceLabPage() {
               <Rotate3D size={15} />
               实时检查
             </span>
-            <span>{selectedSurface.shortName}</span>
+            <span>{selectedSurface.shortName} · {selectedStageTheme.name}</span>
           </div>
-          <div className="appearance-inspector__viewer">
+          <div
+            className="appearance-inspector__viewer"
+            data-stage-theme={selectedStageTheme.id}
+            style={{ backgroundColor: selectedStageTheme.background }}
+          >
+            <StageAtmosphere theme={selectedStageTheme} layer="back" />
             <ToyViewer
               key={selectedToy.appearanceSignature}
               toy={selectedToy}
@@ -415,6 +501,7 @@ export function AppearanceLabPage() {
               autoRotate="intro"
               materialProfile="compact"
             />
+            <StageAtmosphere theme={selectedStageTheme} layer="front" />
           </div>
           <div className="appearance-inspector__meta">
             <span
@@ -473,6 +560,7 @@ export function AppearanceLabPage() {
                           key={key}
                           toy={toy}
                           label={palette.name}
+                          background={selectedStageTheme.background}
                           selected={selectedKey === key}
                           onSelect={() =>
                             selectToy(
@@ -502,6 +590,7 @@ export function AppearanceLabPage() {
                     key={key}
                     toy={toy}
                     label={model.name}
+                    background={selectedStageTheme.background}
                     sublabel={
                       surfaceUsesFixedColor
                         ? selectedSurface.name

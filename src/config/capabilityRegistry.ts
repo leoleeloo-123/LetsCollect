@@ -247,14 +247,6 @@ export const capabilityRegistry = [
     requiresAssetCreation: true
   },
   {
-    id: "fuzzy_material",
-    label: "Fuzzy material family",
-    availability: "planned",
-    category: "asset",
-    description: "Not available in the active consumer draw pool.",
-    requiresAssetCreation: true
-  },
-  {
     id: "porcelain_material",
     label: "Porcelain material family",
     availability: "planned",
